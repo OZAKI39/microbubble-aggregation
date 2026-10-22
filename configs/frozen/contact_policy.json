@@ -1,0 +1,107 @@
+{
+  "baseline_commit": "1c785f4803ca7dc0ea2fe91756b02487c7c75a59",
+  "cleanup_commit": "7cf1f7f6d98300f92318584533dbce004a14deaf",
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED"
+  ],
+  "training_ready": false,
+  "radius_m": 1.78e-06,
+  "frequency_Hz": 2500000,
+  "flow": "STRICT_ZERO",
+  "dt_s": [
+    1e-06,
+    5e-07
+  ],
+  "cache_m": [
+    3e-06,
+    1.5e-06
+  ],
+  "contact_overlap_m": 1.78e-08,
+  "hard_geometry_m": 1e-09,
+  "contact_correction_m": 1.78e-07,
+  "mobility_residual_m": 1e-13,
+  "primal_violation_m": 1e-12,
+  "dual_negative_N": 1e-16,
+  "force_residual_atol_N": 1e-16,
+  "force_residual_rtol": 1e-08,
+  "complementarity_equivalent_gap_m": 1e-12,
+  "actual_geometry_complementarity_m": 1e-11,
+  "osqp": {
+    "eps_abs": 1e-12,
+    "eps_rel": 1e-10,
+    "max_iter": 3000,
+    "time_limit": 0.2,
+    "polishing": true,
+    "adaptive_rho_interval": 25,
+    "check_termination": 25,
+    "verbose": false
+  },
+  "group_COM_tolerance_m": 2e-08,
+  "group_Rg_tolerance_m": 2e-08,
+  "group_xy_tolerance": 0.01,
+  "group_Q_relative": 0.01,
+  "group_aspect_relative": 0.01,
+  "principal_axis_eigen_gap_relative": 0.001,
+  "principal_axis_angle_deg": 2.0,
+  "distribution_RMS_over_R": 0.02,
+  "distribution_definition": "Hungarian squared-distance assignment of centered coordinates; no rotation; RMS/R; all common saved times",
+  "fixed_id_tolerance_m": 5e-08,
+  "edge_distance_over_R": 2.1,
+  "persistence_s": 0.002,
+  "instant_edge_time_tolerance_s": 1e-05,
+  "total_numerical_budget_s": 600,
+  "per_run_budget_s": 60,
+  "pilot_steps": 150,
+  "short_window_s": 0.0005,
+  "window_s": 0.002,
+  "XY_targets_m": {
+    "X": [
+      2e-07,
+      0,
+      0
+    ],
+    "Y": [
+      0,
+      2e-07,
+      0
+    ]
+  },
+  "XY_tolerance_m": 7.5e-08,
+  "max_navigation_candidates_per_direction": 2,
+  "max_search_objective_evaluations": 32,
+  "shape_target_xy": 1.25,
+  "stop": "A failures do not prevent B. Local+true geometry+true normal force balance required. First 3 QPs; <=5 only documented evidence. Fresh initial state for every trajectory.",
+  "group_scope": "COM .02um is 26.7% of .075um target tolerance. Signal must exceed measured dt/cache differences; stationary OFF is a validated null, not control.",
+  "shape_control_cost": "Navigation candidate endpoint Rg change <=5% and one connected component; otherwise explicitly report shape cost.",
+  "topology_scope": "Full initial-network survival over 2ms and matched persistent events; instantaneous edge timing independently reported. Later events right-censored, not disproved.",
+  "initial": "Unchanged manual near-contact 32-ID demo, not acoustic formation",
+  "hard_solver": "active_set",
+  "max_sequential_qp": 3,
+  "route_b_independent": true,
+  "route_budget_s": {
+    "A": 200,
+    "B": 250,
+    "reserve": 150
+  },
+  "max_new_candidates": 8,
+  "max_full_navigation": 2,
+  "candidate_design": {
+    "method": "bounded deterministic pressure-constrained primary COM proposal optimization, not surrogate evidence of navigation",
+    "pressure_caps_Pa": [
+      400,
+      800,
+      1200,
+      1800
+    ],
+    "max_source_amplitude_Pa": 1500,
+    "directions": [
+      "X",
+      "Y"
+    ],
+    "max_optimizer_iterations": 60,
+    "starts_per_candidate": 1
+  },
+  "numerical_scope": "A/F frozen at x_n through each physical step; constraints/reactions updated at candidate x_{n+1}; no PBD, no spring, no repeated physical time."
+}

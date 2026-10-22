@@ -1,0 +1,62 @@
+{
+  "frequency_Hz": 2400000.0,
+  "checks": {
+    "quadrature_pressure": 1.5000207990772971e-15,
+    "quadrature_gradient": 1.4529078805357564e-15,
+    "rayleigh_pressure": 5.639607965687767e-15,
+    "rayleigh_gradient": 7.895044935192352e-15,
+    "analytic_gradient": 7.635457769359812e-10,
+    "coarse_pressure": 1.1280438975436564e-05,
+    "coarse_gradient": 0.0007373109144662701,
+    "fine_pressure": 1.442413333041811e-06,
+    "fine_gradient": 0.00018938651153200902
+  },
+  "limits": {
+    "quadrature_pressure": 1e-07,
+    "quadrature_gradient": 1e-07,
+    "rayleigh_pressure": 1e-07,
+    "rayleigh_gradient": 1e-07,
+    "analytic_gradient": 1e-06,
+    "coarse_pressure": 0.0001,
+    "coarse_gradient": 0.005,
+    "fine_pressure": 1e-05,
+    "fine_gradient": 0.0013
+  },
+  "PASS": true,
+  "caches": [
+    {
+      "path": "fields/2400000/coarse.h5",
+      "sha256": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "bytes": 15212102,
+      "shape": [
+        125,
+        105,
+        21
+      ]
+    },
+    {
+      "path": "fields/2400000/fine.h5",
+      "sha256": "41ce94277774c5bb6e382d4773d74240b03f60b56d69820b3b292b268bbdab5e",
+      "bytes": 116162886,
+      "shape": [
+        249,
+        209,
+        41
+      ]
+    }
+  ],
+  "wall_s": 22.779212719004136,
+  "rss_peak_MiB": 416.64453125,
+  "identity": {
+    "source_commit": "614408c1f49a5d78e684c61f9f771f3fabae195c",
+    "utc": "2026-10-19T00:14:59.432688+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "REAL_CAMERA_OBSERVABILITY_UNVERIFIED"
+    ],
+    "training_ready": false
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "PASS": true,
+  "frequency_Hz": 2400000.0,
+  "field": {
+    "frequency_Hz": 2400000.0,
+    "checks": {
+      "quadrature_pressure": 6.897693335176787e-15,
+      "quadrature_gradient": 3.5144833372170187e-15,
+      "reference_pressure": 2.0789648731991745e-14,
+      "reference_gradient": 1.2983327760843946e-14,
+      "analytic_gradient_finite_difference": 2.0548524847797243e-09,
+      "coarse_pressure": 8.133853063305578e-07,
+      "coarse_gradient": 0.00013563089539007258,
+      "fine_pressure": 1.015028080283491e-07,
+      "fine_gradient": 3.683713655648734e-05
+    },
+    "PASS": true,
+    "wall_s": 6.175916743988637,
+    "identity": {
+      "source_commit": "c124c94de0a9a399252e7ac318f5f162ecbc14cf",
+      "training_ready": false
+    }
+  },
+  "response": {
+    "frequency_Hz": 2400000.0,
+    "radius_m": 1.78e-06,
+    "shell_elasticity_multiplier": 1.0,
+    "validated": true,
+    "apecss_commit": "a0ee071ca247b5489e997d90e83b5f53c40e4ec7",
+    "executable_sha256": "1ba1a9f97ca4c0cdb1bbf331d1a514823e45842256bc9a7f039163eb4157455f",
+    "parameter_sha256": "aa5492aef02a1d0af8942a74fc62f2851e36528e1851eb155b97d995466a5cd3",
+    "case": {
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 0.001,
+      "elasticity_N_m": 0.29325198219707016,
+      "shell_viscosity_kg_s": 4.619149127111346e-09,
+      "sigma_initial_N_m": 0.036,
+      "density_kg_m3": 1000.0,
+      "sound_speed_m_s": 1500.0,
+      "viscosity_Pa_s": 0.002,
+      "sigma_water_N_m": 0.072,
+      "polytropic_exponent": 1.07,
+      "ambient_pressure_Pa": 101300.0,
+      "cycles": 48,
+      "samples_per_cycle": 512,
+      "tolerance": 1e-10,
+      "provenance": "Unchanged historical radius-dependent SonoVue parameter manifold; elasticity multiplier 1.0; sigma_init .036 hypothesis, not calibration"
+    },
+    "pressure_range_Pa": [
+      0.001,
+      12000.0
+    ],
+    "frequency_interpolation": false,
+    "zero": "exact quiescent",
+    "identity": {
+      "source_commit": "c124c94de0a9a399252e7ac318f5f162ecbc14cf",
+      "training_ready": false
+    }
+  },
+  "scope": "field and radial-response admission; complete trajectories require separate numerical gates"
+}

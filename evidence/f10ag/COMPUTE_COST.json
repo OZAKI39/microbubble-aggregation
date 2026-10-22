@@ -1,0 +1,65 @@
+{
+  "supervisor_science_job_wall_sum_s": 3926,
+  "supervisor_analysis_job_wall_sum_s": 1354,
+  "scientific_budget_s": 6000,
+  "budget_pass": true,
+  "first_to_last_science_elapsed_s": 4184,
+  "supervisor_timing_scope": "Integer-second process durations including failed attempts; overlapping job durations are sums, not elapsed campaign time. Baseline includes internal audits.",
+  "scientific_stage_wall_sum_s": 3784.608978238073,
+  "stages": [
+    {
+      "file": "BASELINE_RESULTS.json",
+      "wall_s": 366.68410499201855
+    },
+    {
+      "file": "STATIC_RESULTS.json",
+      "wall_s": 11.472246138000628
+    },
+    {
+      "file": "SINGLE_RESULTS.json",
+      "wall_s": 39.177330328006065
+    },
+    {
+      "file": "ROTATION_STATIC.json",
+      "wall_s": 1.2004207569989376
+    },
+    {
+      "file": "F1_SHADOW_RESULTS.json",
+      "wall_s": 8.723514851008076
+    },
+    {
+      "file": "EXPERIMENT_DONE.json",
+      "wall_s": 1608.9009531210177
+    },
+    {
+      "file": "HF250_RESULTS.json",
+      "wall_s": 1747.5830335190112
+    },
+    {
+      "file": "LF_LADDER_RESULTS.json",
+      "wall_s": 0.8673745320120361
+    }
+  ],
+  "initial_pilot_service_time_s": 302.7868067390518,
+  "note": "Initial pilot ran before failed timestamp comparison; its summed service time is reported separately, not falsely treated as serial elapsed. Stage sums may overlap; total task service time is a different quantity.",
+  "HF_task_service_s": 5167.827022012119,
+  "LF_task_service_s": 2498.344817605015,
+  "analysis_audit_s": 1354,
+  "last_incremental_analysis_s": 293.7261643919919,
+  "figures_s": 5.838464537009713,
+  "videos_s": 122.14475050200417,
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:42:55.171965+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "positions_m": [
+    [
+      4.5e-05,
+      -0.0002,
+      -6e-05
+    ],
+    [
+      4.5e-05,
+      -0.0002,
+      0.0
+    ],
+    [
+      4.5e-05,
+      -0.0002,
+      6e-05
+    ],
+    [
+      4.5e-05,
+      0.0,
+      -6e-05
+    ],
+    [
+      4.5e-05,
+      0.0,
+      0.0
+    ],
+    [
+      4.5e-05,
+      0.0,
+      6e-05
+    ],
+    [
+      4.5e-05,
+      0.0002,
+      -6e-05
+    ],
+    [
+      4.5e-05,
+      0.0002,
+      0.0
+    ],
+    [
+      4.5e-05,
+      0.0002,
+      6e-05
+    ]
+  ],
+  "frequencies": [
+    2400000,
+    2500000,
+    2600000
+  ],
+  "phases_deg": [
+    0,
+    90,
+    180,
+    270
+  ],
+  "identity": {
+    "source_commit": "83557c63dce3b3b5519c19390ea3b268f41f8ce3",
+    "utc": "2026-10-19T09:33:26.042731+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

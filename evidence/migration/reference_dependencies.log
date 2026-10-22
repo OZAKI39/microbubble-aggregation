@@ -1,0 +1,22 @@
+Collecting PyYAML
+  Using cached pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting scikit-learn
+  Using cached scikit_learn-1.9.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.3 kB)
+Requirement already satisfied: numpy>=1.24.1 in ./.venv/lib/python3.12/site-packages (from scikit-learn) (2.2.6)
+Requirement already satisfied: scipy>=1.10.0 in ./.venv/lib/python3.12/site-packages (from scikit-learn) (1.15.3)
+Collecting joblib>=1.4.0 (from scikit-learn)
+  Using cached joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting narwhals>=2.0.1 (from scikit-learn)
+  Using cached narwhals-2.27.1-py3-none-any.whl.metadata (15 kB)
+Collecting threadpoolctl>=3.5.0 (from scikit-learn)
+  Using cached threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)
+Collecting cloudpickle>=3.0 (from joblib>=1.4.0->scikit-learn)
+  Using cached cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Using cached pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+Using cached scikit_learn-1.9.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (9.2 MB)
+Using cached joblib-1.6.0-py3-none-any.whl (306 kB)
+Using cached narwhals-2.27.1-py3-none-any.whl (483 kB)
+Using cached threadpoolctl-3.7.0-py3-none-any.whl (26 kB)
+Using cached cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+Installing collected packages: threadpoolctl, PyYAML, narwhals, cloudpickle, joblib, scikit-learn
+Successfully installed PyYAML-6.0.3 cloudpickle-3.1.2 joblib-1.6.0 narwhals-2.27.1 scikit-learn-1.9.1 threadpoolctl-3.7.0

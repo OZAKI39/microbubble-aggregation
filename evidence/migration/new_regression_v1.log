@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/lzy/projects/new_microbubble_aggregation/main.py", line 52, in <module>
+    main()
+  File "/home/lzy/projects/new_microbubble_aggregation/main.py", line 45, in main
+    result=regression(ROOT,args.out)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzy/projects/new_microbubble_aggregation/workflows/validation.py", line 51, in regression
+    for name,values in [("direct",c.discs.evaluate(q,48)),("cache",c.basis.query_basis(q))]:
+                                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzy/projects/new_microbubble_aggregation/microbubble/acoustics.py", line 50, in evaluate
+    nodes, weights = leggauss(order)
+                     ^^^^^^^^
+NameError: name 'leggauss' is not defined

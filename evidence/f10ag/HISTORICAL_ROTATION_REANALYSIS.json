@@ -1,0 +1,44 @@
+{
+  "rows": [
+    {
+      "action": "ROT_PLUS",
+      "N": 64,
+      "duration_s": 0.049999999999999996,
+      "recomputed_angle_deg": -0.013053754270864084,
+      "recomputed_mean_rigid_fraction": 0.00010145318415858003,
+      "historical_angle_deg": -0.013053754270864004,
+      "historical_rigid_fraction": 0.00010145318415858006,
+      "PASS": true,
+      "raw_path": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/f52020380ffb7e1bc7e9a0311e88d665a39a3776_history_rotation_v1/results/straight_tube_exp1/f10af/hf/long50_ROT_PLUS/runs/N64_CONTROL_50000us_DT1/trajectory.h5",
+      "raw_sha256": "6485194e1850e8c029ff948b855d7e043f36214957da5f8c6ad31a210b08ad1f"
+    },
+    {
+      "action": "ROT_MINUS",
+      "N": 64,
+      "duration_s": 0.049999999999999996,
+      "recomputed_angle_deg": -0.040653811354252244,
+      "recomputed_mean_rigid_fraction": 0.0004908927778146093,
+      "historical_angle_deg": -0.0406538113542525,
+      "historical_rigid_fraction": 0.0004908927778146094,
+      "PASS": true,
+      "raw_path": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/f52020380ffb7e1bc7e9a0311e88d665a39a3776_history_rotation_v1/results/straight_tube_exp1/f10af/hf/long50_ROT_MINUS/runs/N64_CONTROL_50000us_DT1/trajectory.h5",
+      "raw_sha256": "75d332fef1b6c52c12feb51245d688492ad000d42394ba1c9c74748e150d9baf"
+    }
+  ],
+  "wall_s": 4.764734516007593,
+  "scope": "Independent all-step reanalysis, not new 50 ms dynamics. New frozen short ROT trajectories were separately reproduced bitwise.",
+  "identity": {
+    "source_commit": "f52020380ffb7e1bc7e9a0311e88d665a39a3776",
+    "utc": "2026-10-19T10:10:58.142577+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

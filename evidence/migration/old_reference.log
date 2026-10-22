@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/tmp/mb_old_reference.py", line 12, in <module>
+    from scripts.straight_tube_exp1.f10ad_multifrequency.interface import FixedResponse,make_schedule
+  File "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/scripts/straight_tube_exp1/f10ad_multifrequency/interface.py", line 8, in <module>
+    from scripts.straight_tube_exp1.f10s.common import context as old_context
+  File "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/scripts/straight_tube_exp1/f10s/common.py", line 4, in <module>
+    from scripts.straight_tube_exp1.f10q.common import write, read, sha  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/scripts/straight_tube_exp1/f10q/common.py", line 4, in <module>
+    from scripts.straight_tube_exp1.common import read, write as json_write, sha  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/scripts/straight_tube_exp1/common.py", line 6, in <module>
+    import yaml
+ModuleNotFoundError: No module named 'yaml'

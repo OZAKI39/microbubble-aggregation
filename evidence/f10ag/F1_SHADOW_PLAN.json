@@ -1,0 +1,25 @@
+{
+  "states": [
+    "near",
+    "mid",
+    "far",
+    "random_0",
+    "random_1",
+    "random_2"
+  ],
+  "duration_s": 0.15,
+  "cache": "coarse",
+  "purpose": "Same fixed initial IDs and field, independent F1-only dynamics versus full F1/F2/contact",
+  "identity": {
+    "source_commit": "aa60b7ed9ceacb709d0fe8b76a080d6bc9ea79bb",
+    "utc": "2026-10-19T09:42:56.448412+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

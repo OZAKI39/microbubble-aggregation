@@ -1,0 +1,28 @@
+{
+  "total_scientific_wall_s": 6000,
+  "per_run_wall_s": 600,
+  "workers": 3,
+  "baseline_s_per_physical_s": 2923.2938509603264,
+  "baseline_wall_s": 366.68464712201967,
+  "proposed_ladder_s": [
+    0.05,
+    0.075,
+    0.1,
+    0.15,
+    0.25
+  ],
+  "max_LF_s": 0.25,
+  "HF_admission": "Predicted cost below 540 s; stop original gates or 600 s; refinement separately bounded",
+  "identity": {
+    "source_commit": "0a755f0215417a7fd927afc4a41578b75964fb98",
+    "utc": "2026-10-19T09:31:51.158263+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:38:09.783590+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  },
+  "execution_root": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2_final_seal_v1",
+  "environment": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2_final_seal_v1/.venv",
+  "python": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2_final_seal_v1/.venv/bin/python",
+  "source_sha256": {
+    "scripts/straight_tube_exp1/f10ag/activate.sh": "6ba4e1d8f31ab48c4b403f8d460b11850b368201e041f72a6d292b160cc7b8d2",
+    "scripts/straight_tube_exp1/f10ag/admission.py": "fbed27cd42a6a04028dd114b4a5c79274d98c2bc5e5b150208934280ddb32cd2",
+    "scripts/straight_tube_exp1/f10ag/analyze.py": "e9dd293a9d4a047b4e9ea6e50c0b70174f3770b3e1273cace76520f4ba3bf69f",
+    "scripts/straight_tube_exp1/f10ag/baseline.py": "9b77385997ae49fd1794927a48a8d73b94300c9b3fee8b9436fb89bcf806eb8a",
+    "scripts/straight_tube_exp1/f10ag/capture.py": "890b747bec8aaf3be91bb4165db9f0c2f3d1048d16e2c78977336180bb962d6e",
+    "scripts/straight_tube_exp1/f10ag/common.py": "abb1040cde53440a0909de88f06a0ff7a5a184461fa3e4ef5c5dcfda3f0a8f7a",
+    "scripts/straight_tube_exp1/f10ag/deliver.py": "39c75c02952303c0d48ec6e02c5619aab98b456c669d336e3da087a2c04a2beb",
+    "scripts/straight_tube_exp1/f10ag/experiment.py": "6ada1edc299c81f9abd145568dc7369e6135f7f044e4a40e2c25cc4d008759e3",
+    "scripts/straight_tube_exp1/f10ag/extend.py": "c6031ea9f9cf18d79d793b35c10f2ee427e19d3c64503f4b059a63a056ad7a2b",
+    "scripts/straight_tube_exp1/f10ag/figures.py": "85c0f9cdf270b519b39117786641f43e65cb1814518548bf49d04bd336edc180",
+    "scripts/straight_tube_exp1/f10ag/history_rotation.py": "29f2b09fd80b5bbd23fd7efbaa11287b95f0492d95e35551acfd94f0f2abf45d",
+    "scripts/straight_tube_exp1/f10ag/long_lf.py": "77de22cee50e9dd2ffc97008a9e45428276544ddd8d4338b60b2964f55f834a7",
+    "scripts/straight_tube_exp1/f10ag/missing_physics.py": "0a9c78985c0875921e7944358e44a262a9aa31e2f47bb0998a77073101b538c1",
+    "scripts/straight_tube_exp1/f10ag/paired.py": "cca3c962148491d33c6ce46bfb936cc28a4015563eff5fe820ea0a77915eb4e2",
+    "scripts/straight_tube_exp1/f10ag/point_capture.py": "6f324ed52c371d62cd89ca271af531d6fbf5be26102f82a2ee6097489c7f35e0",
+    "scripts/straight_tube_exp1/f10ag/receive.py": "9a68eed24c0ed7c4dfe46417175c24a69ce4a016c198fc1702834f7506a86e18",
+    "scripts/straight_tube_exp1/f10ag/remote.py": "18c2b052f3a5c014aed82b1a24b54e96cc1d4d6dc6b96c82e0fa1ec35f5a7749",
+    "scripts/straight_tube_exp1/f10ag/report.py": "0f1fa6b872ee531db90edf9a7cb3e9e3c769eb039778a6699155039b708f9528",
+    "scripts/straight_tube_exp1/f10ag/resources.py": "55042168c612daf67255a976e59ca1c54c6fc192acd8a84aa6660ea6904e6ff9",
+    "scripts/straight_tube_exp1/f10ag/rotation_static.py": "68c4898b727745c89ad58227fc0ba605ce526dc3d1e33d24db9dc763d1d6bdac",
+    "scripts/straight_tube_exp1/f10ag/seal.py": "b5174e27282ee6e0ae6691f7ab42e4708dd4834ca1eddf72345d514ecc7b29f6",
+    "scripts/straight_tube_exp1/f10ag/shadow.py": "575745e9bcbe8f5c0af56cee12b5d87d05dd1380431582f0a7e956c8c38465fb",
+    "scripts/straight_tube_exp1/f10ag/single.py": "9a378b82c33785a9560d88265213bd03eedc4059d479cfe0f8d129911aea007a",
+    "scripts/straight_tube_exp1/f10ag/single_cache.py": "e74f831a2bb84ccc8f1e916d0925bc52e73de8120121be76fa5d27856d171752",
+    "scripts/straight_tube_exp1/f10ag/static.py": "4d72b5ea59dd68292637a680076c187bf13c36b76411ae10e595f18be7108038",
+    "scripts/straight_tube_exp1/f10ag/validate_delivery.py": "75316d2447de5f82f1c4644701f9ab30b0ed72f52ecadad64d3b2ff98dee24c5",
+    "scripts/straight_tube_exp1/f10ag/videos.py": "99d295f6d3961b1ebe7fc89146b1ef1ad78f67c45b39e001fbed236a5d884454",
+    "configs/straight_tube_exp1/f10ag/protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+    "tests/f10ag/test_admission.py": "1c5fb2169c7846d065b4db517084870600983deae02f2f65771baf655f02f767",
+    "tests/f10ag/test_capture.py": "1bfd3f6b688331f9efb53d9a710485afe1ee67be22babea0b189fe0f6b56a162"
+  },
+  "imports": {
+    "water": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2_final_seal_v1/src/mevo_mb/fast_sim/accelerated_water.py",
+    "sequential": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2_final_seal_v1/src/mevo_mb/fast_sim/accelerated_sequential.py"
+  },
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "warp-lang": "1.18.0+cu12",
+    "h5py": "3.16.0"
+  },
+  "protected_inputs_pass": true,
+  "scope": "Final source/environment verification; per-run scientific source commits remain authoritative. No new trajectory."
+}

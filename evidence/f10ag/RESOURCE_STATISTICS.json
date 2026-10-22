@@ -1,0 +1,26 @@
+{
+  "samples": 289,
+  "gpu_utilization_pct": {
+    "min": 0.0,
+    "median": 25.0,
+    "p95": 56.599999999999966,
+    "max": 71.0
+  },
+  "max_gpu_memory_MiB": 2122.0,
+  "cpu_total_percent_median": 28.0,
+  "scope": "Shared-resource 10 s samples; no exclusive throughput claim; CPU contact and per-step launch overhead can limit GPU utilization",
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:42:55.186117+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

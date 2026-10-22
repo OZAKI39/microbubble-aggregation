@@ -1,0 +1,73 @@
+{
+  "N": 32,
+  "schedule": {
+    "channel_order": [
+      "Y-",
+      "Y+",
+      "X-",
+      "X+"
+    ],
+    "segments": [
+      {
+        "segment_id": 0,
+        "start_s": 0.0,
+        "duration_s": 0.25,
+        "mode": "FOUR_CHANNEL_INDEPENDENT",
+        "amplitude_Pa_equivalent": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "phase_rad": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "enabled": [
+          false,
+          false,
+          true,
+          true
+        ],
+        "frequency_Hz": 2500000.0,
+        "field_model": "HOMOGENEOUS_WATER_CONTROL_PROXY",
+        "amplitude_unit": "Pa-equivalent",
+        "timing_model": "IDEAL_SCHEDULED_SEGMENTS"
+      }
+    ],
+    "planned_mapping": {
+      "instrument_A": {
+        "CH1": "X-",
+        "CH2": "X+"
+      },
+      "instrument_B": {
+        "CH1": "Y-",
+        "CH2": "Y+"
+      }
+    },
+    "hardware_executed": false,
+    "calibration": "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "phase_reference": "Re[P exp(+i omega t)]; common continuous simulation clock; phase offsets do not reset at switches",
+    "timing": "IDEAL_SCHEDULED_SEGMENTS; split the integration step exactly at each event boundary"
+  },
+  "dt_s": 1e-06,
+  "cache": "coarse",
+  "identity": {
+    "source_commit": "32dc6dcb1f77a4a79beccf56839f715105cb4111",
+    "utc": "2026-10-19T10:13:37.468088+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false,
+    "execution_commit": "32dc6dcb1f77a4a79beccf56839f715105cb4111"
+  },
+  "backend": "B1",
+  "state": "AG32_random_0",
+  "preregistration_sha256": "3a50d1e389b67b6d4f5019c93d71b861dc11fdd617e16113a86d7d0c3935859a"
+}

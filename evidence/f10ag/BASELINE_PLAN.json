@@ -1,0 +1,111 @@
+{
+  "tasks": [
+    {
+      "id": "baseline_long50_X_PAIR",
+      "action": "X_PAIR",
+      "state": "N64_wide_r0",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "baseline_pair_r0_ROT_PLUS",
+      "action": "ROT_PLUS",
+      "state": "N64_wide_r0",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.002
+    },
+    {
+      "id": "baseline_pair_r0_ROT_MINUS",
+      "action": "ROT_MINUS",
+      "state": "N64_wide_r0",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.002
+    },
+    {
+      "id": "baseline_pair_contact",
+      "action": "X_PAIR",
+      "state": "N32_contact_transition",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.005
+    },
+    {
+      "id": "baseline_pair_compact",
+      "action": "X_PAIR",
+      "state": "N64_compact_reference",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.002
+    }
+  ],
+  "identity": {
+    "source_commit": "0a755f0215417a7fd927afc4a41578b75964fb98",
+    "utc": "2026-10-19T09:25:45.987351+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

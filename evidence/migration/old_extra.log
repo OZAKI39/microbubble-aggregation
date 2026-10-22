@@ -1,0 +1,26 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4060 Laptop GPU" (8 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /home/lzy/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 39.02 ms  (cached)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 26.97 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 46.32 ms  (cached)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 18.71 ms  (cached)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 34.45 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 36.16 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 45.22 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 4.49 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 2.94 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 916a227 load on device 'cuda:0' took 12.03 ms  (cached)
+DENSE_REFERENCE ['CONTACT_REACTION_BALANCE_PASS']
+Traceback (most recent call last):
+  File "/tmp/mb_old_extra.py", line 117, in <module>
+    result=reference_lf(t,c,states[st],protocol,policy,E/'old_lf'/name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/mb_old_extra.py", line 112, in reference_lf
+    r=dict(id=t['id'],task=t,status='PASS' if complete else 'FAIL',reason=reason,completed_s=clock,requested_s=T,N=len(x),scope='LOW_FIDELITY_PREDICTION',trajectory_path=str(path.resolve()),trajectory_sha256=sha(path),initial=endpoint(start,start),final=endpoint(start,x,v) if complete else None,accepted_slow_steps=low_steps,HF_fallback_steps=fallback,force_evaluations=nfev,transitions=transitions,whole_interval_min_margin_m=bound_min if np.isfinite(bound_min) else None,wall_s=time.perf_counter()-begin,rss_peak_MiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024,identity={})
+                                                                                                                                                                                                                ^^^
+NameError: name 'sha' is not defined

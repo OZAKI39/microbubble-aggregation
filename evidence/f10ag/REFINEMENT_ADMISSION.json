@@ -1,0 +1,405 @@
+{
+  "rows": [
+    {
+      "id": "baseline_long50_X_PAIR",
+      "state": "N64_wide_r0",
+      "action": "X_PAIR",
+      "N": 64,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "baseline_pair_contact",
+      "state": "N32_contact_transition",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.005,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "baseline_pair_r0_ROT_MINUS",
+      "state": "N64_wide_r0",
+      "action": "ROT_MINUS",
+      "N": 64,
+      "completed_s": 0.002,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "baseline_pair_r0_ROT_PLUS",
+      "state": "N64_wide_r0",
+      "action": "ROT_PLUS",
+      "N": 64,
+      "completed_s": 0.002,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long150_far",
+      "state": "AG32_far",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.15,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long150_mid",
+      "state": "AG32_mid",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.15,
+      "paired_pass": true,
+      "checks": {
+        "FINE": {
+          "id": "long150_mid_FINE",
+          "parent": "long150_mid",
+          "error_m": 8.588331520573694e-09,
+          "PASS": true,
+          "completed_s": 0.15
+        }
+      },
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long150_near",
+      "state": "AG32_near",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.15,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long150_random_0",
+      "state": "AG32_random_0",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.15,
+      "paired_pass": true,
+      "checks": {
+        "DT05": {
+          "id": "long150_random_0_DT05",
+          "parent": "long150_random_0",
+          "error_m": 2.90074594541892e-09,
+          "PASS": true,
+          "completed_s": 0.14999999999999997
+        },
+        "FINE": {
+          "id": "long150_random_0_FINE",
+          "parent": "long150_random_0",
+          "error_m": 2.8907074817453785e-08,
+          "PASS": true,
+          "completed_s": 0.15
+        }
+      },
+      "both_dt_and_cache_refined": true,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long150_random_1",
+      "state": "AG32_random_1",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.15,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long150_random_2",
+      "state": "AG32_random_2",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.15,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long250_near",
+      "state": "AG32_near",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.25,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long250_random_0",
+      "state": "AG32_random_0",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.25,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "long75_AF_X",
+      "state": "N64_wide_r0",
+      "action": "X_PAIR",
+      "N": 64,
+      "completed_s": 0.075,
+      "paired_pass": true,
+      "checks": {
+        "FINE": {
+          "id": "long75_AF_X_FINE",
+          "parent": "long75_AF_X",
+          "error_m": 3.7547236246475326e-08,
+          "PASS": true,
+          "completed_s": 0.075
+        }
+      },
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_far",
+      "state": "AG32_far",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_highgradient",
+      "state": "AG32_random_0",
+      "action": "X_180",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_local_ROT_MINUS",
+      "state": "AG32_local",
+      "action": "ROT_MINUS",
+      "N": 32,
+      "completed_s": 0.002,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_local_ROT_PLUS",
+      "state": "AG32_local",
+      "action": "ROT_PLUS",
+      "N": 32,
+      "completed_s": 0.002,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_mid",
+      "state": "AG32_mid",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_near",
+      "state": "AG32_near",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_random_0",
+      "state": "AG32_random_0",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_random_1",
+      "state": "AG32_random_1",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_random_2",
+      "state": "AG32_random_2",
+      "action": "X_PAIR",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_ring_ROT_MINUS",
+      "state": "AG32_ring",
+      "action": "ROT_MINUS",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "pilot_ring_ROT_PLUS",
+      "state": "AG32_ring",
+      "action": "ROT_PLUS",
+      "N": 32,
+      "completed_s": 0.02,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "random50_ROT_MINUS_0",
+      "state": "AG32_random_0",
+      "action": "ROT_MINUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "random50_ROT_MINUS_1",
+      "state": "AG32_random_1",
+      "action": "ROT_MINUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "random50_ROT_MINUS_2",
+      "state": "AG32_random_2",
+      "action": "ROT_MINUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "random50_ROT_PLUS_0",
+      "state": "AG32_random_0",
+      "action": "ROT_PLUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "random50_ROT_PLUS_1",
+      "state": "AG32_random_1",
+      "action": "ROT_PLUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "random50_ROT_PLUS_2",
+      "state": "AG32_random_2",
+      "action": "ROT_PLUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "ring50_ROT_MINUS",
+      "state": "AG32_ring",
+      "action": "ROT_MINUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    },
+    {
+      "id": "ring50_ROT_PLUS",
+      "state": "AG32_ring",
+      "action": "ROT_PLUS",
+      "N": 32,
+      "completed_s": 0.049999999999999996,
+      "paired_pass": true,
+      "checks": {},
+      "both_dt_and_cache_refined": false,
+      "scope": "This exact initial state, action and completed window only"
+    }
+  ],
+  "max_new_HF_dt_and_cache_refined_s": 0.15,
+  "max_new_paired_and_refined_s": 0.15,
+  "historical_refinement": "F10AF 50 ms X_PAIR convergence remains historical evidence, not a newly rerun AG refinement",
+  "limit_m": 5e-08,
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:43:58.654406+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

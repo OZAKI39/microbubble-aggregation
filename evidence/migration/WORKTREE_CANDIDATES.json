@@ -1,0 +1,47 @@
+{
+  "candidates": [
+    {
+      "worktree": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019",
+      "HEAD": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+      "branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019",
+      "status": "",
+      "latest_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2 2026-10-19T12:36:25+02:00 Provide isolated server activation and immutable-source handoff"
+    },
+    {
+      "worktree": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019",
+      "HEAD": "4eb54462b91cfc9d81dc08d8edd6803175724523",
+      "branch": "refs/heads/dev/f10af-observable-multifidelity-20261019",
+      "status": "",
+      "latest_commit": "4eb54462b91cfc9d81dc08d8edd6803175724523 2026-10-19T03:28:08+02:00 Deliver F10AF observable morphology research, validated negative results and media"
+    },
+    {
+      "worktree": "/home/lzy/projects/computation_examples/_archives/mevo_qd_f10ac_ad_20261018",
+      "HEAD": "baa47dbe95c78e1800aebe50bc3efc5faf07d5fa",
+      "branch": "refs/heads/dev/f10ac-qd-f10ad-multifrequency-20261018",
+      "status": "",
+      "latest_commit": "baa47dbe95c78e1800aebe50bc3efc5faf07d5fa 2026-10-18T23:33:23+02:00 Record final delivery receipt and verify all locally retained artifacts against server SHA inventory"
+    },
+    {
+      "worktree": "/home/lzy/projects/computation_examples/_archives/mevo_shape_f10ab_20261018",
+      "HEAD": "9d304c22817599f85079ada5a42b2e143f3fe055",
+      "branch": "refs/heads/dev/f10ab-shape-control-20261018",
+      "status": "?? computation_examples/mevo_acoustic_microbubbles/.venv\n",
+      "latest_commit": "9d304c22817599f85079ada5a42b2e143f3fe055 2026-10-18T21:18:04+02:00 Deliver F10AB shape study: 147 attempts, rank-one response, failed coherent target"
+    },
+    {
+      "worktree": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018",
+      "HEAD": "6028598d0012912cc19aa766fa786c4afb0a91a5",
+      "branch": "refs/heads/dev/f10aa-solver-acceleration-20261018",
+      "status": "",
+      "latest_commit": "6028598d0012912cc19aa766fa786c4afb0a91a5 2026-10-18T12:28:59+02:00 Deliver F10AA validated numerical results, eight figure sets, two videos and preserved progress update"
+    },
+    {
+      "worktree": "/home/lzy/projects/computation_examples/_archives/mevo_target_f10ae_20261019",
+      "HEAD": "306d899fa4a9be18b8a926688a6e25d389193138",
+      "branch": "refs/heads/dev/f10ae-targeted-shape-recovery-20261019",
+      "status": "",
+      "latest_commit": "306d899fa4a9be18b8a926688a6e25d389193138 2026-10-19T01:19:52+02:00 F10AE: deliver audited targeted-shape experiments, failures, figures and videos"
+    }
+  ],
+  "selection_reason": "F10AG active execution and frozen gate identity agree; selected source clean, no newer verified simulation branch found. Simulation sync is an export, not a replacement development implementation."
+}

@@ -1,0 +1,11 @@
+{
+  "ex": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/790bb754e0b6544cd419452bea09608c10cac388_analysis_incremental_v2",
+  "server": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019",
+  "module": "f10ag.analyze",
+  "label": "analysis_incremental_v2",
+  "seconds": 900,
+  "commit": "790bb754e0b6544cd419452bea09608c10cac388",
+  "sha256": "1e6aeddc71c5b5dd4a0f4c0010d1913ae3fa8868a15a7fd2dc6df0a9ce68247d",
+  "source_archive_reuse": null,
+  "name": "mevo_f10ag_analysis_incremental_v2"
+}

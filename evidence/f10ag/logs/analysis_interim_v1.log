@@ -1,0 +1,112 @@
+ANALYZED HF baseline_pair_compact
+ANALYZED HF baseline_pair_contact
+ANALYZED HF baseline_pair_r0_ROT_MINUS
+ANALYZED HF baseline_pair_r0_ROT_PLUS
+ANALYZED HF baseline_long50_X_PAIR
+ANALYZED HF long150_far
+ANALYZED HF long150_mid
+ANALYZED HF long150_mid_FINE
+ANALYZED HF long150_near
+ANALYZED HF long150_random_0
+ANALYZED HF long150_random_0_FINE
+ANALYZED HF long150_random_1
+ANALYZED HF long150_random_2
+ANALYZED HF pilot_far
+ANALYZED HF pilot_highgradient
+ANALYZED HF pilot_local_ROT_MINUS
+ANALYZED HF pilot_local_ROT_PLUS
+ANALYZED HF pilot_mid
+ANALYZED HF pilot_near
+ANALYZED HF pilot_random_0
+ANALYZED HF pilot_random_1
+ANALYZED HF pilot_random_2
+ANALYZED HF long75_AF_X
+ANALYZED HF pilot_ring_ROT_MINUS
+ANALYZED HF pilot_ring_ROT_PLUS
+ANALYZED HF random50_ROT_MINUS_0
+ANALYZED HF random50_ROT_MINUS_1
+ANALYZED HF random50_ROT_MINUS_2
+ANALYZED HF random50_ROT_PLUS_0
+ANALYZED HF random50_ROT_PLUS_1
+ANALYZED HF random50_ROT_PLUS_2
+Warp 1.18.0 initialized:
+   CUDA Toolkit 12.9, Driver 12.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 0.46 ms  (cached)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 0.32 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 0.26 ms  (cached)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 0.23 ms  (cached)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 0.35 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 0.27 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 0.46 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 0.63 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 0.28 ms  (cached)
+ANALYZED HF ring50_ROT_MINUS
+Warp 1.18.0 initialized:
+   CUDA Toolkit 12.9, Driver 12.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 0.78 ms  (cached)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 0.56 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 0.57 ms  (cached)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 0.42 ms  (cached)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 0.53 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 0.79 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 0.85 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 0.59 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 0.49 ms  (cached)
+ANALYZED LF baseline_pair_compact
+ANALYZED HF ring50_ROT_PLUS
+Warp 1.18.0 initialized:
+   CUDA Toolkit 12.9, Driver 12.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 0.67 ms  (cached)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 0.34 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 0.23 ms  (cached)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 0.28 ms  (cached)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 0.28 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 0.45 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 0.28 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 0.49 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 0.25 ms  (cached)
+ANALYZED LF baseline_pair_contact
+ANALYZED LF baseline_long50_X_PAIR
+ANALYZED LF baseline_pair_r0_ROT_MINUS
+ANALYZED LF baseline_pair_r0_ROT_PLUS
+ANALYZED LF long150_far
+ANALYZED LF long150_mid
+ANALYZED LF long150_near
+ANALYZED LF long150_random_1
+ANALYZED LF long150_random_2
+ANALYZED LF long150_random_0
+ANALYZED LF pilot_far
+ANALYZED LF pilot_highgradient
+ANALYZED LF pilot_local_ROT_MINUS
+ANALYZED LF pilot_local_ROT_PLUS
+ANALYZED LF pilot_mid
+ANALYZED LF pilot_near
+ANALYZED LF pilot_random_0
+ANALYZED LF pilot_random_1
+ANALYZED LF long75_AF_X
+ANALYZED LF pilot_random_2
+ANALYZED LF pilot_ring_ROT_MINUS
+ANALYZED LF pilot_ring_ROT_PLUS
+ANALYZED LF random50_ROT_MINUS_0
+ANALYZED LF random50_ROT_MINUS_1
+ANALYZED LF random50_ROT_MINUS_2
+ANALYZED LF random50_ROT_PLUS_0
+ANALYZED LF ring50_ROT_MINUS
+ANALYZED LF random50_ROT_PLUS_2
+ANALYZED LF random50_ROT_PLUS_1
+ANALYZED LF ring50_ROT_PLUS

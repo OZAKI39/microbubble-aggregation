@@ -1,0 +1,302 @@
+{
+  "tasks": [
+    {
+      "id": "long75_AF_X",
+      "action": "X_PAIR",
+      "state": "N64_wide_r0",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.075
+    },
+    {
+      "id": "long150_near",
+      "action": "X_PAIR",
+      "state": "AG32_near",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15
+    },
+    {
+      "id": "long150_mid",
+      "action": "X_PAIR",
+      "state": "AG32_mid",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15
+    },
+    {
+      "id": "long150_far",
+      "action": "X_PAIR",
+      "state": "AG32_far",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15
+    },
+    {
+      "id": "long150_random_0",
+      "action": "X_PAIR",
+      "state": "AG32_random_0",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15
+    },
+    {
+      "id": "long150_random_1",
+      "action": "X_PAIR",
+      "state": "AG32_random_1",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15
+    },
+    {
+      "id": "long150_random_2",
+      "action": "X_PAIR",
+      "state": "AG32_random_2",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15
+    },
+    {
+      "id": "ring50_ROT_PLUS",
+      "action": "ROT_PLUS",
+      "state": "AG32_ring",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "ring50_ROT_MINUS",
+      "action": "ROT_MINUS",
+      "state": "AG32_ring",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "random50_ROT_PLUS_0",
+      "action": "ROT_PLUS",
+      "state": "AG32_random_0",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "random50_ROT_PLUS_1",
+      "action": "ROT_PLUS",
+      "state": "AG32_random_1",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "random50_ROT_PLUS_2",
+      "action": "ROT_PLUS",
+      "state": "AG32_random_2",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "random50_ROT_MINUS_0",
+      "action": "ROT_MINUS",
+      "state": "AG32_random_0",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "random50_ROT_MINUS_1",
+      "action": "ROT_MINUS",
+      "state": "AG32_random_1",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    },
+    {
+      "id": "random50_ROT_MINUS_2",
+      "action": "ROT_MINUS",
+      "state": "AG32_random_2",
+      "amplitudes": [
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.05
+    }
+  ],
+  "stop": "Original gate or per-run 600 s",
+  "identity": {
+    "source_commit": "8e8faba03c15693c8758eb6061ce08624d8d7049",
+    "utc": "2026-10-19T09:37:56.570386+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

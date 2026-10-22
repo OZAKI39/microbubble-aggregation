@@ -1,0 +1,10 @@
+[
+  {
+    "path": "results/minimal_hf_analysis/trajectory_summary.png",
+    "sha256": "5967c4f11c848b7d442e8f8ea7b2ce45f86c9d08c82f6b62b49cb4a8761d4bb9"
+  },
+  {
+    "path": "results/minimal_hf_analysis/trajectory_summary.pdf",
+    "sha256": "cbd8f0d5f23726cdf5af3d69667af06e0161abaa2e5eba42c861eedccb1e9cc8"
+  }
+]

@@ -1,0 +1,18 @@
+STATIC 2500000.0 0 ['FULL_3D_ATTRACTOR', 'FULL_3D_ATTRACTOR', 'FULL_3D_ATTRACTOR']
+STATIC 2500000.0 90 ['FULL_3D_ATTRACTOR', 'FULL_3D_ATTRACTOR', 'FULL_3D_ATTRACTOR', 'FULL_3D_ATTRACTOR']
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/0860af868cf483c9fecc3992f969c67ba79289ec_static_v1/scripts/straight_tube_exp1/f10ag/static.py", line 55, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/0860af868cf483c9fecc3992f969c67ba79289ec_static_v1/scripts/straight_tube_exp1/f10ag/static.py", line 26, in main
+    c,model,a,p,force=force_context(f,deg);roots=roots_x(force);rr=[]
+                                                 ^^^^^^^^^^^^^^
+  File "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/0860af868cf483c9fecc3992f969c67ba79289ec_static_v1/scripts/straight_tube_exp1/f10ag/static.py", line 17, in roots_x
+    xx=np.linspace(-.55e-3,.55e-3,2201);q=np.c_[xx,np.full(len(xx),y),np.full(len(xx),z)];F=force(q)[:,0];roots=[]
+                                                                                            ^^^^^^^^
+  File "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/0860af868cf483c9fecc3992f969c67ba79289ec_static_v1/scripts/straight_tube_exp1/f10ag/static.py", line 12, in force
+    if not ok.all():raise ValueError('Pressure outside matching APECSS response')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Pressure outside matching APECSS response

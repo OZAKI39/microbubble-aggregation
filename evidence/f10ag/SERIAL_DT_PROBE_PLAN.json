@@ -1,0 +1,35 @@
+{
+  "task": {
+    "id": "serial_DT_probe",
+    "action": "X_PAIR",
+    "state": "AG32_random_0",
+    "amplitudes": [
+      0,
+      0,
+      1000,
+      1000
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frequency": 2500000.0,
+    "duration": 0.0025,
+    "variant": "DT05"
+  },
+  "admission": "Measured serial integration cost ×60×1.15 <540 s, otherwise keep 50 ms reference",
+  "identity": {
+    "source_commit": "32dc6dcb1f77a4a79beccf56839f715105cb4111",
+    "utc": "2026-10-19T10:21:52.650600+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

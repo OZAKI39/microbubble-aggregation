@@ -1,0 +1,70 @@
+[
+  {
+    "name": "N32_CONTROL_2000us_DT1",
+    "N": 32,
+    "action": "CONTROL",
+    "variant": "DT1",
+    "dt_s": 1e-06,
+    "cache": "coarse",
+    "status": "PASS",
+    "reasons": [],
+    "requested_s": 0.002,
+    "completed_s": 0.002,
+    "accepted_steps": 2000,
+    "attempted_steps": 2000,
+    "displacement_m": [
+      -9.26442286059391e-21,
+      1.0058516248644817e-21,
+      0.0
+    ],
+    "wall_s": 2.4832530910207424,
+    "integration_s": 2.348433292005211,
+    "mean_step_s": 0.0011414257715077838,
+    "step_latency": {
+      "mean": 0.0011414257715077838,
+      "p50": 0.001121162495110184,
+      "p95": 0.0012267144906218165,
+      "max": 0.0017754410218913108,
+      "samples": 2000
+    },
+    "backend": "B1",
+    "state": "AG32_local",
+    "initialization_s": 0.004555699008051306,
+    "cpu_s": 2.344322742000003,
+    "solver_s": 0.8303987632971257,
+    "resistance_s": 0.137729276844766,
+    "rss_peak_MiB": 978.48828125,
+    "trajectory_sha256": "d788083a7835aefd8f5878d2b6cb778b39a6a8cc79ba1c71b98295d2c118cfe3",
+    "labels": [
+      "EXPLORATORY",
+      "PHYSICS_UNCALIBRATED",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "max_metrics": {
+      "residual_m": 0.0,
+      "overlap_m": 0.0,
+      "max_iteration_m": 0.0,
+      "total_contact_m": 0.0,
+      "wall_m": 0.0,
+      "full_step_s": 0.0017754410218913108,
+      "solver_s": 0.0005044830031692982,
+      "resistance_s": 0.00010424098582006991,
+      "iterations": 1.0,
+      "physical_path_sum_m": 3.0629527106241503e-09,
+      "contact_displacement_sum_m": 0.0,
+      "primal_m": 0.0,
+      "dual_N": -0.0,
+      "force_residual_N": 0.0,
+      "complementarity_m": 0.0,
+      "complementarity_N_m": 0.0,
+      "actual_complementarity_m": 0.0,
+      "active_count": 0.0,
+      "max_pressure_Pa": 269.5738410879844,
+      "max_total_force_N": 5.1623290079620214e-12,
+      "force_scale_N": 5.1623290079620214e-12
+    },
+    "pressure_min_Pa": 61.68339109650685
+  }
+]

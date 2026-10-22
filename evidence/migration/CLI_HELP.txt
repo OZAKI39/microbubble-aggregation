@@ -1,0 +1,20 @@
+usage: main.py [-h]
+               {check,history,single,run,analyze,plot,compare,validate} ...
+
+Independent microbubble simulation (exploratory, uncalibrated)
+
+positional arguments:
+  {check,history,single,run,analyze,plot,compare,validate}
+    check               Verify inputs, environment, states and discrete
+                        frequencies
+    history             Read frozen scientific admission, without rerunning it
+    single              Separate F1-only RK45 diagnostic, not a full-physics
+                        cloud
+    run                 Run a configured HF or guarded LF trajectory
+    analyze             Analyze actual stored fixed-ID positions
+    plot                PNG/PDF from an analysis directory
+    compare             Compare exact shared HF/LF times
+    validate            Run frozen-old/new numerical regression
+
+options:
+  -h, --help            show this help message and exit

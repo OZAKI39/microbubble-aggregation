@@ -1,0 +1,93 @@
+{
+  "rows": [
+    {
+      "id": "atlas",
+      "max_cache_difference_m": 2.717558074763143e-09,
+      "capture": [
+        {
+          "full_3d": false,
+          "threshold_m": 1e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": false,
+          "threshold_m": 2e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": false,
+          "threshold_m": 3e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": true,
+          "threshold_m": 1e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": true,
+          "threshold_m": 2e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": true,
+          "threshold_m": 3e-05,
+          "disagreements": 0
+        }
+      ],
+      "PASS": true
+    },
+    {
+      "id": "local_3d_point",
+      "max_cache_difference_m": 2.5178428316232725e-09,
+      "capture": [
+        {
+          "full_3d": false,
+          "threshold_m": 1e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": false,
+          "threshold_m": 2e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": false,
+          "threshold_m": 3e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": true,
+          "threshold_m": 1e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": true,
+          "threshold_m": 2e-05,
+          "disagreements": 0
+        },
+        {
+          "full_3d": true,
+          "threshold_m": 3e-05,
+          "disagreements": 0
+        }
+      ],
+      "PASS": true
+    }
+  ],
+  "wall_s": 4.862117479991866,
+  "identity": {
+    "source_commit": "fe5a3455df39f6d69781c19ec9989eeb89ff5773",
+    "utc": "2026-10-19T10:15:55.708128+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

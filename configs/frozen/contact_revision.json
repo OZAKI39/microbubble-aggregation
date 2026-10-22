@@ -1,0 +1,5 @@
+{
+  "max_sequential_qp": 5,
+  "reason": "Frozen actual failure: true-normal force residual decreases 7.204e-12 -> 1.646e-13 -> 4.107e-15 N through three QPs, but original ~1.14e-16 N threshold still fails. Permit at most two further relinearizations, no tolerance changes.",
+  "evidence": "results/straight_tube_exp1/f10q/local/FOUNDATIONS_v1.json"
+}

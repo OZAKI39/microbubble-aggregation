@@ -1,0 +1,13 @@
+{
+  "max_fixed_ID_m": 2.408664634604226e-12,
+  "limit_m": 5e-08,
+  "paired_duration_s": 0.0009999999999999998,
+  "position_comparison_pass": true,
+  "alignment": {
+    "LF_source": "sample_time_s",
+    "shared_samples": 201,
+    "HF_interpolation": false,
+    "scope": "Exact shared timestamps; original LF dense output or accepted nodes"
+  },
+  "scientific_admission": "INCONCLUSIVE: pairing alone is not dt/cache refinement or capture admission"
+}

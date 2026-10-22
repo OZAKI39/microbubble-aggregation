@@ -1,0 +1,67 @@
+{
+  "rows": [
+    {
+      "state": "near",
+      "HF_mean_final_band_distance_um": 7.785803605358389,
+      "F1_mean_final_band_distance_um": 10.455898496728219,
+      "HF_held_20um": 32,
+      "F1_held_20um": 32,
+      "N": 32
+    },
+    {
+      "state": "mid",
+      "HF_mean_final_band_distance_um": 30.18812827293055,
+      "F1_mean_final_band_distance_um": 32.418713311669606,
+      "HF_held_20um": 0,
+      "F1_held_20um": 0,
+      "N": 32
+    },
+    {
+      "state": "far",
+      "HF_mean_final_band_distance_um": 83.41902842965251,
+      "F1_mean_final_band_distance_um": 83.88762937693812,
+      "HF_held_20um": 0,
+      "F1_held_20um": 0,
+      "N": 32
+    },
+    {
+      "state": "random_0",
+      "HF_mean_final_band_distance_um": 65.62353871482314,
+      "F1_mean_final_band_distance_um": 66.81242552045687,
+      "HF_held_20um": 10,
+      "F1_held_20um": 10,
+      "N": 32
+    },
+    {
+      "state": "random_1",
+      "HF_mean_final_band_distance_um": 74.81453053184119,
+      "F1_mean_final_band_distance_um": 75.71346475574408,
+      "HF_held_20um": 4,
+      "F1_held_20um": 4,
+      "N": 32
+    },
+    {
+      "state": "random_2",
+      "HF_mean_final_band_distance_um": 81.02858121244664,
+      "F1_mean_final_band_distance_um": 81.55619488281542,
+      "HF_held_20um": 5,
+      "F1_held_20um": 5,
+      "N": 32
+    }
+  ],
+  "scope": "Identical starts and coarse field. F1-only independent Stokes dynamics versus full F1/F2/collective resistance/contact: combined-model comparison, not an isolated causal F2 ablation.",
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:43:58.656956+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

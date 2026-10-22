@@ -1,0 +1,27 @@
+{
+  "snapshot_date": "2026-10-22",
+  "branch_type": "independent_curated_snapshot_no_imported_development_git_history",
+  "source_worktrees": "read_only",
+  "scientific_results": "unchanged; no simulation or training executed",
+  "compressed_files": "gzip is lossless; restore_payload.py restores the exact original SHA-256 before reuse",
+  "retained": [
+    "source/config/tests/dependency specifications",
+    "scientific reports/failed cases/logs",
+    "final figures",
+    "critical input data and compact numerical results",
+    "manual labels/review scopes/splits and selected trained weights"
+  ],
+  "excluded": [
+    "virtual environments/caches/Git internals/vendor installers",
+    "full long raw and rendered videos, except one short real input clip",
+    "downloadable upstream model weights",
+    "regenerable bulk synthetic arrays",
+    "superseded unpromoted SAM decoder weights",
+    "bulky LF diagnostics and duplicate legacy review/plot arrays"
+  ],
+  "important_external_artifacts": "Full experimental recordings and server raw HF trajectories remain external, not a disaster recovery backup. Paths/hashes are retained in EXCLUDED_FILES and historical REMOTE_RAW_INDEX.",
+  "fine_acoustic_caches": "Recomputable fine caches stay on server; exact paths/hashes and generators retained. Coarse caches and response tables included.",
+  "credentials": "No private keys, tokens, or environments are intentionally included. Controller state evidence is archival; no commands are sent.",
+  "source_identity": "Git commit alone does not identify dirty vision/controller edits: COPIED_FILES provides actual source-byte hashes.",
+  "inherited_manifests": "Historical manifests may list omitted files and absolute execution paths; sync/20261022 is the authoritative inventory of this export."
+}

@@ -1,0 +1,11 @@
+{
+  "source_head": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+  "device": "NVIDIA RTX 4060 Laptop GPU",
+  "old_original_library_imports": true,
+  "old_source_modified": false,
+  "old_module_globals_monkeypatched": false,
+  "LF_reference": "Original slow.integrate loop with output/context arguments made explicit only; uses original WaterAccelerated and metrics. Recipe stored as text, not a runtime module.",
+  "response_reference": "Original ExtendedResponse query and original table loaders; constructor arrays initialized explicitly because historical BASE is not portable. No old file written.",
+  "fixture_sha256": "f23f2322cb800c84021376eb63d26b9dff39622dc2ba6ff7cc27062edb13a161",
+  "metadata_sha256": "adf746e077be38f28e80f651dfb89836cfb3f47c6cb497ca8880ee15a1ce08ed"
+}

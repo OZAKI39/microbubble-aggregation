@@ -1,0 +1,8 @@
+{
+  "fidelity": "LF",
+  "state": "AG32_random_0",
+  "action": "X_PAIR",
+  "duration_s": 0.001,
+  "variant": "DT1",
+  "device": "cuda:0"
+}

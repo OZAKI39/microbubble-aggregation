@@ -1,0 +1,56 @@
+{
+  "tasks": [
+    {
+      "id": "long150_mid_FINE",
+      "action": "X_PAIR",
+      "state": "AG32_mid",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15,
+      "variant": "FINE"
+    },
+    {
+      "id": "long150_random_0_FINE",
+      "action": "X_PAIR",
+      "state": "AG32_random_0",
+      "amplitudes": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "phases": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frequency": 2500000.0,
+      "duration": 0.15,
+      "variant": "FINE"
+    }
+  ],
+  "identity": {
+    "source_commit": "8e8faba03c15693c8758eb6061ce08624d8d7049",
+    "utc": "2026-10-19T09:59:54.162465+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

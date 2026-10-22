@@ -1,0 +1,150 @@
+{
+  "checkpoints": [
+    {
+      "state": "random_0",
+      "target_checkpoint_s": 0.05,
+      "actual_accepted_time_s": 0.049999059530269827,
+      "raw_node_index": 28129,
+      "source_trajectory": "lf/long150_random_0/trajectory.h5",
+      "source_sha256": "810addbbf185a6af1c71fa205850cf424e68105919a9e0e8f19139b459315e8d",
+      "minimum_wall_gap_m": 0.0004208106799370908,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "random_0",
+      "target_checkpoint_s": 0.075,
+      "actual_accepted_time_s": 0.07499905953029483,
+      "raw_node_index": 53129,
+      "source_trajectory": "lf/long150_random_0/trajectory.h5",
+      "source_sha256": "810addbbf185a6af1c71fa205850cf424e68105919a9e0e8f19139b459315e8d",
+      "minimum_wall_gap_m": 0.0004214918739609644,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "random_0",
+      "target_checkpoint_s": 0.1,
+      "actual_accepted_time_s": 0.09999905953031983,
+      "raw_node_index": 78129,
+      "source_trajectory": "lf/long150_random_0/trajectory.h5",
+      "source_sha256": "810addbbf185a6af1c71fa205850cf424e68105919a9e0e8f19139b459315e8d",
+      "minimum_wall_gap_m": 0.0004222272084983058,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "random_0",
+      "target_checkpoint_s": 0.15,
+      "actual_accepted_time_s": 0.15,
+      "raw_node_index": 128130,
+      "source_trajectory": "lf/long150_random_0/trajectory.h5",
+      "source_sha256": "810addbbf185a6af1c71fa205850cf424e68105919a9e0e8f19139b459315e8d",
+      "minimum_wall_gap_m": 0.0004238799088042724,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "mid",
+      "target_checkpoint_s": 0.05,
+      "actual_accepted_time_s": 0.04999938021841216,
+      "raw_node_index": 31659,
+      "source_trajectory": "lf/long150_mid/trajectory.h5",
+      "source_sha256": "79a8c544a0e26bbe7fa477f4493d54ca2b32bd9c79a2719e31057cda2fbb9dbc",
+      "minimum_wall_gap_m": 0.00047222660893921596,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "mid",
+      "target_checkpoint_s": 0.075,
+      "actual_accepted_time_s": 0.07499938021843716,
+      "raw_node_index": 56659,
+      "source_trajectory": "lf/long150_mid/trajectory.h5",
+      "source_sha256": "79a8c544a0e26bbe7fa477f4493d54ca2b32bd9c79a2719e31057cda2fbb9dbc",
+      "minimum_wall_gap_m": 0.00047267505716051177,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "mid",
+      "target_checkpoint_s": 0.1,
+      "actual_accepted_time_s": 0.09999938021846216,
+      "raw_node_index": 81659,
+      "source_trajectory": "lf/long150_mid/trajectory.h5",
+      "source_sha256": "79a8c544a0e26bbe7fa477f4493d54ca2b32bd9c79a2719e31057cda2fbb9dbc",
+      "minimum_wall_gap_m": 0.0004731459923932602,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "mid",
+      "target_checkpoint_s": 0.15,
+      "actual_accepted_time_s": 0.15,
+      "raw_node_index": 131660,
+      "source_trajectory": "lf/long150_mid/trajectory.h5",
+      "source_sha256": "79a8c544a0e26bbe7fa477f4493d54ca2b32bd9c79a2719e31057cda2fbb9dbc",
+      "minimum_wall_gap_m": 0.0004741526290723612,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "near",
+      "target_checkpoint_s": 0.05,
+      "actual_accepted_time_s": 0.04999976800708021,
+      "raw_node_index": 38576,
+      "source_trajectory": "lf/long150_near/trajectory.h5",
+      "source_sha256": "fd92f100156279a9918d902fd1400963c4a6f267b7f147fbaac5c3955ad02418",
+      "minimum_wall_gap_m": 0.0004638397396248291,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "near",
+      "target_checkpoint_s": 0.075,
+      "actual_accepted_time_s": 0.07499976800710521,
+      "raw_node_index": 63576,
+      "source_trajectory": "lf/long150_near/trajectory.h5",
+      "source_sha256": "fd92f100156279a9918d902fd1400963c4a6f267b7f147fbaac5c3955ad02418",
+      "minimum_wall_gap_m": 0.0004644590638966626,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "near",
+      "target_checkpoint_s": 0.1,
+      "actual_accepted_time_s": 0.09999976800713022,
+      "raw_node_index": 88576,
+      "source_trajectory": "lf/long150_near/trajectory.h5",
+      "source_sha256": "fd92f100156279a9918d902fd1400963c4a6f267b7f147fbaac5c3955ad02418",
+      "minimum_wall_gap_m": 0.00046508563186591393,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    },
+    {
+      "state": "near",
+      "target_checkpoint_s": 0.15,
+      "actual_accepted_time_s": 0.15,
+      "raw_node_index": 138577,
+      "source_trajectory": "lf/long150_near/trajectory.h5",
+      "source_sha256": "fd92f100156279a9918d902fd1400963c4a6f267b7f147fbaac5c3955ad02418",
+      "minimum_wall_gap_m": 0.00046635956968176016,
+      "scope": "Actual accepted prefix of completed 150 ms LF; not a separately rerun trajectory, no padding or interpolation"
+    }
+  ],
+  "new_tasks": [],
+  "additional_candidates": [
+    {
+      "state": "mid",
+      "status": "NOT_RUN",
+      "candidate_s": 0.25,
+      "actual_150ms_fallback_fraction": 0.8774666666666666,
+      "predicted_cost_s": 454.0121497266713,
+      "reason": "Existing 250 ms HF/LF pairs suffice; near-contact fallback removes the long-time cost benefit. Preserve 150 ms mid state as last paired evidence."
+    }
+  ],
+  "reason": "Reuse already completed matching fixed-action trajectories; compute only genuinely new windows",
+  "identity": {
+    "source_commit": "5123880db405d609e1ec46df88a6390b06576a15",
+    "utc": "2026-10-19T10:35:27.930407+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

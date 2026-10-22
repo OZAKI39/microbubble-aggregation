@@ -1,0 +1,78 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4060 Laptop GPU" (8 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /home/lzy/.cache/warp/1.18.0
+Module microbubble._warp_forces 248f18d load on device 'cuda:0' took 3.12 ms  (cached)
+Module microbubble._warp_forces 5eadf13 load on device 'cuda:0' took 2.07 ms  (cached)
+Module microbubble._warp_walls 916a227 load on device 'cuda:0' took 1.77 ms  (cached)
+N32_selected_100us_DT05 PASS completed_ms 0.09999999999999999 wall_s 1.020635355002014 []
+{
+  "name": "N32_selected_100us_DT05",
+  "N": 32,
+  "action": "selected",
+  "variant": "DT05",
+  "dt_s": 5e-07,
+  "cache": "coarse",
+  "status": "PASS",
+  "reasons": [],
+  "requested_s": 0.0001,
+  "completed_s": 9.999999999999999e-05,
+  "accepted_steps": 200,
+  "attempted_steps": 200,
+  "displacement_m": [
+    -2.7388079745535956e-09,
+    1.3811732825014722e-10,
+    -3.183712495533357e-12
+  ],
+  "wall_s": 1.020635355002014,
+  "integration_s": 0.9890106739912881,
+  "mean_step_s": 0.0019157787005678983,
+  "step_latency": {
+    "mean": 0.0019157787005678983,
+    "p50": 0.0017807659969548695,
+    "p95": 0.002475794092606519,
+    "max": 0.016281925010844134
+  },
+  "backend": "B1",
+  "state": "explicit_initial",
+  "initialization_s": 0.4826091139984783,
+  "cpu_s": 0.509993861,
+  "solver_s": 0.12246528985269833,
+  "resistance_s": 0.022736925893696025,
+  "rss_peak_MiB": 435.54296875,
+  "trajectory_sha256": "a2e4106b2b866e4239ed3fbb34de79a76d9096f977699fc82e738f180ec64df1",
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+  ],
+  "training_ready": false,
+  "max_metrics": {
+    "residual_m": 0.0,
+    "overlap_m": 0.0,
+    "max_iteration_m": 0.0,
+    "total_contact_m": 0.0,
+    "wall_m": 0.0,
+    "full_step_s": 0.016281925010844134,
+    "solver_s": 0.0012199949997011572,
+    "resistance_s": 0.0003561750054359436,
+    "iterations": 1.0,
+    "physical_path_sum_m": 1.3220301620330149e-09,
+    "contact_displacement_sum_m": 0.0,
+    "primal_m": 0.0,
+    "dual_N": -0.0,
+    "force_residual_N": 0.0,
+    "complementarity_m": 0.0,
+    "complementarity_N_m": 0.0,
+    "actual_complementarity_m": 0.0,
+    "active_count": 0.0,
+    "max_pressure_Pa": 3681.7062645681945,
+    "max_total_force_N": 6.6622563771866486e-12,
+    "force_scale_N": 6.6622563771866486e-12
+  },
+  "pressure_min_Pa": 189.97362825400197
+}

@@ -1,0 +1,1950 @@
+{
+  "gates": {
+    "F10AE_BASELINE_VERIFIED": {
+      "status": "PASS",
+      "evidence": [
+        "HISTORICAL_FINAL_AUDIT.json",
+        "HISTORICAL_REPLAY.json"
+      ],
+      "scope": "2808 sealed outputs checked on server; one original 2.5 MHz trajectory replayed bitwise. Missing host-local outputs listed separately.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "F10AA_FULL_PHYSICS_PRESERVED": {
+      "status": "PASS",
+      "evidence": [
+        "PREREGISTRATION.json",
+        "TEST_RESULTS.json"
+      ],
+      "scope": "Original physics, response, SQP, tolerances and wall implementation retained; inherited regressions run.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "EXTENDED_FIELD_DOMAIN_VALID": {
+      "status": "PASS",
+      "evidence": [
+        "FIELD_BUILD.json",
+        "fields/*/FIELD_GATE.json",
+        "ALL_HF_RUNS.json"
+      ],
+      "scope": "3 frequencies; bounds X +/-620 um, Y +/-520 um, Z +/-100 um; 10 / 5 um caches; strict cubic interpolation interior. No frequency or pressure clipping; only completed legal trajectories admitted.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "FIELD_GRID_CONVERGENCE_PASS": {
+      "status": "PASS",
+      "evidence": [
+        "FIELD_BUILD.json",
+        "fields/*/FIELD_GATE.json",
+        "ALL_HF_RUNS.json"
+      ],
+      "scope": "3 frequencies; bounds X +/-620 um, Y +/-520 um, Z +/-100 um; 10 / 5 um caches; strict cubic interpolation interior. No frequency or pressure clipping; only completed legal trajectories admitted.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "APECSS_RESPONSE_COMPATIBLE": {
+      "status": "PASS",
+      "evidence": [
+        "FIELD_BUILD.json",
+        "fields/*/FIELD_GATE.json",
+        "ALL_HF_RUNS.json"
+      ],
+      "scope": "3 frequencies; bounds X +/-620 um, Y +/-520 um, Z +/-100 um; 10 / 5 um caches; strict cubic interpolation interior. No frequency or pressure clipping; only completed legal trajectories admitted.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "STRIPE_FIELD_STRUCTURE_EVALUATED": {
+      "status": "PASS",
+      "evidence": [
+        "STATIC_EXTRA.json",
+        "SOURCE_ORDER.json",
+        "fields/*/STATIC_FEASIBILITY.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Static force diagnostics and dynamic comparisons performed; field structure alone is not pattern confirmation.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "STRIPE_STABLE_LOCATIONS_IDENTIFIED": {
+      "status": "PASS",
+      "evidence": [
+        "STATIC_EXTRA.json",
+        "SOURCE_ORDER.json",
+        "fields/*/STATIC_FEASIBILITY.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Static force diagnostics and dynamic comparisons performed; field structure alone is not pattern confirmation.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "XY_LATTICE_FIELD_STRUCTURE_EVALUATED": {
+      "status": "PASS",
+      "evidence": [
+        "STATIC_EXTRA.json",
+        "SOURCE_ORDER.json",
+        "fields/*/STATIC_FEASIBILITY.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Static force diagnostics and dynamic comparisons performed; field structure alone is not pattern confirmation.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "FOUR_SOURCE_PHASE_ORDER_VALIDATED": {
+      "status": "PASS",
+      "evidence": [
+        "STATIC_EXTRA.json",
+        "SOURCE_ORDER.json",
+        "fields/*/STATIC_FEASIBILITY.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Static force diagnostics and dynamic comparisons performed; field structure alone is not pattern confirmation.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "REVERSE_PHASE_CONTROL_EVALUATED": {
+      "status": "PASS",
+      "evidence": [
+        "STATIC_EXTRA.json",
+        "SOURCE_ORDER.json",
+        "fields/*/STATIC_FEASIBILITY.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Static force diagnostics and dynamic comparisons performed; field structure alone is not pattern confirmation.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "ACOUSTIC_FORCE_ROTATION_EVALUATED": {
+      "status": "PASS",
+      "evidence": [
+        "STATIC_EXTRA.json",
+        "SOURCE_ORDER.json",
+        "fields/*/STATIC_FEASIBILITY.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Static force diagnostics and dynamic comparisons performed; field structure alone is not pattern confirmation.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "ACOUSTIC_STREAMING_MODELED": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "PREREGISTRATION.json"
+      ],
+      "scope": "Not part of original force-only translational model.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "SINGLE_BUBBLE_SPIN_MODELED": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "PREREGISTRATION.json"
+      ],
+      "scope": "Not part of original force-only translational model.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "LARGE_SCALE_INITIAL_STATES_VALID": {
+      "status": "PASS",
+      "evidence": [
+        "INITIAL_STATE_INDEX.json"
+      ],
+      "scope": "32/64/128/200 dispersed states valid in real cavity and central cache; prescribed top state geometry valid but outside this cache and NOT dynamically run.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "NEAR_TOP_WALL_SCOPE_DOCUMENTED": {
+      "status": "PASS",
+      "evidence": [
+        "INITIAL_STATE_INDEX.json"
+      ],
+      "scope": "PRESCRIBED_NEAR_TOP_WALL_INITIAL_CONDITION; not buoyancy-formed; dynamic cache NOT_BUILT.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "OBSERVABLE_SHAPE_DESCRIPTORS_VALIDATED": {
+      "status": "PASS",
+      "evidence": [
+        "TEST_RESULTS.json",
+        "METRIC_NULL_CALIBRATION.json"
+      ],
+      "scope": "F10Y distribution reused unchanged; rigid/shear and synthetic-pattern analysis tests plus 512 independent random null clouds. No camera calibration implied.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "STRUCTURE_FACTOR_VALIDATED": {
+      "status": "PASS",
+      "evidence": [
+        "TEST_RESULTS.json",
+        "METRIC_NULL_CALIBRATION.json"
+      ],
+      "scope": "F10Y distribution reused unchanged; rigid/shear and synthetic-pattern analysis tests plus 512 independent random null clouds. No camera calibration implied.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "ROTATION_METRICS_VALIDATED": {
+      "status": "PASS",
+      "evidence": [
+        "TEST_RESULTS.json",
+        "METRIC_NULL_CALIBRATION.json"
+      ],
+      "scope": "F10Y distribution reused unchanged; rigid/shear and synthetic-pattern analysis tests plus 512 independent random null clouds. No camera calibration implied.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "LOW_FIDELITY_MODEL_IMPLEMENTED": {
+      "status": "PASS",
+      "evidence": [
+        "scripts/straight_tube_exp1/f10af/slow.py"
+      ],
+      "scope": "SciPy RK45, original F1/F2, exact far-state A=I; all-pair interval certificate and original contact fallback.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "LOW_FIDELITY_NUMERICALLY_VALIDATED": {
+      "status": "PASS",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "RESTRICTED_LF_ADMISSION.json"
+      ],
+      "scope": "56 complete matched pairs; maximum 25.1951 nm. Dense compact case excluded, original failure reproduced.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "LOW_FIDELITY_SCIENTIFIC_SCREENING_VALID": {
+      "status": "INCONCLUSIVE",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Response ranking tested across independent states; no HF-positive patterns, so false-negative sensitivity cannot be estimated. No aggressive pruning.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "CONTACT_TRANSITION_VALID": {
+      "status": "PASS",
+      "evidence": [
+        "PAIRED_VALIDATION.json",
+        "PAIRED_MOTION_CHECKS.json",
+        "lf/extend_20_ROT_MINUS/SUMMARY.json"
+      ],
+      "scope": "Contact-only fallback and genuine slow-to-contact transitions tested. First gap<=1 nm event timing differs by up to 2.19615 us over 58 comparisons; contact presence agrees. Compact failure is preserved, not admitted.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "MULTIFIDELITY_OPTIMIZATION_ADMITTED": {
+      "status": "INCONCLUSIVE",
+      "evidence": [
+        "OPTIMIZER_API_REPLAY_V2.json"
+      ],
+      "scope": "MULTIFIDELITY_NOT_ADMITTED for formal pattern search. Official APIs tested by offline measured-data replay; not new physics or measured compute savings.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "SMAC3_TESTED": {
+      "status": "PASS",
+      "evidence": [
+        "OPTIMIZER_API_REPLAY_V2.json"
+      ],
+      "scope": "Offline API replay only; finite-space exhaustion from first attempt retained.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "BOTORCH_MULTIFIDELITY_TESTED": {
+      "status": "PASS",
+      "evidence": [
+        "OPTIMIZER_API_REPLAY_V2.json"
+      ],
+      "scope": "Official SingleTaskMultiFidelityGP and cost-aware qMFKG executed; offline API scope only.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "SOBOL_BASELINE_TESTED": {
+      "status": "PASS",
+      "evidence": [
+        "SOBOL_RESULTS.json"
+      ],
+      "scope": "Eight actual 20 ms full-physics trials; no LF pruning.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "HIGH_FIDELITY_TIME_EXTENSION_PASS": {
+      "status": "PASS",
+      "evidence": [
+        "LONG_TIME_RESULTS.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Longest completed HF 50 ms; numerical comparisons are separately listed per action, not blanket validation of every control.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "STRIPE_DYNAMICS_CONFIRMED": {
+      "status": "FAIL",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "No registered candidate",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "LATTICE_DYNAMICS_CONFIRMED": {
+      "status": "FAIL",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "No registered candidate",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "COLLECTIVE_ROTATION_CONFIRMED": {
+      "status": "FAIL",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "No registered candidate",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "ROTATION_DIRECTION_REVERSAL_CONFIRMED": {
+      "status": "FAIL",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Phase-winding / static tangential-force reversal does not establish sustained group-rotation reversal.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "SHAPE_SWITCHING_CONFIRMED": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "Two independently formable target patterns were not established.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "INDEPENDENT_INITIAL_STATE_CONFIRMATION": {
+      "status": "FAIL",
+      "evidence": [
+        "GENERALIZATION_RESULTS.json"
+      ],
+      "scope": "Three independent clouds tested; no robust stripe, lattice or rotation confirmed. Numerical paired generalization is reported separately.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "PHYSICS_NUMERICAL_CONVERGENCE_PASS": {
+      "status": "PASS",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "scope": "Original thresholds; failed proposals excluded. All accepted steps independently audited; selected dt/cache comparisons, not all possible actions.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "OBSERVABLE_SCALE_IN_SIMULATION": {
+      "status": "PASS",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "scope": "SIMULATION_OBSERVABLE_SCALE_CANDIDATE; a 2 um simulation threshold is not camera observability.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "REAL_CAMERA_OBSERVABILITY_VALIDATED": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "PREREGISTRATION.json"
+      ],
+      "scope": "Not experimentally calibrated or trained; training_ready=false.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "REAL_PDMS_FIELD_VALIDATED": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "PREREGISTRATION.json"
+      ],
+      "scope": "Not experimentally calibrated or trained; training_ready=false.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "ELECTRICAL_TO_ACOUSTIC_CALIBRATED": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "PREREGISTRATION.json"
+      ],
+      "scope": "Not experimentally calibrated or trained; training_ready=false.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "WORLD_MODEL_TRAINED": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "PREREGISTRATION.json"
+      ],
+      "scope": "Not experimentally calibrated or trained; training_ready=false.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "TRAINING_READY": {
+      "status": "NOT_RUN",
+      "evidence": [
+        "PREREGISTRATION.json"
+      ],
+      "scope": "Not experimentally calibrated or trained; training_ready=false.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "FIGURES_VALIDATED": {
+      "status": "PASS",
+      "evidence": [
+        "figures/MANIFEST.json",
+        "evidence/VISUAL_INSPECTION.json"
+      ],
+      "scope": "Twelve PNG/PDF figure groups; requires final visual review record.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    },
+    "VIDEOS_VALIDATED": {
+      "status": "PASS",
+      "evidence": [
+        "videos/MANIFEST.json",
+        "evidence/VISUAL_INSPECTION.json"
+      ],
+      "scope": "Three complete-decode 60 fps videos; physical times and source-frame hashes recorded.",
+      "experiment_index": "SCIENTIFIC_RESULTS.json",
+      "physical_times_s": [
+        0.00019999999999999998,
+        0.002,
+        0.005,
+        0.009999999999999998,
+        0.02,
+        0.049999999999999996
+      ],
+      "particle_counts": [
+        32,
+        64,
+        128,
+        200
+      ],
+      "initial_states": [
+        "N128_wide_r0",
+        "N200_wide_r0",
+        "N32_contact_transition",
+        "N32_wide_r0",
+        "N64_compact_reference",
+        "N64_wide_r0",
+        "N64_wide_v0",
+        "N64_wide_v1",
+        "N64_wide_v2"
+      ],
+      "acoustic_actions": [
+        "OFF",
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "SOBOL_CONTINUOUS",
+        "XY_INPHASE",
+        "XY_QUADRATURE",
+        "X_PAIR",
+        "X_SINGLE",
+        "Y_PAIR"
+      ],
+      "context_note": "These are the indexed experiment contexts; this gate applies only to the subset specified in scope, not every action or state."
+    }
+  },
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "REAL_CAMERA_OBSERVABILITY_UNVERIFIED"
+  ],
+  "training_ready": false,
+  "identity": {
+    "source_commit": "55b0519bb6021cc46f03f5bb1a75af18d59a6aab",
+    "utc": "2026-10-19T01:23:01.170122+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "REAL_CAMERA_OBSERVABILITY_UNVERIFIED"
+    ],
+    "training_ready": false
+  }
+}

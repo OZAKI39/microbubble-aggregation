@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "microbubble-aggregation"
+version = "0.1.0"
+description = "Independent, uncalibrated homogeneous-water microbubble simulator"
+requires-python = ">=3.12"
+dependencies = ["numpy==2.2.6", "scipy==1.15.3", "h5py==3.16.0"]
+
+[project.optional-dependencies]
+gpu = ["warp-lang==1.18.0"]
+plot = ["matplotlib==3.11.2"]
+test = ["pytest==9.1.1"]
+dev = ["ruff"]
+reference = ["PyYAML", "scikit-learn"]
+cupy = ["cupy-cuda12x"]
+
+[tool.setuptools]
+packages = ["microbubble", "workflows"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["gpu: requires Warp and CUDA (separate from CPU tests)"]
+
+[tool.ruff]
+line-length = 100
+

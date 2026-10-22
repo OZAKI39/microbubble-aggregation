@@ -1,0 +1,160 @@
+{
+  "figures": [
+    {
+      "index": 1,
+      "name": "Historical baseline and scope",
+      "png": "Fig_F10AG_01_historical_baseline_and_scope.png",
+      "pdf": "Fig_F10AG_01_historical_baseline_and_scope.pdf",
+      "evidence": [
+        "BASELINE_RESULTS.json",
+        "f10af/SCIENTIFIC_RESULTS.json"
+      ],
+      "png_sha256": "0e78b90ae959ce11bada26e18882cbc96ef429a17ca1eb08a2a23812190b70df",
+      "pdf_sha256": "b1a4c32fe8cb620b382b69eb2df710181492e68740e869c0e694ab957fd6d51c"
+    },
+    {
+      "index": 2,
+      "name": "Three-dimensional acoustic drift",
+      "png": "Fig_F10AG_02_three-dimensional_acoustic_drift.png",
+      "pdf": "Fig_F10AG_02_three-dimensional_acoustic_drift.pdf",
+      "evidence": [
+        "FIELD_3D_2500000.h5"
+      ],
+      "png_sha256": "80d88d1bec7accd699ddda9bc696aa3579e3766192f10d18bc44c3bbaa6d271a",
+      "pdf_sha256": "cdf73f2d29d0e00f20157b52cdaf5ec9251df64285e16fbc43a1df6a3de3cc59"
+    },
+    {
+      "index": 3,
+      "name": "Local stability and Jacobian",
+      "png": "Fig_F10AG_03_local_stability_and_jacobian.png",
+      "pdf": "Fig_F10AG_03_local_stability_and_jacobian.pdf",
+      "evidence": [
+        "STATIC_RESULTS.json"
+      ],
+      "png_sha256": "f8d4498fdfb2e2ba771ee3a7815e002bdde2c7ebd65ec1bd325be84545786fba",
+      "pdf_sha256": "9e52f2a032db51267b9387bbef5f7d0f001fe225c3fbd1faa5013e8e06dcab4a"
+    },
+    {
+      "index": 4,
+      "name": "Three-dimensional capture atlas",
+      "png": "Fig_F10AG_04_three-dimensional_capture_atlas.png",
+      "pdf": "Fig_F10AG_04_three-dimensional_capture_atlas.pdf",
+      "evidence": [
+        "single/atlas.h5",
+        "SINGLE_RESULTS.json",
+        "POINT_CAPTURE_RESULTS.json"
+      ],
+      "png_sha256": "7a080a7c0eeeda3883082f167d206f71a6036f004078761df0ff590cff03f0de",
+      "pdf_sha256": "fe35ea6426fa07271b00b2b0b6de2af5bf9777cd8ca43de878e412faed6a69e3"
+    },
+    {
+      "index": 5,
+      "name": "Time to capture and censoring",
+      "png": "Fig_F10AG_05_time_to_capture_and_censoring.png",
+      "pdf": "Fig_F10AG_05_time_to_capture_and_censoring.pdf",
+      "evidence": [
+        "SINGLE_RESULTS.json"
+      ],
+      "png_sha256": "c8a2358a215d1017a97661f95cf6965718fab8d845a4034609ae948fd4076762",
+      "pdf_sha256": "0225a02c59afa5f1a053e4317340f9e3b267f2c7a72aaade5bf933432d478cd0"
+    },
+    {
+      "index": 6,
+      "name": "Frequency and phase dependence",
+      "png": "Fig_F10AG_06_frequency_and_phase_dependence.png",
+      "pdf": "Fig_F10AG_06_frequency_and_phase_dependence.pdf",
+      "evidence": [
+        "STATIC_RESULTS.json",
+        "SINGLE_RESULTS.json"
+      ],
+      "png_sha256": "000751f9eb10ebe6ed624884f1ae0afe86b77f3c06e9cef62c6db56b9636e994",
+      "pdf_sha256": "421841ec6c441025ab487c0474cbc97b2967faa95e105077e102ee246a39d3e6"
+    },
+    {
+      "index": 7,
+      "name": "Multibubble stripe dynamics",
+      "png": "Fig_F10AG_07_multibubble_stripe_dynamics.png",
+      "pdf": "Fig_F10AG_07_multibubble_stripe_dynamics.pdf",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "series/HF_long*_random_*.npz"
+      ],
+      "png_sha256": "a79a3dafb34f7c4b2e2dfea0550bc53f344de7e4142fe2d53e1ce281f8bcae29",
+      "pdf_sha256": "ced92bab2b6cc6c4d385c8e5bd46335004b7d1f3a95ee657ece9fa4244dc3715"
+    },
+    {
+      "index": 8,
+      "name": "High and low fidelity validation",
+      "png": "Fig_F10AG_08_high_and_low_fidelity_validation.png",
+      "pdf": "Fig_F10AG_08_high_and_low_fidelity_validation.pdf",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "png_sha256": "3398aa623f465c51284966bf807863b22fdbda266a099c70b66384392da24a9a",
+      "pdf_sha256": "99279887656c1854cc7d72b5afbc336b72618e9c7eaf18c10c9f9008dad0731d"
+    },
+    {
+      "index": 9,
+      "name": "Long-time integration and cost",
+      "png": "Fig_F10AG_09_long-time_integration_and_cost.png",
+      "pdf": "Fig_F10AG_09_long-time_integration_and_cost.pdf",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "LF_LADDER_RESULTS.json"
+      ],
+      "png_sha256": "58eee830198be4e0f6096c8c16998ae06be3a74a069d93e7613eea5135fe79e6",
+      "pdf_sha256": "a243d6ec93363da33b3ab2606b469e71ed82a04aad50916dcb829a32970e8334"
+    },
+    {
+      "index": 10,
+      "name": "Rotation force and velocity",
+      "png": "Fig_F10AG_10_rotation_force_and_velocity.png",
+      "pdf": "Fig_F10AG_10_rotation_force_and_velocity.pdf",
+      "evidence": [
+        "ROTATION_STATIC.json",
+        "ROTATION_STATIC.h5",
+        "series/HF_ring50_*.npz"
+      ],
+      "png_sha256": "91a55442b472e077c0edc0a92a945d176dd5c61b18f5920aefcca02b16c11aa3",
+      "pdf_sha256": "053a4a4deec59e83b8672e1b779ad9458ca0b89b4ad7c53b24afa06a6ced7ffa"
+    },
+    {
+      "index": 11,
+      "name": "Missing-physics preflight",
+      "png": "Fig_F10AG_11_missing-physics_preflight.png",
+      "pdf": "Fig_F10AG_11_missing-physics_preflight.pdf",
+      "evidence": [
+        "MISSING_PHYSICS_PREFLIGHT.json"
+      ],
+      "png_sha256": "60ac4efe8ce9868b07bd3bb559c6a113898c3b7723a0ac1beb00ea788f0b96d9",
+      "pdf_sha256": "f6ab44f56563af48d3241bf3af0301e7e9c7dbd0beda2cbcb50d2db2f5888ab4"
+    },
+    {
+      "index": 12,
+      "name": "Numerical and scientific admission",
+      "png": "Fig_F10AG_12_numerical_and_scientific_admission.png",
+      "pdf": "Fig_F10AG_12_numerical_and_scientific_admission.pdf",
+      "evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "FINAL_GATE.json"
+      ],
+      "png_sha256": "36c75cec92aeadbcb4e679f04072f0e6bd3be0b48b8328866a4d703ef9298758",
+      "pdf_sha256": "0a99324266b8e9ab11214160cd12a009fc838ba0afd18753b6b1e315356f7eb9"
+    }
+  ],
+  "wall_s": 5.838464537009713,
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:42:10.927184+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

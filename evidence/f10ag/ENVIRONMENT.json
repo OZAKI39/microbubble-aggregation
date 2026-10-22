@@ -1,0 +1,79 @@
+{
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  32\nOn-line CPU(s) list:                     0-31\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 9 7950X3D 16-Core Processor\nCPU family:                              25\nModel:                                   97\nThread(s) per core:                      2\nCore(s) per socket:                      16\nSocket(s):                               1\nStepping:                                2\nCPU(s) scaling MHz:                      86%\nCPU max MHz:                             5759.0000\nCPU min MHz:                             400.0000\nBogoMIPS:                                8400.38\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd cppc amd_ibpb_ret arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic vgif x2avic v_spec_ctrl vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid overflow_recov succor smca fsrm flush_l1d ibpb_exit_to_user\nVirtualization:                          AMD-V\nL1d cache:                               512 KiB (16 instances)\nL1i cache:                               512 KiB (16 instances)\nL2 cache:                                16 MiB (16 instances)\nL3 cache:                                128 MiB (2 instances)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-31\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; Safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP always-on; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Vulnerable: Clear CPU buffers attempted, no microcode\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "load": [
+    6.767578125,
+    6.18603515625,
+    6.43212890625
+  ],
+  "gpu": "name, memory.total [MiB], memory.used [MiB], utilization.gpu [%], driver_version\nNVIDIA GeForce RTX 4090, 24564 MiB, 12 MiB, 0 %, 550.120\n",
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "warp-lang": "1.18.0+cu12",
+    "h5py": "3.16.0"
+  },
+  "history_source_match": {
+    "scripts/straight_tube_exp1/f10af/activate.sh": true,
+    "scripts/straight_tube_exp1/f10af/analyze.py": true,
+    "scripts/straight_tube_exp1/f10af/audit.py": true,
+    "scripts/straight_tube_exp1/f10af/common.py": true,
+    "scripts/straight_tube_exp1/f10af/deliver.py": true,
+    "scripts/straight_tube_exp1/f10af/extension.py": true,
+    "scripts/straight_tube_exp1/f10af/field.py": true,
+    "scripts/straight_tube_exp1/f10af/figures.py": true,
+    "scripts/straight_tube_exp1/f10af/final_analysis.py": true,
+    "scripts/straight_tube_exp1/f10af/finish_physics.py": true,
+    "scripts/straight_tube_exp1/f10af/generalize.py": true,
+    "scripts/straight_tube_exp1/f10af/longtime.py": true,
+    "scripts/straight_tube_exp1/f10af/metrics.py": true,
+    "scripts/straight_tube_exp1/f10af/paired.py": true,
+    "scripts/straight_tube_exp1/f10af/pilot.py": true,
+    "scripts/straight_tube_exp1/f10af/post_finalize.py": true,
+    "scripts/straight_tube_exp1/f10af/preflight.py": true,
+    "scripts/straight_tube_exp1/f10af/prepare.py": true,
+    "scripts/straight_tube_exp1/f10af/receive.py": true,
+    "scripts/straight_tube_exp1/f10af/remote.py": true,
+    "scripts/straight_tube_exp1/f10af/repair_environment.py": true,
+    "scripts/straight_tube_exp1/f10af/repair_failed_view.py": true,
+    "scripts/straight_tube_exp1/f10af/report.py": true,
+    "scripts/straight_tube_exp1/f10af/resources.py": true,
+    "scripts/straight_tube_exp1/f10af/rotation_checks.py": true,
+    "scripts/straight_tube_exp1/f10af/run.py": true,
+    "scripts/straight_tube_exp1/f10af/seal.py": true,
+    "scripts/straight_tube_exp1/f10af/slow.py": true,
+    "scripts/straight_tube_exp1/f10af/sobol.py": true,
+    "scripts/straight_tube_exp1/f10af/states.py": true,
+    "scripts/straight_tube_exp1/f10af/static_extra.py": true,
+    "scripts/straight_tube_exp1/f10af/tooling.py": true,
+    "scripts/straight_tube_exp1/f10af/tooling_smac_fix.py": true,
+    "scripts/straight_tube_exp1/f10af/videos.py": true,
+    "scripts/straight_tube_exp1/f10af/vendor/f10y_aggregation.py": true,
+    "configs/straight_tube_exp1/f10af/protocol.json": true,
+    "tests/f10af/__init__.py": true,
+    "tests/f10af/test_metrics.py": true
+  },
+  "identity": {
+    "source_commit": "0a755f0215417a7fd927afc4a41578b75964fb98",
+    "utc": "2026-10-19T09:25:44.836395+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  },
+  "blas": [
+    {
+      "user_api": "blas",
+      "internal_api": "openblas",
+      "num_threads": 1,
+      "prefix": "libscipy_openblas",
+      "filepath": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/.venv/lib/python3.12/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+      "version": "0.3.29",
+      "threading_layer": "pthreads",
+      "architecture": "SkylakeX"
+    }
+  ]
+}

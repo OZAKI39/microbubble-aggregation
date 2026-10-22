@@ -1,0 +1,7 @@
+{
+  "error_m": 1.150307971601966e-13,
+  "limit_m": 5e-08,
+  "PASS": true,
+  "duration_s": 0.0001,
+  "scope": "This short state/control only; no promotion of long-window convergence"
+}

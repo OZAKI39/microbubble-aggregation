@@ -1,0 +1,17 @@
+{
+  "samples": 289,
+  "wall_s": 2894.572120724013,
+  "scope": "Read-only campaign monitoring, shared hardware; not scientific throughput denominator",
+  "identity": {
+    "source_commit": "316e2ed072f20d4e26aff9ca087b1c07efc1828e",
+    "utc": "2026-10-19T10:38:09.669290+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

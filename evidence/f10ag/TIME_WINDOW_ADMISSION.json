@@ -1,0 +1,24 @@
+{
+  "LF_PHYSICAL_TIME_COMPLETED": 0.25,
+  "HF_PHYSICAL_TIME_COMPLETED": 0.25,
+  "LF_HF_PAIRED_WINDOW": 0.25,
+  "HF_DT_AND_CACHE_REFINED_WINDOW": 0.15,
+  "LF_HF_PAIRED_AND_REFINED_WINDOW": 0.15,
+  "LF_ERROR_WITHIN_REGISTERED_LIMIT": true,
+  "LONG_TIME_PHYSICS_SCOPE_UNVERIFIED": true,
+  "scope": "Numerical agreement is per initial state/action/time; neither real-device long-time physics nor unpaired LF tails are validated.",
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:43:58.754101+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

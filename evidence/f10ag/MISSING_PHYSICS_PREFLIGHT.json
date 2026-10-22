@@ -1,0 +1,94 @@
+{
+  "radius_m": 1.78e-06,
+  "assumptions": {
+    "liquid_density_kg_m3": 1000.0,
+    "viscosity_Pa_s": 0.001,
+    "gas_shell_mass": "Neglected only for upper-limit buoyancy force estimate",
+    "surface": "Immobilized spherical interface consistent with existing Stokes drag; no claim of shell calibration",
+    "near_wall": "Unbounded velocity estimate cannot be used at wall",
+    "gravity_direction": "Not measured; +Z used only for illustrative displacement scale"
+  },
+  "buoyancy_force_N": 2.317488691425899e-13,
+  "unbounded_immobilized_buoyancy_speed_m_s": 6.907111999999999e-06,
+  "clean_mobile_interface_speed_m_s": 1.0360667999999998e-05,
+  "clean_interface_scope": "Hadamard-Rybczynski limiting comparison, not current shelled bubble",
+  "time_s": [
+    0.05,
+    0.15,
+    0.25,
+    1.0
+  ],
+  "displacement_m": [
+    3.453556e-07,
+    1.0360667999999998e-06,
+    1.7267779999999997e-06,
+    6.907111999999999e-06
+  ],
+  "center_to_top_time_s": 115.56494233769486,
+  "boundary_layer_m": {
+    "2400000": 3.641828101973597e-07,
+    "2500000": 3.5682482323055423e-07,
+    "2600000": 3.4989552626671003e-07
+  },
+  "streaming": "NOT_MODELED",
+  "buoyancy": "NOT_MODELED",
+  "polydispersity": "NOT_MODELED; new radius/shell responses required",
+  "tool_decision": "No installation: DOLFINx Stokes solver is available as mature option but physical first-order field, wall motion/slip, attenuation and validation benchmark are not yet specified.",
+  "next_benchmarks": [
+    "Measure phase/amplitude and cavity pressure first",
+    "Independent second-order Stokes with verified wall slip or resolved boundary layer; benchmark Bach-Bruus cavity before particle coupling",
+    "Measure rotation with tracer PIV and compare frequency/power scaling",
+    "Separate acoustic-OFF buoyancy and near-wall mobility benchmark",
+    "Build APECSS tables per radius/shell/frequency, never reuse 1.78 um response for new radii"
+  ],
+  "references": [
+    {
+      "url": "https://arxiv.org/abs/1804.05802",
+      "title": "Bach & Bruus (2018), pressure acoustics with boundary layers and streaming",
+      "relevance": "Validated wall-slip formulation; cavity geometry and wall motion matter."
+    },
+    {
+      "url": "https://arxiv.org/abs/1905.09132",
+      "title": "Bach & Bruus (2019), bulk-driven streaming at resonance",
+      "relevance": "Overlapping cavity modes can support rotating energy flux and streaming; not evidence that this uncalibrated device does."
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4814581/",
+      "title": "Ahmed et al. (2016), rotational manipulation using acoustic waves",
+      "relevance": "Experiment reports microbubble-driven microstreaming and rotation at kHz; scale/frequency differ from current 2.5 MHz."
+    },
+    {
+      "url": "https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_stokes.html",
+      "title": "DOLFINx official Taylor-Hood Stokes demo",
+      "relevance": "Mature incompressible solver; no device-specific acoustic forcing or boundary calibration supplied."
+    },
+    {
+      "url": "https://github.com/polycfd/apecss",
+      "title": "APECSS upstream software",
+      "relevance": "Supports response generation; any new bubble class requires matching validated inputs."
+    }
+  ],
+  "identity": {
+    "source_commit": "b185245c0283692df6b492c027d088aa22dfda6f",
+    "utc": "2026-10-19T10:02:20.653876+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  },
+  "buoyancy_to_restoring_Fz_diagnostic": {
+    "position_m": [
+      0.0,
+      0.0,
+      5.833333333333333e-05
+    ],
+    "acoustic_Fz_N": -7.462554336694335e-14,
+    "buoyancy_upper_force_N": 2.317488691425899e-13,
+    "absolute_force_ratio": 3.105489872322283,
+    "scope": "Force-scale comparison only. Gravity orientation, shell mass and actual field remain uncalibrated; no equilibrium/trajectory predicted."
+  }
+}

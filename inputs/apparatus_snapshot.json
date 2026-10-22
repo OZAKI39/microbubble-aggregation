@@ -1,0 +1,268 @@
+{
+  "geometry": {
+    "status": "USER_CONFIRMED_GEOMETRY",
+    "block_dimensions_m": [
+      0.0325,
+      0.009,
+      0.009
+    ],
+    "lumen_radius_m": 0.0008,
+    "lumen_center_local_m": [
+      0,
+      0,
+      0
+    ],
+    "center_m": [
+      0,
+      0,
+      0
+    ],
+    "rotation_local_to_world": [
+      [
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ]
+    ],
+    "end_conditions": [
+      "closed",
+      "closed"
+    ],
+    "port_state": "USER_CONFIRMED_TWO_OPEN_TOP_PORTS_X_BOTH_ALWAYS_CLOSED",
+    "end_mounting_status": "MECHANICAL_CLOSURE_CONFIRMED_ACOUSTIC_STACK_UNKNOWN",
+    "pzt_model": "SMD07T05R412WL",
+    "pzt": [
+      {
+        "id": "side_y_minus",
+        "center_local_m": [
+          0,
+          -0.0045,
+          0
+        ],
+        "normal_local": [
+          0,
+          1,
+          0
+        ],
+        "active_diameter_m": 0.007,
+        "mounting": "CONTACT_PDMS"
+      },
+      {
+        "id": "side_y_plus",
+        "center_local_m": [
+          0,
+          0.0045,
+          0
+        ],
+        "normal_local": [
+          0,
+          -1,
+          0
+        ],
+        "active_diameter_m": 0.007,
+        "mounting": "CONTACT_PDMS"
+      },
+      {
+        "id": "end_x_minus",
+        "center_local_m": [
+          -0.01625,
+          0,
+          0
+        ],
+        "normal_local": [
+          1,
+          0,
+          0
+        ],
+        "active_diameter_m": 0.007,
+        "mounting": "CENTERED_CONTACT_X_MINUS_SEALED"
+      },
+      {
+        "id": "end_x_plus",
+        "center_local_m": [
+          0.01625,
+          0,
+          0
+        ],
+        "normal_local": [
+          -1,
+          0,
+          0
+        ],
+        "active_diameter_m": 0.007,
+        "mounting": "CENTERED_CONTACT_X_PLUS_CLOSED"
+      }
+    ],
+    "top_ports": [
+      {
+        "id": "opening_x_minus",
+        "center_xy_m": [
+          -0.01085,
+          0
+        ],
+        "axis_local": [
+          0,
+          0,
+          1
+        ],
+        "diameter_m": 0.0015,
+        "z_span_m": [
+          0,
+          0.0045
+        ],
+        "post_injection_boundary": "geometrically_open",
+        "reference_status": "PROVISIONAL_MEASUREMENT_REFERENCE",
+        "distance_from_adjacent_end_plane_m": 0.0054,
+        "measurement_interpretation": "END_PZT_FACE_PLANE_TO_HOLE_CENTER; center versus edge unconfirmed",
+        "drill_blind_depth_m": null
+      },
+      {
+        "id": "opening_x_plus",
+        "center_xy_m": [
+          0.01085,
+          0
+        ],
+        "axis_local": [
+          0,
+          0,
+          1
+        ],
+        "diameter_m": 0.0015,
+        "z_span_m": [
+          0,
+          0.0045
+        ],
+        "post_injection_boundary": "geometrically_open",
+        "reference_status": "PROVISIONAL_MEASUREMENT_REFERENCE",
+        "distance_from_adjacent_end_plane_m": 0.0054,
+        "measurement_interpretation": "END_PZT_FACE_PLANE_TO_HOLE_CENTER; center versus edge unconfirmed",
+        "drill_blind_depth_m": null
+      }
+    ],
+    "end_seals": {
+      "x_minus": {
+        "mechanical": "closed",
+        "plane_x_m": -0.01625,
+        "material": null,
+        "thickness_m": null,
+        "bond_layer": null,
+        "electrical_insulation": null,
+        "acoustic_boundary": "UNCONFIRMED_NOT_IDEAL_RIGID",
+        "geometry_representation": "zero-thickness mechanical interface; physical thickness unconfirmed"
+      },
+      "x_plus": {
+        "mechanical": "closed",
+        "plane_x_m": 0.01625,
+        "material": null,
+        "thickness_m": null,
+        "bond_layer": null,
+        "electrical_insulation": null,
+        "acoustic_boundary": "UNCONFIRMED_NOT_IDEAL_RIGID",
+        "geometry_representation": "zero-thickness mechanical interface; physical thickness unconfirmed"
+      }
+    },
+    "unknown_free_surface": {
+      "liquid_level_m": null,
+      "top_phase": null,
+      "exterior_medium": null,
+      "wetting_angle_deg": null,
+      "model": "NOT_SIMULATED_F10N_EXPLICIT_WATER_ASSUMPTION",
+      "port_filled_with_water": true
+    },
+    "validation_region": {
+      "ceiling_z_m": 0.0015,
+      "ceiling_kind": "NUMERICAL_SCOPE_LIMIT_NOT_PHYSICAL_WALL",
+      "wetting": "F10N_EXPLICIT_WATER_FILLED_SIMPLIFICATION",
+      "outside_action": "REJECT_WITHOUT_PROJECTION"
+    },
+    "model_assumptions": {
+      "all_motion_cavity_water": true,
+      "acoustics": "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PDMS_acoustic_reflection": false,
+      "free_surface": false
+    }
+  },
+  "protocol": {
+    "model": "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "frequency_Hz": 2500000.0,
+    "sound_speed_m_s": 1500.0,
+    "density_kg_m3": 1000.0,
+    "radius_m": 1.78e-06,
+    "response_sha256": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+    "source_amplitude_meaning": "rho*c*normal_velocity, Pa equivalent; NOT voltage or calibrated face pressure",
+    "cache_half_width_m": 6e-05,
+    "cache_spacing_m": 3e-06,
+    "cache_refinement_spacing_m": 1.5e-06,
+    "quadrature_order": 48,
+    "particle_count": 32,
+    "seed": 20261013,
+    "initial_centroid_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "dispersed_cloud_radius_m": 2.2e-05,
+    "aggregate_initial": "4x4x2 connected simple-cubic touching demonstration, not produced by an acoustic aggregation run",
+    "initial_surface_gap_over_radius": 0.0001,
+    "duration_s": 0.002,
+    "dt_s": 1e-06,
+    "sample_interval_s": 0.0001,
+    "target_position_m": [
+      3e-06,
+      2e-06,
+      1e-06
+    ],
+    "target_tolerance_m": 7.5e-07,
+    "target_shape": {
+      "directional_aspect_x_over_y": 1.25,
+      "principal_axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "angle_tolerance_deg": 15.0,
+      "centroid_penalty_scale_m": 3e-06
+    },
+    "baseline_amplitude_Pa": [
+      500.0,
+      500.0,
+      500.0,
+      500.0
+    ],
+    "baseline_phase_rad": [
+      0.0,
+      1.5707963267948966,
+      1.0471975511965976,
+      -0.7853981633974483
+    ],
+    "maximum_source_amplitude_Pa": 1500.0,
+    "maximum_registered_particle_pressure_Pa": 12000.0,
+    "max_navigation_candidates": 8,
+    "max_shape_candidates": 4,
+    "max_total_trajectories": 22,
+    "max_static_optimizer_evaluations": 160,
+    "trajectory_wall_budget_s": 45.0,
+    "campaign_wall_budget_s": 600.0,
+    "contact_residual_over_R": 0.01,
+    "contact_pass_over_R": 0.1,
+    "wall_correction_over_R": 0.1,
+    "position_dt_tolerance_m": 5e-08,
+    "shape_significance_factor": 3.0,
+    "flow": "STRICT_ZERO",
+    "training_ready": false,
+    "statuses": [
+      "EXPLORATORY",
+      "PHYSICS_UNCALIBRATED"
+    ]
+  }
+}

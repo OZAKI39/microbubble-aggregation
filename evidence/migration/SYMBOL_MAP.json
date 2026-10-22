@@ -1,0 +1,1204 @@
+[
+  {
+    "old_file": "src/mevo_mb/acoustics/basis.py",
+    "symbol": "ComplexAcousticField",
+    "original_symbol_sha256": "c40ce6c201043a8dbf63c4aff5a41774fa331b0c86483aa7a595f439ed08c6e2",
+    "new_file": "microbubble/acoustics.py",
+    "ast_identical": true,
+    "source_line": 14,
+    "new_line": 57,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/acoustics/water_disc_proxy.py",
+    "symbol": "WaterDiscs",
+    "original_symbol_sha256": "42a7a2e70d80bb01a6718bd39f1156a93944f255b24d434adb69f46bbdc64216",
+    "new_file": "microbubble/acoustics.py",
+    "ast_identical": true,
+    "source_line": 16,
+    "new_line": 97,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/acoustics/water_disc_proxy.py",
+    "symbol": "cubic_weights",
+    "original_symbol_sha256": "715461b33e4c88148fb0e92e7b32fc77399eb5429b1103596006a70519baf829",
+    "new_file": "microbubble/acoustics.py",
+    "ast_identical": true,
+    "source_line": 84,
+    "new_line": 168,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/acoustics/water_disc_proxy.py",
+    "symbol": "cubic_query",
+    "original_symbol_sha256": "50946ee2ea2ab834421208724c0221b2b13735c947bc1047e5dfbe461d010ced",
+    "new_file": "microbubble/acoustics.py",
+    "ast_identical": true,
+    "source_line": 101,
+    "new_line": 190,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/acoustics/water_disc_proxy.py",
+    "symbol": "CachedWaterBasis",
+    "original_symbol_sha256": "b1781e871ae83c587adff16399477056fe70123ba38911eac5a11e04a5683832",
+    "new_file": "microbubble/acoustics.py",
+    "ast_identical": true,
+    "source_line": 123,
+    "new_line": 212,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/pdms_block.py",
+    "symbol": "CylindricalLumen",
+    "original_symbol_sha256": "ea7d4b3c2f03cf46add60c150ca456d357aefb66adbae7b98bc7bccb97834b3f",
+    "new_file": "microbubble/geometry.py",
+    "ast_identical": false,
+    "source_line": 9,
+    "new_line": 9,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/pdms_cavity.py",
+    "symbol": "PDMSCavity",
+    "original_symbol_sha256": "dbcc55b443a0cd434878c8030f480f625ef12c1e9403b3b4c26f14e07dba2a89",
+    "new_file": "microbubble/geometry.py",
+    "ast_identical": true,
+    "source_line": 15,
+    "new_line": 57,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/pdms_cavity.py",
+    "symbol": "apparatus",
+    "original_symbol_sha256": "2b0ba608d2cafec02b77c5c61591c4b90dddff74b8a7506854a3e4fd04cf2cde",
+    "new_file": "microbubble/geometry.py",
+    "ast_identical": true,
+    "source_line": 184,
+    "new_line": 237,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/bubbles/adaptive_table.py",
+    "symbol": "AdaptiveResponseTableBubbleModel",
+    "original_symbol_sha256": "1557777f224ab0b1c4ede2e5019b3735dd6e5a2869469cad53fa72312e6fa27c",
+    "new_file": "microbubble/bubble_response.py",
+    "ast_identical": false,
+    "source_line": 440,
+    "new_line": 17,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/models.py",
+    "symbol": "ResponseSection",
+    "original_symbol_sha256": "7a4c8f25ae169cec9f98848a8e60105c08c6efe746d575fb4b0c219be3b36a33",
+    "new_file": "microbubble/bubble_response.py",
+    "ast_identical": true,
+    "source_line": 68,
+    "new_line": 133,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ad_multifrequency/interface.py",
+    "symbol": "FixedResponse",
+    "original_symbol_sha256": "3b7815cda4ee88cd3be046bf1204ab111260e0802774d52b7f3a11f878af070e",
+    "new_file": "microbubble/bubble_response.py",
+    "ast_identical": true,
+    "source_line": 22,
+    "new_line": 209,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ae/response.py",
+    "symbol": "ExtendedResponse",
+    "original_symbol_sha256": "3ea02ca44d4940ea2c7cb3627cf616fd56d0515f6d219c6cdfbbb60024680c69",
+    "new_file": "microbubble/bubble_response.py",
+    "ast_identical": false,
+    "source_line": 5,
+    "new_line": 249,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/models.py",
+    "symbol": "Physics",
+    "original_symbol_sha256": "4f84c8307b5efedd29efb75ec0157bb926326f2f70cb5019c11f7d5dac4b8c06",
+    "new_file": "microbubble/parameters.py",
+    "new_symbol": "Physics",
+    "ast_identical": false,
+    "source_line": 18,
+    "new_line": 12,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/nearfield.py",
+    "symbol": "F2Physics",
+    "original_symbol_sha256": "922f7ab969f10e1644cb250f70fc95d70203eb52c1f772f2aced1d4d67e6c523",
+    "new_file": "microbubble/parameters.py",
+    "new_symbol": "Physics",
+    "ast_identical": false,
+    "source_line": 9,
+    "new_line": 12,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/nearfield.py",
+    "symbol": "feedback_weight",
+    "original_symbol_sha256": "dfea49e6431bcbdd3f3ffdb050a9956334d2c757fde6dfb01255fb571f9fcd98",
+    "new_file": "microbubble/forces.py",
+    "ast_identical": true,
+    "source_line": 39,
+    "new_line": 6,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/nearfield.py",
+    "symbol": "coupled_fundamental",
+    "original_symbol_sha256": "f06070f80a36c2dd5912d0e35d3024ae6195c269717da5daa40b746cace67ff4",
+    "new_file": "microbubble/forces.py",
+    "ast_identical": true,
+    "source_line": 44,
+    "new_line": 11,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/nearfield.py",
+    "symbol": "pair_reference",
+    "original_symbol_sha256": "916609a0376e08474b0cb2f64b9f5c1d2403535196124d8596e2215b5ff4d99e",
+    "new_file": "microbubble/forces.py",
+    "ast_identical": true,
+    "source_line": 56,
+    "new_line": 23,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/field.py",
+    "symbol": "direct_force",
+    "original_symbol_sha256": "1d75fa689065b6147ec561c968650cb0d977e66eb76fea498ad6fb6fd7926575",
+    "new_file": "microbubble/forces.py",
+    "ast_identical": true,
+    "source_line": 15,
+    "new_line": 62,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/kernels.py",
+    "symbol": "cmul",
+    "original_symbol_sha256": "32f4cd5202501f849bf6f520103c494b27547c539cfbf08c175510083becc177",
+    "new_file": "microbubble/_warp_forces.py",
+    "ast_identical": true,
+    "source_line": 7,
+    "new_line": 7,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/cubic_field.py",
+    "symbol": "weight",
+    "original_symbol_sha256": "e963657f7a93360bf669572d7d8ecac2531c9a5dfd3fa6e49b9f5e11c4590e54",
+    "new_file": "microbubble/_warp_forces.py",
+    "ast_identical": true,
+    "source_line": 8,
+    "new_line": 12,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/cubic_field.py",
+    "symbol": "derivative",
+    "original_symbol_sha256": "8667e51b47283355bebdafaf1fc61bb01482ee29918b21c6f1656a39ddb76d5a",
+    "new_file": "microbubble/_warp_forces.py",
+    "ast_identical": true,
+    "source_line": 22,
+    "new_line": 26,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/cubic_field.py",
+    "symbol": "cubic_response",
+    "original_symbol_sha256": "5f0410949f370c23ec58d5349869d110a6f79403de0d36617b3b63e2c0254eb2",
+    "new_file": "microbubble/_warp_forces.py",
+    "ast_identical": true,
+    "source_line": 36,
+    "new_line": 40,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/f2_kernels.py",
+    "symbol": "cdiv",
+    "original_symbol_sha256": "010af7467bc43be03a8fdef0e391ae9021e94c8fec7bd53d19380224eed53f35",
+    "new_file": "microbubble/_warp_forces.py",
+    "ast_identical": true,
+    "source_line": 8,
+    "new_line": 141,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/f2_kernels.py",
+    "symbol": "pair_force",
+    "original_symbol_sha256": "7992b1f3c933fb6cdd798ca2aa26779945f643d1109f04ac0169831901d86aab",
+    "new_file": "microbubble/_warp_forces.py",
+    "ast_identical": true,
+    "source_line": 13,
+    "new_line": 146,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/pdms_cavity_engine.py",
+    "symbol": "intersection",
+    "original_symbol_sha256": "2023366abde031bd8e9394fc12d754a911fd69dd4d33c1527acc53e6ef77422c",
+    "new_file": "microbubble/_warp_walls.py",
+    "ast_identical": true,
+    "source_line": 17,
+    "new_line": 7,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/pdms_cavity_engine.py",
+    "symbol": "curve_d2",
+    "original_symbol_sha256": "71d90b295600e951460fb0664a35e76815a14753448da19222270a5623b8b308",
+    "new_file": "microbubble/_warp_walls.py",
+    "ast_identical": true,
+    "source_line": 23,
+    "new_line": 13,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/pdms_cavity_engine.py",
+    "symbol": "curve_nearest",
+    "original_symbol_sha256": "3facb0c0a1a083b33283a52eb54cd2ff7424f70c42e651e59b654bfe96f6427b",
+    "new_file": "microbubble/_warp_walls.py",
+    "ast_identical": true,
+    "source_line": 29,
+    "new_line": 19,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/pdms_cavity_engine.py",
+    "symbol": "wall_query",
+    "original_symbol_sha256": "7fa87546e6dd83df18790229d62cab1437abe248b7a714055065b22742152610",
+    "new_file": "microbubble/_warp_walls.py",
+    "ast_identical": true,
+    "source_line": 57,
+    "new_line": 47,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/pdms_cavity_engine.py",
+    "symbol": "query_walls",
+    "original_symbol_sha256": "3fcac1781c3c5f3c8ef523dc13599c8fa515dd57c9519fb559856ea31c4f49b4",
+    "new_file": "microbubble/_warp_walls.py",
+    "ast_identical": true,
+    "source_line": 134,
+    "new_line": 128,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/pdms_cavity_engine.py",
+    "symbol": "cavity_project",
+    "original_symbol_sha256": "83a7de3667a8d2dc20ff0b14474b2b110ede8fd41854add59b6aaf47bc08f3fb",
+    "new_file": "microbubble/_warp_walls.py",
+    "ast_identical": true,
+    "source_line": 153,
+    "new_line": 147,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "indices",
+    "original_symbol_sha256": "7c24bb682b96370f70dacccf429c310edae6468bbb20c03bfe4795aa4ba5bf9c",
+    "new_file": "microbubble/hydrodynamics.py",
+    "ast_identical": true,
+    "source_line": 12,
+    "new_line": 8,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "normals",
+    "original_symbol_sha256": "d4f2d5516d701ad486baf0213d23ca6d5f39807275f4259b80c2651614d5fae2",
+    "new_file": "microbubble/hydrodynamics.py",
+    "ast_identical": true,
+    "source_line": 17,
+    "new_line": 15,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "resistance",
+    "original_symbol_sha256": "ab52a8c0652d81b93c967d115eda8f886bb367e7354963747bc7e8b509faad2f",
+    "new_file": "microbubble/hydrodynamics.py",
+    "ast_identical": true,
+    "source_line": 51,
+    "new_line": 25,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "PairMatrix",
+    "original_symbol_sha256": "8b6cc30ba6a7e77a4597df04bfd9378f15529e19ad1c50b3b9a17479df8df9f2",
+    "new_file": "microbubble/contact.py",
+    "ast_identical": true,
+    "source_line": 30,
+    "new_line": 9,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "CPUFactor",
+    "original_symbol_sha256": "8543ec14309ef120b232acc2372db4e218d812ae1c6e4b2aab11cbbcb36edd86",
+    "new_file": "microbubble/contact.py",
+    "ast_identical": true,
+    "source_line": 64,
+    "new_line": 45,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "GPUFactor",
+    "original_symbol_sha256": "5478057fe76573a2ce7aa79f7730a486b763532fa1413626680a41ac6bf6ab3a",
+    "new_file": "microbubble/contact.py",
+    "ast_identical": true,
+    "source_line": 70,
+    "new_line": 55,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "active_set_qp",
+    "original_symbol_sha256": "a198c6200e771e9a34da27f8a50878b0ca881f244e82d809cc7538d5f26a34c5",
+    "new_file": "microbubble/contact.py",
+    "ast_identical": true,
+    "source_line": 90,
+    "new_line": 78,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_sequential.py",
+    "symbol": "sequential_step",
+    "original_symbol_sha256": "a1fb12cb7c4aaf834d292549dd8d6c2625db9c67b69c5f1c55797c27338a4e03",
+    "new_file": "microbubble/contact.py",
+    "ast_identical": true,
+    "source_line": 14,
+    "new_line": 126,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/control/scheduled_pzt.py",
+    "symbol": "Segment",
+    "original_symbol_sha256": "8d3bcf74bea97c61187e7ba4967935292851a4e01684c714c6ff8d58014227cd",
+    "new_file": "microbubble/control.py",
+    "ast_identical": false,
+    "source_line": 14,
+    "new_line": 19,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/control/scheduled_pzt.py",
+    "symbol": "Schedule",
+    "original_symbol_sha256": "0c501b4e40a1ca37ba79ab9c8550cfdca528decf3e97edd77aaebd64f39b1788",
+    "new_file": "microbubble/control.py",
+    "ast_identical": true,
+    "source_line": 90,
+    "new_line": 111,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10s/run.py",
+    "symbol": "shorten",
+    "original_symbol_sha256": "15fe152943ee5b176dd228cccdae8879dded5454844f57b9393c0e5e2ca3b5ac",
+    "new_file": "microbubble/control.py",
+    "ast_identical": true,
+    "source_line": 17,
+    "new_line": 172,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ae/schedules.py",
+    "symbol": "schedule",
+    "original_symbol_sha256": "58caf69b950af21d3a9e678bbd29802bbcb05a9ec9931e80cd45a65b24298b25",
+    "new_file": "microbubble/control.py",
+    "ast_identical": false,
+    "source_line": 3,
+    "new_line": 181,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/vendor/f10y_aggregation.py",
+    "symbol": "distribution",
+    "original_symbol_sha256": "0503705665489a46ef3816015a9c3614aab0138972084db56340fac752ac3da6",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 7,
+    "new_line": 12,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ab/metrics.py",
+    "symbol": "rms",
+    "original_symbol_sha256": "88791d5b57b25b689deaff63ff85952faf801543f7c18300364bd9cdd15fb034",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 14,
+    "new_line": 43,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ab/metrics.py",
+    "symbol": "geometry",
+    "original_symbol_sha256": "59454668d40a79ab703b732d2c44395174cd6aa57d167443afb3483b0e3d8a32",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 17,
+    "new_line": 47,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ab/metrics.py",
+    "symbol": "deformation",
+    "original_symbol_sha256": "77ce399bebc4dffe7b90dd0f29a00099d439a5fc2b180df2456975e16bd5c41c",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 38,
+    "new_line": 99,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ab/metrics.py",
+    "symbol": "measure",
+    "original_symbol_sha256": "2079f8c4d3bcee52ff4f04f1f5ec8ee077770d64328056371b4572a53d49b675",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 73,
+    "new_line": 175,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ab/metrics.py",
+    "symbol": "series",
+    "original_symbol_sha256": "16ace6ed216b2ae6846de536ed49cd0387ab13231fbce6bfe5ca09b98692aba3",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 76,
+    "new_line": 179,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/metrics.py",
+    "symbol": "spatial",
+    "original_symbol_sha256": "692fb581f381b0724ee50709ae95669794bf57efcb84ec40f174b28e5152fcd9",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 10,
+    "new_line": 189,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/metrics.py",
+    "symbol": "rotation",
+    "original_symbol_sha256": "94d96f79693f143d4d7303520c784edc9d3f7b82b8c7ab16968f64bbcf378101",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 26,
+    "new_line": 274,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/metrics.py",
+    "symbol": "endpoint",
+    "original_symbol_sha256": "906109dc2a1456dd67959896f7c100c729f943bad222e71e075bab8a7915632f",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 30,
+    "new_line": 301,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/capture.py",
+    "symbol": "capture",
+    "original_symbol_sha256": "52af43afc2a1ae7cd3f5dd20f72ec764de7f6d5dc49fee6784ec29b6bf16b1b4",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 4,
+    "new_line": 317,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/paired.py",
+    "symbol": "aligned",
+    "original_symbol_sha256": "cb228af73a625efaa9712797b81f6313242e08d5c643e236c28417316d878743",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 4,
+    "new_line": 371,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/admission.py",
+    "symbol": "time_windows",
+    "original_symbol_sha256": "0e78020d32eb20e6be5e75434671dd0f31daaa9c0c062b03e591c6aa263c7b86",
+    "new_file": "microbubble/analysis.py",
+    "ast_identical": true,
+    "source_line": 2,
+    "new_line": 403,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "Transpose",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "Transpose",
+    "ast_identical": true,
+    "source_line": 23,
+    "new_line": 268,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "contact_geometry",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "contact_geometry",
+    "ast_identical": true,
+    "source_line": 47,
+    "new_line": 281,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "factorize",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "factorize",
+    "ast_identical": true,
+    "source_line": 85,
+    "new_line": 286,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/straight_tube.py",
+    "symbol": "StraightTube.world",
+    "new_file": "microbubble/geometry.py",
+    "new_symbol": "CylindricalLumen.world",
+    "ast_identical": true,
+    "source_line": 40,
+    "new_line": 16,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/straight_tube.py",
+    "symbol": "StraightTube.local",
+    "new_file": "microbubble/geometry.py",
+    "new_symbol": "CylindricalLumen.local",
+    "ast_identical": true,
+    "source_line": 43,
+    "new_line": 19,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/bubbles/response_table.py",
+    "symbol": "ResponseTableBubbleModel.validate_medium",
+    "new_file": "microbubble/bubble_response.py",
+    "new_symbol": "AdaptiveResponseTableBubbleModel.validate_medium",
+    "ast_identical": true,
+    "source_line": 143,
+    "new_line": 111,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/bubbles/response_table.py",
+    "symbol": "ResponseTableBubbleModel.harmonic_response",
+    "new_file": "microbubble/bubble_response.py",
+    "new_symbol": "AdaptiveResponseTableBubbleModel.harmonic_response",
+    "ast_identical": true,
+    "source_line": 154,
+    "new_line": 124,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_b2.py",
+    "symbol": "WaterB2.fields",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.fields",
+    "ast_identical": true,
+    "source_line": 36,
+    "new_line": 29,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_b2.py",
+    "symbol": "WaterB2.wall_check",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.wall_check",
+    "ast_identical": false,
+    "source_line": 60,
+    "new_line": 53,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_water.py",
+    "symbol": "WaterAccelerated.step",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.step",
+    "ast_identical": true,
+    "source_line": 15,
+    "new_line": 83,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/engine.py",
+    "symbol": "FastSimulator.__init__",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.__init__",
+    "ast_identical": false,
+    "source_line": 15,
+    "new_line": 14,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/f2_engine.py",
+    "symbol": "F2Simulator.pairs",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.pairs",
+    "ast_identical": false,
+    "source_line": 37,
+    "new_line": 117,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_control_engine.py",
+    "symbol": "WaterControlSimulator.fields",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.fields",
+    "ast_identical": false,
+    "source_line": 57,
+    "new_line": 91,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10aa/trajectory.py",
+    "symbol": "Campaign.run",
+    "new_file": "microbubble/high_fidelity.py",
+    "new_symbol": "HighFidelity.run",
+    "ast_identical": false,
+    "source_line": 28,
+    "new_line": 68,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/run.py",
+    "symbol": "Campaign.__init__",
+    "new_file": "workflows/f10ag.py",
+    "new_symbol": "context",
+    "ast_identical": false,
+    "source_line": 12,
+    "new_line": 33,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/run.py",
+    "symbol": "perform",
+    "new_file": "workflows/f10ag.py",
+    "new_symbol": "run",
+    "ast_identical": false,
+    "source_line": 26,
+    "new_line": 72,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/slow.py",
+    "symbol": "integrate",
+    "new_file": "microbubble/integration.py",
+    "new_symbol": "integrate_lf",
+    "ast_identical": false,
+    "source_line": 18,
+    "new_line": 22,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ad_multifrequency/interface.py",
+    "symbol": "FrequencySegment",
+    "new_file": "microbubble/control.py",
+    "new_symbol": "Segment",
+    "ast_identical": false,
+    "source_line": 12,
+    "new_line": 19,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/static.py",
+    "symbol": "roots_x",
+    "new_file": "workflows/diagnostics.py",
+    "new_symbol": "roots_x",
+    "ast_identical": true,
+    "source_line": 16,
+    "new_line": 16,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/single.py",
+    "symbol": "integrate",
+    "new_file": "workflows/diagnostics.py",
+    "new_symbol": "single_bubble",
+    "ast_identical": false,
+    "source_line": 13,
+    "new_line": 26,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/analyze.py",
+    "symbol": "analyze_one",
+    "new_file": "workflows/analysis.py",
+    "new_symbol": "analyze",
+    "ast_identical": false,
+    "source_line": 16,
+    "new_line": 11,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/field.py",
+    "symbol": "build",
+    "new_file": "microbubble/acoustics.py",
+    "new_symbol": "build_cache",
+    "ast_identical": false,
+    "source_line": 20,
+    "new_line": 19,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "Transpose",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "Transpose",
+    "ast_identical": true,
+    "source_line": 23,
+    "new_line": 268,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "contact_geometry",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "contact_geometry",
+    "ast_identical": true,
+    "source_line": 47,
+    "new_line": 281,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "factorize",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "factorize",
+    "ast_identical": true,
+    "source_line": 85,
+    "new_line": 286,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/straight_tube.py",
+    "symbol": "StraightTube.world",
+    "new_file": "microbubble/geometry.py",
+    "new_symbol": "CylindricalLumen.world",
+    "ast_identical": true,
+    "source_line": 40,
+    "new_line": 16,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/straight_tube.py",
+    "symbol": "StraightTube.local",
+    "new_file": "microbubble/geometry.py",
+    "new_symbol": "CylindricalLumen.local",
+    "ast_identical": true,
+    "source_line": 43,
+    "new_line": 19,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/bubbles/response_table.py",
+    "symbol": "ResponseTableBubbleModel.validate_medium",
+    "new_file": "microbubble/bubble_response.py",
+    "new_symbol": "AdaptiveResponseTableBubbleModel.validate_medium",
+    "ast_identical": true,
+    "source_line": 143,
+    "new_line": 111,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/bubbles/response_table.py",
+    "symbol": "ResponseTableBubbleModel.harmonic_response",
+    "new_file": "microbubble/bubble_response.py",
+    "new_symbol": "AdaptiveResponseTableBubbleModel.harmonic_response",
+    "ast_identical": true,
+    "source_line": 154,
+    "new_line": 124,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_b2.py",
+    "symbol": "WaterB2.fields",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.fields",
+    "ast_identical": true,
+    "source_line": 36,
+    "new_line": 29,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_b2.py",
+    "symbol": "WaterB2.wall_check",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.wall_check",
+    "ast_identical": false,
+    "source_line": 60,
+    "new_line": 53,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_water.py",
+    "symbol": "WaterAccelerated.step",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.step",
+    "ast_identical": true,
+    "source_line": 15,
+    "new_line": 83,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/engine.py",
+    "symbol": "FastSimulator.__init__",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.__init__",
+    "ast_identical": false,
+    "source_line": 15,
+    "new_line": 14,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/f2_engine.py",
+    "symbol": "F2Simulator.pairs",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.pairs",
+    "ast_identical": false,
+    "source_line": 37,
+    "new_line": 117,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_control_engine.py",
+    "symbol": "WaterControlSimulator.fields",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.fields",
+    "ast_identical": false,
+    "source_line": 57,
+    "new_line": 91,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10aa/trajectory.py",
+    "symbol": "Campaign.run",
+    "new_file": "microbubble/high_fidelity.py",
+    "new_symbol": "HighFidelity.run",
+    "ast_identical": false,
+    "source_line": 28,
+    "new_line": 68,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/run.py",
+    "symbol": "Campaign.__init__",
+    "new_file": "workflows/f10ag.py",
+    "new_symbol": "context",
+    "ast_identical": false,
+    "source_line": 12,
+    "new_line": 33,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/run.py",
+    "symbol": "perform",
+    "new_file": "workflows/f10ag.py",
+    "new_symbol": "run",
+    "ast_identical": false,
+    "source_line": 26,
+    "new_line": 72,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/slow.py",
+    "symbol": "integrate",
+    "new_file": "microbubble/integration.py",
+    "new_symbol": "integrate_lf",
+    "ast_identical": false,
+    "source_line": 18,
+    "new_line": 22,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ad_multifrequency/interface.py",
+    "symbol": "FrequencySegment",
+    "new_file": "microbubble/control.py",
+    "new_symbol": "Segment",
+    "ast_identical": false,
+    "source_line": 12,
+    "new_line": 19,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/static.py",
+    "symbol": "roots_x",
+    "new_file": "workflows/diagnostics.py",
+    "new_symbol": "roots_x",
+    "ast_identical": true,
+    "source_line": 16,
+    "new_line": 16,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/single.py",
+    "symbol": "integrate",
+    "new_file": "workflows/diagnostics.py",
+    "new_symbol": "single_bubble",
+    "ast_identical": false,
+    "source_line": 13,
+    "new_line": 26,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/analyze.py",
+    "symbol": "analyze_one",
+    "new_file": "workflows/analysis.py",
+    "new_symbol": "analyze",
+    "ast_identical": false,
+    "source_line": 16,
+    "new_line": 11,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/field.py",
+    "symbol": "build",
+    "new_file": "microbubble/acoustics.py",
+    "new_symbol": "build_cache",
+    "ast_identical": false,
+    "source_line": 20,
+    "new_line": 19,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "Transpose",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "Transpose",
+    "ast_identical": true,
+    "source_line": 23,
+    "new_line": 268,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "contact_geometry",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "contact_geometry",
+    "ast_identical": true,
+    "source_line": 47,
+    "new_line": 281,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_contact.py",
+    "symbol": "factorize",
+    "new_file": "microbubble/contact.py",
+    "new_symbol": "factorize",
+    "ast_identical": true,
+    "source_line": 85,
+    "new_line": 286,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/straight_tube.py",
+    "symbol": "StraightTube.world",
+    "new_file": "microbubble/geometry.py",
+    "new_symbol": "CylindricalLumen.world",
+    "ast_identical": true,
+    "source_line": 40,
+    "new_line": 16,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/coupling/straight_tube.py",
+    "symbol": "StraightTube.local",
+    "new_file": "microbubble/geometry.py",
+    "new_symbol": "CylindricalLumen.local",
+    "ast_identical": true,
+    "source_line": 43,
+    "new_line": 19,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/bubbles/response_table.py",
+    "symbol": "ResponseTableBubbleModel.validate_medium",
+    "new_file": "microbubble/bubble_response.py",
+    "new_symbol": "AdaptiveResponseTableBubbleModel.validate_medium",
+    "ast_identical": true,
+    "source_line": 143,
+    "new_line": 111,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/bubbles/response_table.py",
+    "symbol": "ResponseTableBubbleModel.harmonic_response",
+    "new_file": "microbubble/bubble_response.py",
+    "new_symbol": "AdaptiveResponseTableBubbleModel.harmonic_response",
+    "ast_identical": true,
+    "source_line": 154,
+    "new_line": 124,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_b2.py",
+    "symbol": "WaterB2.fields",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.fields",
+    "ast_identical": true,
+    "source_line": 36,
+    "new_line": 29,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_b2.py",
+    "symbol": "WaterB2.wall_check",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.wall_check",
+    "ast_identical": false,
+    "source_line": 60,
+    "new_line": 53,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/accelerated_water.py",
+    "symbol": "WaterAccelerated.step",
+    "new_file": "microbubble/dynamics.py",
+    "new_symbol": "Dynamics.step",
+    "ast_identical": true,
+    "source_line": 15,
+    "new_line": 83,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/engine.py",
+    "symbol": "FastSimulator.__init__",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.__init__",
+    "ast_identical": false,
+    "source_line": 15,
+    "new_line": 14,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/f2_engine.py",
+    "symbol": "F2Simulator.pairs",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.pairs",
+    "ast_identical": false,
+    "source_line": 37,
+    "new_line": 117,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "src/mevo_mb/fast_sim/water_control_engine.py",
+    "symbol": "WaterControlSimulator.fields",
+    "new_file": "microbubble/gpu.py",
+    "new_symbol": "FieldForces.fields",
+    "ast_identical": false,
+    "source_line": 57,
+    "new_line": 91,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10aa/trajectory.py",
+    "symbol": "Campaign.run",
+    "new_file": "microbubble/high_fidelity.py",
+    "new_symbol": "HighFidelity.run",
+    "ast_identical": false,
+    "source_line": 28,
+    "new_line": 68,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/run.py",
+    "symbol": "Campaign.__init__",
+    "new_file": "workflows/f10ag.py",
+    "new_symbol": "context",
+    "ast_identical": false,
+    "source_line": 12,
+    "new_line": 33,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/run.py",
+    "symbol": "perform",
+    "new_file": "workflows/f10ag.py",
+    "new_symbol": "run",
+    "ast_identical": false,
+    "source_line": 26,
+    "new_line": 72,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/slow.py",
+    "symbol": "integrate",
+    "new_file": "microbubble/integration.py",
+    "new_symbol": "integrate_lf",
+    "ast_identical": false,
+    "source_line": 18,
+    "new_line": 22,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ad_multifrequency/interface.py",
+    "symbol": "FrequencySegment",
+    "new_file": "microbubble/control.py",
+    "new_symbol": "Segment",
+    "ast_identical": false,
+    "source_line": 12,
+    "new_line": 19,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/static.py",
+    "symbol": "roots_x",
+    "new_file": "workflows/diagnostics.py",
+    "new_symbol": "roots_x",
+    "ast_identical": true,
+    "source_line": 16,
+    "new_line": 16,
+    "comparison": "IDENTICAL_AST"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/single.py",
+    "symbol": "integrate",
+    "new_file": "workflows/diagnostics.py",
+    "new_symbol": "single_bubble",
+    "ast_identical": false,
+    "source_line": 13,
+    "new_line": 26,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10ag/analyze.py",
+    "symbol": "analyze_one",
+    "new_file": "workflows/analysis.py",
+    "new_symbol": "analyze",
+    "ast_identical": false,
+    "source_line": 16,
+    "new_line": 11,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  },
+  {
+    "old_file": "scripts/straight_tube_exp1/f10af/field.py",
+    "symbol": "build",
+    "new_file": "microbubble/acoustics.py",
+    "new_symbol": "build_cache",
+    "ast_identical": false,
+    "source_line": 20,
+    "new_line": 19,
+    "comparison": "EXPLICIT_PLUMBING_OR_CLASS_CONSOLIDATION; numerical regression required"
+  }
+]

@@ -1,0 +1,61 @@
+"""One-time, read-only baseline extraction. Execute against frozen old Python code only."""
+import json,hashlib,sys,time
+from pathlib import Path
+import numpy as np,h5py
+from mevo_mb.fast_sim.nearfield import F2Physics,pair_reference
+from mevo_mb.fast_sim.models import ResponseSection
+from mevo_mb.acoustics.water_disc_proxy import WaterDiscs,CachedWaterBasis,cubic_query
+from mevo_mb.coupling.pdms_cavity import PDMSCavity
+from mevo_mb.fast_sim.accelerated_water import WaterAccelerated
+from mevo_mb.fast_sim.accelerated_contact import resistance
+from mevo_mb.fast_sim.accelerated_sequential import sequential_step
+from scripts.straight_tube_exp1.f10ad_multifrequency.interface import FixedResponse,make_schedule
+from scripts.straight_tube_exp1.f10af.metrics import spatial,rotation,endpoint
+from scripts.straight_tube_exp1.f10ag.capture import capture
+# ExtendedResponse originally hardcodes BASE; instantiate its EXACT array construction
+# using an explicit local low table, without changing any original module globals.
+# The original query method is bound to an object populated with its own original fields.
+from scripts.straight_tube_exp1.f10ae.response import ExtendedResponse
+R=Path('/home/lzy/projects/new_microbubble_aggregation');I=R/'inputs';E=R/'evidence/migration';data={};meta={}
+read=lambda p:json.loads(Path(p).read_text())
+policy=read(R/'configs/frozen/contact_policy.json');policy.update(read(R/'configs/frozen/contact_revision.json'))
+g=read(I/'apparatus_snapshot.json')['geometry'];cavity=PDMSCavity(g)
+def response(f):
+ p=F2Physics(frequency_Hz=float(f))
+ if f!=2500000:return p,FixedResponse(I/f'response/{f}/response_shell_1.0.h5',p)
+ old=ResponseSection(I/'response/adaptive_2500000.h5',p);low=FixedResponse(I/'response/low_pressure_2500000.h5',p)
+ r=ExtendedResponse.__new__(ExtendedResponse);r.old=old;r.low=low;boundary=float(old.knots[0]);ix=low.knots<boundary;extra=low.knots[ix];vv=low.knot_values[ix];joined=np.concatenate([vv,old.knot_values[:1]])
+ r.knots=np.r_[extra,old.knots];r.knot_values=np.concatenate([vv,old.knot_values]);r.knot_valid=np.r_[np.ones(len(extra),np.int32),old.knot_valid];r.values=np.concatenate([np.stack([joined[:-1],joined[1:]],1),old.values]);r.valid=np.r_[np.ones(len(extra),np.int32),old.valid];r.lower=r.knots[:-1];r.upper=r.knots[1:];r.metadata={}
+ return p,r
+with h5py.File(I/'initial_states.h5') as h:states={k:h[k][:] for k in h}
+actions=read(I/'actions.json')
+for f in [2400000,2500000,2600000]:
+ p,r=response(f);bs=CachedWaterBasis(I/f'fields/{f}/coarse.h5');model=WaterDiscs(g['pzt'],f)
+ x=states['AG32_random_0'];q=x[:8];pref=str(f)+'_'
+ data[pref+'direct_P'],data[pref+'direct_G']=model.evaluate(q,48)
+ data[pref+'cache_P'],data[pref+'cache_G']=bs.query_basis(q)
+ pressures=np.array([0,r.knots[0],(r.knots[0]+r.knots[-1])/2,r.knots[-1]],complex)*np.exp(1j*np.array([0,.3,-1,2]))
+ data[pref+'response_P']=pressures;data[pref+'response_V']=r.query(pressures);data[pref+'response_knots']=r.knots
+ sim=WaterAccelerated(x,p,r,bs,cavity,policy=policy)
+ t=actions['X_PAIR'];s=make_schedule(t['amplitudes'],t['phases'],duration=100e-6,frequency=f);sim.control(s.segments[0].event())
+ step=sim.step(1e-6)
+ for k,v in step['fields'].items():data[pref+k]=v
+ pp=sim.sim.consistent_gradients.numpy();data[pref+'GPU_gradient']=pp[...,0]+1j*pp[...,1]
+ for k in ['positions_m','velocity_m_s','prediction_m','contact_force_N','pair_force_N','actual_gap_m']:data[pref+k]=step['result'][k]
+ meta[pref+'gates']=step['gates'];positions=[x,sim.x.copy()]
+ for j in range(99):
+  step=sim.step(1e-6)
+  if not step['accepted']:break
+  positions.append(sim.x.copy())
+ data[pref+'short_HF']=np.array(positions);meta[pref+'short_gates']=step['gates']
+ print('OLD',f,len(positions),flush=True)
+# Strong contact forcing with genuine full hydrodynamics and fixed frozen policy.
+x=states['AG32_local'];F=np.zeros_like(x);F[:,0]=-1e-9*x[:,0]/max(abs(x[:,0]));A=resistance(x,1.78e-6)['A'];s=sequential_step(x,F,1.78e-6,6*np.pi*.001*1.78e-6,1e-6,A,policy)
+for k in ['positions_m','velocity_m_s','contact_force_N','pair_force_N','actual_gap_m']:data['contact_'+k]=s[k]
+data['contact_x']=x;data['contact_F']=F;data['contact_A']=A;meta['contact_gates']=s['gates']
+# Frozen compact failure: reproduce the actual last accepted state at one step.
+with h5py.File(R/'evidence/f10ag/dataset/baseline_pair_compact.h5') as h:
+ print('DATASET_KEYS',list(h),dict(h.attrs),flush=True)
+meta['source_head']='4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2'
+np.savez_compressed(E/'OLD_REFERENCE.npz',**data);(E/'OLD_REFERENCE_META.json').write_text(json.dumps(meta,indent=2))
+print('REFERENCE_SAVED',len(data),flush=True)

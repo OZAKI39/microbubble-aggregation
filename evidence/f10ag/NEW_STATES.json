@@ -1,0 +1,105 @@
+{
+  "rows": [
+    {
+      "id": "AG32_near",
+      "N": 32,
+      "minimum_gap_m": 1.4932772586005776e-05,
+      "xyz_extent_m": [
+        0.0006389735794376345,
+        0.0006530935104764257,
+        0.00010942878753480943
+      ],
+      "source": "PRESCRIBED_NEAR_BAND_INITIAL_CONDITION"
+    },
+    {
+      "id": "AG32_mid",
+      "N": 32,
+      "minimum_gap_m": 1.678113673262053e-05,
+      "xyz_extent_m": [
+        0.0006989735794376347,
+        0.0006409366983062682,
+        0.00011484304408122941
+      ],
+      "source": "PRESCRIBED_NEAR_BAND_INITIAL_CONDITION"
+    },
+    {
+      "id": "AG32_far",
+      "N": 32,
+      "minimum_gap_m": 1.1071244551352562e-05,
+      "xyz_extent_m": [
+        0.0008089735794376345,
+        0.0006855572841290005,
+        0.00011699647296756555
+      ],
+      "source": "PRESCRIBED_NEAR_BAND_INITIAL_CONDITION"
+    },
+    {
+      "id": "AG32_random_0",
+      "N": 32,
+      "minimum_gap_m": 1.844500316756637e-05,
+      "xyz_extent_m": [
+        0.000926228507634066,
+        0.0007516242974312476,
+        3.835061816789644e-05
+      ],
+      "source": "Frozen random cloud"
+    },
+    {
+      "id": "AG32_random_1",
+      "N": 32,
+      "minimum_gap_m": 2.439316960616004e-05,
+      "xyz_extent_m": [
+        0.0009736224598590054,
+        0.0007426519989982693,
+        3.659628528096971e-05
+      ],
+      "source": "Frozen random cloud"
+    },
+    {
+      "id": "AG32_random_2",
+      "N": 32,
+      "minimum_gap_m": 2.3820947819891978e-05,
+      "xyz_extent_m": [
+        0.0008863458606011585,
+        0.0007824100425444912,
+        3.9669321852740574e-05
+      ],
+      "source": "Frozen random cloud"
+    },
+    {
+      "id": "AG32_ring",
+      "N": 32,
+      "minimum_gap_m": 2.5845142098868067e-05,
+      "xyz_extent_m": [
+        0.0003,
+        0.0003,
+        0.0
+      ],
+      "source": "PRESCRIBED_RING_INITIAL_CONDITION"
+    },
+    {
+      "id": "AG32_local",
+      "N": 32,
+      "minimum_gap_m": 7.120000000000001e-07,
+      "xyz_extent_m": [
+        1.2816e-05,
+        1.2816e-05,
+        4.272e-06
+      ],
+      "source": "PRESCRIBED_LOCAL_COMPACT_INITIAL_CONDITION"
+    }
+  ],
+  "sha256": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+  "identity": {
+    "source_commit": "83557c63dce3b3b5519c19390ea3b268f41f8ce3",
+    "utc": "2026-10-19T09:33:13.616748+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

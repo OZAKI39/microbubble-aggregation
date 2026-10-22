@@ -1,0 +1,22 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4060 Laptop GPU" (8 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /home/lzy/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 5.03 ms  (cached)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 1.88 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 1.70 ms  (cached)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 1.85 ms  (cached)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 1.37 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 3.71 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 2.93 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 5.87 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 1.56 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 916a227 load on device 'cuda:0' took 2.95 ms  (cached)
+DENSE_REFERENCE ['CONTACT_REACTION_BALANCE_PASS']
+LF far PASS 0.0001 steps 1 HF 0
+OLD_LF far PASS 1 0
+LF near PASS 1e-05 steps 0 HF 10
+OLD_LF near PASS 0 10

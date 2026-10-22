@@ -1,0 +1,118 @@
+"""One-time, read-only baseline extraction. Execute against frozen old Python code only."""
+import json,hashlib,sys,time
+from pathlib import Path
+import numpy as np,h5py
+from mevo_mb.fast_sim.nearfield import F2Physics,pair_reference
+from mevo_mb.fast_sim.models import ResponseSection
+from mevo_mb.acoustics.water_disc_proxy import WaterDiscs,CachedWaterBasis,cubic_query
+from mevo_mb.coupling.pdms_cavity import PDMSCavity
+from mevo_mb.fast_sim.accelerated_water import WaterAccelerated
+from mevo_mb.fast_sim.accelerated_contact import resistance
+from mevo_mb.fast_sim.accelerated_sequential import sequential_step
+from scripts.straight_tube_exp1.f10ad_multifrequency.interface import FixedResponse,make_schedule
+from scripts.straight_tube_exp1.f10af.metrics import spatial,rotation,endpoint
+from scripts.straight_tube_exp1.f10ag.capture import capture
+# ExtendedResponse originally hardcodes BASE; instantiate its EXACT array construction
+# using an explicit local low table, without changing any original module globals.
+# The original query method is bound to an object populated with its own original fields.
+from scripts.straight_tube_exp1.f10ae.response import ExtendedResponse
+R=Path('/home/lzy/projects/new_microbubble_aggregation');I=R/'inputs';E=R/'evidence/migration';data={};meta={}
+read=lambda p:json.loads(Path(p).read_text())
+policy=read(R/'configs/frozen/contact_policy.json');policy.update(read(R/'configs/frozen/contact_revision.json'))
+g=read(I/'apparatus_snapshot.json')['geometry'];cavity=PDMSCavity(g)
+def response(f):
+ p=F2Physics(frequency_Hz=float(f))
+ if f!=2500000:return p,FixedResponse(I/f'response/{f}/response_shell_1.0.h5',p)
+ old=ResponseSection(I/'response/adaptive_2500000.h5',p);low=FixedResponse(I/'response/low_pressure_2500000.h5',p)
+ r=ExtendedResponse.__new__(ExtendedResponse);r.old=old;r.low=low;boundary=float(old.knots[0]);ix=low.knots<boundary;extra=low.knots[ix];vv=low.knot_values[ix];joined=np.concatenate([vv,old.knot_values[:1]])
+ r.knots=np.r_[extra,old.knots];r.knot_values=np.concatenate([vv,old.knot_values]);r.knot_valid=np.r_[np.ones(len(extra),np.int32),old.knot_valid];r.values=np.concatenate([np.stack([joined[:-1],joined[1:]],1),old.values]);r.valid=np.r_[np.ones(len(extra),np.int32),old.valid];r.lower=r.knots[:-1];r.upper=r.knots[1:];r.metadata={}
+ return p,r
+with h5py.File(I/'initial_states.h5') as h:states={k:h[k][:] for k in h}
+actions=read(I/'actions.json')
+
+data=dict(np.load(E/'OLD_REFERENCE.npz'));meta=read(E/'OLD_REFERENCE_META.json')
+p,r=response(2500000);bs=CachedWaterBasis(I/'fields/2500000/coarse.h5')
+x=states['N64_compact_reference'];F=np.zeros_like(x);F[:,0]=-1e-9*x[:,0]/max(abs(x[:,0]));A=resistance(x,1.78e-6)['A'];step=sequential_step(x,F,1.78e-6,6*np.pi*.001*1.78e-6,1e-6,A,policy)
+for k in ['positions_m','velocity_m_s','contact_force_N','pair_force_N','actual_gap_m']:data['dense_'+k]=step[k]
+data['dense_x']=x;data['dense_F']=F;data['dense_A']=A;meta['dense_gates']=step['gates']
+with h5py.File(R/'evidence/f10ag/dataset/baseline_pair_compact.h5') as h:x=h['positions_m'][-1]
+sim=WaterAccelerated(x,p,r,bs,cavity,policy=policy);sim.control(make_schedule([0,0,1000,1000],[0]*4).segments[0].event());step=sim.step(1e-6)
+meta['historical_failed_gates']=step['gates'];meta['historical_failed_reasons']=step['reasons']
+for k in ['positions_m','velocity_m_s','contact_force_N','pair_force_N','actual_gap_m']:data['failed_'+k]=step['result'][k]
+np.savez_compressed(E/'OLD_REFERENCE.npz',**data);(E/'OLD_REFERENCE_META.json').write_text(json.dumps(meta,indent=2))
+print('DENSE_REFERENCE',step['reasons'],flush=True)
+
+import traceback,resource
+from scipy.integrate import RK45
+from scipy.spatial.distance import pdist
+from scripts.straight_tube_exp1.f10ae.schedules import schedule
+from scripts.straight_tube_exp1.common import write,sha
+class NeedFullPhysics(Exception):pass
+def safe_gap(x):return float(pdist(x).min()-2*1.78e-6)
+def clean(x):return x
+PROJECT=R
+R=1.78e-6
+def reference_lf(t,c,initial,protocol,policy_data,out):
+    begin=time.perf_counter();out=Path(out);out.mkdir(parents=True,exist_ok=False)
+    cfg=protocol['LF'];basis=c['basis'];x=initial.copy()
+    if t.get('offset_m'):x=x+np.asarray(t['offset_m'])
+    sim=WaterAccelerated(x,c['physics'],c['response'],basis,c['cavity'],policy=policy_data);s=schedule(t);assert len(s.segments)==1,'LF currently admits a fixed action only';sim.control(s.segments[0].event());T=t['duration'];clock=0.;mode=False;mandatory_hf=False;records=[];times=[0.];states=[x.copy()];dense=[];nfev=0;fallback=0;transitions=[];reason=None;low_steps=0;start=x.copy();bound_min=np.inf
+    maxstep=t.get('max_step_s',cfg['max_step_s']);rtol=t.get('rtol',cfg['rtol']);atol=t.get('atol_m',cfg['atol_m'])
+    def clearance(z):
+        # This restricted cache lies in the central bore, far from top holes.
+        q=c['cavity'].lumen.local(z)
+        return float(min((c['cavity'].R-np.linalg.norm(q[:,1:],axis=1)-R).min(),(c['cavity'].L-abs(q[:,0])-R).min()))
+    def rhs(tt,y):
+        nonlocal nfev
+        z=y.reshape(x.shape);nfev+=1
+        if safe_gap(z)<=.1*R:raise NeedFullPhysics('Lubrication activation reached by RK stage')
+        if clearance(z)<=R:raise NeedFullPhysics('Wall safety buffer reached')
+        fields=sim.fields(z)
+        # Original resistance() is exactly identity beyond gap/R >= .1.
+        return (fields['total_force_N']/sim.zeta).ravel()
+    rk=None
+    try:
+        while clock<T-1e-14:
+            if time.perf_counter()-begin>protocol['budget']['per_HF_wall_s']:raise RuntimeError('LF_WALL_BUDGET')
+            gap=safe_gap(x)
+            if gap<=cfg['contact_guard_gap_R']*R or clearance(x)<=2*R:mode=True;rk=None
+            if mode and not mandatory_hf and gap>cfg['resume_gap_R']*R and clearance(x)>4*R:mode=False
+            if mode:
+                if not transitions or transitions[-1]['mode']!='HF':transitions.append(dict(time_s=clock,mode='HF',minimum_gap_m=gap))
+                sim.x=x.copy();h=min(cfg['HF_dt_s'],T-clock);step=sim.step(h);fallback+=1;mandatory_hf=False
+                if not step['accepted']:raise RuntimeError('ORIGINAL_HF_FALLBACK_REJECTED:'+','.join(step['reasons']))
+                x=sim.x.copy();clock+=h;times.append(clock);states.append(x.copy());dense.append(None);records.append(dict(time_s=clock,mode='HF',dt_s=h,min_gap_m=safe_gap(x),wall_correction_m=step['wall_correction_m'],gates=step['gates']));continue
+            if not transitions or transitions[-1]['mode']!='RK45':transitions.append(dict(time_s=clock,mode='RK45',minimum_gap_m=gap))
+            try:
+                if rk is None:rk=RK45(rhs,clock,x.ravel(),T,rtol=rtol,atol=atol,max_step=maxstep)
+                previous=x.copy();t0=clock;msg=rk.step()
+                if rk.status=='failed':raise RuntimeError(msg)
+                poly=rk.dense_output();Q=poly.Q.reshape(len(x),3,-1);travel=abs(poly.h)*np.linalg.norm(Q,axis=1).sum(1);bound=float(travel.max());origin_margin=np.minimum(previous-basis.origin-basis.spacing,(basis.origin+(np.array(basis.shape)-2)*basis.spacing)-previous).min()
+                certified=min(safe_gap(previous)-2*bound,clearance(previous)-bound,origin_margin-bound)
+                if certified<=.1*R:raise NeedFullPhysics('Conservative whole-interval geometric bound')
+                x=rk.y.reshape(x.shape).copy();clock=rk.t;assert safe_gap(x)>0;wall=sim.wall_check(x)
+                if wall['error_bits'] or wall['correction_m']!=0:raise RuntimeError('Original wall guard rejected RK endpoint')
+                bound_min=min(bound_min,certified);times.append(clock);states.append(x.copy());dense.append(poly);low_steps+=1;records.append(dict(time_s=clock,mode='RK45',dt_s=clock-t0,min_gap_m=safe_gap(x),whole_interval_margin_m=certified,max_dense_travel_bound_m=bound))
+            except NeedFullPhysics as ex:
+                transitions.append(dict(time_s=clock,mode='GUARD_TO_HF',reason=str(ex)));mode=True;mandatory_hf=True;rk=None
+    except Exception as ex:reason=repr(ex);(out/'exception.txt').write_text(traceback.format_exc())
+    complete=reason is None and abs(clock-T)<1e-13
+    # Dense output is recorded as an integrator approximation, never as raw accepted nodes.
+    sample_times=np.unique(np.r_[np.linspace(0,clock,min(401,max(2,int(clock/5e-6)+1))),clock]);sampled=[]
+    for tm in sample_times:
+        j=min(max(np.searchsorted(times,tm,side='right')-1,0),len(times)-2)
+        if len(times)==1:sampled.append(states[0]);continue
+        if dense[j] is not None:sampled.append(dense[j](tm).reshape(x.shape))
+        else:
+            a=(tm-times[j])/(times[j+1]-times[j]);sampled.append((1-a)*states[j]+a*states[j+1])
+    path=out/'trajectory.h5'
+    with h5py.File(path,'w') as h:
+        h['time_s']=times;h.create_dataset('positions_m',data=states,compression='gzip');h['particle_id']=np.arange(len(x));h['sample_time_s']=sample_times;h.create_dataset('sample_positions_m',data=sampled,compression='gzip');h.attrs.update(scope='LOW_FIDELITY_PREDICTION',sampling='Accepted nodes plus separately labeled SciPy RK45 dense output; HF fallback sample interpolation separately labeled',training_ready=False)
+    v=sim.fields(x)['total_force_N']/sim.zeta if complete and safe_gap(x)>.1*R else None
+    r=dict(id=t['id'],task=t,status='PASS' if complete else 'FAIL',reason=reason,completed_s=clock,requested_s=T,N=len(x),scope='LOW_FIDELITY_PREDICTION',trajectory_path=str(path.resolve()),trajectory_sha256=sha(path),initial=endpoint(start,start),final=endpoint(start,x,v) if complete else None,accepted_slow_steps=low_steps,HF_fallback_steps=fallback,force_evaluations=nfev,transitions=transitions,whole_interval_min_margin_m=bound_min if np.isfinite(bound_min) else None,wall_s=time.perf_counter()-begin,rss_peak_MiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024,identity={})
+    write(out/'STEP_RECORDS.json',records);write(out/'SUMMARY.json',r);print('LF',t['id'],r['status'],clock,'steps',low_steps,'HF',fallback,flush=True);return clean(r)
+protocol=read(PROJECT/'configs/frozen/f10ag_protocol.json');c=dict(physics=p,response=r,basis=bs,cavity=cavity)
+for name,st,T in [('far','AG32_random_0',.0001),('near','AG32_local',.00001)]:
+ t=dict(actions['X_PAIR'],id=name,state=st,duration=T)
+ result=reference_lf(t,c,states[st],protocol,policy,E/'old_lf_v2'/name)
+ print('OLD_LF',name,result['status'],result['accepted_slow_steps'],result['HF_fallback_steps'],flush=True)

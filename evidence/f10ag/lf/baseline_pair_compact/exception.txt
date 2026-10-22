@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/0a755f0215417a7fd927afc4a41578b75964fb98_baseline_v1/scripts/straight_tube_exp1/f10af/slow.py", line 49, in integrate
+    if not step['accepted']:raise RuntimeError('ORIGINAL_HF_FALLBACK_REJECTED:'+','.join(step['reasons']))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: ORIGINAL_HF_FALLBACK_REJECTED:CONTACT_REACTION_BALANCE_PASS

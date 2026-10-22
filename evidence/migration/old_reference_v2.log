@@ -1,0 +1,22 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4060 Laptop GPU" (8 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /home/lzy/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 3664.10 ms  (compiled)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 1452.08 ms  (compiled)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 984.43 ms  (compiled)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 671.87 ms  (compiled)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 311.89 ms  (compiled)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 3672.83 ms  (compiled)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 17768.67 ms  (compiled)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 17253.15 ms  (compiled)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 1447.47 ms  (compiled)
+Module mevo_mb.fast_sim.pdms_cavity_engine 916a227 load on device 'cuda:0' took 3134.89 ms  (compiled)
+OLD 2400000 101
+OLD 2500000 101
+OLD 2600000 101
+DATASET_KEYS ['force_samples', 'particle_id', 'positions_m', 'raw_frame_index', 'step_failed_gates', 'step_metrics', 'time_s'] {'N': np.int64(64), 'execution_commit': '0a755f0215417a7fd927afc4a41578b75964fb98', 'flow': 'STRICT_ZERO', 'position_output': 'Every accepted step; no interpolation, padding, projection or clustering simplification', 'raw_relative_path': 'hf/baseline_pair_compact/runs/N64_CONTROL_2000us_DT1/trajectory.h5', 'raw_sha256': 'bd5ab40d14729b1be378702536b178790ec25e4542c6941622beb44609636eb3', 'sampling': 'Exact accepted nodes, no interpolation; endpoint velocity from last accepted-step start', 'schedule_json': '{"channel_order": ["Y-", "Y+", "X-", "X+"], "segments": [{"segment_id": 0, "start_s": 0.0, "duration_s": 0.002, "mode": "FOUR_CHANNEL_INDEPENDENT", "amplitude_Pa_equivalent": [0, 0, 1000, 1000], "phase_rad": [0, 0, 0, 0], "enabled": [false, false, true, true], "frequency_Hz": 2500000.0, "field_model": "HOMOGENEOUS_WATER_CONTROL_PROXY", "amplitude_unit": "Pa-equivalent", "timing_model": "IDEAL_SCHEDULED_SEGMENTS"}], "planned_mapping": {"instrument_A": {"CH1": "X-", "CH2": "X+"}, "instrument_B": {"CH1": "Y-", "CH2": "Y+"}}, "hardware_executed": false, "calibration": "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED", "phase_reference": "Re[P exp(+i omega t)]; common continuous simulation clock; phase offsets do not reset at switches", "timing": "IDEAL_SCHEDULED_SEGMENTS; split the integration step exactly at each event boundary"}', 'task_json': '{"id": "baseline_pair_compact", "action": "X_PAIR", "state": "N64_compact_reference", "amplitudes": [0, 0, 1000, 1000], "phases": [0, 0, 0, 0], "frequency": 2500000.0, "duration": 0.002}', 'training_ready': np.False_}
+REFERENCE_SAVED 65

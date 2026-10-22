@@ -1,0 +1,99 @@
+{
+  "single": [
+    {
+      "threshold_um": 30,
+      "initial_distance_um": 15,
+      "count": 54,
+      "held_count": 54,
+      "earliest_ms": 0.0,
+      "latest_ms": 0.0,
+      "right_censored": 0
+    },
+    {
+      "threshold_um": 30,
+      "initial_distance_um": 45,
+      "count": 54,
+      "held_count": 54,
+      "earliest_ms": 176.0,
+      "latest_ms": 207.50000000000003,
+      "right_censored": 0
+    },
+    {
+      "threshold_um": 30,
+      "initial_distance_um": 100,
+      "count": 54,
+      "held_count": 0,
+      "earliest_ms": null,
+      "latest_ms": null,
+      "right_censored": 54
+    },
+    {
+      "threshold_um": 20,
+      "initial_distance_um": 15,
+      "count": 54,
+      "held_count": 54,
+      "earliest_ms": 0.0,
+      "latest_ms": 0.0,
+      "right_censored": 0
+    },
+    {
+      "threshold_um": 20,
+      "initial_distance_um": 45,
+      "count": 54,
+      "held_count": 0,
+      "earliest_ms": null,
+      "latest_ms": null,
+      "right_censored": 54
+    },
+    {
+      "threshold_um": 20,
+      "initial_distance_um": 100,
+      "count": 54,
+      "held_count": 0,
+      "earliest_ms": null,
+      "latest_ms": null,
+      "right_censored": 54
+    },
+    {
+      "threshold_um": 10,
+      "initial_distance_um": 15,
+      "count": 54,
+      "held_count": 54,
+      "earliest_ms": 162.0,
+      "latest_ms": 191.5,
+      "right_censored": 0
+    },
+    {
+      "threshold_um": 10,
+      "initial_distance_um": 45,
+      "count": 54,
+      "held_count": 0,
+      "earliest_ms": null,
+      "latest_ms": null,
+      "right_censored": 54
+    },
+    {
+      "threshold_um": 10,
+      "initial_distance_um": 100,
+      "count": 54,
+      "held_count": 0,
+      "earliest_ms": null,
+      "latest_ms": null,
+      "right_censored": 54
+    }
+  ],
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:43:58.658891+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

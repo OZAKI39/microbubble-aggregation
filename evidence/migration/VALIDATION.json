@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "date": "2026-10-22",
+  "scope": "read-only snapshot packaging, exact-byte integrity and bounded offline regression",
+  "payload_files": 18379,
+  "tests": {
+    "simulation_regression": {
+      "passed": 12,
+      "log": "SIMULATION_TESTS.log"
+    }
+  },
+  "source_python_parsed": 1257,
+  "source_files_unchanged": 18379,
+  "gzip_roundtrip_sha256": "PASS for every compressed payload",
+  "file_name_collisions": "Resolved with separate .sync.gz names; originals preserved",
+  "hardware_output_changes": false,
+  "new_simulation_or_training": false,
+  "limitations": [
+    "No fresh hardware connection test; archived controller status is not live state",
+    "Not a full video or remote raw trajectory backup",
+    "Base models, environments and fine caches need documented restoration/recreation"
+  ]
+}

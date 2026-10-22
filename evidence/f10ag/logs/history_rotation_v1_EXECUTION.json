@@ -1,0 +1,11 @@
+{
+  "ex": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/f52020380ffb7e1bc7e9a0311e88d665a39a3776_history_rotation_v1",
+  "server": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019",
+  "module": "f10ag.history_rotation",
+  "label": "history_rotation_v1",
+  "seconds": 180,
+  "commit": "f52020380ffb7e1bc7e9a0311e88d665a39a3776",
+  "sha256": "0f0679718afc999384a5ce15ef7d41c5e2f72b756eeec695f23d956c107e4583",
+  "source_archive_reuse": null,
+  "name": "mevo_f10ag_history_rotation_v1"
+}

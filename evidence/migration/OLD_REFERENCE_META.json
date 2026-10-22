@@ -1,0 +1,83 @@
+{
+  "2400000_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  "2400000_short_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  "2500000_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  "2500000_short_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  "2600000_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  "2600000_short_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  "contact_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true
+  },
+  "source_head": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+  "dense_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true
+  },
+  "historical_failed_gates": {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": false,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": false
+  },
+  "historical_failed_reasons": [
+    "CONTACT_REACTION_BALANCE_PASS"
+  ]
+}

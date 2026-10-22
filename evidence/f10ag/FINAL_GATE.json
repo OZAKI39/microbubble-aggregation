@@ -1,0 +1,3792 @@
+{
+  "gates": {
+    "F10AF_BASELINE_VERIFIED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/baseline.py"
+      ],
+      "data_evidence": [
+        "BASELINE_RESULTS.json",
+        "PREREGISTRATION.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.663210+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "F10AA_FULL_PHYSICS_UNCHANGED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.665074+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "3D_FORCE_FIELD_VALIDATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/static.py"
+      ],
+      "data_evidence": [
+        "STATIC_RESULTS.json",
+        "FIELD_3D_2500000.h5"
+      ],
+      "initial_states": [
+        "Central-line and registered off-axis F1 roots"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR with relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Local single-bubble F1/Stokes linearization; 3D stable points, NOT globally neutral planes or experimentally calibrated traps.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.666922+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "X_RESTORING_LOCATIONS_CONFIRMED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/static.py"
+      ],
+      "data_evidence": [
+        "STATIC_RESULTS.json",
+        "FIELD_3D_2500000.h5"
+      ],
+      "initial_states": [
+        "Central-line and registered off-axis F1 roots"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR with relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Local single-bubble F1/Stokes linearization; 3D stable points, NOT globally neutral planes or experimentally calibrated traps.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.669015+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "Y_Z_STABILITY_EVALUATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/static.py"
+      ],
+      "data_evidence": [
+        "STATIC_RESULTS.json",
+        "FIELD_3D_2500000.h5"
+      ],
+      "initial_states": [
+        "Central-line and registered off-axis F1 roots"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR with relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Local single-bubble F1/Stokes linearization; 3D stable points, NOT globally neutral planes or experimentally calibrated traps.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.671121+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "LOCAL_JACOBIAN_VALIDATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/static.py"
+      ],
+      "data_evidence": [
+        "STATIC_RESULTS.json",
+        "FIELD_3D_2500000.h5"
+      ],
+      "initial_states": [
+        "Central-line and registered off-axis F1 roots"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR with relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Local single-bubble F1/Stokes linearization; 3D stable points, NOT globally neutral planes or experimentally calibrated traps.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.673109+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "3D_ATTRACTOR_IDENTIFIED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/static.py"
+      ],
+      "data_evidence": [
+        "STATIC_RESULTS.json",
+        "FIELD_3D_2500000.h5"
+      ],
+      "initial_states": [
+        "Central-line and registered off-axis F1 roots"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR with relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Local single-bubble F1/Stokes linearization; 3D stable points, NOT globally neutral planes or experimentally calibrated traps.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.675192+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "TRANSVERSE_ATTRACTING_BANDS_IDENTIFIED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/static.py"
+      ],
+      "data_evidence": [
+        "STATIC_RESULTS.json",
+        "FIELD_3D_2500000.h5"
+      ],
+      "initial_states": [
+        "Central-line and registered off-axis F1 roots"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR with relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Local single-bubble F1/Stokes linearization; 3D stable points, NOT globally neutral planes or experimentally calibrated traps.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.677182+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "CAPTURE_BASINS_COMPUTED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/single.py",
+        "scripts/straight_tube_exp1/f10ag/capture.py"
+      ],
+      "data_evidence": [
+        "SINGLE_RESULTS.json",
+        "single/atlas.h5",
+        "POINT_CAPTURE_RESULTS.json"
+      ],
+      "initial_states": [
+        "162 prescribed independent F1 starts",
+        "24 prescribed local 3D starts"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "162 mutually independent F1-only trajectories. X-band distance is distinct from Euclidean point capture.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.679220+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      },
+      "independent_single_trajectories": 186
+    },
+    "TIME_TO_CAPTURE_EVALUATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/single.py",
+        "scripts/straight_tube_exp1/f10ag/capture.py"
+      ],
+      "data_evidence": [
+        "SINGLE_RESULTS.json",
+        "single/atlas.h5",
+        "POINT_CAPTURE_RESULTS.json"
+      ],
+      "initial_states": [
+        "162 prescribed independent F1 starts",
+        "24 prescribed local 3D starts"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "162 mutually independent F1-only trajectories. X-band distance is distinct from Euclidean point capture.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.681176+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      },
+      "independent_single_trajectories": 186
+    },
+    "LOCAL_CAPTURE_DYNAMICALLY_CONFIRMED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/single.py",
+        "scripts/straight_tube_exp1/f10ag/capture.py"
+      ],
+      "data_evidence": [
+        "SINGLE_RESULTS.json",
+        "single/atlas.h5",
+        "POINT_CAPTURE_RESULTS.json"
+      ],
+      "initial_states": [
+        "162 prescribed independent F1 starts",
+        "24 prescribed local 3D starts"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "162 mutually independent F1-only trajectories. X-band distance is distinct from Euclidean point capture.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.683372+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      },
+      "independent_single_trajectories": 186
+    },
+    "MULTIBUBBLE_CAPTURE_EVALUATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.685396+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "STRIPE_STRUCTURE_FACTOR_EVALUATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json",
+        "BAND_OCCUPANCY.json"
+      ],
+      "initial_states": [
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2"
+      ],
+      "bubble_counts": [
+        32
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Prescribed periodic initial clouds do not count as global stripe formation; fitted spectral-bin occupancy is distinct from physical force-root occupancy.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.687470+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "STRIPE_DYNAMICS_CONFIRMED": {
+      "status": "FAIL",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json",
+        "BAND_OCCUPANCY.json"
+      ],
+      "initial_states": [
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2"
+      ],
+      "bubble_counts": [
+        32
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Prescribed periodic initial clouds do not count as global stripe formation; fitted spectral-bin occupancy is distinct from physical force-root occupancy.",
+      "failure_reason": "Registered complete numerical/scientific criterion was not met; see per-trajectory evidence. Not a proof of impossibility at untested times.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.689656+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "STRIPE_PERSISTENCE_CONFIRMED": {
+      "status": "FAIL",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json",
+        "BAND_OCCUPANCY.json"
+      ],
+      "initial_states": [
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2"
+      ],
+      "bubble_counts": [
+        32
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Prescribed periodic initial clouds do not count as global stripe formation; fitted spectral-bin occupancy is distinct from physical force-root occupancy.",
+      "failure_reason": "Registered complete numerical/scientific criterion was not met; see per-trajectory evidence. Not a proof of impossibility at untested times.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.691755+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "INDEPENDENT_INITIAL_STATES_CONFIRMED": {
+      "status": "FAIL",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json",
+        "BAND_OCCUPANCY.json"
+      ],
+      "initial_states": [
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2"
+      ],
+      "bubble_counts": [
+        32
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Prescribed periodic initial clouds do not count as global stripe formation; fitted spectral-bin occupancy is distinct from physical force-root occupancy.",
+      "failure_reason": "Registered complete numerical/scientific criterion was not met; see per-trajectory evidence. Not a proof of impossibility at untested times.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.693641+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "PHASE_DEPENDENT_CAPTURE_EVALUATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SINGLE_RESULTS.json",
+        "STATIC_RESULTS.json"
+      ],
+      "initial_states": [
+        "Same absolute 9 independent starts for each phase"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Fixed-action single-bubble diagnostic; moving-trap navigation NOT_RUN",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.695647+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "FREQUENCY_DEPENDENT_CAPTURE_EVALUATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SINGLE_RESULTS.json",
+        "STATIC_RESULTS.json",
+        "F1_SHADOW_RESULTS.json"
+      ],
+      "initial_states": [
+        "Same absolute 9 independent starts for each frequency/phase"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Single-bubble F1/Stokes diagnostic only; no AG multifrequency full multibubble validation",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.697573+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "LOW_FIDELITY_LONG_TIME_COMPLETED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.699512+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "LOW_FIDELITY_NUMERICAL_VALIDATION_PASS": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.702547+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "HIGH_FIDELITY_LONG_TIME_COMPLETED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.704400+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "LF_HF_CAPTURE_AGREEMENT_PASS": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.706255+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "CONTACT_FALLBACK_VALIDATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.708097+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "PHYSICAL_TIME_WINDOW_EXTENDED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.710037+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "ROTATION_FORCE_DIAGNOSTIC_PASS": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "ROTATION_STATIC.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "initial_states": [
+        "Prescribed 64-bubble rings: 4 radii, 3 heights"
+      ],
+      "bubble_counts": [
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_PLUS",
+        "ROT_MINUS"
+      ],
+      "time_range_s": [
+        0,
+        1e-06
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Single original constrained step; static force and velocity diagnostic, not sustained rotation",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.711947+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "ROTATION_VELOCITY_DIAGNOSTIC_PASS": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "ROTATION_STATIC.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Static ring diagnostics are not sustained rotation.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.713912+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "COLLECTIVE_ROTATION_CONFIRMED": {
+      "status": "FAIL",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "Registered complete numerical/scientific criterion was not met; see per-trajectory evidence. Not a proof of impossibility at untested times.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.715841+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "ROTATION_DIRECTION_REVERSAL_CONFIRMED": {
+      "status": "FAIL",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "ROTATION_STATIC.json",
+        "SCIENTIFIC_RESULTS.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Static ring diagnostics are not sustained rotation.",
+      "failure_reason": "Registered complete numerical/scientific criterion was not met; see per-trajectory evidence. Not a proof of impossibility at untested times.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.718339+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "STREAMING_PHYSICS_PREFLIGHT_COMPLETED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/missing_physics.py"
+      ],
+      "data_evidence": [
+        "MISSING_PHYSICS_PREFLIGHT.json"
+      ],
+      "initial_states": [
+        "Independent unbounded Stokes scale, R=1.78 µm"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "NOT_MODELED"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Theory and primary-literature preflight only; no added streaming/buoyancy trajectory",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.720855+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "ACOUSTIC_STREAMING_MODELED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/missing_physics.py"
+      ],
+      "data_evidence": [
+        "MISSING_PHYSICS_PREFLIGHT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Independent theory/literature preflight; no new force or velocity added.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.722962+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "BUOYANCY_MODELED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/missing_physics.py"
+      ],
+      "data_evidence": [
+        "MISSING_PHYSICS_PREFLIGHT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Independent theory/literature preflight; no new force or velocity added.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.725038+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "POLYDISPERSE_RESPONSE_VALIDATED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/missing_physics.py"
+      ],
+      "data_evidence": [
+        "MISSING_PHYSICS_PREFLIGHT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Independent theory/literature preflight; no new force or velocity added.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.726946+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "MULTIFIDELITY_OPTIMIZATION_ADMITTED": {
+      "status": "INCONCLUSIVE",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "No independent HF-positive global pattern and no validated false-negative sensitivity; formal AI screening is not admitted.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.728808+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "MULTIFIDELITY_SEARCH_EXECUTED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.730821+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "REAL_PDMS_FIELD_VALIDATED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.732703+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "REAL_CAMERA_OBSERVABILITY_VALIDATED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.734790+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "ELECTRICAL_TO_ACOUSTIC_CALIBRATED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.736570+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "WORLD_MODEL_TRAINED": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.738317+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "TRAINING_READY": {
+      "status": "NOT_RUN",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": "Not modeled, calibrated, or trained in this bounded exploratory task.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.740084+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "FIGURES_VALIDATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/figures.py"
+      ],
+      "data_evidence": [
+        "figures/MANIFEST.json",
+        "evidence/VISUAL_REVIEW.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.741845+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "VIDEOS_VALIDATED": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/videos.py"
+      ],
+      "data_evidence": [
+        "videos/MANIFEST.json",
+        "evidence/VISUAL_REVIEW.json"
+      ],
+      "initial_states": [
+        "AG32_far",
+        "AG32_local",
+        "AG32_mid",
+        "AG32_near",
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2",
+        "AG32_ring",
+        "N32_contact_transition",
+        "N64_compact_reference",
+        "N64_wide_r0"
+      ],
+      "bubble_counts": [
+        32,
+        64
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "ROT_MINUS",
+        "ROT_PLUS",
+        "X_180",
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.743921+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "FIELD_PERIODICITY_PASS": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/static.py"
+      ],
+      "data_evidence": [
+        "STATIC_RESULTS.json",
+        "FIELD_3D_2500000.h5"
+      ],
+      "initial_states": [
+        "Central-line and registered off-axis F1 roots"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2400000,
+        2500000,
+        2600000
+      ],
+      "actions": [
+        "X_PAIR with relative phase 0/90/180/270 deg"
+      ],
+      "time_range_s": [
+        0,
+        0
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Local single-bubble F1/Stokes linearization; 3D stable points, NOT globally neutral planes or experimentally calibrated traps.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.745805+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "LOCAL_CAPTURE_PASS": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/single.py",
+        "scripts/straight_tube_exp1/f10ag/capture.py"
+      ],
+      "data_evidence": [
+        "SINGLE_RESULTS.json",
+        "single/atlas.h5",
+        "POINT_CAPTURE_RESULTS.json"
+      ],
+      "initial_states": [
+        "162 prescribed independent F1 starts",
+        "24 prescribed local 3D starts"
+      ],
+      "bubble_counts": [
+        1
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "162 mutually independent F1-only trajectories. X-band distance is distinct from Euclidean point capture.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.747661+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      },
+      "independent_single_trajectories": 186
+    },
+    "MULTIPLE_BAND_OCCUPANCY_PASS": {
+      "status": "PASS",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json",
+        "BAND_OCCUPANCY.json"
+      ],
+      "initial_states": [
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2"
+      ],
+      "bubble_counts": [
+        32
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Prescribed periodic initial clouds do not count as global stripe formation; fitted spectral-bin occupancy is distinct from physical force-root occupancy.",
+      "failure_reason": null,
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.749404+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "STRIPE_STRUCTURE_FACTOR_PASS": {
+      "status": "FAIL",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json",
+        "BAND_OCCUPANCY.json"
+      ],
+      "initial_states": [
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2"
+      ],
+      "bubble_counts": [
+        32
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Prescribed periodic initial clouds do not count as global stripe formation; fitted spectral-bin occupancy is distinct from physical force-root occupancy.",
+      "failure_reason": "Registered complete numerical/scientific criterion was not met; see per-trajectory evidence. Not a proof of impossibility at untested times.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.751142+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    },
+    "STRIPE_PERSISTENCE_PASS": {
+      "status": "FAIL",
+      "code_evidence": [
+        "scripts/straight_tube_exp1/f10ag/analyze.py",
+        "src/mevo_mb/fast_sim/accelerated_water.py"
+      ],
+      "data_evidence": [
+        "SCIENTIFIC_RESULTS.json",
+        "AUDIT.json",
+        "BAND_OCCUPANCY.json"
+      ],
+      "initial_states": [
+        "AG32_random_0",
+        "AG32_random_1",
+        "AG32_random_2"
+      ],
+      "bubble_counts": [
+        32
+      ],
+      "frequencies_Hz": [
+        2500000
+      ],
+      "actions": [
+        "X_PAIR"
+      ],
+      "time_range_s": [
+        0,
+        0.25
+      ],
+      "thresholds": {
+        "fixed_ID_m": 5e-08,
+        "capture_m": [
+          3e-05,
+          2e-05,
+          1e-05
+        ],
+        "hold_s": 0.01,
+        "stripe": {
+          "observable_displacement_candidate_m": 2e-06,
+          "stripe_min_periods": 2.0,
+          "stripe_min_occupied_bands": 3,
+          "stripe_null_quantile": 0.99,
+          "stripe_min_order_gain": 0.15,
+          "stripe_min_peak_S": 12.0,
+          "rotation_min_cumulative_deg": 1.0,
+          "rotation_sign_persistence": 0.8,
+          "rotation_min_rigid_fraction": 0.8,
+          "confirmation_initial_states": 3
+        },
+        "contact_policy": {
+          "contact_overlap_m": 1.78e-08,
+          "hard_geometry_m": 1e-09,
+          "contact_correction_m": 1.78e-07,
+          "force_residual_atol_N": 1e-16,
+          "force_residual_rtol": 1e-08,
+          "primal_violation_m": 1e-12,
+          "dual_negative_N": 1e-16,
+          "actual_geometry_complementarity_m": 1e-11
+        }
+      },
+      "model_identity": "Complete F10AA multibubble physics, specific completed windows; unchanged F1/F2/drag/contact. Prescribed periodic initial clouds do not count as global stripe formation; fitted spectral-bin occupancy is distinct from physical force-root occupancy.",
+      "failure_reason": "Registered complete numerical/scientific criterion was not met; see per-trajectory evidence. Not a proof of impossibility at untested times.",
+      "identity": {
+        "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "utc": "2026-10-19T10:43:58.752750+00:00",
+        "labels": [
+          "EXPLORATORY",
+          "HOMOGENEOUS_WATER_CONTROL_PROXY",
+          "PHYSICS_UNCALIBRATED",
+          "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+          "STREAMING_NOT_MODELED",
+          "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+          "COLLECTIVE_ROTATION_UNCONFIRMED"
+        ],
+        "training_ready": false
+      }
+    }
+  },
+  "training_ready": false,
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:43:58.755666+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

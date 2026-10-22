@@ -1,0 +1,15 @@
+{
+  "rows": [
+    {
+      "id": "long150_mid",
+      "error_m": 8.588331520573694e-09,
+      "PASS": true
+    },
+    {
+      "id": "long150_random_0",
+      "error_m": 2.8907074817453785e-08,
+      "PASS": true
+    }
+  ],
+  "method": "Exact accepted raw nodes, 401 shared times; readonly refinement check"
+}

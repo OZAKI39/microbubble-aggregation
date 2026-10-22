@@ -1,0 +1,39 @@
+{
+  "rows": [
+    {
+      "id": "long150_random_0",
+      "instantaneous_spectral_bins": 4,
+      "held_physical_bands_20um": 3
+    },
+    {
+      "id": "long150_random_1",
+      "instantaneous_spectral_bins": 5,
+      "held_physical_bands_20um": 3
+    },
+    {
+      "id": "long150_random_2",
+      "instantaneous_spectral_bins": 3,
+      "held_physical_bands_20um": 3
+    },
+    {
+      "id": "long250_random_0",
+      "instantaneous_spectral_bins": 4,
+      "held_physical_bands_20um": 3
+    }
+  ],
+  "scope": "Physical force-root bands versus historical fitted spectral bins: distinct statistics; held physical bands require final 10 ms inside 20 µm",
+  "identity": {
+    "source_commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "utc": "2026-10-19T10:43:58.660651+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

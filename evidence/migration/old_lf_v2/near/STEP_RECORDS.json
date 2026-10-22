@@ -1,0 +1,162 @@
+[
+  {
+    "time_s": 1e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 6.441868333020626e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 2e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 5.747360296666818e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 3e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 5.035793867278259e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 4e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 4.3064832015275954e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 4.9999999999999996e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 3.55875022241526e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 5.999999999999999e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 2.791940333056786e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 6.999999999999999e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 2.0054433086567498e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 8e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 1.1987205545609957e-07,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 9e-06,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 9.688857375102751e-08,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  },
+  {
+    "time_s": 1e-05,
+    "mode": "HF",
+    "dt_s": 1e-06,
+    "min_gap_m": 8.140977306410172e-08,
+    "wall_correction_m": 0.0,
+    "gates": {
+      "LOCAL_QP_PASS": true,
+      "TRUE_GEOMETRY_PASS": true,
+      "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+      "CONTACT_REACTION_BALANCE_PASS": true,
+      "CONTACT_CORRECTION": true,
+      "WALL_PASS": true,
+      "FULL_STEP_ACCEPTED": true
+    }
+  }
+]

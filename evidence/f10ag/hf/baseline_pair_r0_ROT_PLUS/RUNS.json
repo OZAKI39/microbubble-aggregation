@@ -1,0 +1,70 @@
+[
+  {
+    "name": "N64_CONTROL_2000us_DT1",
+    "N": 64,
+    "action": "CONTROL",
+    "variant": "DT1",
+    "dt_s": 1e-06,
+    "cache": "coarse",
+    "status": "PASS",
+    "reasons": [],
+    "requested_s": 0.002,
+    "completed_s": 0.002,
+    "accepted_steps": 2000,
+    "attempted_steps": 2000,
+    "displacement_m": [
+      1.3282216744465108e-08,
+      3.4515515656081126e-09,
+      -1.7343383330052487e-10
+    ],
+    "wall_s": 5.609100991016021,
+    "integration_s": 5.160395299026277,
+    "mean_step_s": 0.0024979766686592485,
+    "step_latency": {
+      "mean": 0.0024979766686592485,
+      "p50": 0.0023365979868685827,
+      "p95": 0.0034656580319278874,
+      "max": 0.005195884994463995,
+      "samples": 2000
+    },
+    "backend": "B1",
+    "state": "N64_wide_r0",
+    "initialization_s": 0.008657842001412064,
+    "cpu_s": 5.152586895000013,
+    "solver_s": 3.0578394017356914,
+    "resistance_s": 0.34655286333872937,
+    "rss_peak_MiB": 2974.0234375,
+    "trajectory_sha256": "6c5fa9025588d398e42de5427455ec82efe950aa9bc2886050935c6f0e5fc918",
+    "labels": [
+      "EXPLORATORY",
+      "PHYSICS_UNCALIBRATED",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "max_metrics": {
+      "residual_m": 0.0,
+      "overlap_m": 0.0,
+      "max_iteration_m": 0.0,
+      "total_contact_m": 0.0,
+      "wall_m": 0.0,
+      "full_step_s": 0.005195884994463995,
+      "solver_s": 0.0030324269901029766,
+      "resistance_s": 0.0005284899962134659,
+      "iterations": 1.0,
+      "physical_path_sum_m": 8.045311556585512e-09,
+      "contact_displacement_sum_m": 0.0,
+      "primal_m": 0.0,
+      "dual_N": -0.0,
+      "force_residual_N": 0.0,
+      "complementarity_m": 0.0,
+      "complementarity_N_m": 0.0,
+      "actual_complementarity_m": 0.0,
+      "active_count": 0.0,
+      "max_pressure_Pa": 4695.875120447224,
+      "max_total_force_N": 1.0136318153975807e-11,
+      "force_scale_N": 1.0136318153975807e-11
+    },
+    "pressure_min_Pa": 254.48015370894848
+  }
+]

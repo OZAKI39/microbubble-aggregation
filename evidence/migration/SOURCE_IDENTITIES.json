@@ -1,0 +1,26 @@
+[
+  {
+    "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles",
+    "resolved": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles",
+    "git_root": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019",
+    "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "branch": "dev/f10ag-3d-capture-longtime-20261019",
+    "status": ""
+  },
+  {
+    "path": "/home/lzy/projects/computation_examples/_archives/mevo_split_sync_20261022/audit/f10ag_server_logs",
+    "resolved": "/home/lzy/projects/computation_examples/_archives/mevo_split_sync_20261022/audit/f10ag_server_logs",
+    "git_root": null,
+    "commit": null,
+    "branch": null,
+    "status": null
+  },
+  {
+    "path": "/home/lzy/projects/computation_examples/_archives/mevo_split_sync_20261022/audit/protected_remote_inputs",
+    "resolved": "/home/lzy/projects/computation_examples/_archives/mevo_split_sync_20261022/audit/protected_remote_inputs",
+    "git_root": null,
+    "commit": null,
+    "branch": null,
+    "status": null
+  }
+]

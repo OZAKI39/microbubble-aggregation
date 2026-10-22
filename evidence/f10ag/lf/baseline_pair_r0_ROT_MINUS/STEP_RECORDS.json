@@ -1,0 +1,34 @@
+[
+  {
+    "time_s": 0.0005,
+    "mode": "RK45",
+    "dt_s": 0.0005,
+    "min_gap_m": 1.4336878241714727e-05,
+    "whole_interval_margin_m": 1.39720384754573e-05,
+    "max_dense_travel_bound_m": 3.225149383087704e-07
+  },
+  {
+    "time_s": 0.001,
+    "mode": "RK45",
+    "dt_s": 0.0005,
+    "min_gap_m": 1.4000769200653931e-05,
+    "whole_interval_margin_m": 1.367357335090905e-05,
+    "max_dense_travel_bound_m": 3.316524454028382e-07
+  },
+  {
+    "time_s": 0.0015,
+    "mode": "RK45",
+    "dt_s": 0.0005,
+    "min_gap_m": 1.3562225197544548e-05,
+    "whole_interval_margin_m": 1.3316980909942223e-05,
+    "max_dense_travel_bound_m": 3.418941453558543e-07
+  },
+  {
+    "time_s": 0.002,
+    "mode": "RK45",
+    "dt_s": 0.0005,
+    "min_gap_m": 1.310058787229795e-05,
+    "whole_interval_margin_m": 1.285527146548548e-05,
+    "max_dense_travel_bound_m": 3.53476866029534e-07
+  }
+]

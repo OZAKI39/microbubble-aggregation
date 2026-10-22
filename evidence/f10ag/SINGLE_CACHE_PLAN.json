@@ -1,0 +1,26 @@
+{
+  "sources": [
+    "atlas",
+    "local_3d_point"
+  ],
+  "cache_comparison": [
+    "coarse",
+    "fine"
+  ],
+  "position_limit_m": 5e-08,
+  "capture_agreement_required": true,
+  "identity": {
+    "source_commit": "fe5a3455df39f6d69781c19ec9989eeb89ff5773",
+    "utc": "2026-10-19T10:15:51.060211+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED",
+      "ROTATIONAL_ACOUSTIC_FORCE_DIAGNOSTIC",
+      "COLLECTIVE_ROTATION_UNCONFIRMED"
+    ],
+    "training_ready": false
+  }
+}

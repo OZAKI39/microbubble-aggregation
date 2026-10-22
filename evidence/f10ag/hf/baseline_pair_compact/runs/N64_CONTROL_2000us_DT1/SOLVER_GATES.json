@@ -1,0 +1,839 @@
+[
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": true,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": true
+  },
+  {
+    "LOCAL_QP_PASS": true,
+    "TRUE_GEOMETRY_PASS": true,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+    "CONTACT_REACTION_BALANCE_PASS": false,
+    "CONTACT_CORRECTION": true,
+    "WALL_PASS": true,
+    "FULL_STEP_ACCEPTED": false
+  }
+]

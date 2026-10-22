@@ -1,0 +1,10 @@
+[
+  {
+    "time_s": 0.0001,
+    "mode": "RK45",
+    "dt_s": 0.0001,
+    "min_gap_m": 1.8412482060264725e-05,
+    "whole_interval_margin_m": 1.840533061407201e-05,
+    "max_dense_travel_bound_m": 1.983627674718003e-08
+  }
+]

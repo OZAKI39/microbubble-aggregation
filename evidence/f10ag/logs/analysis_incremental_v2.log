@@ -1,0 +1,21 @@
+ANALYZED HF serial_DT_probe
+Warp 1.18.0 initialized:
+   CUDA Toolkit 12.9, Driver 12.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 0.92 ms  (cached)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 0.55 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 0.43 ms  (cached)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 0.36 ms  (cached)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 0.26 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 1.04 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 1.03 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 0.61 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 0.41 ms  (cached)
+ANALYZED LF long250_near
+ANALYZED HF long250_random_0
+ANALYZED HF long250_near
+ANALYZED LF long250_random_0

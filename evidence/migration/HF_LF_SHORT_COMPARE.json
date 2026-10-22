@@ -1,0 +1,6 @@
+{
+  "status": "INCONCLUSIVE",
+  "reason": "Insufficient exact shared times; no numeric admission",
+  "position_comparison_pass": false,
+  "scientific_admission": "Not admitted: original shared-time requirement retained"
+}

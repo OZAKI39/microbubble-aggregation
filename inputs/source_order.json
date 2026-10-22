@@ -1,0 +1,102 @@
+{
+  "elements": [
+    {
+      "id": "side_y_minus",
+      "center_local_m": [
+        0,
+        -0.0045,
+        0
+      ],
+      "normal_local": [
+        0,
+        1,
+        0
+      ],
+      "active_diameter_m": 0.007,
+      "mounting": "CONTACT_PDMS"
+    },
+    {
+      "id": "side_y_plus",
+      "center_local_m": [
+        0,
+        0.0045,
+        0
+      ],
+      "normal_local": [
+        0,
+        -1,
+        0
+      ],
+      "active_diameter_m": 0.007,
+      "mounting": "CONTACT_PDMS"
+    },
+    {
+      "id": "end_x_minus",
+      "center_local_m": [
+        -0.01625,
+        0,
+        0
+      ],
+      "normal_local": [
+        1,
+        0,
+        0
+      ],
+      "active_diameter_m": 0.007,
+      "mounting": "CENTERED_CONTACT_X_MINUS_SEALED"
+    },
+    {
+      "id": "end_x_plus",
+      "center_local_m": [
+        0.01625,
+        0,
+        0
+      ],
+      "normal_local": [
+        -1,
+        0,
+        0
+      ],
+      "active_diameter_m": 0.007,
+      "mounting": "CENTERED_CONTACT_X_PLUS_CLOSED"
+    }
+  ],
+  "ccw_indices": [
+    3,
+    1,
+    2,
+    0
+  ],
+  "ccw_names": [
+    "end_x_plus",
+    "side_y_plus",
+    "end_x_minus",
+    "side_y_minus"
+  ],
+  "positive_phase": [
+    4.71238898038469,
+    1.5707963267948966,
+    3.141592653589793,
+    0.0
+  ],
+  "negative_phase": [
+    -4.71238898038469,
+    -1.5707963267948966,
+    -3.141592653589793,
+    -0.0
+  ],
+  "equal_squared_amplitude_budget": true,
+  "scope": "Static coherent phase winding, not a physically rotating amplitude pattern",
+  "identity": {
+    "source_commit": "614408c1f49a5d78e684c61f9f771f3fabae195c",
+    "utc": "2026-10-19T00:14:13.123114+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "REAL_CAMERA_OBSERVABILITY_UNVERIFIED"
+    ],
+    "training_ready": false
+  }
+}

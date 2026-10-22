@@ -1,0 +1,70 @@
+[
+  {
+    "name": "N32_CONTROL_250000us_DT1",
+    "N": 32,
+    "action": "CONTROL",
+    "variant": "DT1",
+    "dt_s": 1e-06,
+    "cache": "coarse",
+    "status": "PASS",
+    "reasons": [],
+    "requested_s": 0.25,
+    "completed_s": 0.25,
+    "accepted_steps": 250000,
+    "attempted_steps": 250000,
+    "displacement_m": [
+      -6.853422752955083e-06,
+      4.055225287062444e-07,
+      -1.0859114134124168e-08
+    ],
+    "wall_s": 489.9606786229997,
+    "integration_s": 464.4305701989797,
+    "mean_step_s": 0.0018264138950421474,
+    "step_latency": {
+      "mean": 0.0018264138950421474,
+      "p50": 0.0017907445144373924,
+      "p95": 0.0024381954513955856,
+      "max": 0.23855709299095906,
+      "samples": 250000
+    },
+    "backend": "B1",
+    "state": "AG32_random_0",
+    "initialization_s": 0.004083393985638395,
+    "cpu_s": 464.13279704099995,
+    "solver_s": 248.67112715399708,
+    "resistance_s": 21.79024248116184,
+    "rss_peak_MiB": 4972.6328125,
+    "trajectory_sha256": "19b5f3a7e1aa9920b32b71dfd7fcf6e67d8f63139b295a8af366ccd93dc804d1",
+    "labels": [
+      "EXPLORATORY",
+      "PHYSICS_UNCALIBRATED",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "max_metrics": {
+      "residual_m": 1.35112615576187e-16,
+      "overlap_m": 6.522153693858113e-20,
+      "max_iteration_m": 3.1267567111954104e-11,
+      "total_contact_m": 3.1267567111954104e-11,
+      "wall_m": 0.0,
+      "full_step_s": 0.23855709299095906,
+      "solver_s": 0.005103731993585825,
+      "resistance_s": 0.0031588520214427263,
+      "iterations": 2.0,
+      "physical_path_sum_m": 3.086501282714511e-08,
+      "contact_displacement_sum_m": 2.33036010295375e-10,
+      "primal_m": 6.066375284741295e-26,
+      "dual_N": -0.0,
+      "force_residual_N": 4.53332678935998e-18,
+      "complementarity_m": 6.48088500159397e-26,
+      "complementarity_N_m": 3.3889890929356865e-35,
+      "actual_complementarity_m": 6.255840180548003e-20,
+      "active_count": 4.0,
+      "max_pressure_Pa": 3703.506102279045,
+      "max_total_force_N": 5.233607402948287e-10,
+      "force_scale_N": 5.233607402948287e-10
+    },
+    "pressure_min_Pa": 189.97362825400197
+  }
+]

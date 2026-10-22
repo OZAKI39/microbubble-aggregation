@@ -1,0 +1,50 @@
+new_microbubble_aggregation/
+├── main.py
+├── README.md / pyproject.toml / requirements-lock.txt
+├── microbubble/
+│   ├── __init__.py
+│   ├── _warp_forces.py
+│   ├── _warp_walls.py
+│   ├── acoustics.py
+│   ├── analysis.py
+│   ├── bubble_response.py
+│   ├── contact.py
+│   ├── control.py
+│   ├── dynamics.py
+│   ├── forces.py
+│   ├── geometry.py
+│   ├── gpu.py
+│   ├── high_fidelity.py
+│   ├── hydrodynamics.py
+│   ├── initial_conditions.py
+│   ├── integration.py
+│   ├── io.py
+│   ├── parameters.py
+├── workflows/
+│   ├── __init__.py
+│   ├── analysis.py
+│   ├── diagnostics.py
+│   ├── f10ag.py
+│   ├── validation.py
+│   ├── visualization.py
+├── configs/
+│   ├── compact_failure_hf.json
+│   ├── contact_lf.json
+│   ├── half_step_hf.json
+│   ├── minimal_hf.json
+│   ├── minimal_lf.json
+│   ├── paired_hf.json
+│   ├── paired_lf.json
+├── inputs/
+├── tests/
+│   ├── test_admission.py
+│   ├── test_capture.py
+│   ├── test_model.py
+├── evidence/
+├── results/
+├── docs/
+│   ├── CLEANUP_REVIEW.md
+│   ├── DATA_STATUS.md
+│   ├── MIGRATION_MAP.md
+│   ├── MODEL_AND_CALLFLOW.md
+└── .venv/  (independent Python 3.12 environment)

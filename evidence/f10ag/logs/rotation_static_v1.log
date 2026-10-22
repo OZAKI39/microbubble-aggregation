@@ -1,0 +1,41 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 12.9, Driver 12.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Module mevo_mb.fast_sim.kernels b0e31a4 load on device 'cuda:0' took 0.91 ms  (cached)
+Module mevo_mb.fast_sim.f2_kernels 9579545 load on device 'cuda:0' took 0.61 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels a60cc75 load on device 'cuda:0' took 0.35 ms  (cached)
+Module mevo_mb.fast_sim.consistent_field 26b68c1 load on device 'cuda:0' took 0.37 ms  (cached)
+Module mevo_mb.fast_sim.rpy 625d6b4 load on device 'cuda:0' took 0.31 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 04b4172 load on device 'cuda:0' took 0.64 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field 17416bf load on device 'cuda:0' took 0.72 ms  (cached)
+Module mevo_mb.fast_sim.cubic_field f62ac69 load on device 'cuda:0' took 0.49 ms  (cached)
+Module mevo_mb.fast_sim.f3_kernels 5374a04 load on device 'cuda:0' took 0.44 ms  (cached)
+Module mevo_mb.fast_sim.pdms_cavity_engine 916a227 load on device 'cuda:0' took 0.36 ms  (cached)
+RING ROT_PLUS_r50_z-60 7.311056522933832e-06
+RING ROT_PLUS_r50_z0 6.3017844364279315e-06
+RING ROT_PLUS_r50_z60 7.3110565229338325e-06
+RING ROT_PLUS_r150_z-60 7.318822315555514e-06
+RING ROT_PLUS_r150_z0 5.506948620719878e-06
+RING ROT_PLUS_r150_z60 7.318822315555525e-06
+RING ROT_PLUS_r300_z-60 -2.638979106690635e-05
+RING ROT_PLUS_r300_z0 -2.6383746469192087e-05
+RING ROT_PLUS_r300_z60 -2.6389791066906324e-05
+RING ROT_PLUS_r450_z-60 -8.719837497165099e-07
+RING ROT_PLUS_r450_z0 -2.3624529682333587e-07
+RING ROT_PLUS_r450_z60 -8.719837497165065e-07
+RING ROT_MINUS_r50_z-60 -7.311056522933825e-06
+RING ROT_MINUS_r50_z0 -6.301784436427988e-06
+RING ROT_MINUS_r50_z60 -7.311056522933856e-06
+RING ROT_MINUS_r150_z-60 -7.318822315555513e-06
+RING ROT_MINUS_r150_z0 -5.5069486207198835e-06
+RING ROT_MINUS_r150_z60 -7.31882231555553e-06
+RING ROT_MINUS_r300_z-60 2.638979106690632e-05
+RING ROT_MINUS_r300_z0 2.6383746469192023e-05
+RING ROT_MINUS_r300_z60 2.638979106690629e-05
+RING ROT_MINUS_r450_z-60 8.719837497164252e-07
+RING ROT_MINUS_r450_z0 2.3624529682326134e-07
+RING ROT_MINUS_r450_z60 8.719837497164252e-07

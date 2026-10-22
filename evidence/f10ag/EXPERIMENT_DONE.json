@@ -1,0 +1,15 @@
+{
+  "wall_s": 1608.9009531210177,
+  "identity": {
+    "source_commit": "8e8faba03c15693c8758eb6061ce08624d8d7049",
+    "utc": "2026-10-19T10:04:42.651407+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  }
+}

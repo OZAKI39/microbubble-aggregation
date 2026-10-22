@@ -1,0 +1,14 @@
+{
+  "ex": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/5123880db405d609e1ec46df88a6390b06576a15_analysis_final_v3",
+  "server": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019",
+  "module": "f10ag.analyze",
+  "label": "analysis_final_v3",
+  "seconds": 900,
+  "commit": "5123880db405d609e1ec46df88a6390b06576a15",
+  "sha256": "2ae969b1180681446708e25a31fe048c39636155cfe325105ca62afb75a64798",
+  "source_archive_reuse": {
+    "path": "/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/execution/5123880db405d609e1ec46df88a6390b06576a15_ladder_final_v1/source.tar.gz",
+    "sha256": "2ae969b1180681446708e25a31fe048c39636155cfe325105ca62afb75a64798"
+  },
+  "name": "mevo_f10ag_analysis_final_v3"
+}

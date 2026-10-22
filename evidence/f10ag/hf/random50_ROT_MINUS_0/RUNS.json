@@ -1,0 +1,70 @@
+[
+  {
+    "name": "N32_CONTROL_50000us_DT1",
+    "N": 32,
+    "action": "CONTROL",
+    "variant": "DT1",
+    "dt_s": 1e-06,
+    "cache": "coarse",
+    "status": "PASS",
+    "reasons": [],
+    "requested_s": 0.05,
+    "completed_s": 0.049999999999999996,
+    "accepted_steps": 50000,
+    "attempted_steps": 50000,
+    "displacement_m": [
+      8.497749412840334e-07,
+      6.511269196358908e-07,
+      -2.0494178941738757e-09
+    ],
+    "wall_s": 68.40956789298798,
+    "integration_s": 63.059241132985335,
+    "mean_step_s": 0.001233651034052018,
+    "step_latency": {
+      "mean": 0.001233651034052018,
+      "p50": 0.0011936105001950637,
+      "p95": 0.0015740050119347868,
+      "max": 0.09842326599755324,
+      "samples": 50000
+    },
+    "backend": "B1",
+    "state": "AG32_random_0",
+    "initialization_s": 0.007812844996806234,
+    "cpu_s": 63.044703561000006,
+    "solver_s": 22.88447350577917,
+    "resistance_s": 3.7792628611787222,
+    "rss_peak_MiB": 3192.69140625,
+    "trajectory_sha256": "b3628dffb259a8e1552ba8d72c02db5b395adaa32b9bcf591342650848579054",
+    "labels": [
+      "EXPLORATORY",
+      "PHYSICS_UNCALIBRATED",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "max_metrics": {
+      "residual_m": 0.0,
+      "overlap_m": 0.0,
+      "max_iteration_m": 0.0,
+      "total_contact_m": 0.0,
+      "wall_m": 0.0,
+      "full_step_s": 0.09842326599755324,
+      "solver_s": 0.002553892001742497,
+      "resistance_s": 0.0030994020053185523,
+      "iterations": 1.0,
+      "physical_path_sum_m": 3.1495386142486053e-09,
+      "contact_displacement_sum_m": 0.0,
+      "primal_m": 0.0,
+      "dual_N": -0.0,
+      "force_residual_N": 0.0,
+      "complementarity_m": 0.0,
+      "complementarity_N_m": 0.0,
+      "actual_complementarity_m": 0.0,
+      "active_count": 0.0,
+      "max_pressure_Pa": 5509.079981355214,
+      "max_total_force_N": 8.500482174780776e-12,
+      "force_scale_N": 8.500482174780776e-12
+    },
+    "pressure_min_Pa": 21.834357715684476
+  }
+]

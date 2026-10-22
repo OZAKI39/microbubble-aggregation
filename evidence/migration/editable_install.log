@@ -1,0 +1,17 @@
+Obtaining file:///home/lzy/projects/new_microbubble_aggregation
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: microbubble-aggregation
+  Building editable for microbubble-aggregation (pyproject.toml): started
+  Building editable for microbubble-aggregation (pyproject.toml): finished with status 'done'
+  Created wheel for microbubble-aggregation: filename=microbubble_aggregation-0.1.0-0.editable-py3-none-any.whl size=3133 sha256=81599e81def3ac9e776720303bb807ba54e5d63c721aa7373d499482c742b4ef
+  Stored in directory: /tmp/pip-ephem-wheel-cache-01ln0h3n/wheels/43/6e/93/e3e7384ecefa2460705bd6cf1e77551f039422663ec93816af
+Successfully built microbubble-aggregation
+Installing collected packages: microbubble-aggregation
+Successfully installed microbubble-aggregation-0.1.0

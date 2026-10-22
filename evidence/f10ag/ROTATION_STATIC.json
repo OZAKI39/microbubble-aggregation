@@ -1,0 +1,1482 @@
+{
+  "rows": [
+    {
+      "id": "ROT_PLUS_r50_z-60",
+      "action": "ROT_PLUS",
+      "radius_m": 5e-05,
+      "z_m": -6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": 2.4530210041873815e-13,
+      "rms_F1_tangent_N": 1.4190053731231968e-12,
+      "mean_Ftotal_tangent_N": 2.4530210041873805e-13,
+      "mean_vtheta_m_s": 7.311056522933832e-06,
+      "rms_vtheta_m_s": 0.00033768213991897475,
+      "mean_vradial_m_s": -0.00011241863110450688,
+      "rms_vradial_m_s": 0.00013671474544500365,
+      "positive_vtheta_fraction": 0.53125,
+      "phase_winding": -1.0000000000000002,
+      "rotation": {
+        "Omega_z_s": 0.1462211304586766,
+        "Omega_xy_s": 0.14622113045867663,
+        "F10Y_omega_affine_s": 0.29244226091735315,
+        "affine_A_s": [
+          [
+            1.3338833711832183,
+            0.6515881350915034
+          ],
+          [
+            0.9440303960088565,
+            -5.830628615363493
+          ]
+        ],
+        "shear_s": 5.190194143871806,
+        "rigid_fraction": 0.0004027322535312683,
+        "mean_velocity_m_s": [
+          -3.22634849609163e-18,
+          -6.162164691275035e-19,
+          7.02081033294132e-08
+        ],
+        "relative_velocity_rms_m_s": 0.00036431070713180994,
+        "rotation_center_m": [
+          4.235164736271502e-22,
+          7.160075382259008e-21,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r50_z0",
+      "action": "ROT_PLUS",
+      "radius_m": 5e-05,
+      "z_m": 0,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": 2.114387918890775e-13,
+      "rms_F1_tangent_N": 1.417151205156977e-12,
+      "mean_Ftotal_tangent_N": 2.114387918890769e-13,
+      "mean_vtheta_m_s": 6.3017844364279315e-06,
+      "rms_vtheta_m_s": 0.000338671439980607,
+      "mean_vradial_m_s": -0.00011246761136586496,
+      "rms_vradial_m_s": 0.00013690429516443302,
+      "positive_vtheta_fraction": 0.53125,
+      "phase_winding": -1.0,
+      "rotation": {
+        "Omega_z_s": 0.1260356887285587,
+        "Omega_xy_s": 0.12603568872855872,
+        "F10Y_omega_affine_s": 0.25207137745711616,
+        "affine_A_s": [
+          [
+            1.3620838458650186,
+            0.5842555604927782
+          ],
+          [
+            0.8363269379498943,
+            -5.8607883004996175
+          ]
+        ],
+        "shear_s": 5.205186676652995,
+        "rigid_fraction": 0.0002976030478460956,
+        "mean_velocity_m_s": [
+          -3.2360893749850544e-18,
+          -5.433716356636337e-19,
+          3.961104533841843e-21
+        ],
+        "relative_velocity_rms_m_s": 0.0003652959489140389,
+        "rotation_center_m": [
+          4.235164736271502e-22,
+          7.160075382259008e-21,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r50_z60",
+      "action": "ROT_PLUS",
+      "radius_m": 5e-05,
+      "z_m": 6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": 2.4530210041873815e-13,
+      "rms_F1_tangent_N": 1.419005373123197e-12,
+      "mean_Ftotal_tangent_N": 2.4530210041873835e-13,
+      "mean_vtheta_m_s": 7.3110565229338325e-06,
+      "rms_vtheta_m_s": 0.00033768213991897475,
+      "mean_vradial_m_s": -0.00011241863110450685,
+      "rms_vradial_m_s": 0.00013671474544500365,
+      "positive_vtheta_fraction": 0.53125,
+      "phase_winding": -1.0000000000000002,
+      "rotation": {
+        "Omega_z_s": 0.1462211304586766,
+        "Omega_xy_s": 0.14622113045867663,
+        "F10Y_omega_affine_s": 0.29244226091735326,
+        "affine_A_s": [
+          [
+            1.3338833711832188,
+            0.6515881350915046
+          ],
+          [
+            0.9440303960088579,
+            -5.830628615363492
+          ]
+        ],
+        "shear_s": 5.190194143871805,
+        "rigid_fraction": 0.00040273225353104625,
+        "mean_velocity_m_s": [
+          -3.231854210248783e-18,
+          -5.912289971835016e-19,
+          -7.020810332940932e-08
+        ],
+        "relative_velocity_rms_m_s": 0.00036431070713180994,
+        "rotation_center_m": [
+          4.235164736271502e-22,
+          7.160075382259008e-21,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r150_z-60",
+      "action": "ROT_PLUS",
+      "radius_m": 0.00015,
+      "z_m": -6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": 2.4556265992002785e-13,
+      "rms_F1_tangent_N": 2.4462313519823405e-12,
+      "mean_Ftotal_tangent_N": 2.4556265992002765e-13,
+      "mean_vtheta_m_s": 7.318822315555514e-06,
+      "rms_vtheta_m_s": 0.000187130871597335,
+      "mean_vradial_m_s": -2.287272567251257e-05,
+      "rms_vradial_m_s": 4.643288816023818e-05,
+      "positive_vtheta_fraction": 0.625,
+      "phase_winding": -0.9999999999999999,
+      "rotation": {
+        "Omega_z_s": 0.048792148770370095,
+        "Omega_xy_s": 0.048792148770370095,
+        "F10Y_omega_affine_s": 0.09758429754074033,
+        "affine_A_s": [
+          [
+            0.4366483053173182,
+            0.22242122734735587
+          ],
+          [
+            0.3200055248880962,
+            -0.741617980950819
+          ]
+        ],
+        "shear_s": 0.9172072347340072,
+        "rigid_fraction": 0.0014378143836996093,
+        "mean_velocity_m_s": [
+          5.262192184817341e-19,
+          -1.6940658945086007e-20,
+          4.83072108419749e-07
+        ],
+        "relative_velocity_rms_m_s": 0.0001930144357860929,
+        "rotation_center_m": [
+          -3.3881317890172014e-21,
+          -9.370301979000698e-21,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r150_z0",
+      "action": "ROT_PLUS",
+      "radius_m": 0.00015,
+      "z_m": 0,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": 1.8477029405027408e-13,
+      "rms_F1_tangent_N": 2.4239696097675478e-12,
+      "mean_Ftotal_tangent_N": 1.8477029405027418e-13,
+      "mean_vtheta_m_s": 5.506948620719878e-06,
+      "rms_vtheta_m_s": 0.00018643848361820343,
+      "mean_vradial_m_s": -2.2824231205684593e-05,
+      "rms_vradial_m_s": 4.669311331363674e-05,
+      "positive_vtheta_fraction": 0.59375,
+      "phase_winding": -0.9999999999999999,
+      "rotation": {
+        "Omega_z_s": 0.03671299080479922,
+        "Omega_xy_s": 0.03671299080479922,
+        "F10Y_omega_affine_s": 0.07342598160959854,
+        "affine_A_s": [
+          [
+            0.4395632301500663,
+            0.21012743417691118
+          ],
+          [
+            0.2835534157865097,
+            -0.7438863128925276
+          ]
+        ],
+        "shear_s": 0.9067175973114039,
+        "rigid_fraction": 0.0008209758646883225,
+        "mean_velocity_m_s": [
+          4.578213079909493e-19,
+          -5.166900978251232e-20,
+          -5.5597036906430934e-21
+        ],
+        "relative_velocity_rms_m_s": 0.00019219665711134318,
+        "rotation_center_m": [
+          -3.3881317890172014e-21,
+          -9.370301979000698e-21,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r150_z60",
+      "action": "ROT_PLUS",
+      "radius_m": 0.00015,
+      "z_m": 6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": 2.4556265992002805e-13,
+      "rms_F1_tangent_N": 2.4462313519823417e-12,
+      "mean_Ftotal_tangent_N": 2.45562659920028e-13,
+      "mean_vtheta_m_s": 7.318822315555525e-06,
+      "rms_vtheta_m_s": 0.00018713087159733503,
+      "mean_vradial_m_s": -2.2872725672512532e-05,
+      "rms_vradial_m_s": 4.643288816023816e-05,
+      "positive_vtheta_fraction": 0.625,
+      "phase_winding": -1.0,
+      "rotation": {
+        "Omega_z_s": 0.048792148770370206,
+        "Omega_xy_s": 0.048792148770370206,
+        "F10Y_omega_affine_s": 0.09758429754074008,
+        "affine_A_s": [
+          [
+            0.4366483053173184,
+            0.2224212273473559
+          ],
+          [
+            0.32000552488809597,
+            -0.7416179809508187
+          ]
+        ],
+        "shear_s": 0.917207234734007,
+        "rigid_fraction": 0.0014378143836996093,
+        "mean_velocity_m_s": [
+          4.521038355969828e-19,
+          -1.9905274260476058e-20,
+          -4.83072108419786e-07
+        ],
+        "relative_velocity_rms_m_s": 0.0001930144357860929,
+        "rotation_center_m": [
+          -3.3881317890172014e-21,
+          -9.370301979000698e-21,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r300_z-60",
+      "action": "ROT_PLUS",
+      "radius_m": 0.0003,
+      "z_m": -6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": -8.854357996026081e-13,
+      "rms_F1_tangent_N": 2.3182785729075142e-12,
+      "mean_Ftotal_tangent_N": -8.854357996026081e-13,
+      "mean_vtheta_m_s": -2.638979106690635e-05,
+      "rms_vtheta_m_s": 0.00010168517639555795,
+      "mean_vradial_m_s": -2.7492059273511287e-05,
+      "rms_vradial_m_s": 6.211307678798768e-05,
+      "positive_vtheta_fraction": 0.40625,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.08796597022302116,
+        "Omega_xy_s": -0.08796597022302116,
+        "F10Y_omega_affine_s": -0.1759319404460422,
+        "affine_A_s": [
+          [
+            -0.17018408984355513,
+            0.05958464958778791
+          ],
+          [
+            -0.11634729085825431,
+            -0.013096305313186793
+          ]
+        ],
+        "shear_s": 0.11810709016113106,
+        "rigid_fraction": 0.04876105162978139,
+        "mean_velocity_m_s": [
+          -1.2899385344396935e-19,
+          5.953318130217647e-19,
+          5.692735594955369e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00011950867189755938,
+        "rotation_center_m": [
+          -6.776263578034403e-21,
+          -1.8740603958001395e-20,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r300_z0",
+      "action": "ROT_PLUS",
+      "radius_m": 0.0003,
+      "z_m": 0,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": -8.85232989993512e-13,
+      "rms_F1_tangent_N": 2.3270956758245294e-12,
+      "mean_Ftotal_tangent_N": -8.852329899935121e-13,
+      "mean_vtheta_m_s": -2.6383746469192087e-05,
+      "rms_vtheta_m_s": 0.00010217159382199465,
+      "mean_vradial_m_s": -2.7646019327780844e-05,
+      "rms_vradial_m_s": 6.130362089441977e-05,
+      "positive_vtheta_fraction": 0.40625,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.08794582156397363,
+        "Omega_xy_s": -0.08794582156397363,
+        "F10Y_omega_affine_s": -0.1758916431279472,
+        "affine_A_s": [
+          [
+            -0.17242993611609106,
+            0.060114584697990095
+          ],
+          [
+            -0.11577705842995709,
+            -0.011876859402447875
+          ]
+        ],
+        "shear_s": 0.12015739973921478,
+        "rigid_fraction": 0.04903104987619489,
+        "mean_velocity_m_s": [
+          -2.4303559013543017e-19,
+          5.117137792600042e-19,
+          1.6019773227490757e-20
+        ],
+        "relative_velocity_rms_m_s": 0.00011915187165501596,
+        "rotation_center_m": [
+          -6.776263578034403e-21,
+          -1.8740603958001395e-20,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r300_z60",
+      "action": "ROT_PLUS",
+      "radius_m": 0.0003,
+      "z_m": 6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": -8.85435799602607e-13,
+      "rms_F1_tangent_N": 2.3182785729075142e-12,
+      "mean_Ftotal_tangent_N": -8.854357996026072e-13,
+      "mean_vtheta_m_s": -2.6389791066906324e-05,
+      "rms_vtheta_m_s": 0.00010168517639555796,
+      "mean_vradial_m_s": -2.749205927351127e-05,
+      "rms_vradial_m_s": 6.211307678798772e-05,
+      "positive_vtheta_fraction": 0.40625,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.08796597022302108,
+        "Omega_xy_s": -0.08796597022302108,
+        "F10Y_omega_affine_s": -0.17593194044604207,
+        "affine_A_s": [
+          [
+            -0.17018408984355518,
+            0.05958464958778779
+          ],
+          [
+            -0.1163472908582543,
+            -0.013096305313186682
+          ]
+        ],
+        "shear_s": 0.1181070901611312,
+        "rigid_fraction": 0.04876105162978139,
+        "mean_velocity_m_s": [
+          -1.3483705729104394e-19,
+          5.712443135842205e-19,
+          -5.692735594955377e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00011950867189755941,
+        "rotation_center_m": [
+          -6.776263578034403e-21,
+          -1.8740603958001395e-20,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r450_z-60",
+      "action": "ROT_PLUS",
+      "radius_m": 0.00045,
+      "z_m": -6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": -2.925698148625891e-14,
+      "rms_F1_tangent_N": 3.4216262511718355e-12,
+      "mean_Ftotal_tangent_N": -2.925698148625891e-14,
+      "mean_vtheta_m_s": -8.719837497165099e-07,
+      "rms_vtheta_m_s": 0.0001294284423144133,
+      "mean_vradial_m_s": 1.8794978946497128e-05,
+      "rms_vradial_m_s": 6.152655114755481e-05,
+      "positive_vtheta_fraction": 0.40625,
+      "phase_winding": -1.0000000000000002,
+      "rotation": {
+        "Omega_z_s": -0.0019377416660367004,
+        "Omega_xy_s": -0.0019377416660367004,
+        "F10Y_omega_affine_s": -0.003875483332073444,
+        "affine_A_s": [
+          [
+            0.13142036654896652,
+            -0.04538866513143878
+          ],
+          [
+            -0.04926414846351222,
+            -0.04788712678675696
+          ]
+        ],
+        "shear_s": 0.14337072973201515,
+        "rigid_fraction": 3.6996935504407524e-05,
+        "mean_velocity_m_s": [
+          1.2691729923421623e-18,
+          -5.175371307723775e-19,
+          -2.7168942215488377e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00014335918232809034,
+        "rotation_center_m": [
+          -3.218725199566341e-20,
+          9.105604182983729e-21,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r450_z0",
+      "action": "ROT_PLUS",
+      "radius_m": 0.00045,
+      "z_m": 0,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": -7.926551701936404e-15,
+      "rms_F1_tangent_N": 3.4150504538391895e-12,
+      "mean_Ftotal_tangent_N": -7.926551701936303e-15,
+      "mean_vtheta_m_s": -2.3624529682333587e-07,
+      "rms_vtheta_m_s": 0.00012914687033858464,
+      "mean_vradial_m_s": 1.8723843112454597e-05,
+      "rms_vradial_m_s": 6.265196980751596e-05,
+      "positive_vtheta_fraction": 0.40625,
+      "phase_winding": -1.0,
+      "rotation": {
+        "Omega_z_s": -0.0005249895484963278,
+        "Omega_xy_s": -0.0005249895484963278,
+        "F10Y_omega_affine_s": -0.0010499790969926912,
+        "affine_A_s": [
+          [
+            0.13224429999740386,
+            -0.046175086149720324
+          ],
+          [
+            -0.047225065246713015,
+            -0.0490272194976057
+          ]
+        ],
+        "shear_s": 0.14419249644296042,
+        "rigid_fraction": 2.708762540160059e-06,
+        "mean_velocity_m_s": [
+          1.198551620364835e-18,
+          -4.845028458294598e-19,
+          5.199569488756956e-21
+        ],
+        "relative_velocity_rms_m_s": 0.00014354157390461165,
+        "rotation_center_m": [
+          -3.218725199566341e-20,
+          9.105604182983729e-21,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_PLUS_r450_z60",
+      "action": "ROT_PLUS",
+      "radius_m": 0.00045,
+      "z_m": 6e-05,
+      "phases": [
+        4.71238898038469,
+        1.5707963267948966,
+        3.141592653589793,
+        0.0
+      ],
+      "mean_F1_tangent_N": -2.925698148625891e-14,
+      "rms_F1_tangent_N": 3.4216262511718367e-12,
+      "mean_Ftotal_tangent_N": -2.925698148625851e-14,
+      "mean_vtheta_m_s": -8.719837497165065e-07,
+      "rms_vtheta_m_s": 0.00012942844231441332,
+      "mean_vradial_m_s": 1.8794978946497155e-05,
+      "rms_vradial_m_s": 6.152655114755474e-05,
+      "positive_vtheta_fraction": 0.40625,
+      "phase_winding": -1.0,
+      "rotation": {
+        "Omega_z_s": -0.001937741666036684,
+        "Omega_xy_s": -0.001937741666036684,
+        "F10Y_omega_affine_s": -0.003875483332073437,
+        "affine_A_s": [
+          [
+            0.13142036654896652,
+            -0.045388665131438806
+          ],
+          [
+            -0.04926414846351224,
+            -0.047887126786756856
+          ]
+        ],
+        "shear_s": 0.1433707297320151,
+        "rigid_fraction": 3.6996935504407524e-05,
+        "mean_velocity_m_s": [
+          1.1348653306431523e-18,
+          -4.895850435129856e-19,
+          2.716894221548829e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00014335918232809036,
+        "rotation_center_m": [
+          -3.218725199566341e-20,
+          9.105604182983729e-21,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r50_z-60",
+      "action": "ROT_MINUS",
+      "radius_m": 5e-05,
+      "z_m": -6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": -2.453021004187386e-13,
+      "rms_F1_tangent_N": 1.419005373123197e-12,
+      "mean_Ftotal_tangent_N": -2.4530210041873774e-13,
+      "mean_vtheta_m_s": -7.311056522933825e-06,
+      "rms_vtheta_m_s": 0.0003376821399189747,
+      "mean_vradial_m_s": -0.0001124186311045069,
+      "rms_vradial_m_s": 0.00013671474544500365,
+      "positive_vtheta_fraction": 0.46875,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.14622113045867635,
+        "Omega_xy_s": -0.14622113045867638,
+        "F10Y_omega_affine_s": -0.2924422609173526,
+        "affine_A_s": [
+          [
+            1.3338833711832176,
+            -0.651588135091503
+          ],
+          [
+            -0.9440303960088556,
+            -5.830628615363492
+          ]
+        ],
+        "shear_s": 5.190194143871804,
+        "rigid_fraction": 0.0004027322535312683,
+        "mean_velocity_m_s": [
+          -2.9252282833427262e-18,
+          5.949877058869426e-19,
+          7.020810332941333e-08
+        ],
+        "relative_velocity_rms_m_s": 0.00036431070713180994,
+        "rotation_center_m": [
+          4.235164736271502e-22,
+          7.160075382259008e-21,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r50_z0",
+      "action": "ROT_MINUS",
+      "radius_m": 5e-05,
+      "z_m": 0,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": -2.1143879188907823e-13,
+      "rms_F1_tangent_N": 1.4171512051569771e-12,
+      "mean_Ftotal_tangent_N": -2.114387918890784e-13,
+      "mean_vtheta_m_s": -6.301784436427988e-06,
+      "rms_vtheta_m_s": 0.00033867143998060693,
+      "mean_vradial_m_s": -0.00011246761136586492,
+      "rms_vradial_m_s": 0.00013690429516443296,
+      "positive_vtheta_fraction": 0.46875,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.12603568872855955,
+        "Omega_xy_s": -0.12603568872855958,
+        "F10Y_omega_affine_s": -0.25207137745711805,
+        "affine_A_s": [
+          [
+            1.3620838458650193,
+            -0.5842555604927763
+          ],
+          [
+            -0.8363269379498943,
+            -5.860788300499613
+          ]
+        ],
+        "shear_s": 5.205186676652993,
+        "rigid_fraction": 0.0002976030478460956,
+        "mean_velocity_m_s": [
+          -2.922263668027336e-18,
+          5.50068489902863e-19,
+          4.169349511664951e-21
+        ],
+        "relative_velocity_rms_m_s": 0.0003652959489140388,
+        "rotation_center_m": [
+          4.235164736271502e-22,
+          7.160075382259008e-21,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r50_z60",
+      "action": "ROT_MINUS",
+      "radius_m": 5e-05,
+      "z_m": 6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": -2.4530210041873896e-13,
+      "rms_F1_tangent_N": 1.4190053731231973e-12,
+      "mean_Ftotal_tangent_N": -2.453021004187389e-13,
+      "mean_vtheta_m_s": -7.311056522933856e-06,
+      "rms_vtheta_m_s": 0.0003376821399189747,
+      "mean_vradial_m_s": -0.00011241863110450685,
+      "rms_vradial_m_s": 0.00013671474544500362,
+      "positive_vtheta_fraction": 0.46875,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.1462211304586771,
+        "Omega_xy_s": -0.1462211304586771,
+        "F10Y_omega_affine_s": -0.29244226091735415,
+        "affine_A_s": [
+          [
+            1.3338833711832185,
+            -0.6515881350915033
+          ],
+          [
+            -0.9440303960088574,
+            -5.83062861536349
+          ]
+        ],
+        "shear_s": 5.190194143871804,
+        "rigid_fraction": 0.00040273225353149034,
+        "mean_velocity_m_s": [
+          -2.9256517998163534e-18,
+          5.769882557577887e-19,
+          -7.020810332940696e-08
+        ],
+        "relative_velocity_rms_m_s": 0.0003643107071318099,
+        "rotation_center_m": [
+          4.235164736271502e-22,
+          7.160075382259008e-21,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r150_z-60",
+      "action": "ROT_MINUS",
+      "radius_m": 0.00015,
+      "z_m": -6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": -2.4556265992002775e-13,
+      "rms_F1_tangent_N": 2.4462313519823405e-12,
+      "mean_Ftotal_tangent_N": -2.455626599200276e-13,
+      "mean_vtheta_m_s": -7.318822315555513e-06,
+      "rms_vtheta_m_s": 0.00018713087159733495,
+      "mean_vradial_m_s": -2.2872725672512614e-05,
+      "rms_vradial_m_s": 4.6432888160238164e-05,
+      "positive_vtheta_fraction": 0.375,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.048792148770370074,
+        "Omega_xy_s": -0.048792148770370074,
+        "F10Y_omega_affine_s": -0.09758429754074016,
+        "affine_A_s": [
+          [
+            0.43664830531731763,
+            -0.22242122734735542
+          ],
+          [
+            -0.3200055248880956,
+            -0.741617980950819
+          ]
+        ],
+        "shear_s": 0.9172072347340064,
+        "rigid_fraction": 0.0014378143836996093,
+        "mean_velocity_m_s": [
+          9.323715166901711e-19,
+          1.4632494163818038e-19,
+          4.830721084197524e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00019301443578609282,
+        "rotation_center_m": [
+          -3.3881317890172014e-21,
+          -9.370301979000698e-21,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r150_z0",
+      "action": "ROT_MINUS",
+      "radius_m": 0.00015,
+      "z_m": 0,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": -1.847702940502744e-13,
+      "rms_F1_tangent_N": 2.423969609767549e-12,
+      "mean_Ftotal_tangent_N": -1.8477029405027449e-13,
+      "mean_vtheta_m_s": -5.5069486207198835e-06,
+      "rms_vtheta_m_s": 0.00018643848361820346,
+      "mean_vradial_m_s": -2.2824231205684616e-05,
+      "rms_vradial_m_s": 4.6693113313636755e-05,
+      "positive_vtheta_fraction": 0.40625,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.03671299080479921,
+        "Omega_xy_s": -0.03671299080479921,
+        "F10Y_omega_affine_s": -0.07342598160959868,
+        "affine_A_s": [
+          [
+            0.43956323015006615,
+            -0.21012743417691115
+          ],
+          [
+            -0.28355341578650983,
+            -0.7438863128925277
+          ]
+        ],
+        "shear_s": 0.9067175973114039,
+        "rigid_fraction": 0.0008209758646883225,
+        "mean_velocity_m_s": [
+          9.158543742187122e-19,
+          6.500977870176755e-20,
+          5.266396792636027e-22
+        ],
+        "relative_velocity_rms_m_s": 0.00019219665711134323,
+        "rotation_center_m": [
+          -3.3881317890172014e-21,
+          -9.370301979000698e-21,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r150_z60",
+      "action": "ROT_MINUS",
+      "radius_m": 0.00015,
+      "z_m": 6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": -2.455626599200282e-13,
+      "rms_F1_tangent_N": 2.4462313519823417e-12,
+      "mean_Ftotal_tangent_N": -2.4556265992002815e-13,
+      "mean_vtheta_m_s": -7.31882231555553e-06,
+      "rms_vtheta_m_s": 0.000187130871597335,
+      "mean_vradial_m_s": -2.2872725672512634e-05,
+      "rms_vradial_m_s": 4.6432888160238184e-05,
+      "positive_vtheta_fraction": 0.375,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": -0.048792148770370206,
+        "Omega_xy_s": -0.048792148770370206,
+        "F10Y_omega_affine_s": -0.09758429754074038,
+        "affine_A_s": [
+          [
+            0.4366483053173174,
+            -0.22242122734735542
+          ],
+          [
+            -0.3200055248880958,
+            -0.7416179809508192
+          ]
+        ],
+        "shear_s": 0.9172072347340066,
+        "rigid_fraction": 0.0014378143836994983,
+        "mean_velocity_m_s": [
+          8.713851444878615e-19,
+          1.8677076486957322e-19,
+          -4.830721084197985e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00019301443578609287,
+        "rotation_center_m": [
+          -3.3881317890172014e-21,
+          -9.370301979000698e-21,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r300_z-60",
+      "action": "ROT_MINUS",
+      "radius_m": 0.0003,
+      "z_m": -6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": 8.854357996026071e-13,
+      "rms_F1_tangent_N": 2.3182785729075146e-12,
+      "mean_Ftotal_tangent_N": 8.85435799602607e-13,
+      "mean_vtheta_m_s": 2.638979106690632e-05,
+      "rms_vtheta_m_s": 0.00010168517639555799,
+      "mean_vradial_m_s": -2.749205927351129e-05,
+      "rms_vradial_m_s": 6.211307678798765e-05,
+      "positive_vtheta_fraction": 0.59375,
+      "phase_winding": -1.0000000000000002,
+      "rotation": {
+        "Omega_z_s": 0.08796597022302108,
+        "Omega_xy_s": 0.08796597022302108,
+        "F10Y_omega_affine_s": 0.17593194044604216,
+        "affine_A_s": [
+          [
+            -0.170184089843555,
+            -0.05958464958778792
+          ],
+          [
+            0.11634729085825422,
+            -0.013096305313186889
+          ]
+        ],
+        "shear_s": 0.11810709016113087,
+        "rigid_fraction": 0.04876105162978128,
+        "mean_velocity_m_s": [
+          -4.371219403424224e-19,
+          -6.171693811931646e-19,
+          5.692735594955365e-07
+        ],
+        "relative_velocity_rms_m_s": 0.0001195086718975594,
+        "rotation_center_m": [
+          -6.776263578034403e-21,
+          -1.8740603958001395e-20,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r300_z0",
+      "action": "ROT_MINUS",
+      "radius_m": 0.0003,
+      "z_m": 0,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": 8.852329899935098e-13,
+      "rms_F1_tangent_N": 2.3270956758245294e-12,
+      "mean_Ftotal_tangent_N": 8.852329899935098e-13,
+      "mean_vtheta_m_s": 2.6383746469192023e-05,
+      "rms_vtheta_m_s": 0.00010217159382199465,
+      "mean_vradial_m_s": -2.764601932778089e-05,
+      "rms_vradial_m_s": 6.13036208944198e-05,
+      "positive_vtheta_fraction": 0.59375,
+      "phase_winding": -1.0,
+      "rotation": {
+        "Omega_z_s": 0.08794582156397342,
+        "Omega_xy_s": 0.08794582156397342,
+        "F10Y_omega_affine_s": 0.1758916431279469,
+        "affine_A_s": [
+          [
+            -0.17242993611609092,
+            -0.060114584697989824
+          ],
+          [
+            0.11577705842995706,
+            -0.0118768594024483
+          ]
+        ],
+        "shear_s": 0.12015739973921447,
+        "rigid_fraction": 0.049031049876194555,
+        "mean_velocity_m_s": [
+          -4.641211155361532e-19,
+          -5.405128994666504e-19,
+          1.5066154895861386e-20
+        ],
+        "relative_velocity_rms_m_s": 0.00011915187165501597,
+        "rotation_center_m": [
+          -6.776263578034403e-21,
+          -1.8740603958001395e-20,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r300_z60",
+      "action": "ROT_MINUS",
+      "radius_m": 0.0003,
+      "z_m": 6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": 8.85435799602606e-13,
+      "rms_F1_tangent_N": 2.3182785729075146e-12,
+      "mean_Ftotal_tangent_N": 8.854357996026059e-13,
+      "mean_vtheta_m_s": 2.638979106690629e-05,
+      "rms_vtheta_m_s": 0.00010168517639555799,
+      "mean_vradial_m_s": -2.749205927351127e-05,
+      "rms_vradial_m_s": 6.211307678798762e-05,
+      "positive_vtheta_fraction": 0.59375,
+      "phase_winding": -1.0000000000000002,
+      "rotation": {
+        "Omega_z_s": 0.08796597022302098,
+        "Omega_xy_s": 0.08796597022302098,
+        "F10Y_omega_affine_s": 0.175931940446042,
+        "affine_A_s": [
+          [
+            -0.1701840898435549,
+            -0.05958464958778778
+          ],
+          [
+            0.1163472908582542,
+            -0.013096305313186845
+          ]
+        ],
+        "shear_s": 0.11810709016113088,
+        "rigid_fraction": 0.04876105162978117,
+        "mean_velocity_m_s": [
+          -4.688856758644586e-19,
+          -6.554976220564217e-19,
+          -5.692735594955398e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00011950867189755938,
+        "rotation_center_m": [
+          -6.776263578034403e-21,
+          -1.8740603958001395e-20,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r450_z-60",
+      "action": "ROT_MINUS",
+      "radius_m": 0.00045,
+      "z_m": -6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": 2.9256981486256084e-14,
+      "rms_F1_tangent_N": 3.4216262511718355e-12,
+      "mean_Ftotal_tangent_N": 2.925698148625588e-14,
+      "mean_vtheta_m_s": 8.719837497164252e-07,
+      "rms_vtheta_m_s": 0.00012942844231441327,
+      "mean_vradial_m_s": 1.879497894649707e-05,
+      "rms_vradial_m_s": 6.152655114755473e-05,
+      "positive_vtheta_fraction": 0.59375,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": 0.0019377416660365041,
+        "Omega_xy_s": 0.0019377416660365041,
+        "F10Y_omega_affine_s": 0.003875483332073021,
+        "affine_A_s": [
+          [
+            0.13142036654896624,
+            0.0453886651314391
+          ],
+          [
+            0.04926414846351212,
+            -0.047887126786757044
+          ]
+        ],
+        "shear_s": 0.1433707297320151,
+        "rigid_fraction": 3.6996935504407524e-05,
+        "mean_velocity_m_s": [
+          1.0991443630706623e-18,
+          7.775762455794477e-19,
+          -2.7168942215490675e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00014335918232809028,
+        "rotation_center_m": [
+          -3.218725199566341e-20,
+          9.105604182983729e-21,
+          -6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r450_z0",
+      "action": "ROT_MINUS",
+      "radius_m": 0.00045,
+      "z_m": 0,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": 7.926551701933779e-15,
+      "rms_F1_tangent_N": 3.41505045383919e-12,
+      "mean_Ftotal_tangent_N": 7.926551701933577e-15,
+      "mean_vtheta_m_s": 2.3624529682326134e-07,
+      "rms_vtheta_m_s": 0.00012914687033858466,
+      "mean_vradial_m_s": 1.8723843112454536e-05,
+      "rms_vradial_m_s": 6.265196980751589e-05,
+      "positive_vtheta_fraction": 0.59375,
+      "phase_winding": 1.0,
+      "rotation": {
+        "Omega_z_s": 0.0005249895484961317,
+        "Omega_xy_s": 0.0005249895484961317,
+        "F10Y_omega_affine_s": 0.0010499790969922818,
+        "affine_A_s": [
+          [
+            0.13224429999740375,
+            0.04617508614972057
+          ],
+          [
+            0.047225065246712855,
+            -0.04902721949760575
+          ]
+        ],
+        "shear_s": 0.14419249644296042,
+        "rigid_fraction": 2.708762540160059e-06,
+        "mean_velocity_m_s": [
+          1.0363712807452382e-18,
+          7.352245982167327e-19,
+          7.849815555885074e-21
+        ],
+        "relative_velocity_rms_m_s": 0.00014354157390461162,
+        "rotation_center_m": [
+          -3.218725199566341e-20,
+          9.105604182983729e-21,
+          0.0
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    },
+    {
+      "id": "ROT_MINUS_r450_z60",
+      "action": "ROT_MINUS",
+      "radius_m": 0.00045,
+      "z_m": 6e-05,
+      "phases": [
+        -4.71238898038469,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -0.0
+      ],
+      "mean_F1_tangent_N": 2.9256981486256286e-14,
+      "rms_F1_tangent_N": 3.421626251171836e-12,
+      "mean_Ftotal_tangent_N": 2.925698148625588e-14,
+      "mean_vtheta_m_s": 8.719837497164252e-07,
+      "rms_vtheta_m_s": 0.0001294284423144133,
+      "mean_vradial_m_s": 1.8794978946497064e-05,
+      "rms_vradial_m_s": 6.15265511475547e-05,
+      "positive_vtheta_fraction": 0.59375,
+      "phase_winding": 1.0000000000000002,
+      "rotation": {
+        "Omega_z_s": 0.0019377416660365041,
+        "Omega_xy_s": 0.0019377416660365041,
+        "F10Y_omega_affine_s": 0.0038754833320729792,
+        "affine_A_s": [
+          [
+            0.13142036654896627,
+            0.04538866513143908
+          ],
+          [
+            0.049264148463512056,
+            -0.047887126786757064
+          ]
+        ],
+        "shear_s": 0.1433707297320151,
+        "rigid_fraction": 3.6996935504407524e-05,
+        "mean_velocity_m_s": [
+          1.027133327664246e-18,
+          8.343274530454858e-19,
+          2.716894221548782e-07
+        ],
+        "relative_velocity_rms_m_s": 0.00014335918232809028,
+        "rotation_center_m": [
+          -3.218725199566341e-20,
+          9.105604182983729e-21,
+          6.000000000000007e-05
+        ],
+        "rotation_center_scope": "Group COM reference; no inferred fixed physical vortex center"
+      },
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": true,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": true
+      },
+      "accepted": true,
+      "N": 64
+    }
+  ],
+  "wall_s": 1.2004207569989376,
+  "identity": {
+    "source_commit": "83557c63dce3b3b5519c19390ea3b268f41f8ce3",
+    "utc": "2026-10-19T09:33:22.891977+00:00",
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+      "STREAMING_NOT_MODELED"
+    ],
+    "training_ready": false
+  },
+  "scope": "PRESCRIBED_RING_INITIAL_CONDITION; one actual full constrained step, not sustained rotation"
+}

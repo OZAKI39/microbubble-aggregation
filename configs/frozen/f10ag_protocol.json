@@ -1,0 +1,130 @@
+{
+  "name": "F10AG Three-Dimensional Capture",
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+  ],
+  "training_ready": false,
+  "field": {
+    "bounds_m": [
+      [
+        -0.00062,
+        -0.00052,
+        -0.0001
+      ],
+      [
+        0.00062,
+        0.00052,
+        0.0001
+      ]
+    ],
+    "coarse_step_m": 1e-05,
+    "fine_step_m": 5e-06,
+    "quadrature_limit": 1e-07
+  },
+  "physics": {
+    "radius_m": 1.78e-06,
+    "flow": "STRICT_ZERO",
+    "frequencies_Hz": [
+      2400000,
+      2500000,
+      2600000
+    ],
+    "max_source_Pa_equivalent": 1500,
+    "streaming": false,
+    "buoyancy": false
+  },
+  "budget": {
+    "total_scientific_wall_s": 6000,
+    "field_wall_s": 900,
+    "max_HF_attempts": 60,
+    "max_LF_attempts": 80,
+    "per_HF_wall_s": 600,
+    "workers": 3,
+    "optimizer_wall_s_each": 240,
+    "initial_HF_duration_s": 0.002,
+    "time_ladder_s": [
+      0.05,
+      0.075,
+      0.1,
+      0.15,
+      0.25
+    ],
+    "maximum_LF_forecast_s": 0.25
+  },
+  "LF": {
+    "method": "SciPy RK45 with original F1/F2 and exact far-field resistance identity",
+    "rtol": 1e-07,
+    "atol_m": 1e-12,
+    "max_step_s": 0.0005,
+    "contact_guard_gap_R": 0.5,
+    "resume_gap_R": 1.0,
+    "HF_dt_s": 1e-06,
+    "fixed_ID_limit_m": 5e-08,
+    "boundary_policy": "return to original solver before contact, fail on wall corrections or cache violation"
+  },
+  "targets": {
+    "observable_displacement_candidate_m": 2e-06,
+    "stripe_min_periods": 2.0,
+    "stripe_min_occupied_bands": 3,
+    "stripe_null_quantile": 0.99,
+    "stripe_min_order_gain": 0.15,
+    "stripe_min_peak_S": 12.0,
+    "rotation_min_cumulative_deg": 1.0,
+    "rotation_sign_persistence": 0.8,
+    "rotation_min_rigid_fraction": 0.8,
+    "confirmation_initial_states": 3
+  },
+  "MF_admission": {
+    "rank_spearman_min": 0.8,
+    "false_negative_max": 0,
+    "paired_independent_states": 3,
+    "same_physical_duration_required": true,
+    "no_short_time_early_pruning": true
+  },
+  "seed_discovery": 462010,
+  "seeds_validation": [
+    462101,
+    462102,
+    462103
+  ],
+  "capture": {
+    "thresholds_m": [
+      3e-05,
+      2e-05,
+      1e-05
+    ],
+    "holding_s": 0.01,
+    "single_max_s": 0.25,
+    "sample_dt_s": 0.0005,
+    "band_definition": "nearest central-line X-restoring root; local off-axis root separately evaluated",
+    "entry_time": "sample-bracketed, no extrapolation",
+    "distance_initial_m": [
+      1.5e-05,
+      4.5e-05,
+      0.0001
+    ],
+    "single_initial_y_m": [
+      -0.00035,
+      0,
+      0.00035
+    ],
+    "single_initial_z_m": [
+      -6e-05,
+      0,
+      6e-05
+    ]
+  },
+  "stability": {
+    "derivative_steps_m": [
+      2e-06,
+      1e-06,
+      5e-07
+    ],
+    "jacobian_relative_limit": 0.005,
+    "neutral_eigen_abs_s1": 0.0001,
+    "force_zero_N": 1e-17
+  }
+}

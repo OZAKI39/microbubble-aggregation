@@ -1,0 +1,155 @@
+{
+  "OFF": {
+    "name": "OFF",
+    "amplitudes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "X_PAIR": {
+    "name": "X_PAIR",
+    "amplitudes": [
+      0,
+      0,
+      1000,
+      1000
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "X_180": {
+    "name": "X_180",
+    "amplitudes": [
+      0,
+      0,
+      1000,
+      1000
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      3.141592653589793
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "Y_PAIR": {
+    "name": "Y_PAIR",
+    "amplitudes": [
+      1000,
+      1000,
+      0,
+      0
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "XY_INPHASE": {
+    "name": "XY_INPHASE",
+    "amplitudes": [
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "XY_QUADRATURE": {
+    "name": "XY_QUADRATURE",
+    "amplitudes": [
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "phases": [
+      1.5707963267948966,
+      1.5707963267948966,
+      0,
+      0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "ROT_PLUS": {
+    "name": "ROT_PLUS",
+    "amplitudes": [
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "phases": [
+      4.71238898038469,
+      1.5707963267948966,
+      3.141592653589793,
+      0.0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "ROT_MINUS": {
+    "name": "ROT_MINUS",
+    "amplitudes": [
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "phases": [
+      -4.71238898038469,
+      -1.5707963267948966,
+      -3.141592653589793,
+      -0.0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  },
+  "X_SINGLE": {
+    "name": "X_SINGLE",
+    "amplitudes": [
+      0,
+      0,
+      1000,
+      0
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frequency": 2500000.0,
+    "scope": "Pa-equivalent sources, not hardware voltage"
+  }
+}
