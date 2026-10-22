@@ -1,0 +1,1019 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4060 Laptop GPU" (8 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /home/lzy/.cache/warp/1.18.0
+Module microbubble._warp_forces f79cbed load on device 'cuda:0' took 7.29 ms  (cached)
+Module microbubble._warp_forces ee253bf load on device 'cuda:0' took 5.39 ms  (cached)
+Module microbubble._warp_walls 6b5b75d load on device 'cuda:0' took 5.57 ms  (cached)
+LF far PASS 0.0001 steps 1 HF 0
+LF near PASS 1e-05 steps 0 HF 10
+{
+  "status": "PASS",
+  "rows": [
+    {
+      "name": "2400000_direct_P",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.9286672952846748,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_direct_G",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 19181.721317817322,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_cache_P",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.928662901469212,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_cache_G",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 19196.854495679556,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_response",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.636161222566127e-18,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_pressure_Pa",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 3730.193272038439,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_primary_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 4.036450044123669e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_secondary_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 3.2311742677852644e-27,
+      "reference_scale": 3.8776523711862465e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2400000_total_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 3.2311742677852644e-27,
+      "reference_scale": 4.698505742914047e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2400000_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873523525831236,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_velocity_m_s",
+      "status": "PASS",
+      "max_absolute_difference": 1.3552527156068805e-19,
+      "reference_scale": 0.00014003565807685928,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2400000_prediction_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873523525831236,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_contact_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_pair_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_actual_gap_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0010180542090503508,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_gates",
+      "status": "PASS"
+    },
+    {
+      "name": "2400000_100_steps",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.00048735583925409447,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2400000_fixed_ID_scientific_limit",
+      "status": "PASS",
+      "error_m": 0.0,
+      "original_limit_m": 5e-08
+    },
+    {
+      "name": "2400000_CPU_GPU_pressure",
+      "status": "PASS",
+      "max_absolute_difference": 1.3689708087886509e-12,
+      "reference_scale": 3730.193272038439,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2400000_CPU_GPU_gradient",
+      "status": "PASS",
+      "max_absolute_difference": 1.6008198541689018e-07,
+      "reference_scale": 37645936.007744946,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2400000_CPU_GPU_F1",
+      "status": "PASS",
+      "max_absolute_difference": 2.486252914985063e-26,
+      "reference_scale": 4.036450044123669e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2400000_CPU_GPU_F2",
+      "status": "PASS",
+      "max_absolute_difference": 2.4233807008389483e-27,
+      "reference_scale": 3.8776523711862465e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-25,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2400000_pressure_high",
+      "status": "PASS",
+      "error": "Pressure outside validated table; no clipping"
+    },
+    {
+      "name": "2400000_pressure_low",
+      "status": "PASS",
+      "error": "Pressure outside validated table; no clipping"
+    },
+    {
+      "name": "2400000_nonfinite",
+      "status": "PASS",
+      "error": "Nonfinite pressure is outside the model domain"
+    },
+    {
+      "name": "2500000_direct_P",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.883465501867117,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_direct_G",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 19512.828357424885,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_cache_P",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.883460425961969,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_cache_G",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 19529.531574679768,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_response",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 9.446197715985714e-18,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_pressure_Pa",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 3681.6901968014554,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_primary_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 4.06415269072391e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_secondary_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 2.4233807008389483e-27,
+      "reference_scale": 4.736607073708336e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2500000_total_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 2.4233807008389483e-27,
+      "reference_scale": 6.330683481846365e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2500000_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873523984074565,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_velocity_m_s",
+      "status": "PASS",
+      "max_absolute_difference": 8.131516293641283e-20,
+      "reference_scale": 0.00018868156728203372,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2500000_prediction_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873523984074565,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_contact_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_pair_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_actual_gap_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.00101805421551398,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_gates",
+      "status": "PASS"
+    },
+    {
+      "name": "2500000_100_steps",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.00048736042206135456,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2500000_fixed_ID_scientific_limit",
+      "status": "PASS",
+      "error_m": 0.0,
+      "original_limit_m": 5e-08
+    },
+    {
+      "name": "2500000_CPU_GPU_pressure",
+      "status": "PASS",
+      "max_absolute_difference": 1.2862197421537486e-12,
+      "reference_scale": 3681.6901968014554,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2500000_CPU_GPU_gradient",
+      "status": "PASS",
+      "max_absolute_difference": 1.2982850478353607e-07,
+      "reference_scale": 38323730.662412465,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2500000_CPU_GPU_F1",
+      "status": "PASS",
+      "max_absolute_difference": 2.665718770922843e-26,
+      "reference_scale": 4.06415269072391e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2500000_CPU_GPU_F2",
+      "status": "PASS",
+      "max_absolute_difference": 7.270142102516845e-27,
+      "reference_scale": 4.736607073708336e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-25,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2500000_pressure_high",
+      "status": "PASS",
+      "error": "Outside domain or INVALID_CELL; no extrapolation"
+    },
+    {
+      "name": "2500000_pressure_low",
+      "status": "PASS",
+      "error": "Outside validated low-pressure range; no clipping"
+    },
+    {
+      "name": "2500000_nonfinite",
+      "status": "PASS",
+      "error": "Outside validated low-pressure range; no clipping"
+    },
+    {
+      "name": "2600000_direct_P",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.8273004896519822,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_direct_G",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 19688.39255725561,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_cache_P",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.8272947018087715,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_cache_G",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 19706.62058931873,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_response",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.9439802385909546e-18,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_pressure_Pa",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 3579.4393019162026,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_primary_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 3.8977574802776444e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_secondary_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 2.4233807008389483e-27,
+      "reference_scale": 5.5474334232579216e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2600000_total_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 2.4233807008389483e-27,
+      "reference_scale": 7.84936263307791e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2600000_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873524286807056,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_velocity_m_s",
+      "status": "PASS",
+      "max_absolute_difference": 8.131516293641283e-20,
+      "reference_scale": 0.00023394473093167877,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2600000_prediction_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873524286807056,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_contact_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_pair_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_actual_gap_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0010180542283494717,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_gates",
+      "status": "PASS"
+    },
+    {
+      "name": "2600000_100_steps",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.00048736344922998523,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "2600000_fixed_ID_scientific_limit",
+      "status": "PASS",
+      "error_m": 0.0,
+      "original_limit_m": 5e-08
+    },
+    {
+      "name": "2600000_CPU_GPU_pressure",
+      "status": "PASS",
+      "max_absolute_difference": 1.3689708087886509e-12,
+      "reference_scale": 3579.4393019162026,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2600000_CPU_GPU_gradient",
+      "status": "PASS",
+      "max_absolute_difference": 1.2860684655841955e-07,
+      "reference_scale": 38533077.80155939,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2600000_CPU_GPU_F1",
+      "status": "PASS",
+      "max_absolute_difference": 2.6253290925755273e-26,
+      "reference_scale": 3.8977574802776444e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2600000_CPU_GPU_F2",
+      "status": "PASS",
+      "max_absolute_difference": 3.2311742677852644e-27,
+      "reference_scale": 5.5474334232579216e-12,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-25,
+      "bitwise_equal": false
+    },
+    {
+      "name": "2600000_pressure_high",
+      "status": "PASS",
+      "error": "Pressure outside validated table; no clipping"
+    },
+    {
+      "name": "2600000_pressure_low",
+      "status": "PASS",
+      "error": "Pressure outside validated table; no clipping"
+    },
+    {
+      "name": "2600000_nonfinite",
+      "status": "PASS",
+      "error": "Nonfinite pressure is outside the model domain"
+    },
+    {
+      "name": "contact_resistance",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "contact_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 6.408000000000001e-06,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "contact_velocity_m_s",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.029804296459156433,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "contact_contact_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "contact_pair_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "contact_actual_gap_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.5020241164491584e-05,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "contact_gates",
+      "status": "PASS"
+    },
+    {
+      "name": "dense_collective_resistance",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 8.490356529602083,
+      "relative_limit": 2e-12,
+      "absolute_limit": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "name": "dense_resistance_is_not_independent_Stokes",
+      "status": "PASS"
+    },
+    {
+      "name": "dense_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1.7320138689644818e-05,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "dense_velocity_m_s",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.029467653160764017,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "dense_contact_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "dense_pair_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "dense_actual_gap_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 3.0996336889945905e-05,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": true
+    },
+    {
+      "name": "dense_gates",
+      "status": "PASS"
+    },
+    {
+      "name": "nonzero_flow",
+      "status": "PASS",
+      "error": "Strict zero flow required"
+    },
+    {
+      "name": "illegal_frequency",
+      "status": "PASS",
+      "error": "Only registered discrete frequencies; no table extrapolation"
+    },
+    {
+      "name": "missing_fine_cache",
+      "status": "PASS",
+      "error": "/home/lzy/projects/new_microbubble_aggregation/inputs/fields/2500000/fine.h5: historical fine cache not local; see docs/DATA_STATUS.md"
+    },
+    {
+      "name": "cache_domain_exit",
+      "status": "PASS",
+      "error": "Outside stored cubic field interior; no clipping"
+    },
+    {
+      "name": "sealed_end_initial",
+      "status": "PASS",
+      "error": "Initial finite spheres outside cavity"
+    },
+    {
+      "name": "historical_failure_retained",
+      "status": "PASS",
+      "reasons": [
+        "CONTACT_REACTION_BALANCE_PASS"
+      ],
+      "gates": {
+        "LOCAL_QP_PASS": true,
+        "TRUE_GEOMETRY_PASS": true,
+        "TRUE_GAP_COMPLEMENTARITY_PASS": true,
+        "CONTACT_REACTION_BALANCE_PASS": false,
+        "CONTACT_CORRECTION": true,
+        "WALL_PASS": true,
+        "FULL_STEP_ACCEPTED": false
+      }
+    },
+    {
+      "name": "historical_failure_old_new_gates",
+      "status": "PASS"
+    },
+    {
+      "name": "failed_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 8.470329472543003e-22,
+      "reference_scale": 1.4852459498328917e-05,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "failed_velocity_m_s",
+      "status": "PASS",
+      "max_absolute_difference": 7.424616477180734e-16,
+      "reference_scale": 0.03299512548807837,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "failed_contact_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 8.509723949215841e-21,
+      "reference_scale": 4.527427737486261e-09,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "failed_pair_force_N",
+      "status": "PASS",
+      "max_absolute_difference": 6.778848517448631e-21,
+      "reference_scale": 8.510827340981584e-09,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "failed_actual_gap_m",
+      "status": "PASS",
+      "max_absolute_difference": 6.776263578034403e-21,
+      "reference_scale": 2.5527686779406007e-05,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-30,
+      "bitwise_equal": false
+    },
+    {
+      "name": "LF_far_mode_and_status",
+      "status": "PASS"
+    },
+    {
+      "name": "LF_far_time_s",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0001,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_far_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873604220692856,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_far_particle_id",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 31.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_far_sample_time_s",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0001,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_far_sample_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 0.0004873604220692856,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_near_mode_and_status",
+      "status": "PASS"
+    },
+    {
+      "name": "LF_near_time_s",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1e-05,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_near_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 8.470329472543003e-22,
+      "reference_scale": 6.408000000000001e-06,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": false
+    },
+    {
+      "name": "LF_near_particle_id",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 31.0,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_near_sample_time_s",
+      "status": "PASS",
+      "max_absolute_difference": 0.0,
+      "reference_scale": 1e-05,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": true
+    },
+    {
+      "name": "LF_near_sample_positions_m",
+      "status": "PASS",
+      "max_absolute_difference": 8.470329472543003e-22,
+      "reference_scale": 6.408000000000001e-06,
+      "relative_limit": 2e-12,
+      "absolute_limit": 1e-18,
+      "bitwise_equal": false
+    }
+  ],
+  "wall_s": 3.341993605004973,
+  "identity": {
+    "commit": "4b5c3e22ee7ff61d2d4b3e7293c1daad2b70b6be",
+    "git_status": "?? evidence/migration/OLD_TESTS.log\n?? evidence/migration/pytest_final.log\n?? evidence/migration/regression_final.log",
+    "utc": "2026-10-22T16:04:46.156543+00:00",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "/home/lzy/projects/new_microbubble_aggregation/.venv/bin/python",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "warp-lang": "1.18.0",
+      "matplotlib": "3.11.2"
+    },
+    "source_sha256": {
+      "main.py": "674db5929c02677de2176752ee914f5a4349d467bd59cb85eb2d7f74e70b0913",
+      "microbubble/__init__.py": "d882fce9cad7c5bb94cda8300a2dd3bc6e633d047f713b9fcff3a8b675a9e59e",
+      "microbubble/_warp_forces.py": "bad94891b3823f82b426e66487b7e6bb7a179d0c8495961807845230cbd1643d",
+      "microbubble/_warp_walls.py": "151fc5295aaffb2062fbd4fd24aca3deb720287ce9c0eae5d586b456bdaced2b",
+      "microbubble/acoustics.py": "c601b00fc50f37bb64cf7fdbd0a96276ba74020ca1a656ec4c6865873b902572",
+      "microbubble/analysis.py": "57127d8767f495d81a985461420b7f01aafb01856cd410c238653e97d3508440",
+      "microbubble/bubble_response.py": "01ca701d9cc1c0c4ae30c780b628694465d57625be4640ca237ec3473d91a642",
+      "microbubble/contact.py": "800cb01ac669a26e36e50232009f347a9e6a8cbb892c68f38fc0d4d138a1b92a",
+      "microbubble/control.py": "79dde9ced4e023a8effde4a33d2cd230df634df2e66cb30c7b2d1f613281efe7",
+      "microbubble/dynamics.py": "620745969162366dec0614ee12fb460f3df6873479288d82ed74a0207993c28f",
+      "microbubble/forces.py": "155f8c8ed52eba7901c6933d6f14c07fbb6e546ed97f8479f2f1f12f881741e5",
+      "microbubble/geometry.py": "1c165ad8b644a713a88407aa24f1ad465866f15ac180ede33132f6f61a7d046c",
+      "microbubble/gpu.py": "dad21c5322a44f95f9ae8cb805e06dafa68e807eb340180c7c1a47830f58a884",
+      "microbubble/high_fidelity.py": "ac19d775b3a870a88f58566020cec2b159e0cb7928ff3626aaf12378bba42023",
+      "microbubble/hydrodynamics.py": "9410087bda321a6a91e2d2e30e3b5d89412e3971e4b5322562fc92f113c1edbd",
+      "microbubble/initial_conditions.py": "e2ab23fe227071836280f4c78917839cf9e83f568eb699d4268feb25a9ba71db",
+      "microbubble/integration.py": "a15d917e5f1901736edceff5674221ed227ea58ffeec43ec87a791a722dc01d2",
+      "microbubble/io.py": "d3197922cd2553e9668bd05643c27376434bb054c446796695378d3d317a676f",
+      "microbubble/parameters.py": "c481165e6124bdb976a787e067624f80e3d63528ba0d988ea679f4f5751574f2",
+      "workflows/__init__.py": "0a7c39e4b3d15cdd0bbd515cc6f8e76f6c278cf3f2f315e680d05b0bdd50053d",
+      "workflows/analysis.py": "0b0a16a96181fd9396897913db0955bb80d8ab1ec1fbc9d69459563133a701db",
+      "workflows/diagnostics.py": "1733f132c6bfd80ee8c5d0f3a3fd84f7fcfd5a3d81cf7f3eadccb4b0734714c5",
+      "workflows/f10ag.py": "55eeefeb9329c9f9243232f18e1dc830b70886cd1fdab4b507d91b83abf4192a",
+      "workflows/validation.py": "4c23115f4258e31613847eb756b1eb36eb4f000b7f3c8e49dffe43e88e0b72f1",
+      "workflows/visualization.py": "07c6db6adbe69445521e453dd8114a568f811cff9e48c458d9239f9430cf548e"
+    },
+    "input_sha256": {
+      "configs/frozen/f10ag_protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+      "configs/frozen/contact_policy.json": "2083c6fe0f4cfe199abad5c5bcef154f8fa8ad0175a062013abffa44f1d673e5",
+      "configs/frozen/contact_revision.json": "fd41b0dd567557166fe3d49771d5e3eca88f13b6ffe8bbd261bfeab8351ecaf5",
+      "inputs/apparatus_snapshot.json": "22263a9275aaca26158720a55fce02d620d07d4868b9658aca6c16e914f45bcb",
+      "inputs/response/adaptive_2500000.h5": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+      "inputs/response/LOW_PRESSURE_ADMISSION.json": "4afea0ba48f44f08d80bca2a533b699d8a52b87a81454ff79caa80e9cb94c000",
+      "inputs/response/low_pressure_2500000.h5": "aefe1d459c6667c0e459a1b7a070fe04960675d3fdaa4c14e7c11afc5878c6df",
+      "inputs/initial_states.h5": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "inputs/actions.json": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "inputs/source_order.json": "df940909e1f822995497855f3aa5260b1fe1e82aef4e203e279c5346f34c8ab5",
+      "inputs/fields/2400000/coarse.h5": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "inputs/fields/2400000/FIELD_GATE.json": "42a1e5ff5e1c301740ef99de31b3928e9659b327af0a67427a754264bfa3577a",
+      "inputs/response/2400000/response_shell_1.0.h5": "74606fc70639d262bd3b186a56ef1c6dfa48778a4c3d3822cebab6a870a24adc",
+      "inputs/response/2400000/PHYSICS_GATE.json": "ac7d87d73239516b61196e442dfab1e704eb303af653b0d2a92c14148cde256c",
+      "inputs/fields/2500000/coarse.h5": "3a20420af0b4f2e3168cdc5aaee636e62480f2b277d4bc5de0133856aea7251a",
+      "inputs/fields/2500000/FIELD_GATE.json": "5653310b677a7c1b4523b5a7ad767cc7dcad423836b8cbf24660ca4363bcff79",
+      "inputs/fields/2600000/coarse.h5": "06e1ea4f3d832c3f6fc744b8e2e1a143e13f2f9c3f64bb8860dae14ead296328",
+      "inputs/fields/2600000/FIELD_GATE.json": "da3990935c75e9e324a0a9292c7e150bea15ef5578c2f5ac34c8361acbff15a0",
+      "inputs/response/2600000/response_shell_1.0.h5": "6ccc1d8fafc3429063c05d45ce049f1ba935d8074770fd66456296002ddd7747",
+      "inputs/response/2600000/PHYSICS_GATE.json": "bc927860532eb3c024cb7b71b29dbfea438944a0e5844bd14cb1129c0c778c9d"
+    },
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false
+  },
+  "reference_sha256": "f23f2322cb800c84021376eb63d26b9dff39622dc2ba6ff7cc27062edb13a161",
+  "scope": "Same local GPU and library environment: original vs migrated short calculations; not experimental or long-window revalidation",
+  "not_run": [
+    "Full original long trajectories",
+    "CuPy factor backend",
+    "Historical fine-cache refinement",
+    "Experimental calibration"
+  ]
+}

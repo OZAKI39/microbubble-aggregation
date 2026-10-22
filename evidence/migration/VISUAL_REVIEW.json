@@ -1,0 +1,19 @@
+{
+  "reviewed": [
+    {
+      "png": "results/historical_150ms_review/trajectory_summary.png",
+      "png_sha256": "d1d96e96e59b51a7b41862d91b5b0bac048b298cd75275da3d249adfd4506cb4",
+      "pdf_sha256": "e03f26b07715bb9b87cbe1de59df15d1d9e095bcf2baa264bcbe347f33c67ef2",
+      "review": "PASS: English labels, actual fixed-ID coordinates, equal physical coordinate aspect. Initial Z-tick overlap corrected in rendering only; no simulation data changed.",
+      "data_sha256": "bd7c7e6ce2591f90bc47892dd60bbea21df028d95e89132136af18c33d92a460"
+    },
+    {
+      "png": "results/minimal_hf_analysis/trajectory_summary.png",
+      "png_sha256": "5967c4f11c848b7d442e8f8ea7b2ce45f86c9d08c82f6b62b49cb4a8761d4bb9",
+      "pdf_sha256": "cbd8f0d5f23726cdf5af3d69667af06e0161abaa2e5eba42c861eedccb1e9cc8",
+      "review": "PASS: English labels, actual fixed-ID coordinates, equal physical coordinate aspect. Initial Z-tick overlap corrected in rendering only; no simulation data changed.",
+      "data_sha256": "9f1c7a88f9cc7e6907784e09921f827e897380b80ab5418b5fd81c4e0bda9ea4"
+    }
+  ],
+  "history_figures": "Original frozen images copied without alteration; no claim of new full historical campaign rendering"
+}

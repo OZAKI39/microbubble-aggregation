@@ -138,6 +138,28 @@
 | `scripts/straight_tube_exp1/f10ag/single.py::integrate` | `workflows/diagnostics.py::single_bubble` | 显式重组＋数值/行为核查 |
 | `scripts/straight_tube_exp1/f10ag/analyze.py::analyze_one` | `workflows/analysis.py::analyze` | 显式重组＋数值/行为核查 |
 | `scripts/straight_tube_exp1/f10af/field.py::build` | `microbubble/acoustics.py::build_cache` | 显式重组＋数值/行为核查 |
+| `src/mevo_mb/fast_sim/accelerated_contact.py::Transpose` | `microbubble/contact.py::Transpose` | AST相同 |
+| `src/mevo_mb/fast_sim/accelerated_contact.py::contact_geometry` | `microbubble/contact.py::contact_geometry` | AST相同 |
+| `src/mevo_mb/fast_sim/accelerated_contact.py::factorize` | `microbubble/contact.py::factorize` | AST相同 |
+| `src/mevo_mb/coupling/straight_tube.py::StraightTube.world` | `microbubble/geometry.py::CylindricalLumen.world` | AST相同 |
+| `src/mevo_mb/coupling/straight_tube.py::StraightTube.local` | `microbubble/geometry.py::CylindricalLumen.local` | AST相同 |
+| `src/mevo_mb/bubbles/response_table.py::ResponseTableBubbleModel.validate_medium` | `microbubble/bubble_response.py::AdaptiveResponseTableBubbleModel.validate_medium` | AST相同 |
+| `src/mevo_mb/bubbles/response_table.py::ResponseTableBubbleModel.harmonic_response` | `microbubble/bubble_response.py::AdaptiveResponseTableBubbleModel.harmonic_response` | AST相同 |
+| `src/mevo_mb/fast_sim/water_b2.py::WaterB2.fields` | `microbubble/dynamics.py::Dynamics.fields` | AST相同 |
+| `src/mevo_mb/fast_sim/water_b2.py::WaterB2.wall_check` | `microbubble/dynamics.py::Dynamics.wall_check` | 显式重组＋数值/行为核查 |
+| `src/mevo_mb/fast_sim/accelerated_water.py::WaterAccelerated.step` | `microbubble/dynamics.py::Dynamics.step` | AST相同 |
+| `src/mevo_mb/fast_sim/engine.py::FastSimulator.__init__` | `microbubble/gpu.py::FieldForces.__init__` | 显式重组＋数值/行为核查 |
+| `src/mevo_mb/fast_sim/f2_engine.py::F2Simulator.pairs` | `microbubble/gpu.py::FieldForces.pairs` | 显式重组＋数值/行为核查 |
+| `src/mevo_mb/fast_sim/water_control_engine.py::WaterControlSimulator.fields` | `microbubble/gpu.py::FieldForces.fields` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10aa/trajectory.py::Campaign.run` | `microbubble/high_fidelity.py::HighFidelity.run` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10af/run.py::Campaign.__init__` | `workflows/f10ag.py::context` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10af/run.py::perform` | `workflows/f10ag.py::run` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10af/slow.py::integrate` | `microbubble/integration.py::integrate_lf` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10ad_multifrequency/interface.py::FrequencySegment` | `microbubble/control.py::Segment` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10ag/static.py::roots_x` | `workflows/diagnostics.py::roots_x` | AST相同 |
+| `scripts/straight_tube_exp1/f10ag/single.py::integrate` | `workflows/diagnostics.py::single_bubble` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10ag/analyze.py::analyze_one` | `workflows/analysis.py::analyze` | 显式重组＋数值/行为核查 |
+| `scripts/straight_tube_exp1/f10af/field.py::build` | `microbubble/acoustics.py::build_cache` | 显式重组＋数值/行为核查 |
 
 ## 输入和后端
 
