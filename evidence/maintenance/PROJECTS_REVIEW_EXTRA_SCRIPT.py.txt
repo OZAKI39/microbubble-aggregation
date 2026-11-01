@@ -1,0 +1,27 @@
+import pickle,json,hashlib,subprocess as sp
+from pathlib import Path
+s=pickle.load(open('/tmp/mb_projects_review_state.pkl','rb'));P=Path('/home/lzy/projects');N=P/'new_microbubble_aggregation';O=N/'evidence/maintenance'
+# Match obsolete simulation-only document backups to locally retained committed objects.
+lookup={}
+for r in s['repos']:
+ for rel,e in r['entries'].items():
+  if rel.endswith('.md'):lookup.setdefault(e['oid'],[]).append((r['path'],r['head'],rel))
+docs=[];kept=[]
+for p in sorted(P.glob('microbubble_aggregation.md.bak*')):
+ b=p.read_bytes();t=b.decode();h=hashlib.sha1(('blob '+str(len(b))+'\0').encode()+b).hexdigest()
+ if any(w in t for w in ['Chronos','Cellpose','Tektronix','vision_tracking','F10T','相机']) or 'Vision' in p.name:kept.append({'path':str(p),'reason':'mixed experiment/vision history'});continue
+ matches=lookup.get(h,[])
+ if not matches:kept.append({'path':str(p),'reason':'no exact preserved Git copy verified'});continue
+ root,head,rel=matches[0]
+ cp=sp.run(['git','-C',root,'show',head+':'+rel],capture_output=True)
+ if cp.returncode or cp.stdout!=b:kept.append({'path':str(p),'reason':'HEAD blob mismatch'});continue
+ docs.append({'path':str(p),'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b),'blocks':p.stat().st_blocks*512,'recovery':{'repository':root,'head':head,'path':rel,'blob':h}})
+# Inventory environment package versions without executing obsolete Python environments.
+envs=[]
+for ep in s['envs']:
+ p=Path(ep);packages=[]
+ for m in p.glob('lib/python*/site-packages/*.dist-info/METADATA'):
+  rows=m.read_text(errors='replace').splitlines();n=next((x[6:] for x in rows if x.startswith('Name: ')),'');v=next((x[9:] for x in rows if x.startswith('Version: ')),'');packages.append({'name':n,'version':v})
+ envs.append({'path':ep,'pyvenv_cfg':(p/'pyvenv.cfg').read_text(),'packages':sorted(packages,key=lambda x:x['name'].lower()),'current_environment':str(N/'.venv'),'reason':'deprecated simulation-only environment; authoritative project has independent verified environment'})
+(O/'PROJECTS_REVIEW_EXTRA.json').write_text(json.dumps({'obsolete_document_copies':docs,'preserved_documents':kept,'deprecated_environment_metadata':envs},indent=2)+'\n')
+print('removable document copies',len(docs),'preserved documents',len(kept),'environment metadata',len(envs))

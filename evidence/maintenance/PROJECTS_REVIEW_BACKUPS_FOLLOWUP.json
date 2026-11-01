@@ -1,0 +1,395 @@
+{
+  "utc": "2026-10-22T17:44:29.728335+00:00",
+  "scope": "Only the 19 previously retained, redundant microbubble_aggregation.md.bak_* files. Existing user cleanup authorization; follow-up addresses overly conservative mixed-document classification.",
+  "current_document_sha256_before": "cbd00d1aea5c1b405fff54899e5780d392c2163f399d5b2c179d768cea6d597c",
+  "current_project_head": "03796e782ac03c167004bd688e07a4277a459693",
+  "files": [
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AA_20261018",
+      "sha256": "a6717cff6910672ffdd4472a5e42a259bdb31f1167dc9f95aa84ae959aa23651",
+      "blob": "1a9e9d857389ae4ec4fb4dc87e413e10fcf6b9ce",
+      "bytes": 119222,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10aa/evidence/progress_document/before.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AB_20261018",
+      "sha256": "1045f1bc9e19d1b0ceb68ac21b5144e96f39e29efb33ee856cbdd478cc9aa63b",
+      "blob": "bc60346b0ab26ee5a3e064ebb75d45f9b3726931",
+      "bytes": 21730,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ab/evidence/progress_document/before.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AC_F10AD_20261018",
+      "sha256": "4c1f3347fc32eda3332fff2413b2e280dfc4497002e9a21071a9aaaaa2fbdeb5",
+      "blob": "b7c91ec53a165714c99452d2527a8d6857b17bb1",
+      "bytes": 23301,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ab/evidence/progress_document/after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AE_20261019",
+      "sha256": "fdab52640d741d92a4d37aa80ba2cd3b8ae736685898801ba1240fb5f1dd35da",
+      "blob": "a7e64687ce933166c5e3def5a2a396c874834aa1",
+      "bytes": 25949,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ac_qd/evidence/progress_document/after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AF_20261019",
+      "sha256": "9fb8f5e93e25d6b2e7feac9841dab2550af900951f64f78e192bcee72279b386",
+      "blob": "15767fa49981d94ef161f9576cabe270a2b1970f",
+      "bytes": 29287,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ae/evidence/progress_doc/after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AG_20261019",
+      "sha256": "6031ca4abe96b730c86da004ed05ff0c17d18ef04a2363422fc32895f3999cc0",
+      "blob": "6d2a1320f5687e196ef9cfb9bb838e87ee522435",
+      "bytes": 31712,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/evidence/progress_after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016",
+      "sha256": "11a2f64fb7c16ae80f569281ca21038f5a43e33172d5b8a768d4bcc432775a63",
+      "blob": "5800429d3d99ec1aaad05e27dcb65c542cbeffb5",
+      "bytes": 93429,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/docs/MICROBUBBLE_AGGREGATION_PROGRESS_20261015.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016_supervised",
+      "sha256": "11898948c37f8e55f0e5d950f53f29e7ec4dedd1856938501dc249d5269f7cc4",
+      "blob": "39d4d4cc9ed05e8b9a12f4188b502f99bc73d347",
+      "bytes": 99530,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "external_connect/vision_tracking_research/smart_online_tracking_v2/evidence/auto_sam_training_20261016/progress_after.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix3_20261016",
+      "sha256": "eab620d26959cd35c61f1a62fc8f4d06a9c954b24e84ad2b2194aaf22676a481",
+      "blob": "f7cc24c3d413ed8ec01a3403a22f2f312c945e0e",
+      "bytes": 96350,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "external_connect/vision_tracking_research/smart_online_tracking_v2/evidence/annotation_repair_v3_20261016/progress_document/before.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix4_20261016",
+      "sha256": "f5db531c91927cb86049fe4c5051c166a078e623cac47b961a523e49ef604328",
+      "blob": "4970325f6e0a7e7e10638e66d58beffa2232e77e",
+      "bytes": 97214,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "external_connect/vision_tracking_research/smart_online_tracking_v2/evidence/annotation_repair_v3_20261016/progress_document/after.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AutoSAM_20261016",
+      "sha256": "3939c3eb5f65d5980277649eb7b1d8b8cc6c1e9c5d7284ec8322f4a93cb31b41",
+      "blob": "1b59fcc2b8d469b15fdfe29dff18eba5c342da6c",
+      "bytes": 98404,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "external_connect/vision_tracking_research/smart_online_tracking_v2/evidence/annotation_repair_v4_20261016/progress_after.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_test49_50_20261016",
+      "sha256": "540ef7ed4b90e201c6c1466971f71329279982ed07ecd835c1af00029db66e71",
+      "blob": "9d812fa61954c988487b0f7ae0084a2e252f81ac",
+      "bytes": 101980,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "external_connect/vision_tracking_research/smart_online_tracking_v2/results/heldout_49_50_20261016_v1/progress_document/before.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10U_Vision_20261017",
+      "sha256": "d06623755c7adfb5c147d45f9b37a833a6e8d84cbfef695ca464ce597ed550c2",
+      "blob": "1d788d64c434e770965e6c30423e9a422031bcaa",
+      "bytes": 103386,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "external_connect/vision_tracking_research/collective_motion_v1/evidence/progress_update/before.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10V_20261017",
+      "sha256": "aadccf956a6b24915882bc992015c94d25af11f5dccf167ce83fc922b11c807b",
+      "blob": "6959bc2c933ad4ba60b8a9b461b3602ec3117a09",
+      "bytes": 105874,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/docs/MICROBUBBLE_AGGREGATION_PROGRESS_20261017.md",
+        "retained_branch": "refs/heads/dev/f10aa-solver-acceleration-20261018"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10W_20261017",
+      "sha256": "0c3626a7cf44cfe900bff131cb6a4dddd4ddd1fa6117abed926dc609983a2fa3",
+      "blob": "879a424d95eaa2e42a06693f92d382c2244bc49c",
+      "bytes": 108319,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "external_connect/vision_tracking_research/collective_motion_v2/evidence/progress_document/after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10X_20261017",
+      "sha256": "c2f11c8254d006c542b0eb36f211f095f32f0845c65b6039142791f88761cb9c",
+      "blob": "f00bc08e2a2acc1355cb97107fdc1a2e78b3fef0",
+      "bytes": 111475,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "external_connect/vision_tracking_research/collective_motion_v3/evidence/progress/after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Y_20261018",
+      "sha256": "f3932301f45f9a348e97ea5d510ac79b521e66497d03e0cbb692d6e66206f738",
+      "blob": "ced296f7eb1e90f17dd32dc5764b3828c54b14d9",
+      "bytes": 113792,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "external_connect/vision_tracking_research/collective_motion_v4/evidence/progress_document/after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_20261018",
+      "sha256": "7fec6466d8a5837afdfdfa0bebbe7ffff2b6b7ffa4ece79af56097d1b6c5b2f2",
+      "blob": "52951cfbed60c3341bd2dbeed930aab60d2b57dc",
+      "bytes": 115536,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10z/evidence/progress_before.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_NSCALING_20261018",
+      "sha256": "854303b26ea2c837f372bdc5f47304ded6424f9a4aba35b7e987860ef5bf581e",
+      "blob": "4314ef85f294fbd7eabb46d4770d3a897ee55b15",
+      "bytes": 118367,
+      "objects_present_in": [
+        "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation"
+      ],
+      "recovery": {
+        "git_dir": "/home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation/.git",
+        "commit": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10z/evidence/progress_after.md",
+        "retained_branch": "refs/heads/dev/f10ag-3d-capture-longtime-20261019"
+      }
+    }
+  ],
+  "results": [
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AA_20261018",
+      "status": "DELETED",
+      "allocated_bytes": 122880
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AB_20261018",
+      "status": "DELETED",
+      "allocated_bytes": 24576
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AC_F10AD_20261018",
+      "status": "DELETED",
+      "allocated_bytes": 24576
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AE_20261019",
+      "status": "DELETED",
+      "allocated_bytes": 28672
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AF_20261019",
+      "status": "DELETED",
+      "allocated_bytes": 32768
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AG_20261019",
+      "status": "DELETED",
+      "allocated_bytes": 32768
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016",
+      "status": "DELETED",
+      "allocated_bytes": 94208
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016_supervised",
+      "status": "DELETED",
+      "allocated_bytes": 102400
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix3_20261016",
+      "status": "DELETED",
+      "allocated_bytes": 98304
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix4_20261016",
+      "status": "DELETED",
+      "allocated_bytes": 98304
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AutoSAM_20261016",
+      "status": "DELETED",
+      "allocated_bytes": 102400
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_test49_50_20261016",
+      "status": "DELETED",
+      "allocated_bytes": 102400
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10U_Vision_20261017",
+      "status": "DELETED",
+      "allocated_bytes": 106496
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10V_20261017",
+      "status": "DELETED",
+      "allocated_bytes": 106496
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10W_20261017",
+      "status": "DELETED",
+      "allocated_bytes": 110592
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10X_20261017",
+      "status": "DELETED",
+      "allocated_bytes": 114688
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Y_20261018",
+      "status": "DELETED",
+      "allocated_bytes": 114688
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_20261018",
+      "status": "DELETED",
+      "allocated_bytes": 118784
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_NSCALING_20261018",
+      "status": "DELETED",
+      "allocated_bytes": 118784
+    }
+  ],
+  "current_document_sha256_after": "cbd00d1aea5c1b405fff54899e5780d392c2163f399d5b2c179d768cea6d597c",
+  "current_project_head_after": "03796e782ac03c167004bd688e07a4277a459693",
+  "remaining_backup_files": [],
+  "PASS": true,
+  "deleted_allocated_bytes": 1654784
+}

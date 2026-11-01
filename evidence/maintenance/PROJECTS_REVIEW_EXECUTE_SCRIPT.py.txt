@@ -1,0 +1,208 @@
+from pathlib import Path
+import os,json,pickle,hashlib,subprocess as sp,datetime,shutil,sys
+P=Path('/home/lzy/projects');N=P/'new_microbubble_aggregation';O=N/'evidence/maintenance'
+plan=json.loads((O/'PROJECTS_REVIEW_PLAN.json').read_text());extra=json.loads((O/'PROJECTS_REVIEW_EXTRA.json').read_text());state=pickle.load(open('/tmp/mb_projects_review_state.pkl','rb'))
+def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def git(p,*args,input=None):
+ q=sp.run(['git','-C',str(p),*args],input=input,capture_output=True);q.check_returncode();return q.stdout
+
+def statset(root,exclude=None):
+ out={}
+ for rr,ds,fs in os.walk(root,followlinks=False):
+  ds[:]=[d for d in ds if d!='.git' and (not exclude or str(Path(rr)/d)!=exclude)]
+  for name in ds+fs:
+   p=Path(rr)/name
+   if p.is_dir() and not p.is_symlink():continue
+   st=p.lstat();out[str(p)]=[st.st_size,st.st_mtime_ns,st.st_ino,os.readlink(p) if p.is_symlink() else None]
+ return out
+
+def tree_bytes(p):
+ if p.is_symlink():return p.lstat().st_blocks*512
+ if p.is_file():return p.stat().st_blocks*512
+ total=0
+ for root,ds,fs in os.walk(p,followlinks=False):
+  total+=Path(root).lstat().st_blocks*512
+  for n in fs+ds:
+   q=Path(root)/n
+   if q.is_dir() and not q.is_symlink():continue
+   st=q.lstat();assert st.st_nlink==1 or q.is_symlink(),('hardlink',q,st.st_nlink);total+=st.st_blocks*512
+ return total
+
+def writable_selected(paths):
+ changed=[]
+ for name in paths:
+  p=Path(name);dirs=[p.parent]
+  if p.is_dir():dirs += [Path(rr) for rr,_,_ in os.walk(p)]
+  for q in dirs:
+   st=q.stat();mode=st.st_mode & 0o7777
+   if not mode & 0o200:
+    assert st.st_uid==os.getuid(),('nonowned read-only directory',q)
+    changed.append({'path':str(q),'mode':mode});q.chmod(mode|0o200)
+ return changed
+
+def restore_modes(changes):
+ for row in reversed(changes):
+  p=Path(row['path'])
+  if p.exists():p.chmod(row['mode'])
+
+def sha(p):
+ h=hashlib.sha256()
+ with open(p,'rb') as f:
+  for b in iter(lambda:f.read(4*1024*1024),b''):h.update(b)
+ return h.hexdigest()
+def process_hits(roots):
+ hits=[]
+ for proc in Path('/proc').iterdir():
+  if not proc.name.isdigit() or int(proc.name)==os.getpid():continue
+  ls=[proc/'cwd',proc/'exe']
+  try:ls+=list((proc/'fd').iterdir())
+  except OSError:pass
+  for x in ls:
+   try:t=os.readlink(x)
+   except OSError:continue
+   if any(t==r or t.startswith(r+'/') for r in roots):hits.append({'pid':proc.name,'reference':str(x),'target':t})
+  try:
+   for line in (proc/'maps').read_text().splitlines():
+    if '/' not in line:continue
+    t='/'+line.split('/',1)[1]
+    if any(t==r or t.startswith(r+'/') for r in roots):hits.append({'pid':proc.name,'reference':'maps','target':t})
+  except OSError:pass
+ return hits
+rmap={r['path']:r for r in state['repos']}
+receipt=O/'PROJECTS_REVIEW_EXECUTION.json'
+resuming=receipt.exists()
+if resuming:
+ result=json.loads(receipt.read_text())
+ def save():
+  tmp=O/'PROJECTS_REVIEW_EXECUTION.json.tmp';tmp.write_text(json.dumps(result,indent=2)+'\n');tmp.replace(receipt)
+ m=pickle.load(open('/tmp/mb_review_protected_metadata.pkl','rb'));protected_non_sim=m['non_sim'];untracked=m['untracked'];commons=list(result['git_before'])
+ result.setdefault('resumed_checks',[]).append({'utc':now(),'plan_sha256':sha(O/'PROJECTS_REVIEW_PLAN.json'),'reason':'Explicitly account for three old environment aliases and git-retained bytecode cache directories.'})
+ save()
+else:
+ result={'started_utc':now(),'plan_sha256':sha(O/'PROJECTS_REVIEW_PLAN.json'),'extra_sha256':sha(O/'PROJECTS_REVIEW_EXTRA.json'),'actions':[],'skips':[],'notes':['Current explicit user authorization; no commits, pushes, branch deletion or GC.','Only simulation subtree paths selected; all unrelated file fingerprints preserved.']}
+ def save():
+  tmp=O/'PROJECTS_REVIEW_EXECUTION.json.tmp';tmp.write_text(json.dumps(result,indent=2)+'\n');tmp.replace(O/'PROJECTS_REVIEW_EXECUTION.json')
+ result['df_before']=sp.check_output(['df','-B1',str(P)],text=True)
+ commons=sorted({git(r['path'],'rev-parse','--path-format=absolute','--git-common-dir').decode().strip() for r in state['repos']}|{str(N/'.git')})
+ result['git_before']={c:{'refs':sp.check_output(['git','--git-dir',c,'show-ref'],text=True),'allocated_bytes':int(sp.check_output(['du','-s','-B1',c],text=True).split()[0])} for c in commons}
+ result['current_head_before']=git(N,'rev-parse','HEAD').decode().strip()
+ assert result['current_head_before']==plan['current_head']
+ # Full metadata before for non-simulation portions of mixed repositories and all untracked scientific payloads.
+ protected_non_sim={};untracked={}
+ for r in state['repos']:
+  if r['path']==r['sim']:continue
+  protected_non_sim.update(statset(r['path'],exclude=r['sim']))
+  for f in r['files']:
+   if not f['tracked']:untracked[f['path']]=[f['size'],f['mtime_ns'],f['ino'],None]
+ result['non_simulation_fingerprint_before']=hashlib.sha256(json.dumps(protected_non_sim,sort_keys=True).encode()).hexdigest();result['non_simulation_file_count']=len(protected_non_sim)
+ with open('/tmp/mb_review_protected_metadata.pkl','wb') as f:pickle.dump({'non_sim':protected_non_sim,'untracked':untracked},f)
+ result['process_preflight']=process_hits([r['sim'] for r in state['repos']]);assert not result['process_preflight'],result['process_preflight']
+ save()
+# Apply exclusions to old worktrees. Shared Git and local branches remain intact.
+for rp in plan['sparse_evictions']:
+ root=Path(rp['root']);orig=rmap[str(root)];sim=Path(rp['sim']);selected=rp['prefixes'];refs=[p['path'] for p in selected]
+ previous=next((a for a in result['actions'] if a.get('type')=='git_sparse_checkout' and a.get('root')==str(root)),None)
+ if previous:
+  assert previous['returncode']==0
+  remaining=previous['remaining_paths'].copy()
+  if remaining:
+   for name in remaining:
+    q=Path(name)
+    for rr,ds,fs in os.walk(q):
+     for fn in fs:
+      pp=Path(rr)/fn
+      if any(c in pp.parts for c in ('__pycache__','.pytest_cache','.ruff_cache')):continue
+      rel=pp.relative_to(root).as_posix();e=orig['entries'].get(rel);assert e,('unexpected remainder',pp)
+      raw=pp.read_bytes();assert hashlib.sha1(('blob '+str(len(raw))+'\0').encode()+raw).hexdigest()==e['oid'],pp
+   modes=writable_selected(remaining)
+   try:
+    retry=sp.run(['git','-C',str(root),'sparse-checkout','reapply'],capture_output=True)
+    previous.setdefault('retry_history',[]).append({'utc':now(),'returncode':retry.returncode,'stderr':retry.stderr.decode(),'temporary_directory_modes':modes})
+    assert retry.returncode==0
+    for leftover in remaining:
+     q=Path(leftover)
+     if not q.exists():continue
+     for rr,ds,fs in os.walk(q):
+      for fn in fs:
+       pp=Path(rr)/fn;assert any(c in pp.parts for c in ('__pycache__','.pytest_cache','.ruff_cache')),('unexpected remainder after reapply',pp)
+     shutil.rmtree(q)
+   finally:restore_modes(modes)
+  previous['initial_remaining_cache_paths']=previous['remaining_paths'];previous['remaining_paths']=[];previous['cache_cleanup_verified_utc']=now();save()
+  print('RESUMED verified completed root',root.name,flush=True);continue
+
+ assert git(root,'rev-parse','HEAD').decode().strip()==rp['head']
+ actual_status=[x for x in git(root,'status','--porcelain=v1','-z').decode().split('\0') if x]
+ assert actual_status==rp['status_before'],(root,'status changed',actual_status)
+ assert not process_hits([str(sim)]),(root,'in use')
+ # Any new/modified file in a selected tree blocks that repository, rather than being removed.
+ expected={f['path']:f for f in orig['files'] if any(f['path']==p or f['path'].startswith(p+'/') for p in refs)}
+ for name,rec in expected.items():
+  st=Path(name).stat();assert (st.st_size,st.st_mtime_ns,st.st_ino)==(rec['size'],rec['mtime_ns'],rec['ino']),('changed since hash',name)
+ actual_names=set()
+ for name in refs:
+  q=Path(name)
+  if q.is_file():actual_names.add(str(q));continue
+  for rr,ds,fs in os.walk(q,followlinks=False):
+   ds[:]=[d for d in ds if d not in ('__pycache__','.pytest_cache','.ruff_cache')]
+   for f in fs:actual_names.add(str(Path(rr)/f))
+ assert actual_names==set(expected),('unexpected selected content',root,list(actual_names-set(expected))[:5])
+ total=sum(tree_bytes(Path(x)) for x in refs)
+ before_count=len(expected);patterns=rp['original_sparse'] if rp['original_sparse'] is not None else ['/*']
+ assert patterns
+ for x in selected:
+  assert not any(c in x['rel'] for c in ('*','?','[','\\','\n')),x
+  patterns.append('!/'+x['rel']+('/' if x['is_dir'] else ''))
+ # Written through the standard git interface, never manual unlink of tracked project content.
+ modes=writable_selected(refs)
+ try:
+  cp=sp.run(['git','-C',str(root),'sparse-checkout','set','--no-cone','--stdin'],input=('\n'.join(patterns)+'\n').encode(),capture_output=True)
+ finally:restore_modes(modes)
+ action={'type':'git_sparse_checkout','root':str(root),'head':rp['head'],'temporary_directory_modes':modes,'prefix_count':len(selected),'file_count':before_count,'allocated_bytes_before':total,'returncode':cp.returncode,'stdout':cp.stdout.decode(),'stderr':cp.stderr.decode(),'utc':now()}
+ remaining=[p for p in refs if Path(p).exists() or Path(p).is_symlink()]
+ action['initial_remaining_cache_paths']=remaining.copy()
+ for leftover in remaining:
+  q=Path(leftover)
+  if not q.is_dir():continue
+  only_cache=True
+  for rr,ds,fs in os.walk(q):
+   for fn in fs:
+    pp=Path(rr)/fn
+    if not any(c in pp.parts for c in ('__pycache__','.pytest_cache','.ruff_cache')):only_cache=False
+  if only_cache:shutil.rmtree(q)
+ remaining=[p for p in refs if Path(p).exists() or Path(p).is_symlink()]
+ action['remaining_paths']=remaining;action['status_after']=[x for x in git(root,'status','--porcelain=v1','-z').decode().split('\0') if x]
+ result['actions'].append(action);save()
+ assert cp.returncode==0 and not remaining,action
+ assert action['status_after']==actual_status,action
+ # Check unrelated project files directly after each operation.
+ for name,before in protected_non_sim.items():
+  if name.startswith(str(root)+'/'):
+   q=Path(name);st=q.lstat();after=[st.st_size,st.st_mtime_ns,st.st_ino,os.readlink(q) if q.is_symlink() else None];assert before==after,('unrelated file changed',name)
+ print('REMOVED obsolete checkout files',root.name,len(selected),round(total/2**30,3),'GiB',flush=True)
+# Deprecated environment symlinks are removed together with their own old environments.
+for alias in plan['environment_aliases']:
+ p=Path(alias['path']);assert p.is_symlink() and str(p.resolve())==alias['target'];p.unlink();result['actions'].append({'type':'obsolete_environment_alias','path':str(p),'allocated_bytes_before':0});save()
+for name in plan['environment_dirs']+plan['cache_dirs']:
+ p=Path(name)
+ if not p.exists():continue
+ assert not p.is_symlink();assert any(p.is_relative_to(r['sim']) for r in state['repos'])
+ assert not process_hits([str(p)]),(p,'in use')
+ amount=tree_bytes(p);shutil.rmtree(p);result['actions'].append({'type':'obsolete_environment' if name in plan['environment_dirs'] else 'disposable_cache','path':name,'allocated_bytes_before':amount,'utc':now()});save()
+ print('REMOVED',str(p),round(amount/2**20,1),'MiB',flush=True)
+for doc in extra['obsolete_document_copies']:
+ p=Path(doc['path']);assert sha(p)==doc['sha256'];amount=tree_bytes(p);p.unlink();result['actions'].append({'type':'duplicate_document','path':str(p),'allocated_bytes_before':amount,'recovery':doc['recovery']});save()
+# Verify all nontracked scientific files remain and no unrelated files were touched.
+changed=[]
+for category,rows in [('non_simulation',protected_non_sim),('untracked_scientific',untracked)]:
+ for name,before in rows.items():
+  q=Path(name)
+  try:st=q.lstat();after=[st.st_size,st.st_mtime_ns,st.st_ino,os.readlink(q) if q.is_symlink() else None]
+  except FileNotFoundError:after=None
+  if before!=after:changed.append({'category':category,'path':name,'before':before,'after':after})
+result['protected_metadata_changes']=changed
+result['git_after']={c:{'refs':sp.check_output(['git','--git-dir',c,'show-ref'],text=True),'allocated_bytes':int(sp.check_output(['du','-s','-B1',c],text=True).split()[0])} for c in commons}
+result['git_reference_changes']=[c for c in commons if result['git_before'][c]['refs']!=result['git_after'][c]['refs']]
+result['df_after']=sp.check_output(['df','-B1',str(P)],text=True)
+result['finished_utc']=now();result['removed_allocated_bytes']=sum(a.get('allocated_bytes_before',0) for a in result['actions']);save()
+assert not changed and not result['git_reference_changes']
+print('DONE',result['removed_allocated_bytes']/2**30,'GiB',len(result['actions']),'actions')

@@ -2,6 +2,8 @@
 
 这是从实际 F10AG 运行链整理出的独立数值仿真工程。**先读 `main.py`，再读 `workflows/f10ag.py` 和 `microbubble/dynamics.py`。** 普通运行只读取本目录中的源码和输入，不导入旧工程，不连接相机、信号发生器或服务器。
 
+本目录是唯一日常 Git 工作树，使用稳定 `main` 分支和独立远程 [OZAKI39/microbubble-aggregation](https://github.com/OZAKI39/microbubble-aggregation)。直接修改、检查 diff、按明确请求 commit/push；不再创建同步工程副本。规则见 [AGENTS.md](AGENTS.md) 和 [Git 工作流](docs/GIT_WORKFLOW.md)，仓库包含与未包含的数据见 [GitHub 同步范围](docs/GITHUB_SYNC.md)。
+
 ## 当前模型
 
 模拟半径 **1.78 µm** 的固定 ID 微泡，在充水、无背景流的腔体中受四枚圆片声源驱动。腔体为 32.5 × 9 × 9 mm 块内的直径 1.6 mm 中央通道及两个顶部孔，X 两端封闭。PZT 为 Y−、Y+、X−、X+ 四枚 7 mm 圆片。当前轨迹只允许已验证声场缓存的内部区域，不代表整个腔体都已完成声场验证。
@@ -129,4 +131,4 @@ python -m pip install -e '.[gpu,plot,test]'
 
 已有长时间结论保持原样：**完成 250 ms**、**HF/LF 配对**、**150 ms 经步长和细缓存共同验证**是不同证据范围，不能互相替代。几何连通不是融合；局部吸引点不是整团三维捕获；条带描述符不是稳定条带；环向声力不是持续刚体旋转。
 
-原工程未删除、未改写；本次没有向 GitHub 推送。旧目录清理仅提供 [审核清单](docs/CLEANUP_REVIEW.md)。
+先前已完成32项历史副本/工作树/重复日志清理，见 [首次清理结果](docs/CLEANUP_RESULT.md)。随后按用户要求审查整个 `projects`，进一步清理旧仿真检出副本、废弃环境及重复文档，该轮净回收约17.96 GiB；保留当前工程、唯一科研数据、共享Git和历史分支，见 [全目录审查及完整恢复记录](docs/PROJECTS_DIRECTORY_REVIEW.md)。2026-10-24 又按批准范围清理服务器缓存及四套旧环境，释放约5.98 GiB，科研数据和未批准的源码副本保留，见 [服务器清理结果](docs/SERVER_CLEANUP_RESULT_20261024.md)。日常仅维护本工程，GitHub 使用上述独立仓库的 `main` 分支。

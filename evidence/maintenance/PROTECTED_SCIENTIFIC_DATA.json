@@ -1,0 +1,1294 @@
+{
+  "utc": "2026-10-22T16:31:01.295794+00:00",
+  "scope": "All F10AG HDF5 plus principal identity/gates; F10AF field HDF5. Other historical files remain protected by default.",
+  "rows": [
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/FINAL_GATE.json",
+      "bytes": 113841,
+      "allocated_bytes": 114688,
+      "sha256": "3a82c55d25bd7ea1ecdd9d6403aae3ff80b49853af1a540e746a3fc04b7234f3",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/FINAL_GATE.json",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/INITIAL_STATES.h5",
+      "bytes": 35776,
+      "allocated_bytes": 36864,
+      "sha256": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/inputs/initial_states.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/long50_ROT_MINUS_historical_reanalysis.h5",
+      "bytes": 1827336,
+      "allocated_bytes": 1830912,
+      "sha256": "7a2093c0a44ce5d2ee8e87193bef0c1befc26481c78f6ae1c0d44445216e81a8",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/long50_ROT_PLUS_historical_reanalysis.h5",
+      "bytes": 1827336,
+      "allocated_bytes": 1830912,
+      "sha256": "3d2be74eb87408e18f13d1c5611829e369df32ebcb1479bef78ed75a83f221f3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/PREREGISTRATION.json",
+      "bytes": 22801,
+      "allocated_bytes": 24576,
+      "sha256": "3a50d1e389b67b6d4f5019c93d71b861dc11fdd617e16113a86d7d0c3935859a",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/PREREGISTRATION.json",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/ROTATION_STATIC.h5",
+      "bytes": 324096,
+      "allocated_bytes": 327680,
+      "sha256": "9aa864a723fc0a395d4481c16a861696d05717f31f01b6f23530bd8e68283945",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/ROTATION_STATIC.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/ACTIONS.json",
+      "bytes": 2486,
+      "allocated_bytes": 4096,
+      "sha256": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/ACTIONS.json",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/REMOTE_RAW_INDEX.json",
+      "bytes": 19541,
+      "allocated_bytes": 20480,
+      "sha256": "c7e9e8671a6f461f1c4e8a7bb2b65fd9666843d582385b839016a941b3e2e345",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/REMOTE_RAW_INDEX.json",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/FIELD_3D_2500000.h5",
+      "bytes": 594538,
+      "allocated_bytes": 598016,
+      "sha256": "2f46c9f1ea0a9832bca519028e313cfcead0ba5f7cf65e8dd3a082fbcbf1bb59",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/FIELD_3D_2500000.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/FIELD_3D_2600000.h5",
+      "bytes": 594538,
+      "allocated_bytes": 598016,
+      "sha256": "d19b7af47ccdad41542b4d4059e317e29a91d4e92d0b8d8443e5c63ce70d2793",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/FIELD_3D_2600000.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/FIELD_3D_2400000.h5",
+      "bytes": 594538,
+      "allocated_bytes": 598016,
+      "sha256": "8288b673192caaa5ba19ad759a7a23bbb25bc36c6fb7efc29e9715a61d745f7a",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/FIELD_3D_2400000.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/SCIENTIFIC_RESULTS.json",
+      "bytes": 5928901,
+      "allocated_bytes": 5931008,
+      "sha256": "bf6fb4f1b354622398cd32b18cbdff2ff436b119dd11c310a81eb71481fe4f45",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/SCIENTIFIC_RESULTS.json",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long75_AF_X.h5",
+      "bytes": 19611481,
+      "allocated_bytes": 19611648,
+      "sha256": "be39c4f7f9f76dfcbc9759c059fb4136f39d2e104922f3c8d4c3fbd3d9314614",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_local_ROT_PLUS.h5",
+      "bytes": 1662139,
+      "allocated_bytes": 1662976,
+      "sha256": "33912fe0bef1c1738bd44087645d24d001635f5c68f50f15cce6b84f9acb2f5e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/random50_ROT_MINUS_0.h5",
+      "bytes": 12477408,
+      "allocated_bytes": 12480512,
+      "sha256": "25fcbd52e7efd792de69c50ee738ff5099a2ae5aea6c5377a870d5a5fa6970b4",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_far.h5",
+      "bytes": 34143665,
+      "allocated_bytes": 34148352,
+      "sha256": "273b650ba1d2ba6419f1152573ab72c2740061f9350202e72594e37517b5876f",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_local_ROT_MINUS.h5",
+      "bytes": 1661986,
+      "allocated_bytes": 1662976,
+      "sha256": "9c257a548a61115f76984841b8c886ce6955ec7310a604f33bb826dc38009fc0",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_mid.h5",
+      "bytes": 34182294,
+      "allocated_bytes": 34189312,
+      "sha256": "6d1a66f44d2d6099183f129bbd06fdfa5be5b49b756987ec51cbabc7f73b47e3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/baseline_pair_r0_ROT_PLUS.h5",
+      "bytes": 3459976,
+      "allocated_bytes": 3461120,
+      "sha256": "15dad3e2f00043807d4dd35b4fede3f7db84992ed406e7aee7ec2de930e43eec",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/random50_ROT_MINUS_1.h5",
+      "bytes": 12471056,
+      "allocated_bytes": 12472320,
+      "sha256": "495df9e01214253585f11a0d27d4299ee429d860776ba40866d0e4cb5f650ef9",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_highgradient.h5",
+      "bytes": 5964046,
+      "allocated_bytes": 5967872,
+      "sha256": "81de1e164a12df8c4d527be17b413f3a278932ca7fd6b9d01a9870b8d62d5ce6",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_ring_ROT_PLUS.h5",
+      "bytes": 6026859,
+      "allocated_bytes": 6029312,
+      "sha256": "959578852dde82db467120f80c68792e6496f0e09d45a2d7300b3ec53aa3f034",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_random_2.h5",
+      "bytes": 34129483,
+      "allocated_bytes": 34136064,
+      "sha256": "cf3d6e9d2479a9c663b6214bb85caff727a74ff409918c8b5caa688e33ded766",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/baseline_pair_compact.h5",
+      "bytes": 895007,
+      "allocated_bytes": 897024,
+      "sha256": "4a5e9b57e2d60a8a9e2ba32525b6a93afafb2ebf0b5209227582092598623369",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/dataset/baseline_pair_compact.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_near.h5",
+      "bytes": 34133684,
+      "allocated_bytes": 34140160,
+      "sha256": "e62c04fa0058296f7f0a41f386eb2ab2160b68320ed0567b654f4d7d9b6183a3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_near.h5",
+      "bytes": 5948932,
+      "allocated_bytes": 5951488,
+      "sha256": "389e0b43e16da073e538e38800c382bd8f4c8d995e6ef5a15d299b43484cb51b",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_ring_ROT_MINUS.h5",
+      "bytes": 6026776,
+      "allocated_bytes": 6029312,
+      "sha256": "1330bcaa914a568949fc684068d6825df3a4174864e1adecb7de13b779f86d47",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_random_0_DT05.h5",
+      "bytes": 66535072,
+      "allocated_bytes": 66535424,
+      "sha256": "65fbe292cf657f295752c7926b0dceffcbc12f8d006784fa9e851d4e23f00a39",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/random50_ROT_MINUS_2.h5",
+      "bytes": 12468059,
+      "allocated_bytes": 12468224,
+      "sha256": "d761503c9f8fd0f9648c27917090fa424e8398048a66ac7a4267b9824e48a9ad",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_random_0_FINE.h5",
+      "bytes": 34159359,
+      "allocated_bytes": 34164736,
+      "sha256": "fa89257603825525db9388f6f0e7b901eaf2a1fe505984fdcd8b0f2ef08e3ad3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long250_near.h5",
+      "bytes": 55747352,
+      "allocated_bytes": 55754752,
+      "sha256": "46a8604ac0df477e3a226ace3ac491c7fd10dd1f723d95816f0992c0f4e53d24",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/baseline_pair_r0_ROT_MINUS.h5",
+      "bytes": 3490122,
+      "allocated_bytes": 3493888,
+      "sha256": "03a0c07c1dd1d28a4a52e8706d5c310326c81d0f57e116d469a3914bc2652ff0",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/random50_ROT_PLUS_0.h5",
+      "bytes": 12473300,
+      "allocated_bytes": 12476416,
+      "sha256": "f62d1b6d9f58097fd53038ee0844919912181d174a962cfb8ca5d7e0c372e502",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/ring50_ROT_MINUS.h5",
+      "bytes": 12527785,
+      "allocated_bytes": 12529664,
+      "sha256": "f2f1a9f04cea85107353acc38068e4011c34a4f867cddbe065437d15db5aec5c",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/serial_DT_probe.h5",
+      "bytes": 2620117,
+      "allocated_bytes": 2621440,
+      "sha256": "4e0917a3d454dfc9507233ad15ad9faec43111fc9f182b2773b077e5f43d03f3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_random_0.h5",
+      "bytes": 34159297,
+      "allocated_bytes": 34164736,
+      "sha256": "a6096d4e64ed787da006c5924e5b5c13c1d06f7c0003378cc6e75fa96c4e4fc4",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/dataset/long150_random_0.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/baseline_long50_X_PAIR.h5",
+      "bytes": 14180027,
+      "allocated_bytes": 14180352,
+      "sha256": "274ea2c2f8ef4af58906b7fcf478e8538f7538ceb733351359843406738441cc",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/random50_ROT_PLUS_1.h5",
+      "bytes": 12479882,
+      "allocated_bytes": 12480512,
+      "sha256": "b3bcbb9fc8023e1d85e409c7d3ef89e1097cc811a2d3e3d678412dfe4c1da66a",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_mid.h5",
+      "bytes": 5956699,
+      "allocated_bytes": 5959680,
+      "sha256": "f0fdc9c56389f4d39ca65bee544539e702b78e7f37eb3e37f0636ae323facbf6",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_random_0.h5",
+      "bytes": 5974186,
+      "allocated_bytes": 5976064,
+      "sha256": "772b68ede8e7249e065e8a4713c5f9d175a1db2351b33d8a3cba293f2876349e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_far.h5",
+      "bytes": 5980488,
+      "allocated_bytes": 5984256,
+      "sha256": "d0e7a230744cbe4d6ff0299c33cdf54afb2102c38022976ef75595ec1d7c64f2",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/baseline_pair_contact.h5",
+      "bytes": 2647404,
+      "allocated_bytes": 2650112,
+      "sha256": "80741a5f7eeac8712f01609507819fa9b07acc512691ede41d848950b2ee1062",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/dataset/baseline_pair_contact.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/ring50_ROT_PLUS.h5",
+      "bytes": 12528533,
+      "allocated_bytes": 12529664,
+      "sha256": "da83ee5cba7336d3774fa49ab9d1e65461947612105b4d03e427c67ab7394273",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_random_1.h5",
+      "bytes": 5966814,
+      "allocated_bytes": 5967872,
+      "sha256": "221286aff6ae91424a0c465b09ce8c2cfcba53a6ef3de2087851faaa2e8ed567",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_mid_FINE.h5",
+      "bytes": 34182320,
+      "allocated_bytes": 34189312,
+      "sha256": "588f894d633cb28dbc5e964bc6bc5e00b02620347cbe71fe75f1146840e0d52f",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long150_random_1.h5",
+      "bytes": 34133984,
+      "allocated_bytes": 34140160,
+      "sha256": "84fa354b99f5dd8e90f7aa4302d1e75f99682ab2794249bfdfe61b537edf6ea3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long75_AF_X_FINE.h5",
+      "bytes": 19611628,
+      "allocated_bytes": 19611648,
+      "sha256": "094a4a6aa1d5b37b1f746d551743483c458af461b9ab483d939bc6cc483e12dc",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/random50_ROT_PLUS_2.h5",
+      "bytes": 12476774,
+      "allocated_bytes": 12480512,
+      "sha256": "7d936d74779d2e8483f60999e174e46c8d145d9e3e6446fb27474d08bd737f06",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/pilot_random_2.h5",
+      "bytes": 5977734,
+      "allocated_bytes": 5980160,
+      "sha256": "7143512ecc01858377953475caec76123fc957781b44e9f0000749e251ce5e28",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/dataset/long250_random_0.h5",
+      "bytes": 55755199,
+      "allocated_bytes": 55762944,
+      "sha256": "07d2c81e31186173ba3cb379a200f54483111a82367056aa2eeaff5ddc623a6a",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10ag/dataset/long250_random_0.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long75_AF_X.h5",
+      "bytes": 2887816,
+      "allocated_bytes": 2891776,
+      "sha256": "9d33c4039018485b9dd350b75d2f8010dba2d02e5362716264bc8cd58e822cae",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_local_ROT_PLUS.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "244bfbc425f061510adb442ffe4f5e6088b03aeb642f39dcd36820dab2ad3b4d",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/random50_ROT_MINUS_0.h5",
+      "bytes": 371240,
+      "allocated_bytes": 372736,
+      "sha256": "1d130499fbc7601838492309739f59cbf9f605d0837a4f5c813c2d16b861e2e1",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long150_far.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "25dcc334134558e96ee9ddaa150972334faea3a2d32f2aa58e9fab0550630184",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_local_ROT_MINUS.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "8c440851393b2a7c0297b2862d650d0819767e103b0f204de93bd4ab94e547e7",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long150_mid.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "0a7e39c0325dad08dcd47b8cf40c360216f2843cdc3b8b0f5550c7911af50936",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/baseline_pair_r0_ROT_PLUS.h5",
+      "bytes": 44584,
+      "allocated_bytes": 45056,
+      "sha256": "45c18af50a38d53b1fc112ecea8424757a449bdfd3274ed7de979d78874eb8e6",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/random50_ROT_MINUS_1.h5",
+      "bytes": 371240,
+      "allocated_bytes": 372736,
+      "sha256": "fbddf72f76499bdb86e2d9ecc8020af1535981fd0089c85b7ca0f03066ca4464",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_highgradient.h5",
+      "bytes": 155720,
+      "allocated_bytes": 159744,
+      "sha256": "1dbb42046bfdcbae85dbbb43126b76b0f16e061d2e422f4b8effca3659558d57",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_ring_ROT_PLUS.h5",
+      "bytes": 155720,
+      "allocated_bytes": 159744,
+      "sha256": "fe63a409532d529cd2af2b64f4d1eab509cb884f299f7f157f54be22fa77828a",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long150_random_2.h5",
+      "bytes": 1091432,
+      "allocated_bytes": 1093632,
+      "sha256": "cc2ff7a42ace7eec33213068e46821b48d92ba52fed282d40ba903596171c6d7",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/baseline_pair_compact.h5",
+      "bytes": 676072,
+      "allocated_bytes": 679936,
+      "sha256": "23c47195d08f1c2aae27230fefb2ef4c804e2255ded6b290b7215aff0a9e82dd",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long150_near.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "275f9017188c540f554e6830960e4816da7bcc5de8f97334de40eefc7c610762",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_near.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "1a56baef0e63e8c05200b814372aa157e7b08f09c1d3429cf8196913bf70001d",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_ring_ROT_MINUS.h5",
+      "bytes": 155720,
+      "allocated_bytes": 159744,
+      "sha256": "2944128ef92b57da9cda7721941ff6e5781be6f6da810451eb55d8232963f67e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/random50_ROT_MINUS_2.h5",
+      "bytes": 371240,
+      "allocated_bytes": 372736,
+      "sha256": "500843b178c332b55cef90c9d958dc5f749d87cf961d1d10a878bbe46ad1f15e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long250_near.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "8d1c0c797d25f716ebf1f11d9c15aab33705384c173fa34c724335d2de5bdfc3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/baseline_pair_r0_ROT_MINUS.h5",
+      "bytes": 44584,
+      "allocated_bytes": 45056,
+      "sha256": "6408edb96a987aae755c3ff2969cff8181b0e16669d86ada8da48724cb6f4f5e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/random50_ROT_PLUS_0.h5",
+      "bytes": 371240,
+      "allocated_bytes": 372736,
+      "sha256": "1dbef140188e4eff7f3009dd710fc8c3e3ec30ec986f3943d8b63568009f0e4e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/ring50_ROT_MINUS.h5",
+      "bytes": 371240,
+      "allocated_bytes": 372736,
+      "sha256": "633a6b280932b10c3fdca7b1e9a1606b02a9edd190d4b6aa14825ff4816b9c6b",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long150_random_0.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "bdbdde13816e17c2ddc4869e51b452478515b172d159fd0080d16db12e449006",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/baseline_long50_X_PAIR.h5",
+      "bytes": 2887816,
+      "allocated_bytes": 2891776,
+      "sha256": "8c8118488bce1a3178a0c235dc5160437e1d6e19a3646a271253f3446834e031",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/random50_ROT_PLUS_1.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "a18ef756172d1a5f26a6e41feb6d9d9a326b8cefca135b6332002b07ac51de1e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_mid.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "02ac6120899150c557d6abda7ef82b05d40e838f216173b492c4ba62cfd0629b",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_random_0.h5",
+      "bytes": 155720,
+      "allocated_bytes": 159744,
+      "sha256": "ba56aedd3dff3a1ad525e351245884eecc9fbe9782928cf9a426e5b1965c1454",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_far.h5",
+      "bytes": 159312,
+      "allocated_bytes": 159744,
+      "sha256": "a66c31b5757b1fa048a326d78a4b1f04e3c43ff6baff00d803121fc72ca19db1",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/baseline_pair_contact.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "4ceaaf4270eefba688c0354db135099e2434bfd2fbd3018fa6a5938bc02e6abc",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/ring50_ROT_PLUS.h5",
+      "bytes": 371240,
+      "allocated_bytes": 372736,
+      "sha256": "3c3f098bfb154f6a3063a82d65c22727d46c87a53a5d6bfd34920a2a89767150",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_random_1.h5",
+      "bytes": 155720,
+      "allocated_bytes": 159744,
+      "sha256": "c57779fd5e1be837f9b57aef122e69be7c7c4c470f31456bbd62907e0e639d49",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long150_random_1.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "80cd64b1d564bdbd7c34616c21e97f8b764e5d6175ba44504c3200687b9f52f2",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/random50_ROT_PLUS_2.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "55e8a698a85643c961cb5be0f5fa5adb156e0007269a109b7026b12e648989b4",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/pilot_random_2.h5",
+      "bytes": 155720,
+      "allocated_bytes": 159744,
+      "sha256": "0a9fade6cb9e70f62c6c15ebf3358d94ba2abac00e348ab3a70d05e3a37238ab",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf_force_diagnostics/long250_random_0.h5",
+      "bytes": 1450632,
+      "allocated_bytes": 1454080,
+      "sha256": "b1c8e670f6e66f46cba705f9ea166721262eb2f591c8cc5d66ecb25c4369cd26",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/evidence/BASELINE_INITIAL_STATES.h5",
+      "bytes": 25536,
+      "allocated_bytes": 28672,
+      "sha256": "06bb833fdfeb842901ba5e63984c0646e62b39dd82d8b630208e5e1607c3380a",
+      "new_project_identical_file": "/home/lzy/projects/new_microbubble_aggregation/evidence/f10af_baseline/INITIAL_STATES.h5",
+      "action": "KEEP",
+      "recovery": "new local copy rehashed"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2500000_phase_90.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "84122972b4bde51d59a405335aa11d9d85f65fdf616ea157a8e7d37ac79545f0",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2600000_phase_180.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "049c475f182b9d27cd9522ee684b497ec9e290d5667ca262935ff31bfcb17f79",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2600000_phase_270.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "a7304890bf917d3aa8ff3605d7730001c297c5b8167a1f070ba49f895e70401b",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2600000_phase_90.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "d9291d43d37cfc1a230858bf202b4c88aba63e0e1fea18cb01ca236d1000775e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2400000_phase_270.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "a6b14affb13a29c49a134e7bd44fd24038a985cf1547ecac191b4c575d315a31",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2600000_phase_0.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "f92baf26849788a3f43ed9a9a49bbc93813dad034115357c32f49a350a7c7719",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/F1_shadow_random_2.h5",
+      "bytes": 821536,
+      "allocated_bytes": 823296,
+      "sha256": "a90fa23113bc502a9e4002474b50572f382600b8bd8bfa21e43e75306b519628",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/F1_shadow_random_1.h5",
+      "bytes": 821536,
+      "allocated_bytes": 823296,
+      "sha256": "f9774c04fc58efc030a9e691a579be54b351f2ed5172f6f9899adc44d9183b70",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/F1_shadow_far.h5",
+      "bytes": 821536,
+      "allocated_bytes": 823296,
+      "sha256": "72c6107b6898dffb4e113624fba6d2c1978049c168fed5e76e2ceec11422f55a",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2400000_phase_90.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "5a910172b6f4c8830b48c1002860fa22ab1d2052145a5c10a3d6632ab1f421d3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/atlas_coarse.h5",
+      "bytes": 6835056,
+      "allocated_bytes": 6836224,
+      "sha256": "d147fb745b604f173a9aa2f095f03da3b1ba034ba73783418abcf4e0405cf139",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/local_3d_point.h5",
+      "bytes": 1024704,
+      "allocated_bytes": 1028096,
+      "sha256": "5cce46d3e14bf18148e2f7e05626fced8b52461a6d61d5a961cb25ec57ccfe8c",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2400000_phase_180.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "613c0fa80d7d5b455c9f91abd944e6fac3e040a317d14f9e45c3015731cae0e4",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/F1_shadow_near.h5",
+      "bytes": 821536,
+      "allocated_bytes": 823296,
+      "sha256": "01d5bb8b957d8f0592412445aa9c7fbffcca9641f3d4ddd63315e3a6cf1b3286",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/atlas.h5",
+      "bytes": 6835056,
+      "allocated_bytes": 6836224,
+      "sha256": "ee14ebcc418c4a3eafb68cbae24ebc73a07b1366bf6bc2ba1508141cba641398",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/local_3d_point_coarse.h5",
+      "bytes": 1024704,
+      "allocated_bytes": 1028096,
+      "sha256": "c77dbbf39cddfee6b8792c4edf69c0f4b7f42cd80337ad20cef7dab26a830903",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/F1_shadow_random_0.h5",
+      "bytes": 821536,
+      "allocated_bytes": 823296,
+      "sha256": "11a9b55d594a07dc24a71ebd62bdd955c7cdfc895f8e0addef82e10969b56d21",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2500000_phase_180.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "8997fa6ab56416a963d654ea7c2971c61aa33541ed31963dea2a3771fb7a8605",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2500000_phase_270.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "1120a68b2551f1ea64933c2d5d8ed3be7f4bdc7ef152c82981dbcecffb6ffb87",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2500000_phase_0.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "f6a2134ab89c74943d6ae08e913300fbc2954edf4f2a243a31de0c19fb4cf86d",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/freq_2400000_phase_0.h5",
+      "bytes": 393144,
+      "allocated_bytes": 393216,
+      "sha256": "7370caec8d44f6281609ed5fa33c45af392feb6b82e150548b660102d89afe96",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/atlas_refined.h5",
+      "bytes": 7809056,
+      "allocated_bytes": 7811072,
+      "sha256": "b6a841387cfec363469efe02bcd871bd4682b74dcc7f8eb49da1962282930747",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/single/F1_shadow_mid.h5",
+      "bytes": 821536,
+      "allocated_bytes": 823296,
+      "sha256": "684c582c3114f912501c5d3ec8755f222da452bda5528ffa829a207ff2a9c37f",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/random50_ROT_MINUS_1/trajectory.h5",
+      "bytes": 353281,
+      "allocated_bytes": 356352,
+      "sha256": "9a3d5ca4c2179a60cdc5e97220ac236da2b8687f62c64d84cae413b74b87f7fd",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_random_2/trajectory.h5",
+      "bytes": 295118,
+      "allocated_bytes": 299008,
+      "sha256": "068d309fb15f5494ad50ba510e8dd701830c5147124ee07074fe45b77481fb48",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long150_random_1/trajectory.h5",
+      "bytes": 34893035,
+      "allocated_bytes": 34893824,
+      "sha256": "8352a955602a258712d7c14cc8750a95b8b868436481c49fb2c03d4065c7fb85",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long150_random_2/trajectory.h5",
+      "bytes": 488159,
+      "allocated_bytes": 491520,
+      "sha256": "01952516e46512eb3bef8c40e838536d011f4e0fe1794853cff85dbc2e4c6597",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_random_1/trajectory.h5",
+      "bytes": 297458,
+      "allocated_bytes": 299008,
+      "sha256": "1e0874e4f4f9f776e7a787a126417be1903382c68fe8f06cfb8f9fb932ccce0e",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/random50_ROT_MINUS_2/trajectory.h5",
+      "bytes": 355533,
+      "allocated_bytes": 356352,
+      "sha256": "51af357677088df2fdf241c1fe4e26faaa14b23c7d7383ffd7aa29f2fcd413fd",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/random50_ROT_PLUS_0/trajectory.h5",
+      "bytes": 353487,
+      "allocated_bytes": 356352,
+      "sha256": "4701a6acdf1be76cd030dde5987e5b32472fd3538af9fbf1a1b40b94d15f0a52",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/random50_ROT_MINUS_0/trajectory.h5",
+      "bytes": 351204,
+      "allocated_bytes": 352256,
+      "sha256": "caabacdd262145251ba5cabad8f5d3bd2a135eeb46c1a3b36e0282014cc09fa3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/baseline_pair_contact/trajectory.h5",
+      "bytes": 2917923,
+      "allocated_bytes": 2920448,
+      "sha256": "98c6d80cb2a1989156bf8fff0d0ebff4c5b054d8e08260a94f816be42a3b2a76",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/random50_ROT_PLUS_2/trajectory.h5",
+      "bytes": 7152428,
+      "allocated_bytes": 7155712,
+      "sha256": "1c464d9ed62c984b10a7f6ed1a5def5ca42fa2409ee9842434bb750dac97a296",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_ring_ROT_MINUS/trajectory.h5",
+      "bytes": 330087,
+      "allocated_bytes": 331776,
+      "sha256": "22eb68a9481cae4066c65dc513a2533b45908eaf8e73e6331cc4500529f230df",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_random_0/trajectory.h5",
+      "bytes": 298497,
+      "allocated_bytes": 299008,
+      "sha256": "2a193849abc92e8b24df93799865281a9967523f07f51db29c0549e1d71ad7e5",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/baseline_pair_r0_ROT_MINUS/trajectory.h5",
+      "bytes": 514483,
+      "allocated_bytes": 516096,
+      "sha256": "50aa150815798e056a512e9e492b32e86d8c04875634cb5c1bba557c8c477251",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/ring50_ROT_PLUS/trajectory.h5",
+      "bytes": 381675,
+      "allocated_bytes": 385024,
+      "sha256": "bea02c06b3764c7b757ec99609c5212fb126d137786b057466f3fc0581a454c4",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_local_ROT_PLUS/trajectory.h5",
+      "bytes": 949603,
+      "allocated_bytes": 950272,
+      "sha256": "22f7baa9d8c265e0a45a2715f86dabc53981e12559ea02a6fc1e1bf8d21383a5",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_near/trajectory.h5",
+      "bytes": 4988611,
+      "allocated_bytes": 4988928,
+      "sha256": "78c421f8e0e776dfd44f882b5bf5944177e185666d90523b2645f8fd7d957264",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long150_mid/trajectory.h5",
+      "bytes": 71939597,
+      "allocated_bytes": 71946240,
+      "sha256": "79a8c544a0e26bbe7fa477f4493d54ca2b32bd9c79a2719e31057cda2fbb9dbc",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long150_far/trajectory.h5",
+      "bytes": 68106750,
+      "allocated_bytes": 68112384,
+      "sha256": "2e4a5289dd0a29da6e5b2b611930a824fa773e821800ed4fa2ea421626b0ee41",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/ring50_ROT_MINUS/trajectory.h5",
+      "bytes": 381977,
+      "allocated_bytes": 385024,
+      "sha256": "8696d141825bf6870359f3149577b480b815b3540a2ea8b241bd861d9f54971d",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/baseline_long50_X_PAIR/trajectory.h5",
+      "bytes": 28744117,
+      "allocated_bytes": 28745728,
+      "sha256": "dbeeabcfc0281e3a324520553fe2dded36730f3bdbd1cc9103245b5c7e8b14f6",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/random50_ROT_PLUS_1/trajectory.h5",
+      "bytes": 10121246,
+      "allocated_bytes": 10125312,
+      "sha256": "aed36c1a8d7f7f8804edce6d58cc732d5e9109e172c6fee5e8606d3e743a92d1",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/baseline_pair_compact/trajectory.h5",
+      "bytes": 181525,
+      "allocated_bytes": 184320,
+      "sha256": "301c27551abaf5de7d1123654a983c6dbfc393cbe63d01a7139f92750cd38f1c",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/baseline_pair_r0_ROT_PLUS/trajectory.h5",
+      "bytes": 514371,
+      "allocated_bytes": 516096,
+      "sha256": "b70486a05e83aafdad76801bbb8913461645ef755841aeffdc8b21bde7423111",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long150_random_0/trajectory.h5",
+      "bytes": 66050334,
+      "allocated_bytes": 66056192,
+      "sha256": "810addbbf185a6af1c71fa205850cf424e68105919a9e0e8f19139b459315e8d",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_mid/trajectory.h5",
+      "bytes": 1239214,
+      "allocated_bytes": 1241088,
+      "sha256": "d1e4f562835dc6f9c9781d8a4bf0ecf32c4592e349f9f2f7380be2186b4d8349",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_ring_ROT_PLUS/trajectory.h5",
+      "bytes": 330201,
+      "allocated_bytes": 331776,
+      "sha256": "5c95faa8e58aaa6983508f95e1fbc0fe0df68ea53e6663bd70c0e92333f5b439",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_highgradient/trajectory.h5",
+      "bytes": 296122,
+      "allocated_bytes": 299008,
+      "sha256": "390260027fc391d783692b5636ede4042f759956a387ad5c2d0300c405991266",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long150_near/trajectory.h5",
+      "bytes": 74760639,
+      "allocated_bytes": 74768384,
+      "sha256": "fd92f100156279a9918d902fd1400963c4a6f267b7f147fbaac5c3955ad02418",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_local_ROT_MINUS/trajectory.h5",
+      "bytes": 943684,
+      "allocated_bytes": 946176,
+      "sha256": "0e7a944d0c8534dfa46aa0755ea24921485bd3c4715d77e3d655ec860aa2ed50",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long250_random_0/trajectory.h5",
+      "bytes": 117459209,
+      "allocated_bytes": 117465088,
+      "sha256": "d57c1ee49f18db64c9699e4a743831dc906194a1c75fc0effb3dd68cf9c27af3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long250_near/trajectory.h5",
+      "bytes": 124677461,
+      "allocated_bytes": 124678144,
+      "sha256": "db2956148dbb2d8fcf9c9c2baf1dc802ad7ee07ce00471ea01aa52f5f04567c3",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/pilot_far/trajectory.h5",
+      "bytes": 298617,
+      "allocated_bytes": 299008,
+      "sha256": "a3f35b735d4ed5883e90e869454ff657c922430ecedb5d62d05191ed9ce0916b",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10ag/lf/long75_AF_X/trajectory.h5",
+      "bytes": 55847677,
+      "allocated_bytes": 55848960,
+      "sha256": "d9cf0bb0eb352337c085ce49573c195d69cf7147eb93520b08e3465734dbcc17",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2600000/DIAGNOSTICS.h5",
+      "bytes": 11813977,
+      "allocated_bytes": 11816960,
+      "sha256": "bb4fc783bf264448eba5af6b8a178119d8b537ab112874edbd2ae9231e1cdedd",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2400000/DIAGNOSTICS.h5",
+      "bytes": 11813977,
+      "allocated_bytes": 11816960,
+      "sha256": "94b37f6a559ee015340b9e064a443c5eb5f2f86bdbfae250987530a4711b25c7",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2500000/DIAGNOSTICS.h5",
+      "bytes": 11813977,
+      "allocated_bytes": 11816960,
+      "sha256": "36c229dec9bb0dc216c267a1ff85398527f2506145e589cc7a9ce577009bed4d",
+      "new_project_identical_file": null,
+      "action": "KEEP",
+      "recovery": "No independent copy verified in this audit; do not delete"
+    }
+  ],
+  "remote_raw_status": "Existing DATA_AVAILABILITY.json retained. Server not queried; recorded remote files are not verified backups."
+}

@@ -1,0 +1,10 @@
+{
+  "scope": "All existing reachable Git blobs; text and gzip text checked for known credential formats. No history rewritten.",
+  "reachable_blob_count": 550,
+  "text_blobs_scanned": 506,
+  "gzip_blobs_decoded": 14,
+  "max_blob_bytes": 55755199,
+  "blobs_over_100_MiB": [],
+  "credential_findings": [],
+  "status": "PASS"
+}

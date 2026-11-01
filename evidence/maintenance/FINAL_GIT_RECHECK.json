@@ -1,0 +1,350 @@
+{
+  "utc": "2026-10-22T16:41:27.741904+00:00",
+  "rows": [
+    {
+      "id": "A01",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 0,
+      "ignored_suffix_counts": {},
+      "ignored_bytes": 0
+    },
+    {
+      "id": "A02",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 656,
+      "ignored_suffix_counts": {
+        "": 2,
+        ".TAG": 1,
+        ".pyc": 653
+      },
+      "ignored_bytes": 7037480
+    },
+    {
+      "id": "A03",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 2,
+      "ignored_suffix_counts": {
+        ".pyc": 2
+      },
+      "ignored_bytes": 27119
+    },
+    {
+      "id": "A04",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 2,
+      "ignored_suffix_counts": {
+        ".pyc": 2
+      },
+      "ignored_bytes": 26895
+    },
+    {
+      "id": "A05",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 0,
+      "ignored_suffix_counts": {},
+      "ignored_bytes": 0
+    },
+    {
+      "id": "A06",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 12,
+      "ignored_suffix_counts": {
+        ".pyc": 12
+      },
+      "ignored_bytes": 190301
+    },
+    {
+      "id": "B01",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 20,
+      "ignored_suffix_counts": {
+        "": 5,
+        ".TAG": 1,
+        ".pyc": 14
+      },
+      "ignored_bytes": 142360
+    },
+    {
+      "id": "B02",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 13,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 9
+      },
+      "ignored_bytes": 64613
+    },
+    {
+      "id": "B03",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 34,
+      "ignored_suffix_counts": {
+        "": 6,
+        ".TAG": 1,
+        ".pyc": 27
+      },
+      "ignored_bytes": 220646
+    },
+    {
+      "id": "B04",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 21,
+      "ignored_suffix_counts": {
+        "": 4,
+        ".TAG": 1,
+        ".pyc": 16
+      },
+      "ignored_bytes": 148302
+    },
+    {
+      "id": "B05",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 32,
+      "ignored_suffix_counts": {
+        "": 4,
+        ".TAG": 1,
+        ".pyc": 27
+      },
+      "ignored_bytes": 274904
+    },
+    {
+      "id": "B06",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 19,
+      "ignored_suffix_counts": {
+        "": 4,
+        ".TAG": 1,
+        ".pyc": 14
+      },
+      "ignored_bytes": 127198
+    },
+    {
+      "id": "B07",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 24,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 20
+      },
+      "ignored_bytes": 192166
+    },
+    {
+      "id": "B08",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 23,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 19
+      },
+      "ignored_bytes": 197678
+    },
+    {
+      "id": "B09",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 26,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 22
+      },
+      "ignored_bytes": 207048
+    },
+    {
+      "id": "B10",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 31,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 27
+      },
+      "ignored_bytes": 280709
+    },
+    {
+      "id": "B11",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 33,
+      "ignored_suffix_counts": {
+        "": 5,
+        ".TAG": 1,
+        ".pyc": 27
+      },
+      "ignored_bytes": 272446
+    },
+    {
+      "id": "B12",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 31,
+      "ignored_suffix_counts": {
+        "": 4,
+        ".TAG": 1,
+        ".pyc": 26
+      },
+      "ignored_bytes": 281292
+    },
+    {
+      "id": "B13",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 31,
+      "ignored_suffix_counts": {
+        "": 5,
+        ".TAG": 1,
+        ".pyc": 25
+      },
+      "ignored_bytes": 252545
+    },
+    {
+      "id": "B14",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 22,
+      "ignored_suffix_counts": {
+        "": 4,
+        ".TAG": 1,
+        ".pyc": 17
+      },
+      "ignored_bytes": 165547
+    },
+    {
+      "id": "B15",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 80,
+      "ignored_suffix_counts": {
+        "": 48,
+        ".TAG": 1,
+        ".pyc": 31
+      },
+      "ignored_bytes": 378450
+    },
+    {
+      "id": "B16",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 26,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 22
+      },
+      "ignored_bytes": 166148
+    },
+    {
+      "id": "B17",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 27,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 23
+      },
+      "ignored_bytes": 202186
+    },
+    {
+      "id": "B18",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 45,
+      "ignored_suffix_counts": {
+        "": 5,
+        ".TAG": 1,
+        ".pyc": 39
+      },
+      "ignored_bytes": 415552
+    },
+    {
+      "id": "B19",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 44,
+      "ignored_suffix_counts": {
+        "": 2,
+        ".TAG": 1,
+        ".md": 1,
+        ".pyc": 40
+      },
+      "ignored_bytes": 433766
+    },
+    {
+      "id": "B20",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 43,
+      "ignored_suffix_counts": {
+        ".pyc": 43
+      },
+      "ignored_bytes": 452484
+    },
+    {
+      "id": "B21",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 20,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 16
+      },
+      "ignored_bytes": 159484
+    },
+    {
+      "id": "B22",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 19,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 15
+      },
+      "ignored_bytes": 146004
+    },
+    {
+      "id": "B23",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 27,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 23
+      },
+      "ignored_bytes": 247597
+    },
+    {
+      "id": "B24",
+      "head_unchanged": true,
+      "status": "",
+      "ignored_count": 34,
+      "ignored_suffix_counts": {
+        "": 3,
+        ".TAG": 1,
+        ".pyc": 30
+      },
+      "ignored_bytes": 301728
+    }
+  ]
+}

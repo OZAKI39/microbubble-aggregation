@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-22T16:31:01.355465+00:00",
+  "hits": [
+    {
+      "pid": 335114,
+      "reference": "/proc/335114/fd/3",
+      "target": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10e_20261011/computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10c/exclusive_v1_batch/B64_serial_063/trajectory.h5"
+    }
+  ],
+  "unreadable_pids": [
+    "1",
+    "10",
+    "102",
+    "157",
+    "159",
+    "165",
+    "166",
+    "173",
+    "189",
+    "190",
+    "2",
+    "208",
+    "227410",
+    "227411",
+    "227435",
+    "227436",
+    "227444",
+    "227445",
+    "227650",
+    "227651",
+    "293",
+    "294",
+    "296",
+    "3",
+    "341",
+    "342",
+    "56",
+    "8260"
+  ],
+  "note": "Snapshot only. Recheck before approved deletion. Other users/kernel processes may be unreadable."
+}

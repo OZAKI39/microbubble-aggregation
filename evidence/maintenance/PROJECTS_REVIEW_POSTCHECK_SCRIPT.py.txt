@@ -1,0 +1,32 @@
+from pathlib import Path
+import pickle,json,os,hashlib,subprocess as sp,datetime,collections
+P=Path('/home/lzy/projects');N=P/'new_microbubble_aggregation';O=N/'evidence/maintenance';s=pickle.load(open('/tmp/mb_projects_review_state.pkl','rb'));ex=json.loads((O/'PROJECTS_REVIEW_EXECUTION.json').read_text());restore=json.loads((O/'PROJECTS_REVIEW_RESTORATION.json').read_text());meta=pickle.load(open('/tmp/mb_review_protected_metadata.pkl','rb'))
+def sha(p):
+ h=hashlib.sha256()
+ with open(p,'rb') as f:
+  for b in iter(lambda:f.read(4*1024*1024),b''):h.update(b)
+ return h.hexdigest()
+ret={'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scientific_files':[],'runtime_files':[],'unexpected_changes':[],'restored_experiment_files_verified':0}
+for row in json.loads((O/'PROTECTED_SCIENTIFIC_DATA.json').read_text())['rows']:
+ p=Path(row['path']);got=sha(p) if p.exists() else None;ret['scientific_files'].append({'path':str(p),'PASS':got==row['sha256'],'sha256':got})
+for rel,want in json.loads((N/'evidence/migration/EXECUTION_SOURCE_SEAL.json').read_text())['source_sha256'].items():
+ got=sha(N/rel);ret['runtime_files'].append({'path':rel,'PASS':got==want})
+restored={x['path']:x for x in restore['files']}
+for category,rows in meta.items():
+ for name,before in rows.items():
+  q=Path(name)
+  try:st=q.lstat();after=[st.st_size,st.st_mtime_ns,st.st_ino,os.readlink(q) if q.is_symlink() else None]
+  except FileNotFoundError:after=None
+  if name in restored:
+   if sha(q)==restored[name]['sha256'] and after[:2]==before[:2]:ret['restored_experiment_files_verified']+=1
+   else:ret['unexpected_changes'].append({'path':name,'category':category,'restoration':'FAIL'})
+  elif before!=after:ret['unexpected_changes'].append({'path':name,'category':category,'before':before,'after':after})
+ret['new_broken_symlinks']=[]
+for row in s['links']:
+ p=Path(row['path'])
+ if row['exists'] and p.is_symlink() and not p.exists():ret['new_broken_symlinks'].append(row)
+ret['git_refs_unchanged']=all(sp.check_output(['git','--git-dir',c,'show-ref'],text=True)==v['refs'] for c,v in ex['git_before'].items())
+ret['current_head']=sp.check_output(['git','-C',str(N),'rev-parse','HEAD'],text=True).strip();ret['current_head_unchanged']=ret['current_head']==ex['current_head_before'];ret['current_branch']=sp.check_output(['git','-C',str(N),'branch','--show-current'],text=True).strip()
+ret['df_after']=sp.check_output(['df','-B1',str(P)],text=True);ret['git_metadata_growth_bytes']=sum(int(sp.check_output(['du','-s','-B1',c],text=True).split()[0])-v['allocated_bytes'] for c,v in ex['git_before'].items());ret['deleted_target_allocated_bytes']=ex['removed_allocated_bytes'];ret['attributable_net_freed_bytes']=ret['deleted_target_allocated_bytes']-ret['git_metadata_growth_bytes']
+ret['PASS']=all(x['PASS'] for x in ret['scientific_files']+ret['runtime_files']) and not ret['unexpected_changes'] and not ret['new_broken_symlinks'] and ret['git_refs_unchanged'] and ret['current_head_unchanged'] and ret['restored_experiment_files_verified']==len(restored)
+(O/'PROJECTS_REVIEW_POSTCHECK.json').write_text(json.dumps(ret,indent=2)+'\n');print(json.dumps({k:v for k,v in ret.items() if k not in ['scientific_files','runtime_files']},indent=2));assert ret['PASS']

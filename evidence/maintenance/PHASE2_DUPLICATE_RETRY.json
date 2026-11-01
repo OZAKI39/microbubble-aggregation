@@ -1,0 +1,64 @@
+{
+  "rows": [
+    {
+      "id": "A07",
+      "path": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B2/particles/events.jsonl",
+      "started_utc": "2026-10-22T17:01:47.771314+00:00",
+      "first_attempt_reason": "[Errno 13] Permission denied: '/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B2/particles/events.jsonl'",
+      "parent": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B2/particles",
+      "original_mode": "0o555",
+      "disk_before": {
+        "utc": "2026-10-22T17:02:04.223204+00:00",
+        "total_bytes": 1081101176832,
+        "used_bytes": 497343033344,
+        "available_bytes": 528765788160,
+        "inodes_used": 2185707,
+        "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 497343033344 528765788160  49% /\n"
+      },
+      "sha256": "3a04bba66cdfd96219cdb85b3072f480797d667b93cdfc158c5f67d925fe333e",
+      "retained_sha256": "3a04bba66cdfd96219cdb85b3072f480797d667b93cdfc158c5f67d925fe333e",
+      "status": "REMOVED",
+      "parent_mode_restored": true,
+      "sibling_files_unchanged": 2,
+      "disk_after": {
+        "utc": "2026-10-22T17:02:04.326068+00:00",
+        "total_bytes": 1081101176832,
+        "used_bytes": 489489223680,
+        "available_bytes": 536619597824,
+        "inodes_used": 2185706,
+        "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 489489223680 536619597824  48% /\n"
+      },
+      "finished_utc": "2026-10-22T17:02:04.328265+00:00"
+    },
+    {
+      "id": "A08",
+      "path": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B3/particles/events.jsonl",
+      "started_utc": "2026-10-22T17:02:04.331428+00:00",
+      "first_attempt_reason": "[Errno 13] Permission denied: '/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B3/particles/events.jsonl'",
+      "parent": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B3/particles",
+      "original_mode": "0o555",
+      "disk_before": {
+        "utc": "2026-10-22T17:02:20.973229+00:00",
+        "total_bytes": 1081101176832,
+        "used_bytes": 448918564864,
+        "available_bytes": 577190256640,
+        "inodes_used": 2149854,
+        "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 448877277184 577231544320  44% /\n"
+      },
+      "sha256": "b632b0e955bbf8df842ee241251dead86d603b93ed7b6d291c4f3b31d35629b7",
+      "retained_sha256": "b632b0e955bbf8df842ee241251dead86d603b93ed7b6d291c4f3b31d35629b7",
+      "status": "REMOVED",
+      "parent_mode_restored": true,
+      "sibling_files_unchanged": 2,
+      "disk_after": {
+        "utc": "2026-10-22T17:02:21.057135+00:00",
+        "total_bytes": 1081101176832,
+        "used_bytes": 437666332672,
+        "available_bytes": 588442488832,
+        "inodes_used": 2149191,
+        "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 437653352448 588455469056  43% /\n"
+      },
+      "finished_utc": "2026-10-22T17:02:21.058424+00:00"
+    }
+  ]
+}

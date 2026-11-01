@@ -1,0 +1,16 @@
+{
+  "utc": "2026-10-24T11:10:07.702528+00:00",
+  "user_instruction": "批准 A1–A2、B1–B4",
+  "approved_groups": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "B3",
+    "B4"
+  ],
+  "explicitly_excluded_group": "A3",
+  "manifest_sha256": "ddf330e9dffb818e13de125c890bdfa920d19d36faa72925f1c2385b05cc452b",
+  "identities_sha256": "2ed49a4ff89ee70a4eded8e490a0a108ec4d5a2f63414a8ab42d0cc05419bc9f",
+  "source_audit": "docs/SERVER_CLEANUP_AUDIT_20261024.md"
+}

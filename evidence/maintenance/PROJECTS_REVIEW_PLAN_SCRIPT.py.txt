@@ -1,0 +1,61 @@
+exec(open('/tmp/mb_projects_review.py').read().split('old=json.loads')[0])
+with open('/tmp/mb_projects_review_state.pkl','rb') as f:s=pickle.load(f)
+protected=s['protected'].copy(); links=s['links']; plans=[];skip=[]
+import re
+for source in [P/'microbubble_aggregation.md',P/'microbubble_aggregation_assets/media_sources.json']:
+ for name in re.findall(r'/home/lzy/projects/[^\s\"`<>\)]+',source.read_text()):
+  pp=Path(name.rstrip(',.;]'))
+  if pp.exists() and (pp.is_file() or pp.name in ('figures','videos')):protected.add(str(pp))
+
+# Preserve all real targets of existing links; broken historical links are recorded, never made worse.
+ref=[Path(x['target']) for x in links if x['exists']]
+for r in s['repos']:
+ rp=Path(r['path']);sim=Path(r['sim'])
+ if rp.name=='mevo_acoustic_microbubbles':continue
+ bypath={f['path']:f for f in r['files']};bad=[Path(f['path']) for f in r['files'] if not f['tracked'] or f['path'] in protected]
+ bad += [Path(x) for x in protected if Path(x).is_relative_to(sim)]
+ bad += [Path(x) for x in r['symlinks']]+[Path(x) for x in s['envs'] if Path(x).is_relative_to(sim)]
+ bad += [p for p in ref if p==sim or p.is_relative_to(sim)]
+ eligible=[]
+ bad_s=[(str(b),b.is_dir()) for b in bad]
+ def choose(p,depth=0):
+  # Never touch anything outside the exact old simulation subtree.
+  assert p==sim or p.is_relative_to(sim)
+  if p.is_symlink():return
+  ps=str(p); prefix=ps+'/'
+  ff=[f for f in r['files'] if f['path']==ps or f['path'].startswith(prefix)]
+  if not ff:return
+  if not any(b==ps or b.startswith(prefix) or (isdir and ps.startswith(b+'/')) for b,isdir in bad_s):
+   eligible.append((p,ff));return
+  if depth<3 and p.is_dir():
+   for c in sorted(p.iterdir()):
+    if c.name not in ('.git','.venv','__pycache__','.pytest_cache','.ruff_cache'):choose(c,depth+1)
+ choose(sim)
+ rows=[]
+ for p,ff in eligible:
+  # Check real bytes against the recorded Git blob, not just git status or mtime.
+  mismatches=[]
+  for f in ff:
+   h=hashlib.sha1();h.update(('blob '+str(f['size'])+'\0').encode())
+   with open(f['path'],'rb') as q:
+    for b in iter(lambda:q.read(4*1024*1024),b''):h.update(b)
+   if h.hexdigest()!=f['tracked']['oid']:mismatches.append(f['path'])
+  if mismatches:skip.append({'path':str(p),'reason':'Git blob mismatch','files':mismatches});continue
+  rows.append({'path':str(p),'rel':p.relative_to(rp).as_posix(),'is_dir':p.is_dir(),'file_count':len(ff),'allocated_file_bytes':sum(f['blocks'] for f in ff),'git_blob_manifest_sha256':hashlib.sha256(json.dumps([(f['rel'],f['tracked']['oid']) for f in ff],sort_keys=True).encode()).hexdigest()})
+ if rows:
+  # Verify the saved HEAD and every referenced object are actually present.
+  oids=sorted({f['tracked']['oid'] for p,ff in eligible for f in ff})
+  cp=sp.run(['git','-C',str(rp),'cat-file','--batch-check'],input=('\n'.join(oids)+'\n').encode(),capture_output=True);cp.check_returncode()
+  assert b'missing' not in cp.stdout
+  plans.append({'root':r['path'],'sim':r['sim'],'head':r['head'],'original_sparse':r['sparse'],'status_before':r['status'],'prefixes':rows,'preserved_git_objects':len(oids)})
+  print(rp.name,len(rows),round(sum(x['allocated_file_bytes'] for x in rows)/2**30,3),'GiB',flush=True)
+# Only standard disposable runtime caches and deprecated isolated simulation environments.
+cache=[p for p in s['caches'] if not any(Path(p)==Path(x['path']) or Path(p).is_relative_to(x['path']) for plan in plans for x in plan['prefixes'])]
+envs=s['envs'];env_links=[x for x in links if any(Path(x['target'])==Path(e) for e in envs) and Path(x['path']).name=='.venv']
+# Reject external uses of an environment; only the old F10AB env alias can be retired with it.
+for e in envs:
+ for x in links:
+  if (Path(x['target'])==Path(e) or Path(x['target']).is_relative_to(e)) and x not in env_links:skip.append({'path':e,'reason':'environment has preserved link user','link':x})
+plan={'utc':s['utc'],'authorization':'Current explicit user request; delete verified obsolete simulation content only. Git history preserved. No unique untracked data deletion.','sparse_evictions':plans,'cache_dirs':cache,'environment_dirs':envs,'environment_aliases':env_links,'skipped':skip,'current_head':git(N,'rev-parse','HEAD').decode().strip(),'broken_links_preexisting':[x for x in links if not x['exists'] and '/mevo' in x['target']]}
+(O/'PROJECTS_REVIEW_PLAN.json').write_text(json.dumps(plan,indent=2)+'\n')
+print('TOTAL',sum(len(x['prefixes']) for x in plans),'prefixes',sum(x['allocated_file_bytes'] for plan in plans for x in plan['prefixes'])/2**30,'GiB',len(envs),'envs',len(cache),'caches',len(skip),'skips')

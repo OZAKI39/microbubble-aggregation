@@ -1,0 +1,876 @@
+{
+  "obsolete_document_copies": [
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10A_20261011",
+      "sha256": "ba0a55983e5d1e45a169f308c50c17aecef86de5dec9a3362808c17f883d10f2",
+      "bytes": 30922,
+      "blocks": 32768,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10a/progress_document/before.md",
+        "blob": "e3809633eb8757c60b947e21811e06af84e2baed"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10B_20261011",
+      "sha256": "343ba07c68407911a2684fbf786d6398b12a40eb7355e0b8b02ff54fe5ab382f",
+      "bytes": 34602,
+      "blocks": 36864,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10a/progress_document/after.md",
+        "blob": "cc625f9e5b765ab6747a3b128880cf843cc4aba3"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10C_20261011",
+      "sha256": "3f022583e71691cbcc2ef3ab753f634490ddbd2f47b265ab787b22acd911f9ff",
+      "bytes": 38795,
+      "blocks": 40960,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10b/progress_document/after.md",
+        "blob": "9b3b3adabe97629dee9c4614fedc1e3fbfa7bddc"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10C_exclusive_20261011",
+      "sha256": "09b3bbc16d4929103b779e2364d1bc11950b39e11bd017410d4edc35e6e688c5",
+      "bytes": 42353,
+      "blocks": 45056,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10c/progress_document/exclusive_update/before.md",
+        "blob": "c2d2119f3a47e34506c2e0c7c04e9247883aa62e"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10D_20261011",
+      "sha256": "d75fa42a4d6c23c7f06e1f1f1171f78826f1c484feb9d8dcf25fa03cf11f918f",
+      "bytes": 42432,
+      "blocks": 45056,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10c/progress_document/after.md",
+        "blob": "1acb91c798cfc762b3f6bb1f7fb0593717dd0bcd"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10E_20261011",
+      "sha256": "bc6861587050c3f330a2e076a3bcde2cbe54215a3fe9db5d2fedd7dc08ba0da8",
+      "bytes": 46021,
+      "blocks": 49152,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10d/progress_document/after.md",
+        "blob": "4cce398358c687ba20e66147b9c0ac66c885b036"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10F_20261011",
+      "sha256": "ceff73a68b497c1e4e50378341d09a4c695d40f785ea45ff99c010c88735a887",
+      "bytes": 49799,
+      "blocks": 53248,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10e/progress_document/after.md",
+        "blob": "e889459a59ff8cea7284bd1fa80b820107b2f65a"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10G_20261011",
+      "sha256": "f53da1d199086f3204aae2c7d21c4853fca8d67356ca9e377dd7274d360a42ed",
+      "bytes": 52830,
+      "blocks": 53248,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10f/progress_document/after.md",
+        "blob": "34488b1381e8e1e08d5f50bf1acf02045bac6024"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10H_20261012",
+      "sha256": "92b8631a56b32a2ea8290d8632d3ebf6f4577271e2ea06e2c8aa63c39e659d1e",
+      "bytes": 56042,
+      "blocks": 57344,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10g/progress_document/after.md",
+        "blob": "307a71d0650600203ab1e5467aad0618cb3bf94e"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10I_20261012",
+      "sha256": "14b35ac8c531092e391a44a68a5d86a6a202b91181413639fee10eb463ca0015",
+      "bytes": 59278,
+      "blocks": 61440,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10h/progress_document/after.md",
+        "blob": "a4af3ff22cc8e3a872e3e8e39af6694b405a9f01"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10J_20261012",
+      "sha256": "b24cce46e52627b8039e283c3050ff6bcfd3cc2c299223ead6505af719714918",
+      "bytes": 62575,
+      "blocks": 65536,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10i/progress_document/after.md",
+        "blob": "7df0139a89aa9a10ff5a5afbfd6bccb1e60dddae"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10K_20261012",
+      "sha256": "d01919e64ccbaeb1b8048b3ce764ec793d9f8c38d6000bbd15785aeeb211839b",
+      "bytes": 65829,
+      "blocks": 69632,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f10j/progress_document/after.md",
+        "blob": "fe85024fef231d1a53c1265d5fa77e308c423879"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10L_20261013",
+      "sha256": "d66d3cdb88ba7d28d9058ab6c6ef47d2a933591b958a0c4424cafe39628835d5",
+      "bytes": 69204,
+      "blocks": 69632,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/docs/MICROBUBBLE_AGGREGATION_PROGRESS_20261013.md",
+        "blob": "f8b3954597bb2c60dc4a54ccf0c738a22dfb21af"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10M_20261013",
+      "sha256": "e825c9b81cad96241ea8326e120a15cc0bf28dc1245c62097f2fea87bb04d0cb",
+      "bytes": 70987,
+      "blocks": 73728,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10l/progress_document/after.md",
+        "blob": "62d1cf4a4db08e2bece3d1ceedec5f5e6cc9e072"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10M_R3_20261013",
+      "sha256": "a82e7d451e9025f5073c8621b57816fab8a670a974537c356558c4cc4587c5e1",
+      "bytes": 73205,
+      "blocks": 73728,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10m/progress_document/after.md",
+        "blob": "577d2a442ab15d37af269f215e6b6528caea127c"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10N_20261013",
+      "sha256": "326f81f32f86668599a4457bdd01294b5f3225b8abbb14b06f4a8a210d7b2880",
+      "bytes": 75358,
+      "blocks": 77824,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10m_r3/progress_document/after.md",
+        "blob": "c9e04e21cceb78175e17d54299fcf15026fd1ec5"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10O_20261013",
+      "sha256": "a4a8db73d25242ddafb1f970da84db6f01fe0cc8b265ef25feaba473957f6f9f",
+      "bytes": 77574,
+      "blocks": 77824,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10n/progress_document/after.md",
+        "blob": "e5fb82346fa165524bd9472d834f4d8370e55971"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10P_20261014",
+      "sha256": "de8c62cf98e1f42df192fed007fe87f9c1fbe4cca9093ddd2a02bbec8f9fdd7f",
+      "bytes": 80146,
+      "blocks": 81920,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10o/progress_document/after.md",
+        "blob": "b9f6ff00c73de27622d07e7067348a784ffa0af5"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Q_20261014",
+      "sha256": "b7bf77bbf1a78d8d89652793768faf006a36ba281b532068328737e2b0123656",
+      "bytes": 83103,
+      "blocks": 86016,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10p/progress_document/after.md",
+        "blob": "0f5e8897f3c1a60754bcd5a28db10da6c86ad05d"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10R_20261014",
+      "sha256": "355f53f0f89c7f5d53392cd53dec2e7c007902015f40447c49290d8355988b7a",
+      "bytes": 85865,
+      "blocks": 86016,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/docs/MICROBUBBLE_AGGREGATION_PROGRESS_20261014.md",
+        "blob": "994befe5e26493adfc8b0b0fcb310ac31ffc3e72"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10S_20261015",
+      "sha256": "1bb093c9ad1bbfeff172a4a9b460c306d448d08920b2bde56e097d4d68430d1d",
+      "bytes": 89902,
+      "blocks": 90112,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10r/progress/after.md",
+        "blob": "f68c2672161baec14747aa0d70dfc9c5f92b9881"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F6_20261010",
+      "sha256": "40874af2593f105d2aea208fb8ff2372e781076f768711167e8017a1275563ca",
+      "bytes": 17845,
+      "blocks": 20480,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f6/progress_document/before.md",
+        "blob": "226777ac1a018e734ee188224a2d78eb29052a08"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F7_20261010",
+      "sha256": "319660de7ffcb001fdcbe215a4ff1287d9c8d81afad119f3ee96e8ea0bcb9c3e",
+      "bytes": 21450,
+      "blocks": 24576,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f6/progress_document/after.md",
+        "blob": "7a6c2f8d05db3ee84b83710d3db4a8bb3a7627c7"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F8_20261011",
+      "sha256": "09d8ea80ea81f52734cf3e7a6abb77ebbdb8c53cd04415381b135236f63f45af",
+      "bytes": 24388,
+      "blocks": 24576,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f7/progress_document/after.md",
+        "blob": "2153de3dce876665a8233d03f27df16fa07a6ed1"
+      }
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F9_20261011",
+      "sha256": "876dabb565c463585ecf71f9403c1a579ed87912c67543fc0dfb6f9a6e7a4429",
+      "bytes": 27562,
+      "blocks": 28672,
+      "recovery": {
+        "repository": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+        "head": "9cb22d729fece92fe160082edf09222a18068d74",
+        "path": "computation_examples/mevo_acoustic_microbubbles/results/fast_pzt/f8/progress_document/after.md",
+        "blob": "c67cd437e318552bea1c45312200439302a12d4b"
+      }
+    }
+  ],
+  "preserved_documents": [
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AA_20261018",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AB_20261018",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AC_F10AD_20261018",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AE_20261019",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AF_20261019",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AG_20261019",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016_supervised",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix3_20261016",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix4_20261016",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AutoSAM_20261016",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_test49_50_20261016",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10U_Vision_20261017",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10V_20261017",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10W_20261017",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10X_20261017",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Y_20261018",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_20261018",
+      "reason": "mixed experiment/vision history"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_NSCALING_20261018",
+      "reason": "mixed experiment/vision history"
+    }
+  ],
+  "deprecated_environment_metadata": [
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/.venv",
+      "pyvenv_cfg": "home = /home/lzy/miniconda3/bin\ninclude-system-site-packages = false\nversion = 3.13.11\nexecutable = /home/lzy/miniconda3/bin/python3.13\ncommand = /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018/computation_examples/mevo_acoustic_microbubbles/.venv/bin/python -m venv /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018/computation_examples/mevo_acoustic_microbubbles/.venv\n",
+      "packages": [
+        {
+          "name": "av",
+          "version": "19.0.1"
+        },
+        {
+          "name": "cloudpickle",
+          "version": "3.1.2"
+        },
+        {
+          "name": "contourpy",
+          "version": "1.4.0"
+        },
+        {
+          "name": "cycler",
+          "version": "0.12.1"
+        },
+        {
+          "name": "fonttools",
+          "version": "4.67.0"
+        },
+        {
+          "name": "h5py",
+          "version": "3.16.0"
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.3.1"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6"
+        },
+        {
+          "name": "joblib",
+          "version": "1.6.0"
+        },
+        {
+          "name": "kiwisolver",
+          "version": "1.5.1"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4"
+        },
+        {
+          "name": "matplotlib",
+          "version": "3.11.2"
+        },
+        {
+          "name": "narwhals",
+          "version": "2.27.1"
+        },
+        {
+          "name": "numpy",
+          "version": "2.2.6"
+        },
+        {
+          "name": "osqp",
+          "version": "1.0.5"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pillow",
+          "version": "13.0.0"
+        },
+        {
+          "name": "pip",
+          "version": "25.3"
+        },
+        {
+          "name": "pluggy",
+          "version": "1.7.0"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0"
+        },
+        {
+          "name": "pymupdf",
+          "version": "1.28.2"
+        },
+        {
+          "name": "pyparsing",
+          "version": "3.3.3"
+        },
+        {
+          "name": "pytest",
+          "version": "9.1.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "2.9.0.post0"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3"
+        },
+        {
+          "name": "scikit-learn",
+          "version": "1.9.1"
+        },
+        {
+          "name": "scipy",
+          "version": "1.15.3"
+        },
+        {
+          "name": "setuptools",
+          "version": "84.0.0"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "threadpoolctl",
+          "version": "3.7.0"
+        }
+      ],
+      "current_environment": "/home/lzy/projects/new_microbubble_aggregation/.venv",
+      "reason": "deprecated simulation-only environment; authoritative project has independent verified environment"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019/computation_examples/mevo_acoustic_microbubbles/.venv",
+      "pyvenv_cfg": "home = /home/lzy/miniconda3/bin\ninclude-system-site-packages = false\nversion = 3.13.11\nexecutable = /home/lzy/miniconda3/bin/python3.13\ncommand = /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018/computation_examples/mevo_acoustic_microbubbles/.venv/bin/python -m venv /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018/computation_examples/mevo_acoustic_microbubbles/.venv\n",
+      "packages": [
+        {
+          "name": "av",
+          "version": "19.0.1"
+        },
+        {
+          "name": "cloudpickle",
+          "version": "3.1.2"
+        },
+        {
+          "name": "contourpy",
+          "version": "1.4.0"
+        },
+        {
+          "name": "cycler",
+          "version": "0.12.1"
+        },
+        {
+          "name": "fonttools",
+          "version": "4.67.0"
+        },
+        {
+          "name": "h5py",
+          "version": "3.16.0"
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.3.1"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6"
+        },
+        {
+          "name": "joblib",
+          "version": "1.6.0"
+        },
+        {
+          "name": "kiwisolver",
+          "version": "1.5.1"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4"
+        },
+        {
+          "name": "matplotlib",
+          "version": "3.11.2"
+        },
+        {
+          "name": "narwhals",
+          "version": "2.27.1"
+        },
+        {
+          "name": "numpy",
+          "version": "2.2.6"
+        },
+        {
+          "name": "osqp",
+          "version": "1.0.5"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pillow",
+          "version": "13.0.0"
+        },
+        {
+          "name": "pip",
+          "version": "25.3"
+        },
+        {
+          "name": "pluggy",
+          "version": "1.7.0"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0"
+        },
+        {
+          "name": "pymupdf",
+          "version": "1.28.2"
+        },
+        {
+          "name": "pyparsing",
+          "version": "3.3.3"
+        },
+        {
+          "name": "pytest",
+          "version": "9.1.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "2.9.0.post0"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3"
+        },
+        {
+          "name": "scikit-learn",
+          "version": "1.9.1"
+        },
+        {
+          "name": "scipy",
+          "version": "1.15.3"
+        },
+        {
+          "name": "setuptools",
+          "version": "84.0.0"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "threadpoolctl",
+          "version": "3.7.0"
+        }
+      ],
+      "current_environment": "/home/lzy/projects/new_microbubble_aggregation/.venv",
+      "reason": "deprecated simulation-only environment; authoritative project has independent verified environment"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018/computation_examples/mevo_acoustic_microbubbles/.venv",
+      "pyvenv_cfg": "home = /home/lzy/miniconda3/bin\ninclude-system-site-packages = false\nversion = 3.13.11\nexecutable = /home/lzy/miniconda3/bin/python3.13\ncommand = /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018/computation_examples/mevo_acoustic_microbubbles/.venv/bin/python -m venv /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018/computation_examples/mevo_acoustic_microbubbles/.venv\n",
+      "packages": [
+        {
+          "name": "av",
+          "version": "19.0.1"
+        },
+        {
+          "name": "cloudpickle",
+          "version": "3.1.2"
+        },
+        {
+          "name": "contourpy",
+          "version": "1.4.0"
+        },
+        {
+          "name": "cycler",
+          "version": "0.12.1"
+        },
+        {
+          "name": "fonttools",
+          "version": "4.67.0"
+        },
+        {
+          "name": "h5py",
+          "version": "3.16.0"
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.3.1"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6"
+        },
+        {
+          "name": "joblib",
+          "version": "1.6.0"
+        },
+        {
+          "name": "kiwisolver",
+          "version": "1.5.1"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4"
+        },
+        {
+          "name": "matplotlib",
+          "version": "3.11.2"
+        },
+        {
+          "name": "numpy",
+          "version": "2.2.6"
+        },
+        {
+          "name": "osqp",
+          "version": "1.0.5"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pillow",
+          "version": "13.0.0"
+        },
+        {
+          "name": "pip",
+          "version": "25.3"
+        },
+        {
+          "name": "pluggy",
+          "version": "1.7.0"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0"
+        },
+        {
+          "name": "pymupdf",
+          "version": "1.28.2"
+        },
+        {
+          "name": "pyparsing",
+          "version": "3.3.3"
+        },
+        {
+          "name": "pytest",
+          "version": "9.1.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "2.9.0.post0"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3"
+        },
+        {
+          "name": "scipy",
+          "version": "1.15.3"
+        },
+        {
+          "name": "setuptools",
+          "version": "84.0.0"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "threadpoolctl",
+          "version": "3.7.0"
+        }
+      ],
+      "current_environment": "/home/lzy/projects/new_microbubble_aggregation/.venv",
+      "reason": "deprecated simulation-only environment; authoritative project has independent verified environment"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018/computation_examples/mevo_acoustic_microbubbles/.venv",
+      "pyvenv_cfg": "home = /home/lzy/miniconda3/bin\ninclude-system-site-packages = false\nversion = 3.13.11\nexecutable = /home/lzy/miniconda3/bin/python3.13\ncommand = /home/lzy/miniconda3/bin/python3 -m venv /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018/computation_examples/mevo_acoustic_microbubbles/.venv\n",
+      "packages": [
+        {
+          "name": "av",
+          "version": "19.0.1"
+        },
+        {
+          "name": "cloudpickle",
+          "version": "3.1.2"
+        },
+        {
+          "name": "contourpy",
+          "version": "1.4.0"
+        },
+        {
+          "name": "cycler",
+          "version": "0.12.1"
+        },
+        {
+          "name": "fonttools",
+          "version": "4.67.0"
+        },
+        {
+          "name": "h5py",
+          "version": "3.16.0"
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.3.1"
+        },
+        {
+          "name": "joblib",
+          "version": "1.6.0"
+        },
+        {
+          "name": "kiwisolver",
+          "version": "1.5.1"
+        },
+        {
+          "name": "matplotlib",
+          "version": "3.11.2"
+        },
+        {
+          "name": "narwhals",
+          "version": "2.27.1"
+        },
+        {
+          "name": "numpy",
+          "version": "2.2.6"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pillow",
+          "version": "13.0.0"
+        },
+        {
+          "name": "pip",
+          "version": "25.3"
+        },
+        {
+          "name": "pluggy",
+          "version": "1.7.0"
+        },
+        {
+          "name": "psutil",
+          "version": "7.2.2"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0"
+        },
+        {
+          "name": "pymupdf",
+          "version": "1.28.2"
+        },
+        {
+          "name": "pyparsing",
+          "version": "3.3.3"
+        },
+        {
+          "name": "pytest",
+          "version": "9.1.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "2.9.0.post0"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3"
+        },
+        {
+          "name": "scikit-learn",
+          "version": "1.9.1"
+        },
+        {
+          "name": "scipy",
+          "version": "1.15.3"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "threadpoolctl",
+          "version": "3.7.0"
+        }
+      ],
+      "current_environment": "/home/lzy/projects/new_microbubble_aggregation/.venv",
+      "reason": "deprecated simulation-only environment; authoritative project has independent verified environment"
+    }
+  ]
+}

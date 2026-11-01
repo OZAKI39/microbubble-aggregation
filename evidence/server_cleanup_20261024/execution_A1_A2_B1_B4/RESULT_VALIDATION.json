@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "utc": "2026-10-24T11:14:41.717596+00:00",
+  "approved_groups": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "B3",
+    "B4"
+  ],
+  "excluded_group": "A3",
+  "deleted_targets": 1063,
+  "deleted_directories": 1021,
+  "deleted_symlinks": 42,
+  "actual_deleted_entries": 112126,
+  "unexpected_removed": [],
+  "approved_entries_not_removed": [],
+  "preserved_entry_changes": [],
+  "new_paths": [],
+  "a3_preserved_entries": 42518,
+  "a3_changes": [],
+  "protected_remote_files_verified": 59,
+  "retained_F10AG_import_check": {
+    "returncode": 0,
+    "stdout": "{\"prefix\": \"/workspace/mevo_acoustic_microbubbles/f10ag_capture_20261019/.venv\", \"numpy\": \"2.2.6\", \"scipy\": \"1.15.3\", \"h5py\": \"3.16.0\", \"osqp\": \"1.0.5\"}\n",
+    "stderr": ""
+  },
+  "local_inputs_verified": 20,
+  "changed_local_baseline": [],
+  "head_before": "03796e782ac03c167004bd688e07a4277a459693",
+  "head_after": "03796e782ac03c167004bd688e07a4277a459693",
+  "remote_git_unchanged": true,
+  "supervisor_unchanged": true,
+  "activation_unchanged": true,
+  "before_allocated_bytes": 65150144512,
+  "after_allocated_bytes": 58728964096,
+  "reclaimed_allocated_bytes": 6421180416,
+  "candidate_allocated_bytes": 6421065728,
+  "interruption": "TensorBoard read-only directory scan outside deletion targets; process untouched; remaining B3/B4 rechecked and completed.",
+  "no_simulation_or_service_restart": true,
+  "git_commit_or_push": false,
+  "groups": [
+    {
+      "id": "A1",
+      "deleted_targets": 1,
+      "allocated_bytes": 86016
+    },
+    {
+      "id": "A2",
+      "deleted_targets": 1016,
+      "allocated_bytes": 64040960
+    },
+    {
+      "id": "B1",
+      "deleted_targets": 1,
+      "allocated_bytes": 501706752
+    },
+    {
+      "id": "B2",
+      "deleted_targets": 16,
+      "allocated_bytes": 1312907264
+    },
+    {
+      "id": "B3",
+      "deleted_targets": 11,
+      "allocated_bytes": 2256887808
+    },
+    {
+      "id": "B4",
+      "deleted_targets": 18,
+      "allocated_bytes": 2285436928
+    }
+  ]
+}

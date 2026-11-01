@@ -1,0 +1,23 @@
+{
+  "utc": "2026-10-22T17:03:31.175881+00:00",
+  "source_sha_unchanged": true,
+  "changed_source_files": [],
+  "protected_scientific_files_verified": 143,
+  "protected_scientific_hash_failures": [],
+  "removed_paths_reappeared": [],
+  "historical_branch_failures": [],
+  "original_shared_refs_preserved": true,
+  "original_shared_ref_count": 86,
+  "non_target_worktrees_missing": [],
+  "remaining_shared_worktrees": 28,
+  "missing_remaining_worktree_directories": [],
+  "new_repo_root": "/home/lzy/projects/new_microbubble_aggregation",
+  "new_branch": "main",
+  "new_head": "03796e782ac03c167004bd688e07a4277a459693",
+  "origin": "https://github.com/OZAKI39/microbubble-aggregation.git",
+  "remote_refs": "",
+  "remote_still_empty": true,
+  "committed": false,
+  "pushed": false,
+  "PASS": true
+}

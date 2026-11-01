@@ -1,0 +1,32 @@
+{
+  "phase": "PHASE_2_COMPLETE",
+  "utc": "2026-10-22T17:07:41.297902+00:00",
+  "approved_manifest_sha256": "85f4ac564b318958943d7f4ccc24b0e7ecbfd643e536883f68e0fec59f73f6e4",
+  "removed_count": 32,
+  "skipped_final_count": 0,
+  "removed_registered_worktrees": 29,
+  "removed_standalone_exports": 1,
+  "removed_duplicate_event_logs": 2,
+  "removed_allocated_bytes": 78837903360,
+  "shared_git_net_growth_bytes": 1694183424,
+  "attributable_net_allocated_reduction_bytes": 77143719936,
+  "filesystem_observed_used_reduction_bytes": 121451520000,
+  "difference_not_attributed_to_this_cleanup_bytes": 44307800064,
+  "before": {
+    "utc": "2026-10-22T16:56:08.802303+00:00",
+    "total_bytes": 1081101176832,
+    "used_bytes": 558830596096,
+    "available_bytes": 467278225408,
+    "inodes_used": 2648305,
+    "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 558830600192 467278221312  55% /\n"
+  },
+  "after": {
+    "utc": "2026-10-22T17:02:21.087747+00:00",
+    "total_bytes": 1081101176832,
+    "used_bytes": 437379076096,
+    "available_bytes": 588729745408,
+    "inodes_used": 2149091,
+    "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 437378461696 588730359808  43% /\n"
+  },
+  "note": "Physical allocated blocks, not apparent payload sizes. Concurrent filesystem activity prevents assigning the whole df decrease to this task. Shared Git objects and all historical branches retained. No VHD compaction."
+}

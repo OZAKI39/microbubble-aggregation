@@ -1,0 +1,611 @@
+{
+  "utc": "2026-10-22T17:26:29.849175+00:00",
+  "authority": "/home/lzy/projects/new_microbubble_aggregation",
+  "user_authorization": "Review entire /home/lzy/projects; delete obsolete simulation-related content only; preserve unrelated projects.",
+  "simulation_roots": [
+    {
+      "path": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles",
+      "sim": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles",
+      "head": "a6c3153f484113d37ffb5e9b4b57f0c6594ef396",
+      "status": [
+        "?? docs/FAST_PZT_F5_FLOW_RELEASE_DEVELOPMENT.md",
+        "?? scripts/stage4/paper_acoustic_planes.py",
+        "?? scripts/stage4/paper_acoustic_volume.py",
+        "?? scripts/stage4/paper_pzt_reference.py",
+        "?? scripts/stage4/paper_pzt_surface.py",
+        "?? scripts/stage4/paper_vessel_reference.py",
+        "?? scripts/stage4/paper_workflow_figures.py",
+        "?? scripts/stage4/validate_attraction_sequence.py",
+        "?? scripts/stage4/validate_visual_mechanism_stories.py",
+        "?? scripts/stage4/visual_attraction_sequence.py",
+        "?? scripts/stage4/visual_evidence_ablation.py",
+        "?? scripts/stage4/visual_mechanism_stories.py",
+        "?? scripts/stage4/visual_sequential_ablation.py"
+      ],
+      "files": 201818
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017/computation_examples/mevo_acoustic_microbubbles",
+      "head": "9cb22d729fece92fe160082edf09222a18068d74",
+      "status": [],
+      "files": 13873
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles",
+      "head": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+      "status": [],
+      "files": 18463
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f1_20261007",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f1_20261007/computation_examples/mevo_acoustic_microbubbles",
+      "head": "6de76d508ea088e137069abf058b86b7f6d47a1c",
+      "status": [],
+      "files": 719
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f2_20261008",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f2_20261008/computation_examples/mevo_acoustic_microbubbles",
+      "head": "6655867b772484a82ea9a7c2afd491da02bdd378",
+      "status": [],
+      "files": 897
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f3_20261008",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f3_20261008/computation_examples/mevo_acoustic_microbubbles",
+      "head": "3eeb94eb885f5df4f0e214ba9b7904dbdecec744",
+      "status": [],
+      "files": 1080
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f4_20261008",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f4_20261008/computation_examples/mevo_acoustic_microbubbles",
+      "head": "e247fa0c61f668a9b0b2e26c909dd687eedde389",
+      "status": [],
+      "files": 1291
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f5_20261008",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f5_20261008/computation_examples/mevo_acoustic_microbubbles",
+      "head": "66d4cebec18555a26bc9a8035cc3082756d0e76f",
+      "status": [],
+      "files": 1433
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_github_sync_20261005",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_github_sync_20261005/computation_examples/mevo_acoustic_microbubbles",
+      "head": "aaf2549fc506933df74229be8e0ec9717f97f7ed",
+      "status": [],
+      "files": 5567
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019/computation_examples/mevo_acoustic_microbubbles",
+      "head": "4eb54462b91cfc9d81dc08d8edd6803175724523",
+      "status": [],
+      "files": 17572
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_qd_f10ac_ad_20261018",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_qd_f10ac_ad_20261018/computation_examples/mevo_acoustic_microbubbles",
+      "head": "baa47dbe95c78e1800aebe50bc3efc5faf07d5fa",
+      "status": [],
+      "files": 17012
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_shape_f10ab_20261018",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_shape_f10ab_20261018/computation_examples/mevo_acoustic_microbubbles",
+      "head": "9d304c22817599f85079ada5a42b2e143f3fe055",
+      "status": [
+        "?? computation_examples/mevo_acoustic_microbubbles/.venv"
+      ],
+      "files": 16273
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018/computation_examples/mevo_acoustic_microbubbles",
+      "head": "6028598d0012912cc19aa766fa786c4afb0a91a5",
+      "status": [],
+      "files": 15001
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018/computation_examples/mevo_acoustic_microbubbles",
+      "head": "df76b1e9d311024398bc2bca40b6cf0f6382ba64",
+      "status": [],
+      "files": 14806
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_stage4l_20261005",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_stage4l_20261005/computation_examples/mevo_acoustic_microbubbles",
+      "head": "ec622f427bc5f23d40b7955f9b77cca19125b751",
+      "status": [],
+      "files": 6851
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_stage4m_20261006",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_stage4m_20261006/computation_examples/mevo_acoustic_microbubbles",
+      "head": "1c15698549e893a38afe71738b9fbc8b4c20a675",
+      "status": [],
+      "files": 6059
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_stage5_sync_20261006",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_stage5_sync_20261006/computation_examples/mevo_acoustic_microbubbles",
+      "head": "40765a4f6252506b9ffdfb35453f62ca537c0797",
+      "status": [],
+      "files": 7024
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_stage5a_r2_20261006",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_stage5a_r2_20261006/computation_examples/mevo_acoustic_microbubbles",
+      "head": "07db8ed35f3a460a4ba315e42b15d257f8518b0a",
+      "status": [],
+      "files": 7205
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_stage5a_r3_20261007",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_stage5a_r3_20261007/computation_examples/mevo_acoustic_microbubbles",
+      "head": "5c0a0f10b19b376d9321510149cb6db50bcf4331",
+      "status": [
+        "?? computation_examples/mevo_acoustic_microbubbles/SOURCE_COMMIT_R3.txt"
+      ],
+      "files": 9266
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_target_f10ae_20261019",
+      "sim": "/home/lzy/projects/computation_examples/_archives/mevo_target_f10ae_20261019/computation_examples/mevo_acoustic_microbubbles",
+      "head": "306d899fa4a9be18b8a926688a6e25d389193138",
+      "status": [],
+      "files": 16893
+    }
+  ],
+  "protected_roots": [
+    "external_connect",
+    "new_clot_simulation",
+    "new_human_vessel_flow",
+    "new_mouse_vessel_flow",
+    "new_vessel_flow_solvers",
+    "new_vessel_printing",
+    "vascular_printing",
+    "computation_examples/_shared",
+    "computation_examples/brava*",
+    "temp_storage/ulm-3d-vascular-model-generation/.git"
+  ],
+  "top_level_entries": [
+    {
+      "path": "/home/lzy/projects/.ignore",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/.pytest_cache",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/.ruff_cache",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/.task_envs",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/.task_work",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/.venvs",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/.vscode",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/1-s2.0-S0022509624003247-mmc1.docx",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/1-s2.0-S0045782510001283-main.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/1-s2.0-S2666496826000567-main.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/2604.09215v1.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/A discussion on failure criteria for ordinary state-based peridynamics.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/A new bond failure criterion for ordinary state-based peridynamic mode II fracture analysis.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/A state-based peridynamic model for quantitative elastic and fracture analysis of orthotropic materials.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/A state-based peridynamic model for quantitative fracture analysis.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/ACTIVE_VASCULAR_WORKFLOW.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/A_Global_Transient_Evolution.xlsx",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/A_Global_Transient_Evolution_A_H0.xlsx",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/Adhesive and cohesive fracture of blood clots - Experiments and modeling.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/An adaptive dynamic relaxation method for quasi-static simulations using the peridynamic theory.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/An energy based failure criterion for use with peridynamic states.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/An improved ordinary state-based peridynamic model for cohesive crack growth in quasi-brittle materials..pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/BRAVA_CONTEXT_HANDOFF.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/CURRENT_SERVER_PATHS.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/FEM\u7f51\u683cclaude.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/FROZEN_SONOVUE_HISTOGRAM.csv",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/Fracture mechanics of blood clots - Measurements of toughness and critical length scales.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/High-speed optical observations and simulation results of SonoVue microbubbles at low-pressure insonation.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/Measuring fracture toughness in biological materials.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/Mechanics, Fracture, and Fragmentation of Thrombi - A Computational Study Review.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/NEW_DEVELOPMENT_ROADMAP_CONTROL_ORIENTED_V2.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/Nonlinear Shell Behavior of Phospholipid-Coated Microbubbles.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/On the computation of energy release rates by a peridynamic virtual crack extension method.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/PROJECT_ACCURACY_AND_MODEL_HIERARCHY_SPEC_V1.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/Shape design optimization of dynamic crack propagation using peridynamics.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/Towards a Model of Thrombus Embolization  Structural Response and Failure of.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/What makes blood clots break off.pdf",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/brain_report.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/brava_flow_roi_18mlmin",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/clot_rupture.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/custom_note.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/external_connect",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/formal_3D_flow_solver",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/github_sync_audits",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AA_20261018",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AB_20261018",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AC_F10AD_20261018",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AE_20261019",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AF_20261019",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10AG_20261019",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10A_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10B_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10C_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10C_exclusive_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10D_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10E_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10F_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10G_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10H_20261012",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10I_20261012",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10J_20261012",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10K_20261012",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10L_20261013",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10M_20261013",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10M_R3_20261013",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10N_20261013",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10O_20261013",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10P_20261014",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Q_20261014",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10R_20261014",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10S_20261015",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_20261016_supervised",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix3_20261016",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AnnotationFix4_20261016",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_AutoSAM_20261016",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10T_Vision2_test49_50_20261016",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10U_Vision_20261017",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10V_20261017",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10W_20261017",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10X_20261017",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Y_20261018",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_20261018",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F10Z_NSCALING_20261018",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F6_20261010",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F7_20261010",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F8_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation.md.bak_F9_20261011",
+      "type": "file"
+    },
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation_assets",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/new_clot_simulation",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/new_human_vessel_flow",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/new_microbubble_aggregation",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/new_mouse_vessel_flow",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/new_vessel_flow_solvers",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/new_vessel_printing",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/server_migration",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/server_migration_backups",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/server_migrations",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/sonovue_size_distribution_v0",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/temp_storage",
+      "type": "directory"
+    },
+    {
+      "path": "/home/lzy/projects/ulm_3D_vascular",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/ulm_flow_mean_2p0_mmps",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/ulm_particle_formal_p9a5",
+      "type": "symlink"
+    },
+    {
+      "path": "/home/lzy/projects/vascular_printing",
+      "type": "directory"
+    }
+  ],
+  "symlinks_checked": 12807,
+  "envs": [
+    "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/.venv",
+    "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019/computation_examples/mevo_acoustic_microbubbles/.venv",
+    "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018/computation_examples/mevo_acoustic_microbubbles/.venv",
+    "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018/computation_examples/mevo_acoustic_microbubbles/.venv"
+  ],
+  "cache_count": 221
+}

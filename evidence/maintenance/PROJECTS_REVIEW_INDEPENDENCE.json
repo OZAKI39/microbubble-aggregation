@@ -1,0 +1,11 @@
+{
+  "PASS": true,
+  "frequencies_Hz": [
+    2400000,
+    2500000,
+    2600000
+  ],
+  "device": "cpu",
+  "forbidden_old_project_opens": [],
+  "scope": "Construct field/response/geometry contexts; no trajectory or GPU simulation"
+}

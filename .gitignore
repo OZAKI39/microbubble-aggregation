@@ -1,7 +1,29 @@
-.venv/
+# Local environment and regenerable software caches (not scientific inputs).
+/.venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
-results/
+/build/
+/dist/
+
+# Explicit scratch locations. Never place the only copy of formal evidence here.
+/scratch/
+/results/_scratch/
+/results/_render_frames/
+
+# Full per-step output can grow to GB. Keep it locally, with SHA/provenance in
+# evidence/ or a reviewed result manifest. These rules do NOT delete files.
+# Summary, execution identity, failures, figures and new unclassified outputs
+# remain visible to git status. Inputs and frozen evidence are not excluded.
+/results/**/trajectory.h5
+/results/**/STEP_RECORDS.json
+/results/**/LAST_STEP.json
+/results/**/SOLVER_GATES.json
+/results/**/HISTORICAL_FAILURE_STEP.json
+
+# Locally retained original scientific data; identity manifest is in
+# new_microbubble_experiment/evidence/projects_storage_cleanup_20261023/moved_files.json.
+# Ignored data is protected and is not backed up by Git.
+/results/retained_history/

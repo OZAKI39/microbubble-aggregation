@@ -1,0 +1,17 @@
+{
+  "initial": {
+    "total_bytes": 1081101176832,
+    "used_bytes": 570785615872,
+    "available_bytes": 455323205632,
+    "inodes_used": 2719989,
+    "inodes_total": 67108864
+  },
+  "phase1_end_utc": "2026-10-22T16:39:11.539140+00:00",
+  "phase1_end_df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 564512370688 461596450816  56% /\n",
+  "phase1_end_df_inode": "Filesystem       Inodes   IUsed    IFree IUse% Mounted on\n/dev/sdd       67108864 2676411 64432453    4% /\n",
+  "permanent_deletion_by_this_task": false,
+  "reclaimed_by_deletion_bytes": 0,
+  "phase2_before": null,
+  "phase2_after": null,
+  "note": "Concurrent filesystem changes are not attributed to this task. No VHD compact."
+}

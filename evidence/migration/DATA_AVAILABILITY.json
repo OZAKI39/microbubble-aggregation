@@ -337,8 +337,11 @@
       "bytes": 14848,
       "sha256": "87406a63c63d5eabe599864fc08436d9c5559abcf6c11e9451737d78eee1a27b",
       "remote_probe_this_task": "NOT_RUN_USER_FORBIDS_AUTOMATIC_RECONNECT",
-      "state": "RECORDED_REMOTE_NOT_LOCALLY_AVAILABLE",
-      "recovery": "Exact remote path/size/hash retained. Current reachability and continued existence not independently confirmed in this task."
+      "state": "RETAINED_LOCAL_HASH_VERIFIED",
+      "recovery": "Located in retained local archive data; byte count and SHA256 match the recorded original. No remote contact.",
+      "previous_state": "RECORDED_REMOTE_NOT_LOCALLY_AVAILABLE",
+      "local_path": "/home/lzy/projects/new_microbubble_aggregation/results/retained_history/mevo_target_f10ae_20261019/results/straight_tube_exp1/f10ae/INITIAL_STATES.h5",
+      "local_rechecked_on": "2026-10-23"
     },
     {
       "relative_path": "results/straight_tube_exp1/f10ae/LOW_PRESSURE_ADMISSION.json",
@@ -364,8 +367,11 @@
       "bytes": 8592,
       "sha256": "50d68fafba25a2336748ebbbe5fea6e2f7b13ad9a8163d0cc63b6a24eb5c139f",
       "remote_probe_this_task": "NOT_RUN_USER_FORBIDS_AUTOMATIC_RECONNECT",
-      "state": "RECORDED_REMOTE_NOT_LOCALLY_AVAILABLE",
-      "recovery": "Exact remote path/size/hash retained. Current reachability and continued existence not independently confirmed in this task."
+      "state": "RETAINED_LOCAL_HASH_VERIFIED",
+      "recovery": "Located in retained local archive data; byte count and SHA256 match the recorded original. No remote contact.",
+      "previous_state": "RECORDED_REMOTE_NOT_LOCALLY_AVAILABLE",
+      "local_path": "/home/lzy/projects/new_microbubble_aggregation/results/retained_history/mevo_split_sync_20261022/protected_inputs/results/straight_tube_exp1/f10ad_multifrequency/2500000/response_shell_1.0.h5",
+      "local_rechecked_on": "2026-10-23"
     },
     {
       "relative_path": "results/straight_tube_exp1/f10ad_multifrequency/2600000/response_shell_1.0.h5",
@@ -436,8 +442,12 @@
       "bytes": 11813977,
       "sha256": "36c229dec9bb0dc216c267a1ff85398527f2506145e589cc7a9ce577009bed4d",
       "remote_probe_this_task": "NOT_RUN_USER_FORBIDS_AUTOMATIC_RECONNECT",
-      "state": "OLD_LOCAL_HASH_VERIFIED_NOT_COPIED",
-      "local_path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2500000/DIAGNOSTICS.h5"
+      "state": "RETAINED_LOCAL_HASH_VERIFIED",
+      "local_path": "/home/lzy/projects/new_microbubble_aggregation/results/retained_history/mevo_capture_f10ag_20261019/results/straight_tube_exp1/f10af/fields/2500000/DIAGNOSTICS.h5",
+      "previous_state": "OLD_LOCAL_HASH_VERIFIED_NOT_COPIED",
+      "previous_local_path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2500000/DIAGNOSTICS.h5",
+      "local_rechecked_on": "2026-10-23",
+      "recovery": "Located in retained local archive data; byte count and SHA256 match the recorded original. No remote contact."
     },
     {
       "relative_path": "results/straight_tube_exp1/f10af/fields/2400000/coarse.h5",
@@ -463,8 +473,12 @@
       "bytes": 11813977,
       "sha256": "94b37f6a559ee015340b9e064a443c5eb5f2f86bdbfae250987530a4711b25c7",
       "remote_probe_this_task": "NOT_RUN_USER_FORBIDS_AUTOMATIC_RECONNECT",
-      "state": "OLD_LOCAL_HASH_VERIFIED_NOT_COPIED",
-      "local_path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2400000/DIAGNOSTICS.h5"
+      "state": "RETAINED_LOCAL_HASH_VERIFIED",
+      "local_path": "/home/lzy/projects/new_microbubble_aggregation/results/retained_history/mevo_capture_f10ag_20261019/results/straight_tube_exp1/f10af/fields/2400000/DIAGNOSTICS.h5",
+      "previous_state": "OLD_LOCAL_HASH_VERIFIED_NOT_COPIED",
+      "previous_local_path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2400000/DIAGNOSTICS.h5",
+      "local_rechecked_on": "2026-10-23",
+      "recovery": "Located in retained local archive data; byte count and SHA256 match the recorded original. No remote contact."
     },
     {
       "relative_path": "results/straight_tube_exp1/f10af/fields/2600000/coarse.h5",
@@ -490,15 +504,19 @@
       "bytes": 11813977,
       "sha256": "bb4fc783bf264448eba5af6b8a178119d8b537ab112874edbd2ae9231e1cdedd",
       "remote_probe_this_task": "NOT_RUN_USER_FORBIDS_AUTOMATIC_RECONNECT",
-      "state": "OLD_LOCAL_HASH_VERIFIED_NOT_COPIED",
-      "local_path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2600000/DIAGNOSTICS.h5"
+      "state": "RETAINED_LOCAL_HASH_VERIFIED",
+      "local_path": "/home/lzy/projects/new_microbubble_aggregation/results/retained_history/mevo_capture_f10ag_20261019/results/straight_tube_exp1/f10af/fields/2600000/DIAGNOSTICS.h5",
+      "previous_state": "OLD_LOCAL_HASH_VERIFIED_NOT_COPIED",
+      "previous_local_path": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles/results/straight_tube_exp1/f10af/fields/2600000/DIAGNOSTICS.h5",
+      "local_rechecked_on": "2026-10-23",
+      "recovery": "Located in retained local archive data; byte count and SHA256 match the recorded original. No remote contact."
     }
   ],
   "remote_contacted": false,
   "totals": {
+    "RECORDED_REMOTE_NOT_LOCALLY_AVAILABLE": 38,
     "INDEPENDENT_LOCAL_HASH_VERIFIED": 13,
-    "OLD_LOCAL_HASH_VERIFIED_NOT_COPIED": 3,
-    "RECORDED_REMOTE_NOT_LOCALLY_AVAILABLE": 40,
+    "RETAINED_LOCAL_HASH_VERIFIED": 5,
     "RECORDED_REMOTE_REGENERABLE_NO_LOCAL_COPY": 3
   },
   "note": "Canonical local dataset files are exact selected raw nodes plus diagnostics, not full raw trajectories."

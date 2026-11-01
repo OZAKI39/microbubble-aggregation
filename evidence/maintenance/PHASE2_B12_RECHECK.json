@@ -1,0 +1,27 @@
+{
+  "id": "B12",
+  "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10l_20261013",
+  "started_utc": "2026-10-22T17:00:16.360047+00:00",
+  "initial_reason": "Current cross-root link/process dependency",
+  "status": "REMOVED",
+  "tracked_files_verified": 12817,
+  "ordered_path_sha256_digest": "270751fcd9a9254344be36b828023aaa906a7ffee572d7272362040fdfae6ed8",
+  "cross_root_links": [],
+  "disk_before": {
+    "utc": "2026-10-22T17:01:08.224714+00:00",
+    "total_bytes": 1081101176832,
+    "used_bytes": 500786315264,
+    "available_bytes": 525322506240,
+    "inodes_used": 2217683,
+    "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 500786315264 525322506240  49% /\n"
+  },
+  "disk_after": {
+    "utc": "2026-10-22T17:01:08.722938+00:00",
+    "total_bytes": 1081101176832,
+    "used_bytes": 497877434368,
+    "available_bytes": 528231387136,
+    "inodes_used": 2202036,
+    "df": "Filesystem         1B-blocks         Used    Available Use% Mounted on\n/dev/sdd       1081101176832 497877434368 528231387136  49% /\n"
+  },
+  "finished_utc": "2026-10-22T17:01:08.724188+00:00"
+}

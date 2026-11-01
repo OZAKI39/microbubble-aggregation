@@ -1,0 +1,116 @@
+[
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017",
+    "HEAD": "9cb22d729fece92fe160082edf09222a18068d74",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019",
+    "HEAD": "4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f1_20261007",
+    "HEAD": "6de76d508ea088e137069abf058b86b7f6d47a1c",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f2_20261008",
+    "HEAD": "6655867b772484a82ea9a7c2afd491da02bdd378",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f3_20261008",
+    "HEAD": "3eeb94eb885f5df4f0e214ba9b7904dbdecec744",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f4_20261008",
+    "HEAD": "e247fa0c61f668a9b0b2e26c909dd687eedde389",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f5_20261008",
+    "HEAD": "66d4cebec18555a26bc9a8035cc3082756d0e76f",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_github_sync_20261005",
+    "HEAD": "aaf2549fc506933df74229be8e0ec9717f97f7ed",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019",
+    "HEAD": "4eb54462b91cfc9d81dc08d8edd6803175724523",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_qd_f10ac_ad_20261018",
+    "HEAD": "baa47dbe95c78e1800aebe50bc3efc5faf07d5fa",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_shape_f10ab_20261018",
+    "HEAD": "9d304c22817599f85079ada5a42b2e143f3fe055",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018",
+    "HEAD": "6028598d0012912cc19aa766fa786c4afb0a91a5",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018",
+    "HEAD": "df76b1e9d311024398bc2bca40b6cf0f6382ba64",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_stage4l_20261005",
+    "HEAD": "ec622f427bc5f23d40b7955f9b77cca19125b751",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_stage4m_20261006",
+    "HEAD": "1c15698549e893a38afe71738b9fbc8b4c20a675",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_stage5_sync_20261006",
+    "HEAD": "40765a4f6252506b9ffdfb35453f62ca537c0797",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_stage5a_r2_20261006",
+    "HEAD": "07db8ed35f3a460a4ba315e42b15d257f8518b0a",
+    "status": "",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_stage5a_r3_20261007",
+    "HEAD": "5c0a0f10b19b376d9321510149cb6db50bcf4331",
+    "status": "?? computation_examples/mevo_acoustic_microbubbles/SOURCE_COMMIT_R3.txt\n",
+    "removed_prefixes_still_present": []
+  },
+  {
+    "root": "/home/lzy/projects/computation_examples/_archives/mevo_target_f10ae_20261019",
+    "HEAD": "306d899fa4a9be18b8a926688a6e25d389193138",
+    "status": "",
+    "removed_prefixes_still_present": []
+  }
+]

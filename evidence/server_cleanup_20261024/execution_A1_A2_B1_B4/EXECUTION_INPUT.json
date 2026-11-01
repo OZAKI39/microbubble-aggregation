@@ -1,0 +1,16 @@
+{
+  "manifest_sha256": "ddf330e9dffb818e13de125c890bdfa920d19d36faa72925f1c2385b05cc452b",
+  "remote_script_sha256": "09c384b8d904c4dbe45436b7d9e8148bc333cf0fdc8d357243df5af05c016b2f",
+  "approved_groups": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "B3",
+    "B4"
+  ],
+  "excluded_group": "A3",
+  "targets": 1063,
+  "expected_allocated_bytes": 6421065728,
+  "precheck": "PASS"
+}

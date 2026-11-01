@@ -1,5 +1,7 @@
 # 旧 WSL 目录清理审核（尚未执行删除）
 
+本页保留迁移时的分类依据。批准前磁盘/Git/逐文件审计见 [CLEANUP_AUDIT.md](CLEANUP_AUDIT.md)；用户现已批准A+B并完成清理，实际结果见 [CLEANUP_RESULT.md](CLEANUP_RESULT.md)。
+
 旧主工作树：`/home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019/computation_examples/mevo_acoustic_microbubbles`。
 新目录建立不等于旧研究数据可以删除。以下均为审核建议，本轮未删除旧文件、worktree 或服务器内容。
 

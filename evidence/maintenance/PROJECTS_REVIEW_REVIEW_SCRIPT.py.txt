@@ -1,0 +1,58 @@
+from pathlib import Path
+import os,json,subprocess as sp,hashlib,pickle,datetime,collections
+P=Path('/home/lzy/projects');N=P/'new_microbubble_aggregation';O=N/'evidence/maintenance';A=P/'computation_examples/_archives'
+def git(p,*args):
+ r=sp.run(['git','-C',str(p),*args],capture_output=True);r.check_returncode();return r.stdout
+old=json.loads((O/'DIRECTORY_AUDIT.json').read_text())['directories']
+roots=[Path(r['path']) for r in old if Path(r['path']).exists() and Path(r['path'])!=N]
+protected={r['path'] for r in json.loads((O/'PROTECTED_SCIENTIFIC_DATA.json').read_text())['rows']}
+# Only metadata traversal of unrelated projects, for references; never traverse their symlinks.
+links=[];seen=0
+for root,ds,fs in os.walk(P,followlinks=False):
+ ds[:]=[d for d in ds if d not in ('.git','.venv','node_modules','__pycache__','.pytest_cache','.ruff_cache')]
+ for f in ds+fs:
+  p=Path(root)/f
+  if p.is_symlink():
+   links.append({'path':str(p),'target':str(p.resolve(strict=False)),'exists':p.exists()});seen+=1
+print('links',seen,flush=True)
+repos=[];environments=[];caches=[]
+for rp in roots:
+ sim=rp if rp.name=='mevo_acoustic_microbubbles' else rp/'computation_examples/mevo_acoustic_microbubbles'
+ if not sim.is_dir():continue
+ head=git(rp,'rev-parse','HEAD').decode().strip()
+ status=git(rp,'status','--porcelain=v1','-z').decode().split('\0')
+ # ls-files includes sparse index entries; inspect only real files under simulation subtree.
+ entries={}
+ for line in git(rp,'ls-files','--stage','-z').decode().split('\0'):
+  if line:
+   mode,oid,stage_and_path=line.split(' ',2);stage,rel=stage_and_path.split('\t',1)
+   entries[rel]={'oid':oid,'mode':mode,'stage':stage}
+ files=[];syms=[]
+ for root,ds,fs in os.walk(sim,followlinks=False):
+  for d in ds[:]:
+   q=Path(root)/d
+   if d=='.git':ds.remove(d);continue
+   if q.is_symlink():syms.append(str(q));ds.remove(d);continue
+   if d=='.venv':environments.append(str(q));ds.remove(d);continue
+   if d in ('__pycache__','.pytest_cache','.ruff_cache'):
+    caches.append(str(q));ds.remove(d);continue
+  for f in fs:
+   q=Path(root)/f
+   if q.is_symlink():syms.append(str(q));continue
+   s=q.stat();rel=q.relative_to(rp).as_posix();e=entries.get(rel)
+   files.append({'path':str(q),'rel':rel,'size':s.st_size,'blocks':s.st_blocks*512,'mtime_ns':s.st_mtime_ns,'ino':s.st_ino,'tracked':e})
+ try: sparse=git(rp,'sparse-checkout','list').decode().splitlines()
+ except Exception:sparse=None
+ repos.append({'path':str(rp),'sim':str(sim),'head':head,'status':[s for s in status if s],'entries':entries,'files':files,'symlinks':syms,'sparse':sparse})
+ print(rp.name,len(files),sum(f['size'] for f in files)//2**20,'MiB','status',len([s for s in status if s]),flush=True)
+# New tree read-only reference for duplicate lookup.
+newfiles=[]
+for top in ['inputs','configs','evidence']:
+ for root,ds,fs in os.walk(N/top):
+  ds[:]=[d for d in ds if d!='maintenance']
+  for f in fs:
+   p=Path(root)/f
+   if p.is_file() and not p.is_symlink():newfiles.append({'path':str(p),'size':p.stat().st_size})
+state={'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'repos':repos,'protected':protected,'links':links,'envs':environments,'caches':caches,'newfiles':newfiles}
+with open('/tmp/mb_projects_review_state.pkl','wb') as f:pickle.dump(state,f)
+(O/'PROJECTS_REVIEW_SCOPE.json').write_text(json.dumps({'utc':state['utc'],'authority':str(N),'user_authorization':'Review entire /home/lzy/projects; delete obsolete simulation-related content only; preserve unrelated projects.','simulation_roots':[{'path':r['path'],'sim':r['sim'],'head':r['head'],'status':r['status'],'files':len(r['files'])} for r in repos],'protected_roots':['external_connect','new_clot_simulation','new_human_vessel_flow','new_mouse_vessel_flow','new_vessel_flow_solvers','new_vessel_printing','vascular_printing','computation_examples/_shared','computation_examples/brava*','temp_storage/ulm-3d-vascular-model-generation/.git'],'top_level_entries':[{'path':str(p),'type':'symlink' if p.is_symlink() else 'directory' if p.is_dir() else 'file'} for p in sorted(P.iterdir())],'symlinks_checked':len(links),'envs':environments,'cache_count':len(caches)},indent=2)+'\n')

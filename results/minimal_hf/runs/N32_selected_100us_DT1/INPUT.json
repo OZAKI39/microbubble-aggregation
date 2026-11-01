@@ -1,0 +1,131 @@
+{
+  "N": 32,
+  "schedule": {
+    "channel_order": [
+      "Y-",
+      "Y+",
+      "X-",
+      "X+"
+    ],
+    "segments": [
+      {
+        "segment_id": 0,
+        "start_s": 0.0,
+        "duration_s": 0.0001,
+        "mode": "FOUR_CHANNEL_INDEPENDENT",
+        "amplitude_Pa_equivalent": [
+          0,
+          0,
+          1000,
+          1000
+        ],
+        "phase_rad": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "enabled": [
+          false,
+          false,
+          true,
+          true
+        ],
+        "frequency_Hz": 2500000.0,
+        "field_model": "HOMOGENEOUS_WATER_CONTROL_PROXY",
+        "amplitude_unit": "Pa-equivalent",
+        "timing_model": "IDEAL_SCHEDULED_SEGMENTS"
+      }
+    ],
+    "planned_mapping": {
+      "instrument_A": {
+        "CH1": "X-",
+        "CH2": "X+"
+      },
+      "instrument_B": {
+        "CH1": "Y-",
+        "CH2": "Y+"
+      }
+    },
+    "hardware_executed": false,
+    "calibration": "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "phase_reference": "Re[P exp(+i omega t)]; common continuous simulation clock; phase offsets do not reset at switches",
+    "timing": "IDEAL_SCHEDULED_SEGMENTS; split the integration step exactly at each event boundary"
+  },
+  "dt_s": 1e-06,
+  "cache": "coarse",
+  "identity": {
+    "commit": "NOT_COMMITTED",
+    "git_status": "NOT_COMMITTED",
+    "utc": "2026-10-22T15:35:02.147952+00:00",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "/home/lzy/projects/new_microbubble_aggregation/.venv/bin/python",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "warp-lang": "1.18.0",
+      "matplotlib": "3.11.2"
+    },
+    "source_sha256": {
+      "main.py": "2def8e48767e07494ce707c987ea02c9bd11e13c09621710d98bff404b995817",
+      "microbubble/__init__.py": "d882fce9cad7c5bb94cda8300a2dd3bc6e633d047f713b9fcff3a8b675a9e59e",
+      "microbubble/_warp_forces.py": "03345eb0291e2a678666625626c141d710f9449876626e14ec56c9f75f31e832",
+      "microbubble/_warp_walls.py": "ae84fc555394bfb48938f2559c140c713ed169724182261d17b2633217b70199",
+      "microbubble/acoustics.py": "48ac24f73213e41623134b61abc78926ebb3d2f28cb69a07a9fc7620fae681e5",
+      "microbubble/analysis.py": "6f20437792da2015c5677ecf78d549b3de906e496dfc91ebc78439852919c878",
+      "microbubble/bubble_response.py": "11b7901164ec7a8510ed14d027bb535be21aba2b755b608776c37f850dfca4c1",
+      "microbubble/contact.py": "cc9769b17e2366729ef9bce92ebadc0d26b3dfc99af8ff749d5e5432f2b8367a",
+      "microbubble/control.py": "749039f8167adb5fcacddb039f92b84098a30f5fdf58d36c5ddc05840e9cbe44",
+      "microbubble/dynamics.py": "e5d15abee54dba26db750919df2bed41aa5fd0ae0a109a9c3ee8bf20ddcc2f2c",
+      "microbubble/forces.py": "cd4fa48fe4654022a83845f210e92c712cbd4cf3709e0082d0dcfa58107bd65e",
+      "microbubble/geometry.py": "21e129db52a82deebdcf0e4217e335a639ca360fa7b93a12d4167c2ec9d7866b",
+      "microbubble/gpu.py": "60e199f21858e23bffa2acf08d9042f65346741147c678173efd748010e48eed",
+      "microbubble/high_fidelity.py": "4eda877939a39a0e65adfa4d4f47b3f8751008973c48a8e16d99689a7cfcc014",
+      "microbubble/hydrodynamics.py": "35910c0cbbf0548cb24f2162317fbb533e5c9a8433f40d23fe61a5e54229b79a",
+      "microbubble/initial_conditions.py": "a6caec7a5f0ffc510b3e2deda6447c3e047ebc33f3cf74d53fcb678951969a9a",
+      "microbubble/integration.py": "59279add44ba1df2eaf7ddf01b3e3f0e81482d96171c14466502500d79421d3b",
+      "microbubble/io.py": "8e9bb14971596cac9367fb2a4020a45ecd69f2a011ada9baded22d7ef39cd011",
+      "microbubble/parameters.py": "4aa45c24acac177c23eb025f7bba9b5999e85255f50dd1ce37a8da0339c16ea7",
+      "workflows/__init__.py": "0a7c39e4b3d15cdd0bbd515cc6f8e76f6c278cf3f2f315e680d05b0bdd50053d",
+      "workflows/analysis.py": "da852a155533828a58fd9478dcda9846e55ec8cb74a64ee1913e0f344c8c9532",
+      "workflows/f10ag.py": "9c99846f0656a3ac9f1f9da2d855f608b100ca6ea3410e352cd9274779560707",
+      "workflows/validation.py": "d652a245388d0fe32c4f1659b19f9ccc6f3e63cf1eb555f99edfecd14f903b85",
+      "workflows/visualization.py": "5f0ca5c22f62407bb12af5263601c5f3406f510be95f5d47dd1998db857006d6"
+    },
+    "input_sha256": {
+      "configs/frozen/f10ag_protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+      "configs/frozen/contact_policy.json": "2083c6fe0f4cfe199abad5c5bcef154f8fa8ad0175a062013abffa44f1d673e5",
+      "configs/frozen/contact_revision.json": "fd41b0dd567557166fe3d49771d5e3eca88f13b6ffe8bbd261bfeab8351ecaf5",
+      "inputs/apparatus_snapshot.json": "22263a9275aaca26158720a55fce02d620d07d4868b9658aca6c16e914f45bcb",
+      "inputs/response/adaptive_2500000.h5": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+      "inputs/response/LOW_PRESSURE_ADMISSION.json": "4afea0ba48f44f08d80bca2a533b699d8a52b87a81454ff79caa80e9cb94c000",
+      "inputs/response/low_pressure_2500000.h5": "aefe1d459c6667c0e459a1b7a070fe04960675d3fdaa4c14e7c11afc5878c6df",
+      "inputs/initial_states.h5": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "inputs/actions.json": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "inputs/source_order.json": "df940909e1f822995497855f3aa5260b1fe1e82aef4e203e279c5346f34c8ab5",
+      "inputs/fields/2400000/coarse.h5": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "inputs/fields/2400000/FIELD_GATE.json": "42a1e5ff5e1c301740ef99de31b3928e9659b327af0a67427a754264bfa3577a",
+      "inputs/response/2400000/response_shell_1.0.h5": "74606fc70639d262bd3b186a56ef1c6dfa48778a4c3d3822cebab6a870a24adc",
+      "inputs/response/2400000/PHYSICS_GATE.json": "ac7d87d73239516b61196e442dfab1e704eb303af653b0d2a92c14148cde256c",
+      "inputs/fields/2500000/coarse.h5": "3a20420af0b4f2e3168cdc5aaee636e62480f2b277d4bc5de0133856aea7251a",
+      "inputs/fields/2500000/FIELD_GATE.json": "5653310b677a7c1b4523b5a7ad767cc7dcad423836b8cbf24660ca4363bcff79",
+      "inputs/fields/2600000/coarse.h5": "06e1ea4f3d832c3f6fc744b8e2e1a143e13f2f9c3f64bb8860dae14ead296328",
+      "inputs/fields/2600000/FIELD_GATE.json": "da3990935c75e9e324a0a9292c7e150bea15ef5578c2f5ac34c8361acbff15a0",
+      "inputs/response/2600000/response_shell_1.0.h5": "6ccc1d8fafc3429063c05d45ce049f1ba935d8074770fd66456296002ddd7747",
+      "inputs/response/2600000/PHYSICS_GATE.json": "bc927860532eb3c024cb7b71b29dbfea438944a0e5844bd14cb1129c0c778c9d"
+    },
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "run_config_sha256": "9d159410ae9835ee63d48ef023ec33c05a8db5eaf8933965cc2f3f5249b14c4e",
+    "execution_commit": "NOT_COMMITTED"
+  },
+  "backend": "B1",
+  "state": "explicit_initial",
+  "preregistration_sha256": "3a50d1e389b67b6d4f5019c93d71b861dc11fdd617e16113a86d7d0c3935859a"
+}

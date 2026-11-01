@@ -1,0 +1,37 @@
+{
+  "document": "/home/lzy/projects/microbubble_aggregation.md",
+  "date": "2026-10-18",
+  "sha256": "1045f1bc9e19d1b0ceb68ac21b5144e96f39e29efb33ee856cbdd478cc9aa63b",
+  "document_bytes": 21730,
+  "lines": 247,
+  "local_links_checked": 21,
+  "media_copies_verified": 5,
+  "errors": [],
+  "visual_review": "Inspected four source PNGs: apparatus, simulation plots, annotation ROI and latest replay UI. No image data modified.",
+  "scope": "Documentation replacement and small media copies only; no simulations, hardware actions, model training or application restart.",
+  "videos": [
+    {
+      "path": "/home/lzy/projects/microbubble_aggregation_assets/simulated_dispersed_motion.mp4",
+      "decoded_frames": 201,
+      "first_pts_s": 0.0,
+      "last_pts_s": 6.666666666666667,
+      "resolution": [
+        1800,
+        1060
+      ],
+      "monotonic_pts": true
+    },
+    {
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_vision_f10y_20261017/external_connect/vision_tracking_research/realtime_collective_observation_v1/runtime/piv_refinement_20261018/ui_replay_final/session_1792333728802166535/experiment_overlay.mp4",
+      "decoded_frames": 303,
+      "first_pts_s": 0.0,
+      "last_pts_s": 10.002884,
+      "resolution": [
+        1476,
+        1120
+      ],
+      "monotonic_pts": true
+    }
+  ],
+  "video_verification": "Full PyAV decode; system ffprobe unavailable."
+}

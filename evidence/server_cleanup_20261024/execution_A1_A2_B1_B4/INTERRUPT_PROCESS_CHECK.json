@@ -1,0 +1,1 @@
+{"comm": "server", "status": ["Name:\tserver", "State:\tS (sleeping)", "PPid:\t819", "Uid:\t0\t0\t0\t0"], "exe": "/usr/local/lib/python3.12/dist-packages/tensorboard_data_server/bin/server", "cwd": "/workspace", "project_fds": [], "mapped_project_paths": []}

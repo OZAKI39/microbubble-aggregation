@@ -1,0 +1,628 @@
+{
+  "started_utc": "2026-10-22T16:47:25.706212+00:00",
+  "approved_manifest_sha256": "85f4ac564b318958943d7f4ccc24b0e7ecbfd643e536883f68e0fec59f73f6e4",
+  "rows": [
+    {
+      "id": "A01",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261010",
+      "checks_started_utc": "2026-10-22T16:47:25.767309+00:00",
+      "status": "PASS",
+      "ignored_count": 0,
+      "ignored_bytes": 0,
+      "tracked_files_verified": 1600,
+      "ordered_path_sha256_digest": "bbe5921491c65c941bf2113f426b9a03a3a98543818684df5fdef3a177a55a22",
+      "sparse_omitted_count": 7743,
+      "tree_meta": {
+        "stat_sha256": "370f1d007a06c06ee0d8a506b0aef9bcd906ba4c00e37a2059c5956aefa0ea58",
+        "allocated_bytes": 197718016,
+        "entries": 1812,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:47:27.178218+00:00"
+    },
+    {
+      "id": "A02",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261013",
+      "checks_started_utc": "2026-10-22T16:47:27.179584+00:00",
+      "status": "PASS",
+      "ignored_count": 656,
+      "ignored_bytes": 7037480,
+      "tracked_files_verified": 12249,
+      "ordered_path_sha256_digest": "eddd8debf117a805d72a8f8aff415fc204bf3e9812fd18fe1b040679ebd68a18",
+      "sparse_omitted_count": 61,
+      "tree_meta": {
+        "stat_sha256": "ed6641306fb2cbd13e141268d676440bef1e26bdcd0e808a47dbc449eee2745b",
+        "allocated_bytes": 1050226688,
+        "entries": 15701,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:47:34.212019+00:00"
+    },
+    {
+      "id": "A03",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261014",
+      "checks_started_utc": "2026-10-22T16:47:34.214667+00:00",
+      "status": "PASS",
+      "ignored_count": 2,
+      "ignored_bytes": 27119,
+      "tracked_files_verified": 13394,
+      "ordered_path_sha256_digest": "908967c91d0b71901956583bfc80275064358e1a0e43b74ecf82a1bb974e234d",
+      "sparse_omitted_count": 61,
+      "tree_meta": {
+        "stat_sha256": "faf002dfebdd24a840e6b5d65e7205a786c90a469499588acc11f2b380fad749",
+        "allocated_bytes": 1244672000,
+        "entries": 16347,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:47:44.706741+00:00"
+    },
+    {
+      "id": "A04",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261015",
+      "checks_started_utc": "2026-10-22T16:47:44.707896+00:00",
+      "status": "PASS",
+      "ignored_count": 2,
+      "ignored_bytes": 26895,
+      "tracked_files_verified": 13857,
+      "ordered_path_sha256_digest": "b8640f005526bdb9bcc567787dd0fcd9778f5759f0e1d865d58ac4aea991d63d",
+      "sparse_omitted_count": 61,
+      "tree_meta": {
+        "stat_sha256": "d9e622596e2cd3339a6b2f41859e56f6f6f3e892ebcc558bd9ac2b7b8a437aba",
+        "allocated_bytes": 1418657792,
+        "entries": 16884,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:47:52.634513+00:00"
+    },
+    {
+      "id": "A05",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_split_sync_20261022/simulation",
+      "checks_started_utc": "2026-10-22T16:47:52.647606+00:00",
+      "status": "PASS",
+      "ignored_count": 0,
+      "ignored_bytes": 0,
+      "tracked_files_verified": 18399,
+      "ordered_path_sha256_digest": "741cc5db8846c89a13008db9475c162fe4b10cc3a58b1ab165355aa092c05214",
+      "sparse_omitted_count": 0,
+      "tree_meta": {
+        "stat_sha256": "51b7e52f6991bb6c6056b714c0cee36da214c03ae138ad2d1a556a721a15fe43",
+        "allocated_bytes": 4066107392,
+        "entries": 42627,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:48:23.688549+00:00"
+    },
+    {
+      "id": "A06",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_stage5a_20261006",
+      "checks_started_utc": "2026-10-22T16:48:23.691016+00:00",
+      "status": "PASS",
+      "ignored_count": 12,
+      "ignored_bytes": 190301,
+      "tracked_files_verified": 5545,
+      "ordered_path_sha256_digest": "7a1b3eeac7941939b77fd3482066cfa6ce86f6b23f21791c6587bafd3e42b8fe",
+      "sparse_omitted_count": 58,
+      "tree_meta": {
+        "stat_sha256": "d7a085b2e1c097bda6e46b5131acfb02a419cb2b1ce61e4c6f114862d3a38a8b",
+        "allocated_bytes": 302161920,
+        "entries": 7148,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:48:26.922186+00:00"
+    },
+    {
+      "id": "A07",
+      "path": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B2/particles/events.jsonl",
+      "checks_started_utc": "2026-10-22T16:48:26.924152+00:00",
+      "status": "PASS",
+      "sha256": "3a04bba66cdfd96219cdb85b3072f480797d667b93cdfc158c5f67d925fe333e",
+      "retained_sha256": "3a04bba66cdfd96219cdb85b3072f480797d667b93cdfc158c5f67d925fe333e",
+      "tree_meta": {
+        "stat_sha256": "831094ca2ff5d648faf3148428ef5a9c13519d336aec40dd3b5905b283f5e26a",
+        "allocated_bytes": 7853809664,
+        "entries": 1,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:48:48.214249+00:00"
+    },
+    {
+      "id": "A08",
+      "path": "/home/lzy/projects/computation_examples/mevo_acoustic_microbubbles/results/stage4/performance_refactor/gold_baseline/cases/B3/particles/events.jsonl",
+      "checks_started_utc": "2026-10-22T16:48:48.223054+00:00",
+      "status": "PASS",
+      "sha256": "b632b0e955bbf8df842ee241251dead86d603b93ed7b6d291c4f3b31d35629b7",
+      "retained_sha256": "b632b0e955bbf8df842ee241251dead86d603b93ed7b6d291c4f3b31d35629b7",
+      "tree_meta": {
+        "stat_sha256": "8d93582ad8b8dc7b60190a5557819d5f3bbd079951a737c3ac0cae8e2b172c6a",
+        "allocated_bytes": 8301760512,
+        "entries": 1,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:49:11.867122+00:00"
+    },
+    {
+      "id": "B01",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10a_20261011",
+      "checks_started_utc": "2026-10-22T16:49:11.868035+00:00",
+      "status": "PASS",
+      "ignored_count": 20,
+      "ignored_bytes": 142360,
+      "tracked_files_verified": 10330,
+      "ordered_path_sha256_digest": "09a2e90767e347d06709a9609921bd766ad8d546682801e303ca562d0cd5fc44",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "3baca1fecbab80ad50909fe51f73f9509684d57b9bc1c58bdcf38a9799ff6761",
+        "allocated_bytes": 1482403840,
+        "entries": 12690,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:49:27.133932+00:00"
+    },
+    {
+      "id": "B02",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10b_20261011",
+      "checks_started_utc": "2026-10-22T16:49:27.134412+00:00",
+      "status": "PASS",
+      "ignored_count": 13,
+      "ignored_bytes": 64613,
+      "tracked_files_verified": 10438,
+      "ordered_path_sha256_digest": "3769e79e652facd9d2112efd754af5edf4ed677a2a82b9c0775f5f1efca052ca",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "ab371f91542f476bd3b4fd9a1af770695c8965e80d49fd64361f62439652720a",
+        "allocated_bytes": 1489682432,
+        "entries": 12810,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:49:35.592622+00:00"
+    },
+    {
+      "id": "B03",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10c_20261011",
+      "checks_started_utc": "2026-10-22T16:49:35.596013+00:00",
+      "status": "PASS",
+      "ignored_count": 34,
+      "ignored_bytes": 220646,
+      "tracked_files_verified": 11382,
+      "ordered_path_sha256_digest": "9aad2ce1a54edeaaa766d169cf2589f299dcf441fdab53c48dc129ead7825326",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "14e9a7550220554440be823e9886003d033aa69ad5c8cd97cb3191feba7425bd",
+        "allocated_bytes": 1979731968,
+        "entries": 13995,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:49:44.004762+00:00"
+    },
+    {
+      "id": "B04",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10d_20261011",
+      "checks_started_utc": "2026-10-22T16:49:44.005804+00:00",
+      "status": "PASS",
+      "ignored_count": 21,
+      "ignored_bytes": 148302,
+      "tracked_files_verified": 11741,
+      "ordered_path_sha256_digest": "6dc6f435cccc52707507b736bd1270ba5cc7d79fd82bc6769e5ea35df79b3181",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "f0d0f901bcbb731d1d298acda21ce723cfc7668c7cf7384a12a378033512a776",
+        "allocated_bytes": 2451492864,
+        "entries": 14405,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:49:54.642738+00:00"
+    },
+    {
+      "id": "B05",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10e_20261011",
+      "checks_started_utc": "2026-10-22T16:49:54.651662+00:00",
+      "status": "PASS",
+      "ignored_count": 32,
+      "ignored_bytes": 274904,
+      "tracked_files_verified": 11886,
+      "ordered_path_sha256_digest": "49c19c5a1959a077dc9a3e4d461a34afcff239a4f7cf9bf49cbf32a86af55ed5",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "3e026c23c8b5654cd1511fbb022f97cef8df2722d90609a41a1f7b4c6cec8d69",
+        "allocated_bytes": 2474754048,
+        "entries": 14584,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:50:04.606099+00:00"
+    },
+    {
+      "id": "B06",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10f_20261011",
+      "checks_started_utc": "2026-10-22T16:50:04.611203+00:00",
+      "status": "PASS",
+      "ignored_count": 19,
+      "ignored_bytes": 127198,
+      "tracked_files_verified": 11995,
+      "ordered_path_sha256_digest": "0a2e121c226a64ac315dccadb4e36b4728552bf618cb873ec7305f2dde4a1c47",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "fdb52584eda3213214d3120ac988ba7bae998e43c2dd31ebf6cc27e3c1cf1bce",
+        "allocated_bytes": 2490544128,
+        "entries": 14693,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:50:12.554895+00:00"
+    },
+    {
+      "id": "B07",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10g_20261011",
+      "checks_started_utc": "2026-10-22T16:50:12.556996+00:00",
+      "status": "PASS",
+      "ignored_count": 24,
+      "ignored_bytes": 192166,
+      "tracked_files_verified": 12122,
+      "ordered_path_sha256_digest": "ff85b0e421c2f26f46ce74e4564cf71360aae1592e42c006208aa8c67804e472",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "b5b0e2123a36f5b7e100e936ae0306b6bce47e9b263a7e51a550b98542e178a4",
+        "allocated_bytes": 2532270080,
+        "entries": 14843,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:50:20.484076+00:00"
+    },
+    {
+      "id": "B08",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10h_20261012",
+      "checks_started_utc": "2026-10-22T16:50:20.485450+00:00",
+      "status": "PASS",
+      "ignored_count": 23,
+      "ignored_bytes": 197678,
+      "tracked_files_verified": 12359,
+      "ordered_path_sha256_digest": "e70b1b244b37448cbe87ccae19bbdb54a09cf69f558dddf26e94999f073026b3",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "a2f6ee787868ca75801a1481838f968105c60ad0dd9409f5a8daf53fd44a03fb",
+        "allocated_bytes": 2748923904,
+        "entries": 15109,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:50:31.458845+00:00"
+    },
+    {
+      "id": "B09",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10i_20261012",
+      "checks_started_utc": "2026-10-22T16:50:31.462725+00:00",
+      "status": "PASS",
+      "ignored_count": 26,
+      "ignored_bytes": 207048,
+      "tracked_files_verified": 12453,
+      "ordered_path_sha256_digest": "944c0e325aa02e3f190b9f9076bdcce173ae792c56baa1860671a6523af40238",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "639f5e24bdee73839532fc6ada1908c582a2b72de032bc0db444562b5e298992",
+        "allocated_bytes": 2800320512,
+        "entries": 15216,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:50:41.280743+00:00"
+    },
+    {
+      "id": "B10",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10j_20261012",
+      "checks_started_utc": "2026-10-22T16:50:41.282873+00:00",
+      "status": "PASS",
+      "ignored_count": 31,
+      "ignored_bytes": 280709,
+      "tracked_files_verified": 12550,
+      "ordered_path_sha256_digest": "bb046e2c38c25df2a7ad693099a46ffe4a94e39cd9274dcb3df8faa7609bd9f8",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "b3fc983845b55716b189645377c4a9e4dea62fa7a402538f5c14f5c23d41ed11",
+        "allocated_bytes": 2815582208,
+        "entries": 15330,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:50:50.656288+00:00"
+    },
+    {
+      "id": "B11",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10k_20261012",
+      "checks_started_utc": "2026-10-22T16:50:50.666668+00:00",
+      "status": "PASS",
+      "ignored_count": 33,
+      "ignored_bytes": 272446,
+      "tracked_files_verified": 12704,
+      "ordered_path_sha256_digest": "ce1fbb945eb0bc292ed6d521f2c247e4aaca78f27b9cae076a95cd35f080ad10",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "9355e30b77fe67a8d9211edfad209004734a58c3acb1366516f6d6b4966e678d",
+        "allocated_bytes": 2881376256,
+        "entries": 15503,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:51:00.986118+00:00"
+    },
+    {
+      "id": "B12",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10l_20261013",
+      "checks_started_utc": "2026-10-22T16:51:00.986684+00:00",
+      "status": "SKIP",
+      "ignored_count": 31,
+      "ignored_bytes": 281292,
+      "tracked_files_verified": 12817,
+      "ordered_path_sha256_digest": "270751fcd9a9254344be36b828023aaa906a7ffee572d7272362040fdfae6ed8",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "4b1a4d791b225076e3e69f7ad5696ad0c10e06b0a0e6ef45f92b3e29962cee12",
+        "allocated_bytes": 2906263552,
+        "entries": 15637,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:51:09.863458+00:00",
+      "reason": "Current cross-root link/process dependency"
+    },
+    {
+      "id": "B13",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10m_20261013",
+      "checks_started_utc": "2026-10-22T16:51:09.864683+00:00",
+      "status": "PASS",
+      "ignored_count": 31,
+      "ignored_bytes": 252545,
+      "tracked_files_verified": 12993,
+      "ordered_path_sha256_digest": "8f60c7904843c8ef52544ad8dfb9ed940f9175d34d133196f67d9c41eccbafff",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "f9cdf08e6e6aca57e321a6ed9fe1e624ac76ac9ba61316b86703617c5227ecdb",
+        "allocated_bytes": 2929418240,
+        "entries": 15839,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:51:21.826136+00:00"
+    },
+    {
+      "id": "B14",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10m_r3_20261013",
+      "checks_started_utc": "2026-10-22T16:51:21.827718+00:00",
+      "status": "PASS",
+      "ignored_count": 22,
+      "ignored_bytes": 165547,
+      "tracked_files_verified": 13094,
+      "ordered_path_sha256_digest": "41edf92c7f886ebbd042469dc5c374dd4589b639d50ffba3cf10c24f92947eef",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "7e0939cb323acd23b8bac3736136bfe3ce31e0271eeeb03301f5b958060fa99c",
+        "allocated_bytes": 2938007552,
+        "entries": 15950,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:51:32.115766+00:00"
+    },
+    {
+      "id": "B15",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10n_20261013",
+      "checks_started_utc": "2026-10-22T16:51:32.130149+00:00",
+      "status": "PASS",
+      "ignored_count": 80,
+      "ignored_bytes": 378450,
+      "tracked_files_verified": 13308,
+      "ordered_path_sha256_digest": "e958662e5fa101b78f918d5344bc11a22713a3407729a94b5c0d46818a0de089",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "180783788d70dd4e462fb4db7c92360d3581ea790cf132ddf95589abf3de7575",
+        "allocated_bytes": 2981515264,
+        "entries": 16258,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:51:47.458002+00:00"
+    },
+    {
+      "id": "B16",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10o_20261013",
+      "checks_started_utc": "2026-10-22T16:51:47.472790+00:00",
+      "status": "PASS",
+      "ignored_count": 26,
+      "ignored_bytes": 166148,
+      "tracked_files_verified": 13477,
+      "ordered_path_sha256_digest": "7adef4c5b7eec40ce33bd692a84252d574e0cbe604c785fd5e562ad707e66c92",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "fd3413f039a9ecaf286b133c3c80776f204605561cef3a0f8393d1e8085de092",
+        "allocated_bytes": 2999975936,
+        "entries": 16400,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:52:09.327891+00:00"
+    },
+    {
+      "id": "B17",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10p_20261014",
+      "checks_started_utc": "2026-10-22T16:52:09.331673+00:00",
+      "status": "PASS",
+      "ignored_count": 27,
+      "ignored_bytes": 202186,
+      "tracked_files_verified": 13659,
+      "ordered_path_sha256_digest": "652ff8c7a643a534ae36b66242a60bdc3c01adc2f397f5941804c40f91636a0e",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "5caea903bb6825ac9b6da5a52eefad3cc19f11fe31b3c0912f9be91a06e4714b",
+        "allocated_bytes": 3018153984,
+        "entries": 16613,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:52:24.641482+00:00"
+    },
+    {
+      "id": "B18",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10q_20261014",
+      "checks_started_utc": "2026-10-22T16:52:24.642303+00:00",
+      "status": "PASS",
+      "ignored_count": 45,
+      "ignored_bytes": 415552,
+      "tracked_files_verified": 13887,
+      "ordered_path_sha256_digest": "dcfbcb56889900b4d94ec90a7e77a8281811f076c2dc6d47239abd33344f8c0d",
+      "sparse_omitted_count": 64,
+      "tree_meta": {
+        "stat_sha256": "e34fc064acb56cbb8e3e838e6a6a8f760afc8554482c442b23ab16b3db224ec3",
+        "allocated_bytes": 3111280640,
+        "entries": 16904,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:52:40.407479+00:00"
+    },
+    {
+      "id": "B19",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10r_20261014",
+      "checks_started_utc": "2026-10-22T16:52:40.416240+00:00",
+      "status": "PASS",
+      "ignored_count": 44,
+      "ignored_bytes": 433766,
+      "tracked_files_verified": 13685,
+      "ordered_path_sha256_digest": "80035e43d4ca5b07e2dbd3a9f8b3a873b4282bf1a8919cbac5de27b1983bbf4b",
+      "sparse_omitted_count": 61,
+      "tree_meta": {
+        "stat_sha256": "1e937ed27c46f194a91e7a68e9eb1620f72f7610129a60968bbfdbc6974129db",
+        "allocated_bytes": 1364987904,
+        "entries": 16740,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:52:51.238544+00:00"
+    },
+    {
+      "id": "B20",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10s_20261015",
+      "checks_started_utc": "2026-10-22T16:52:51.239606+00:00",
+      "status": "PASS",
+      "ignored_count": 43,
+      "ignored_bytes": 452484,
+      "tracked_files_verified": 13853,
+      "ordered_path_sha256_digest": "c85ed31b2e30df8b88fa5b20902f20e5fc626c4561fee7c908413c5e0135a910",
+      "sparse_omitted_count": 61,
+      "tree_meta": {
+        "stat_sha256": "a29de4d706e6171ff49735a7e1ef142be3f9e34c4958815d7a844865ee777068",
+        "allocated_bytes": 1419726848,
+        "entries": 16932,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:53:04.402203+00:00"
+    },
+    {
+      "id": "B21",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f6_20261010",
+      "checks_started_utc": "2026-10-22T16:53:04.402834+00:00",
+      "status": "PASS",
+      "ignored_count": 20,
+      "ignored_bytes": 159484,
+      "tracked_files_verified": 1942,
+      "ordered_path_sha256_digest": "93428be4da5971f549a8c8667c9dfa21abc4b9e54db32b81d0f2c3c5699f66ab",
+      "sparse_omitted_count": 7738,
+      "tree_meta": {
+        "stat_sha256": "b1c32437afcbf0d70f2b4045356094f63a37ac7bf44a9f01adc02fcd239a0152",
+        "allocated_bytes": 488337408,
+        "entries": 2257,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:53:06.303457+00:00"
+    },
+    {
+      "id": "B22",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f7_20261010",
+      "checks_started_utc": "2026-10-22T16:53:06.307005+00:00",
+      "status": "PASS",
+      "ignored_count": 19,
+      "ignored_bytes": 146004,
+      "tracked_files_verified": 9791,
+      "ordered_path_sha256_digest": "646ff4c25641947be3a92113141a18c15cb82be78a9f32836b952f15a95b0519",
+      "sparse_omitted_count": 63,
+      "tree_meta": {
+        "stat_sha256": "0645626b23bc3c8ed40f5aa505f0f07c5f27d5c1ba638636ea29378b60c00a38",
+        "allocated_bytes": 1295196160,
+        "entries": 12060,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:53:12.909456+00:00"
+    },
+    {
+      "id": "B23",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f8_20261011",
+      "checks_started_utc": "2026-10-22T16:53:12.924340+00:00",
+      "status": "PASS",
+      "ignored_count": 27,
+      "ignored_bytes": 247597,
+      "tracked_files_verified": 9942,
+      "ordered_path_sha256_digest": "d0262f992ca4af42807431dfc2de794f1d562337b09f0b988d48ab85d4fb72cf",
+      "sparse_omitted_count": 63,
+      "tree_meta": {
+        "stat_sha256": "0751b1eb3bb186d9eb9cb1f8a4625f54fc3361836fca5cddb887bc515bb54fb4",
+        "allocated_bytes": 1365606400,
+        "entries": 12248,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:53:19.088042+00:00"
+    },
+    {
+      "id": "B24",
+      "path": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f9_20261011",
+      "checks_started_utc": "2026-10-22T16:53:19.088854+00:00",
+      "status": "PASS",
+      "ignored_count": 34,
+      "ignored_bytes": 301728,
+      "tracked_files_verified": 10084,
+      "ordered_path_sha256_digest": "688f445b5dc20a4c2d884e0e7503e36aba9cf921ef5b917691e90961dc7c352f",
+      "sparse_omitted_count": 63,
+      "tree_meta": {
+        "stat_sha256": "836dd821afddf63502dcc5dd5647fe180a667754fa429cea623ec5988152bc07",
+        "allocated_bytes": 1437237248,
+        "entries": 12417,
+        "hardlinks": []
+      },
+      "checks_finished_utc": "2026-10-22T16:53:24.804629+00:00"
+    }
+  ],
+  "common_refs_before": "refs/heads/dev/brava-population-gpu-20260929 0b808fb6c90e27674d79078c49358ced2e9258ff\nrefs/heads/dev/f10aa-solver-acceleration-20261018 6028598d0012912cc19aa766fa786c4afb0a91a5\nrefs/heads/dev/f10ab-shape-control-20261018 9d304c22817599f85079ada5a42b2e143f3fe055\nrefs/heads/dev/f10ac-qd-f10ad-multifrequency-20261018 baa47dbe95c78e1800aebe50bc3efc5faf07d5fa\nrefs/heads/dev/f10ae-targeted-shape-recovery-20261019 306d899fa4a9be18b8a926688a6e25d389193138\nrefs/heads/dev/f10af-observable-multifidelity-20261019 4eb54462b91cfc9d81dc08d8edd6803175724523\nrefs/heads/dev/f10ag-3d-capture-longtime-20261019 4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2\nrefs/heads/dev/f10v-geometry-aware-motion-20261017 80440a8fc5f15716a2a5835b8eb2d509e20a30c1\nrefs/heads/dev/f10w-pretrained-full-video-20261017 62b453c6c49ab2beadb89868d048a12117ef06db\nrefs/heads/dev/f10x-full-channel-piv-20261017 a5ce54c2aac6fa59e196c277ecb5d8a6a0890638\nrefs/heads/dev/f10y-realtime-observation-20261017 647eccd83d439f4dc9600097f9b19444f3cbc70c\nrefs/heads/dev/f10z-acoustic-aggregation-20261018 203c90110c7b3b1b34f29241973a1e1c65fc137a\nrefs/heads/dev/f10z-bubble-count-scaling-20261018 df76b1e9d311024398bc2bca40b6cf0f6382ba64\nrefs/heads/dev/fast-pzt-aggregation-f1-20261007 6de76d508ea088e137069abf058b86b7f6d47a1c\nrefs/heads/dev/fast-pzt-aggregation-f2-20261008 6655867b772484a82ea9a7c2afd491da02bdd378\nrefs/heads/dev/fast-pzt-aggregation-f3-20261008 3eeb94eb885f5df4f0e214ba9b7904dbdecec744\nrefs/heads/dev/fast-pzt-f10a-acoustic-authority-20261011 adeceb1d3b8ce82312e338bfe5a8b7d15f20b87f\nrefs/heads/dev/fast-pzt-f10b-cluster-surrogate-20261011 81fe1206d623f04ea7e3d3a78021251890185c9e\nrefs/heads/dev/fast-pzt-f10c-fullparticle-batch-multirate-20261011 2fc90fd4ad57d16addfe5bed2878c7c3085efd61\nrefs/heads/dev/fast-pzt-f10d-batch-data-pipeline-20261011 f5c397a15498b14cf281d6e6fa875649fa9e43ca\nrefs/heads/dev/fast-pzt-f10e-contact-failure-recovery-20261011 741ad7d8683bfbb2fc9a270d9e92a218dead5e54\nrefs/heads/dev/fast-pzt-f10f-smallsteps-contact-20261011 08505b35ce18b8b0cb57cacce1cffa208dcb9f1f\nrefs/heads/dev/fast-pzt-f10g-overdamped-contact-20261011 8df3f063af6e0099ac630cd350bdd8a6a22ed4bd\nrefs/heads/dev/fast-pzt-f10h-lubrication-contact-20261012 9419837e0ae1ac0a2c6629c63f9a69027b2fef8f\nrefs/heads/dev/fast-pzt-f10i-b2-edge-events-gpu-20261012 209b9a77ca8e114e0f3258a3d2a176cbec41c611\nrefs/heads/dev/fast-pzt-f10j-gpu-b2-convergence-20261012 91b09993167625fc103ebd6a026773753a12d3f4\nrefs/heads/dev/fast-pzt-f10k-science-scope-scaling-20261012 850fd2df3225351f4fe9564f39cbe72a38662b30\nrefs/heads/dev/fast-pzt-f10l-straight-tube-three-pzt-20261013 674482e4f76ecbcff4efe98432fb0eaeb9df5153\nrefs/heads/dev/fast-pzt-f10m-pdms-three-pzt-20261013 a494cdddd71f0f7bbd09f4ef37e445a8b89d8548\nrefs/heads/dev/fast-pzt-f10m-r3-open-top-sealed-x-20261013 e008a420b8bc386ac20454c556955b389be75fec\nrefs/heads/dev/fast-pzt-f10n-control-prototype-20261013 e2dfb4f41cea33082583bbf8424a963ee194e85c\nrefs/heads/dev/fast-pzt-f10o-b2-xy-control-20261013 98cf17b8ecd03e831628ed7005a8e1c83d354a40\nrefs/heads/dev/fast-pzt-f10p-hard-sphere-group-admission-20261014 1c785f4803ca7dc0ea2fe91756b02487c7c75a59\nrefs/heads/dev/fast-pzt-f10q-sequential-qp-xy-navigation-20261014 41ae8ed2b88f2cbbed834fffccaa0b5de6e91589\nrefs/heads/dev/fast-pzt-f10r-simulation-control-navigation-20261014 9f1db411836e9a67dff1f77a344e5457674e6a81\nrefs/heads/dev/fast-pzt-f10s-x-pair-onehot-trap-scope-20261015 31a44d3f342e5d0bca55f7f9b83f4d32b8189696\nrefs/heads/dev/fast-pzt-f4-y-geometry-20261008 e247fa0c61f668a9b0b2e26c909dd687eedde389\nrefs/heads/dev/fast-pzt-f5-flow-release-20261008 66d4cebec18555a26bc9a8035cc3082756d0e76f\nrefs/heads/dev/fast-pzt-f6-target-navigation-20261010 a8324747da00ae00d4c7e194aa81a3677289374d\nrefs/heads/dev/fast-pzt-f7-mobility-aware-navigation-20261010 48fccd9188e8fb3bfba509f12ad07b887f5ed110\nrefs/heads/dev/fast-pzt-f8-flow-guided-navigation-20261011 0ef3a0ba37b5741115060a811f47c8b67bd5dae3\nrefs/heads/dev/fast-pzt-f9-wall-motion-audit-20261011 4bf369f4f65efb5909e9aedb69e460eb692584da\nrefs/heads/dev/flow-mean-2p0-mmps-20260922 c83dccea0f1fe5cd9fd3f5939e2eba883aeba9c2\nrefs/heads/dev/p9a4-poisson-finite-size-flux-inlet-20260925 abb3ab05fb8dcddcf120765702b682f23a63a71d\nrefs/heads/dev/p9a5-formal-adaptive-trajectories-20260925 37c40d7c08ca6527c8379c0ffa81436ae708f59f\nrefs/heads/dev/particle-0-frozen-fem-sampler-20260920 889e2686060f924d2b1a0137e9a88e63292d2378\nrefs/heads/dev/particle-1-single-mb-20260920 0b78c309390566c94c737742f1cfd926e2efe752\nrefs/heads/dev/particle-2-rbc-orientation-20260920 705dd0c54f59eab464d811cf10c6a24f3476b6ed\nrefs/heads/dev/particle-3-wall-contact-20260920 d37ea1649aa242e76f0ec156e58e2ff70a1de376\nrefs/heads/dev/particle-4-particle-contact-20260920 0fca8cdd8340c7bb802f57f068e3fc878717ac49\nrefs/heads/dev/particle-5-resistance-lubrication-20260920 c66077bf08875a38475a2b59f25747c217612996\nrefs/heads/dev/particle-6-5-nearfield-regularization-20260921 b0e92f157b5ffa25e423f49edb0c96e765ccb71b\nrefs/heads/dev/particle-6-lammps-bridge-20260920 d6c599b2bc8e6b8416736280556b6eee31bc57b8\nrefs/heads/dev/particle-7-inlet-population-20260921 b11dd2d87c2b03c5129bbc1e3eee8b2a76baf199\nrefs/heads/dev/particle-8-1-full-vessel-ulm-20260921 bef4760701322049504f80759798f94249d8b171\nrefs/heads/dev/particle-8-2-multi-outlet-remote-20260921 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/particle-8-full3d-replay-20260921 6f4c0c9ec5a3fdbb8538a40f6a36a059f8018d60\nrefs/heads/dev/particle-8-visualization-replay-20260921 2d8a95e3200e8baba1be009c8426b3b5983efa3d\nrefs/heads/dev/particle9a-2mmps-failure-diagnosis 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/particle9a-2mmps-sync-snapshot fab4cf0eb3c8f8ad1ce40dfe995181c147cb9a9d\nrefs/heads/dev/particle9a-2mmps-tangent-rotation 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/particle9a1-production-compatibility 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/particle9a1-routing-stationary-audit 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/particle9a2-size-first-inlet 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/particle9a3-interior-joint-flux-inlet 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/particle9a3b-flowfield-conservation-diagnosis 775adc019536585a4ee2f4dbf2c083c959e0a339\nrefs/heads/dev/stage5a-motion-constrained-20261006 7c39828d93509fff5551b7a16537ca3aa4ee9c23\nrefs/heads/dev/stage5a-r2-motion-recovery 07db8ed35f3a460a4ba315e42b15d257f8518b0a\nrefs/heads/dev/stage5a-r3-wall-accuracy-performance 5c0a0f10b19b376d9321510149cb6db50bcf4331\nrefs/heads/main 8a264014a6181d23d30f3ad4447931ce182e1ac4\nrefs/heads/sync/brava-flow-project-20261022 248589c0f0161644dd80f732e35ca5bff831f599\nrefs/heads/sync/brava-flow-project-20261022-publish 4e509991fd9c1b094e20318758aeb67a370fcbd2\nrefs/heads/sync/brava-p2-algebra-20261006 38434aa4e76f479af1b914c1e9ff20ce6a00c660\nrefs/heads/sync/current-h0-dt1ms-wss-audit-20260927 69c6af94eabb87ba6db0823134c4b92b30a069db\nrefs/heads/sync/fem-simvascular-stage-q-particle-handoff-20260920 c83dccea0f1fe5cd9fd3f5939e2eba883aeba9c2\nrefs/heads/sync/flow-microbubble-rbc-workflow-20260923 fab4cf0eb3c8f8ad1ce40dfe995181c147cb9a9d\nrefs/heads/sync/mevo-acoustic-f10k-20261013 15c42e0e422ff5d1521e5cc8c12ede2688b3de59\nrefs/heads/sync/mevo-acoustic-f10q-20261014 467b17411deeb13a77370565b7382f071b41a774\nrefs/heads/sync/mevo-acoustic-f10s-20261015 c7363522ef492d09f7902c0c3382572a70beb68a\nrefs/heads/sync/mevo-acoustic-f5-migration-20261010 c8ecf9deece1bb0e86b0d0f1c574b984a30ebbd0\nrefs/heads/sync/mevo-acoustic-vision-f10u-20261017 9cb22d729fece92fe160082edf09222a18068d74\nrefs/heads/sync/mouse-vascular-flow-project-20261022 c61953b931ddb58e88abb7f551f23c1dbe9f3c7a\nrefs/heads/sync/mouse-vascular-flow-project-20261022-publish 987d0638944f09e1acc1f415b26bf5b0479c3f1d\nrefs/heads/sync/network-h0-particle-cleanup-20260925 abb3ab05fb8dcddcf120765702b682f23a63a71d\nrefs/heads/sync/p9a4-flow-particle-rbc-20260925 37c40d7c08ca6527c8379c0ffa81436ae708f59f\nrefs/heads/sync/roi-flow-mb1500-wss-stop-analysis-20260928 3c3fb0498686fe647426bf67d067e90ebf189e52",
+  "common_worktrees_before": "worktree /home/lzy/projects/temp_storage/ulm-3d-vascular-model-generation\nHEAD c83dccea0f1fe5cd9fd3f5939e2eba883aeba9c2\nbranch refs/heads/sync/fem-simvascular-stage-q-particle-handoff-20260920\n\nworktree /home/lzy/projects/computation_examples/_archives/github_sync_20260928_latest\nHEAD 3c3fb0498686fe647426bf67d067e90ebf189e52\nbranch refs/heads/sync/roi-flow-mb1500-wss-stop-analysis-20260928\n\nworktree /home/lzy/projects/computation_examples/_archives/github_sync_brava_20261006\nHEAD 38434aa4e76f479af1b914c1e9ff20ce6a00c660\nbranch refs/heads/sync/brava-p2-algebra-20261006\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261010\nHEAD c8ecf9deece1bb0e86b0d0f1c574b984a30ebbd0\nbranch refs/heads/sync/mevo-acoustic-f5-migration-20261010\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261013\nHEAD 15c42e0e422ff5d1521e5cc8c12ede2688b3de59\nbranch refs/heads/sync/mevo-acoustic-f10k-20261013\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261014\nHEAD 467b17411deeb13a77370565b7382f071b41a774\nbranch refs/heads/sync/mevo-acoustic-f10q-20261014\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261015\nHEAD c7363522ef492d09f7902c0c3382572a70beb68a\nbranch refs/heads/sync/mevo-acoustic-f10s-20261015\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_acoustic_sync_20261017\nHEAD 9cb22d729fece92fe160082edf09222a18068d74\nbranch refs/heads/sync/mevo-acoustic-vision-f10u-20261017\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_capture_f10ag_20261019\nHEAD 4e80e6b18e6de014acb9bbb611ed6c4c3bcb61a2\nbranch refs/heads/dev/f10ag-3d-capture-longtime-20261019\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10a_20261011\nHEAD adeceb1d3b8ce82312e338bfe5a8b7d15f20b87f\nbranch refs/heads/dev/fast-pzt-f10a-acoustic-authority-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10b_20261011\nHEAD 81fe1206d623f04ea7e3d3a78021251890185c9e\nbranch refs/heads/dev/fast-pzt-f10b-cluster-surrogate-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10c_20261011\nHEAD 2fc90fd4ad57d16addfe5bed2878c7c3085efd61\nbranch refs/heads/dev/fast-pzt-f10c-fullparticle-batch-multirate-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10d_20261011\nHEAD f5c397a15498b14cf281d6e6fa875649fa9e43ca\nbranch refs/heads/dev/fast-pzt-f10d-batch-data-pipeline-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10e_20261011\nHEAD 741ad7d8683bfbb2fc9a270d9e92a218dead5e54\nbranch refs/heads/dev/fast-pzt-f10e-contact-failure-recovery-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10f_20261011\nHEAD 08505b35ce18b8b0cb57cacce1cffa208dcb9f1f\nbranch refs/heads/dev/fast-pzt-f10f-smallsteps-contact-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10g_20261011\nHEAD 8df3f063af6e0099ac630cd350bdd8a6a22ed4bd\nbranch refs/heads/dev/fast-pzt-f10g-overdamped-contact-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10h_20261012\nHEAD 9419837e0ae1ac0a2c6629c63f9a69027b2fef8f\nbranch refs/heads/dev/fast-pzt-f10h-lubrication-contact-20261012\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10i_20261012\nHEAD 209b9a77ca8e114e0f3258a3d2a176cbec41c611\nbranch refs/heads/dev/fast-pzt-f10i-b2-edge-events-gpu-20261012\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10j_20261012\nHEAD 91b09993167625fc103ebd6a026773753a12d3f4\nbranch refs/heads/dev/fast-pzt-f10j-gpu-b2-convergence-20261012\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10k_20261012\nHEAD 850fd2df3225351f4fe9564f39cbe72a38662b30\nbranch refs/heads/dev/fast-pzt-f10k-science-scope-scaling-20261012\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10l_20261013\nHEAD 674482e4f76ecbcff4efe98432fb0eaeb9df5153\nbranch refs/heads/dev/fast-pzt-f10l-straight-tube-three-pzt-20261013\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10m_20261013\nHEAD a494cdddd71f0f7bbd09f4ef37e445a8b89d8548\nbranch refs/heads/dev/fast-pzt-f10m-pdms-three-pzt-20261013\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10m_r3_20261013\nHEAD e008a420b8bc386ac20454c556955b389be75fec\nbranch refs/heads/dev/fast-pzt-f10m-r3-open-top-sealed-x-20261013\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10n_20261013\nHEAD e2dfb4f41cea33082583bbf8424a963ee194e85c\nbranch refs/heads/dev/fast-pzt-f10n-control-prototype-20261013\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10o_20261013\nHEAD 98cf17b8ecd03e831628ed7005a8e1c83d354a40\nbranch refs/heads/dev/fast-pzt-f10o-b2-xy-control-20261013\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10p_20261014\nHEAD 1c785f4803ca7dc0ea2fe91756b02487c7c75a59\nbranch refs/heads/dev/fast-pzt-f10p-hard-sphere-group-admission-20261014\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10q_20261014\nHEAD 41ae8ed2b88f2cbbed834fffccaa0b5de6e91589\nbranch refs/heads/dev/fast-pzt-f10q-sequential-qp-xy-navigation-20261014\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10r_20261014\nHEAD 9f1db411836e9a67dff1f77a344e5457674e6a81\nbranch refs/heads/dev/fast-pzt-f10r-simulation-control-navigation-20261014\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10s_20261015\nHEAD 31a44d3f342e5d0bca55f7f9b83f4d32b8189696\nbranch refs/heads/dev/fast-pzt-f10s-x-pair-onehot-trap-scope-20261015\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f1_20261007\nHEAD 6de76d508ea088e137069abf058b86b7f6d47a1c\nbranch refs/heads/dev/fast-pzt-aggregation-f1-20261007\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f2_20261008\nHEAD 6655867b772484a82ea9a7c2afd491da02bdd378\nbranch refs/heads/dev/fast-pzt-aggregation-f2-20261008\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f3_20261008\nHEAD 3eeb94eb885f5df4f0e214ba9b7904dbdecec744\nbranch refs/heads/dev/fast-pzt-aggregation-f3-20261008\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f4_20261008\nHEAD e247fa0c61f668a9b0b2e26c909dd687eedde389\nbranch refs/heads/dev/fast-pzt-f4-y-geometry-20261008\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f5_20261008\nHEAD 66d4cebec18555a26bc9a8035cc3082756d0e76f\nbranch refs/heads/dev/fast-pzt-f5-flow-release-20261008\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f6_20261010\nHEAD a8324747da00ae00d4c7e194aa81a3677289374d\nbranch refs/heads/dev/fast-pzt-f6-target-navigation-20261010\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f7_20261010\nHEAD 48fccd9188e8fb3bfba509f12ad07b887f5ed110\nbranch refs/heads/dev/fast-pzt-f7-mobility-aware-navigation-20261010\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f8_20261011\nHEAD 0ef3a0ba37b5741115060a811f47c8b67bd5dae3\nbranch refs/heads/dev/fast-pzt-f8-flow-guided-navigation-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f9_20261011\nHEAD 4bf369f4f65efb5909e9aedb69e460eb692584da\nbranch refs/heads/dev/fast-pzt-f9-wall-motion-audit-20261011\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_observable_f10af_20261019\nHEAD 4eb54462b91cfc9d81dc08d8edd6803175724523\nbranch refs/heads/dev/f10af-observable-multifidelity-20261019\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_qd_f10ac_ad_20261018\nHEAD baa47dbe95c78e1800aebe50bc3efc5faf07d5fa\nbranch refs/heads/dev/f10ac-qd-f10ad-multifrequency-20261018\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_shape_f10ab_20261018\nHEAD 9d304c22817599f85079ada5a42b2e143f3fe055\nbranch refs/heads/dev/f10ab-shape-control-20261018\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10aa_20261018\nHEAD 6028598d0012912cc19aa766fa786c4afb0a91a5\nbranch refs/heads/dev/f10aa-solver-acceleration-20261018\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_simulation_f10z_20261018\nHEAD df76b1e9d311024398bc2bca40b6cf0f6382ba64\nbranch refs/heads/dev/f10z-bubble-count-scaling-20261018\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_stage5a_20261006\nHEAD 7c39828d93509fff5551b7a16537ca3aa4ee9c23\nbranch refs/heads/dev/stage5a-motion-constrained-20261006\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_stage5a_r2_20261006\nHEAD 07db8ed35f3a460a4ba315e42b15d257f8518b0a\nbranch refs/heads/dev/stage5a-r2-motion-recovery\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_stage5a_r3_20261007\nHEAD 5c0a0f10b19b376d9321510149cb6db50bcf4331\nbranch refs/heads/dev/stage5a-r3-wall-accuracy-performance\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_target_f10ae_20261019\nHEAD 306d899fa4a9be18b8a926688a6e25d389193138\nbranch refs/heads/dev/f10ae-targeted-shape-recovery-20261019\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_vision_f10v_20261017\nHEAD 80440a8fc5f15716a2a5835b8eb2d509e20a30c1\nbranch refs/heads/dev/f10v-geometry-aware-motion-20261017\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_vision_f10w_20261017\nHEAD 62b453c6c49ab2beadb89868d048a12117ef06db\nbranch refs/heads/dev/f10w-pretrained-full-video-20261017\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_vision_f10x_20261017\nHEAD a5ce54c2aac6fa59e196c277ecb5d8a6a0890638\nbranch refs/heads/dev/f10x-full-channel-piv-20261017\n\nworktree /home/lzy/projects/computation_examples/_archives/mevo_vision_f10y_20261017\nHEAD 647eccd83d439f4dc9600097f9b19444f3cbc70c\nbranch refs/heads/dev/f10y-realtime-observation-20261017\n\nworktree /home/lzy/projects/computation_examples/_shared/active_network_development\nHEAD 69c6af94eabb87ba6db0823134c4b92b30a069db\nbranch refs/heads/sync/current-h0-dt1ms-wss-audit-20260927\n\nworktree /home/lzy/projects/computation_examples/_shared/legacy_flow_workflow\nHEAD c83dccea0f1fe5cd9fd3f5939e2eba883aeba9c2\nbranch refs/heads/dev/flow-mean-2p0-mmps-20260922\n\nworktree /home/lzy/projects/computation_examples/_shared/particle_workflow\nHEAD 37c40d7c08ca6527c8379c0ffa81436ae708f59f\nbranch refs/heads/dev/p9a5-formal-adaptive-trajectories-20260925\n\nworktree /home/lzy/projects/temp_storage/brava_flow_github_sync_20261022\nHEAD 4e509991fd9c1b094e20318758aeb67a370fcbd2\nbranch refs/heads/sync/brava-flow-project-20261022-publish\n\nworktree /home/lzy/projects/temp_storage/mouse_flow_github_sync_20261022\nHEAD 987d0638944f09e1acc1f415b26bf5b0479c3f1d\nbranch refs/heads/sync/mouse-vascular-flow-project-20261022-publish\n\nworktree /home/lzy/projects/temp_storage/ulm_particle_3d_particle0\nHEAD 775adc019536585a4ee2f4dbf2c083c959e0a339\nbranch refs/heads/dev/particle9a3b-flowfield-conservation-diagnosis",
+  "objects": [],
+  "shared_payload_verification": {
+    "objects": 11678,
+    "uncompressed_bytes": 3171323789,
+    "PASS": true
+  },
+  "cross_root_links": [],
+  "processes": {
+    "utc": "2026-10-22T16:54:54.584976+00:00",
+    "hits": [
+      {
+        "pid": "344702",
+        "source": "/proc/344702/fd/3",
+        "target": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10l_20261013/computation_examples/mevo_acoustic_microbubbles/results/stage3/acoustic/20261002T115008_738947Z_superposition/figures",
+        "root": "/home/lzy/projects/computation_examples/_archives/mevo_fast_pzt_f10l_20261013"
+      }
+    ],
+    "unreadable_pids": [
+      "1",
+      "10",
+      "102",
+      "157",
+      "159",
+      "165",
+      "166",
+      "173",
+      "189",
+      "190",
+      "2",
+      "208",
+      "227410",
+      "227411",
+      "227435",
+      "227436",
+      "227444",
+      "227445",
+      "227650",
+      "227651",
+      "293",
+      "294",
+      "296",
+      "3",
+      "341",
+      "342",
+      "56",
+      "8260"
+    ]
+  },
+  "finished_utc": "2026-10-22T16:54:54.588504+00:00"
+}

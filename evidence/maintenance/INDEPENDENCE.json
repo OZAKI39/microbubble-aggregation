@@ -1,0 +1,19 @@
+{
+  "PASS": true,
+  "guarded_forbidden_roots": [
+    "/home/lzy/projects/computation_examples/",
+    "/home/lzy/projects/temp_storage/",
+    "/home/lzy/projects/external_connect/"
+  ],
+  "forbidden_accesses": [],
+  "old_imports": [],
+  "runtime_source_files_sha256_unchanged": 25,
+  "source_changed": [],
+  "verified_frozen_inputs": 20,
+  "frequency_contexts_Hz": [
+    2400000,
+    2500000,
+    2600000
+  ],
+  "scope": "CPU context, all three frequencies; path guard plus existing 22 tests; no full historical rerun"
+}

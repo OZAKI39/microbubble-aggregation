@@ -1,0 +1,9 @@
+{
+  "reason": "TensorBoard briefly held a read-only directory FD in protected results; no process change/stop. Exclude only read-only directory scans outside approved targets from dependency blockers.",
+  "remaining_groups": [
+    "B3",
+    "B4"
+  ],
+  "authorization_manifest_sha256": "ddf330e9dffb818e13de125c890bdfa920d19d36faa72925f1c2385b05cc452b",
+  "remote_script_sha256": "70c2ba5723f1e2981c074d40594ab38b315f30affbb62f4ac3b67f75c289f783"
+}
