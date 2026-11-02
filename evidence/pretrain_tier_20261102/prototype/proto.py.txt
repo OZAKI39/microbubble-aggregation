@@ -1,0 +1,437 @@
+"""CPU prototype: adaptive step size + sparse per-cluster contact solve.
+
+Reference path  = the simulator's own functions, unchanged: dense resistance()
+                  + sequential_step() at a fixed 1 us step (original HF algorithm).
+Prototype path  = same physics, same QP (active_set_qp) and the same frozen gate
+                  thresholds, but (a) sparse resistance / sparse factorization,
+                  (b) contact constraints only for candidate pairs found by a
+                  KD-tree, and (c) error-controlled step size (step doubling).
+
+Forces use the simulator's independent NumPy reference formulas (cached field
+cubic interpolation for F1, pair_reference formulas for F2, vectorized here and
+checked against pair_reference). Wall checks are omitted: all test clusters sit
+in the central cache region, hundreds of micrometres from any wall.
+"""
+
+import sys, time
+from pathlib import Path
+import numpy as np
+from scipy import sparse
+from scipy.sparse.linalg import splu
+from scipy.spatial import cKDTree
+
+ROOT = Path(__file__).resolve().parent.parent.parent  # overwritten by init()
+
+
+def init(root, frequency=2.5e6):
+    global ROOT, C, POLICY, PHYS, R, ZETA, RHO_W2
+    ROOT = Path(root)
+    sys.path.insert(0, str(ROOT))
+    from workflows.f10ag import context, load_policy
+
+    C = context(ROOT, frequency=frequency, device="cpu")
+    POLICY = load_policy(ROOT)
+    PHYS = C.physics
+    R = PHYS.radius_m
+    ZETA = 6 * np.pi * PHYS.viscosity_Pa_s * R
+    RHO_W2 = PHYS.density_kg_m3 * (2 * np.pi * PHYS.frequency_Hz) ** 2
+    return C, POLICY
+
+
+# ----------------------------------------------------------------------------- forces
+class Forces:
+    """coupling='pair'  : the simulator's model (isolated oscillation + two-bubble feedback).
+    coupling='nbody' : all bubbles' fundamental oscillations solved together,
+                       u = chi (P_inc - K u),  K_ij = rho w^2 / (4 pi d_ij)  (i != j),
+                       which is the N-bubble form of the simulator's two-bubble closure.
+                       F1 uses u; the pair term uses Re[u_i u_j*] (+ isolated higher harmonics)."""
+
+    def __init__(self, amplitudes, phases, coupling="pair"):
+        from microbubble.forces import feedback_weight
+
+        self.fw = feedback_weight
+        self.u = np.asarray(amplitudes, float) * np.exp(1j * np.asarray(phases, float))
+        r = C.response
+        self.chi0 = r.query(np.array([r.knots[0] + 0j]))[0, 0] / r.knots[0]
+        self.calls = 0
+        self.coupling = coupling
+        self.min_sv = np.inf          # smallest singular value of (I + chi K) seen so far
+
+    def fields(self, x):
+        b = C.basis
+        coord = (x - b.origin) / b.spacing
+        if np.any(coord < 1) or np.any(coord >= np.array(b.shape) - 2):
+            raise ValueError("Outside stored cubic field interior")
+        h, g = b.query_basis(x)
+        P = self.u @ h
+        G = np.einsum("i,inj->nj", self.u, g)
+        return P, G
+
+    def pair(self, x, H, P):
+        n = len(x)
+        i, j = np.triu_indices(n, 1)
+        delta = x[j] - x[i]
+        d = np.linalg.norm(delta, axis=1)
+        corr = np.sum(np.arange(1, 9) ** 2 * np.real(H[i] * np.conj(H[j])), axis=1)
+        w = self.fw(d, R, PHYS.feedback_end_over_sum)
+        m = w > 0
+        if np.any(m):
+            vi, vj, pi, pj = H[i[m], 0], H[j[m], 0], P[i[m]], P[j[m]]
+            ci = np.where(np.abs(pi) > 0, vi / np.where(np.abs(pi) > 0, pi, 1), self.chi0)
+            cj = np.where(np.abs(pj) > 0, vj / np.where(np.abs(pj) > 0, pj, 1), self.chi0)
+            k = RHO_W2 / (4 * np.pi * d[m])
+            a, bb = k * ci, k * cj
+            det = 1 - a * bb
+            if np.any(np.abs(det) < 1e-6):
+                raise ValueError("Singular pair closure")
+            ui, uj = (vi - a * vj) / det, (vj - bb * vi) / det
+            corr[m] += w[m] * (np.real(ui * np.conj(uj)) - np.real(vi * np.conj(vj)))
+        q = np.minimum(d / (PHYS.transition_over_sum * 2 * R), 1)
+        core = PHYS.soft_core_over_sum * 2 * R * (1 - q) ** 2
+        pair = RHO_W2 / (8 * np.pi) * corr[:, None] * delta / ((d * d + core * core) ** 1.5)[:, None]
+        f = np.zeros_like(x)
+        np.add.at(f, i, pair)
+        np.add.at(f, j, -pair)
+        return f
+
+    def coupled(self, x, P, H):
+        n = len(x)
+        nz = np.abs(P) > 0
+        chi = np.where(nz, H[:, 0] / np.where(nz, P, 1), self.chi0)
+        D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+        K = np.where(D > 0, RHO_W2 / (4 * np.pi * np.where(D > 0, D, 1)), 0.0)
+        M = np.eye(n) + chi[:, None] * K
+        sv = np.linalg.svd(M, compute_uv=False)[-1]
+        self.min_sv = min(self.min_sv, float(sv))
+        if sv < 1e-3:
+            raise ValueError("Near-singular collective response")
+        return np.linalg.solve(M, chi * P)
+
+    def pair_nbody(self, x, H, u):
+        n = len(x)
+        i, j = np.triu_indices(n, 1)
+        delta = x[j] - x[i]
+        d = np.linalg.norm(delta, axis=1)
+        corr = np.sum(np.arange(2, 9) ** 2 * np.real(H[i, 1:] * np.conj(H[j, 1:])), axis=1) + np.real(u[i] * np.conj(u[j]))
+        q = np.minimum(d / (PHYS.transition_over_sum * 2 * R), 1)
+        core = PHYS.soft_core_over_sum * 2 * R * (1 - q) ** 2
+        pair = RHO_W2 / (8 * np.pi) * corr[:, None] * delta / ((d * d + core * core) ** 1.5)[:, None]
+        f = np.zeros_like(x)
+        np.add.at(f, i, pair)
+        np.add.at(f, j, -pair)
+        return f
+
+    def __call__(self, x):
+        self.calls += 1
+        P, G = self.fields(x)
+        H = C.response.query(P)
+        if self.coupling == "nbody":
+            u = self.coupled(x, P, H)
+            F1 = -0.5 * np.real(u[:, None] * np.conj(G))
+            return F1 + self.pair_nbody(x, H, u), P
+        F1 = -0.5 * np.real(H[:, 0, None] * np.conj(G))
+        return F1 + self.pair(x, H, P), P
+
+
+# ----------------------------------------------------------------------------- sparse pieces
+def sparse_resistance(x, activation=0.1, floor=0.001):
+    """Exactly the values of hydrodynamics.resistance(), assembled sparsely."""
+    n = len(x)
+    pairs = np.array(sorted(cKDTree(x).query_pairs((2 + activation) * R)), dtype=int).reshape(-1, 2)
+    rows, cols, vals = [np.arange(3 * n)], [np.arange(3 * n)], [np.ones(3 * n)]
+    if len(pairs):
+        i, j = pairs[:, 0], pairs[:, 1]
+        dx = x[j] - x[i]
+        d = np.linalg.norm(dx, axis=1)
+        e = (d - 2 * R) / R
+        keep = e < activation
+        i, j, dx, d, e = i[keep], j[keep], dx[keep], d[keep], e[keep]
+        nrm = dx / d[:, None]
+
+        def phi(v):
+            return 0.5 / v - 0.45 * np.log(v) - (3 / 56) * v * np.log(v)
+
+        c = 0.5 * (phi(np.maximum(e, floor)) - phi(activation))
+        blocks = c[:, None, None] * nrm[:, :, None] * nrm[:, None, :]
+        ax = np.arange(3)
+        for a_, b_, sgn in ((i, i, 1), (j, j, 1), (i, j, -1), (j, i, -1)):
+            r_ = (3 * a_[:, None, None] + ax[None, :, None]) * np.ones((1, 1, 3), int)
+            c_ = (3 * b_[:, None, None] + ax[None, None, :]) * np.ones((1, 3, 1), int)
+            rows.append(r_.ravel()); cols.append(c_.ravel()); vals.append((sgn * blocks).ravel())
+    A = sparse.coo_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))), shape=(3 * n, 3 * n))
+    return A.tocsc()
+
+
+class SparseFactor:
+    def __init__(self, A):
+        self.lu = splu(A)
+        self.solve_columns = 0
+
+    def solve(self, b):
+        self.solve_columns += 1 if np.ndim(b) == 1 else b.shape[1]
+        return self.lu.solve(np.asarray(b, dtype=float))
+
+
+def candidate_geometry(q, pairs):
+    from microbubble.contact import PairMatrix
+
+    i, j = pairs[:, 0], pairs[:, 1]
+    dx = q[j] - q[i]
+    d = np.linalg.norm(dx, axis=1)
+    return PairMatrix(len(q), i, j, dx / d[:, None]), d - 2 * R
+
+
+def pretrain_policy(policy):
+    """'Pretraining precision tier' (improvement 4): residual tolerances tied to the
+    observation scale (a camera pixel is ~600 nm) instead of 1e-13 m. Overlap (1 nm) and
+    the 0.1R per-step limit are kept, but the 0.1R limit applies to the ACTUAL step
+    displacement instead of the cancelled push into a contact (see CONTACT_CORRECTION)."""
+    p = dict(policy)
+    p.update(mobility_residual_m=1e-10, primal_violation_m=1e-10, complementarity_equivalent_gap_m=1e-10,
+             actual_geometry_complementarity_m=1e-10, force_residual_rtol=1e-4, tier="pretrain")
+    p["osqp"] = dict(policy["osqp"], eps_abs=1e-9, eps_rel=1e-9)   # fallback solver; polishing makes it exact
+    return p
+
+
+def osqp_qp(A, b, B, offset, settings):
+    """Same convex QP as active_set_qp: min 1/2 s'As - b's  s.t.  B s + offset >= 0.
+    Used only when the active-set method cycles on degenerate contact networks."""
+    import osqp
+
+    n = len(B)
+    k = np.arange(n)
+    rows = np.repeat(k, 6)
+    cols = np.concatenate([np.stack([3 * B.i + a for a in range(3)] + [3 * B.j + a for a in range(3)], 1)]).ravel()
+    vals = np.concatenate([-B.normals, B.normals], 1).ravel()
+    Bs = sparse.csc_matrix((vals, (rows, cols)), shape=(n, 3 * B.n))
+    m = osqp.OSQP()
+    s_ = {k_: v for k_, v in settings.items() if k_ in ("eps_abs", "eps_rel", "polishing", "adaptive_rho_interval",
+                                                          "check_termination", "verbose")}
+    m.setup(sparse.triu(A).tocsc(), -b, Bs, -offset, np.full(n, np.inf), max_iter=50000, time_limit=10.0, **s_)
+    r = m.solve()
+    if r.info.status == "solved" and r.info.status_polish in (1, 2):
+        status = "osqp_polished"
+    elif r.info.status == "solved":
+        # polishing can fail on degenerate contacts (force ~ 0 and gap ~ 0 at once); the gates
+        # below still verify the actual KKT residuals, so an unpolished solution is accepted only
+        # if those pass
+        status = "osqp_solved_unpolished"
+    else:
+        status = f"osqp_{r.info.status}"
+    return r.x, -r.y, status
+
+
+def sparse_sequential_step(x, force, dt, A, policy):
+    """Line-by-line the logic of contact.sequential_step(), with a sparse factor and
+    constraints restricted to candidate pairs (all pairs that could touch this step).
+    Gate formulas and thresholds are unchanged unless policy['tier'] == 'pretrain'."""
+    from microbubble.contact import active_set_qp
+
+    radius, zeta = R, ZETA
+    pretrain = policy.get("tier") == "pretrain"
+    factor = SparseFactor(A)
+    b = dt * force.ravel() / (zeta * radius)
+    free = factor.solve(b)
+    reach = np.linalg.norm(radius * free.reshape(x.shape), axis=1).max()
+    cutoff = 2 * radius + 2 * reach + 0.5 * radius
+    pairs = np.array(sorted(cKDTree(x).query_pairs(cutoff)), dtype=int).reshape(-1, 2)
+    if len(pairs) == 0:
+        y = x + radius * free.reshape(x.shape)
+        return dict(positions_m=y, gates=dict(NO_CANDIDATES=True), converged=True, qp_iterations=0,
+                    active_count=0, n_candidates=0, max_single_iteration_m=0.0)
+    _, g0 = candidate_geometry(x, pairs)
+    if g0.min() < -policy["hard_geometry_m"]:
+        raise ValueError("Illegal initial hard-sphere state")
+    limit = int(policy.get("max_sequential_qp", 3))
+    q = x.copy()
+    for iteration in range(limit):
+        B, g = candidate_geometry(q, pairs)
+        offset = (g + B @ (x - q).ravel()) / radius
+        if np.all(B @ free + offset >= 0):
+            s, lam, status = free, np.zeros(len(pairs)), "unconstrained_verified"
+        else:
+            s, lam, status, _ = active_set_qp(A, factor, b, B, offset)
+            if pretrain and status not in ("active_set_solved",):
+                # degenerate contact networks can make the simple active set cycle
+                s, lam, status = osqp_qp(A, b, B, offset, policy["osqp"])
+        y = x + radius * s.reshape(x.shape)
+        By, gy = candidate_geometry(y, pairs)
+        slack = radius * (B @ s + offset)
+        reaction = zeta * radius / dt * lam
+        local_stat = A @ s - b - B.T @ lam
+        true_stat = A @ s - b - By.T @ lam
+
+        def resid(stat):
+            return (float(np.linalg.norm((radius * factor.solve(stat)).reshape(x.shape), axis=1).max()),
+                    float(np.linalg.norm((zeta * radius / dt * stat).reshape(x.shape), axis=1).max()))
+
+        local_m, local_N = resid(local_stat)
+        true_m, true_N = resid(true_stat)
+        scale = max(float(np.linalg.norm(force, axis=1).max()), float(abs(reaction).max(initial=0)), 1e-18)
+        force_tol = policy["force_residual_atol_N"] + policy["force_residual_rtol"] * scale
+        primal = float(np.maximum(0, -slack).max(initial=0))
+        dual = float(np.maximum(0, -reaction).max(initial=0))
+        dual_tol = max(policy["dual_negative_N"], 1e-8 * scale) if pretrain else policy["dual_negative_N"]
+        comp = float(abs(reaction * slack).max(initial=0)) / scale
+        truecomp = float(abs(reaction * gy).max(initial=0)) / scale
+        overlap = np.maximum(0, -gy)
+        if pretrain:   # actual displacement of each bubble in this step
+            correction = float(np.linalg.norm(radius * s.reshape(x.shape), axis=1).max())
+        else:          # original: push cancelled by contacts (constrained minus free)
+            correction = float(np.linalg.norm(radius * (s - free).reshape(x.shape), axis=1).max())
+        gates = dict(
+            LOCAL_QP_PASS=bool(status in ["active_set_solved", "unconstrained_verified", "osqp_polished", "osqp_solved_unpolished"]
+                               and local_m <= policy["mobility_residual_m"] and local_N <= force_tol
+                               and primal <= policy["primal_violation_m"] and dual <= dual_tol
+                               and comp <= policy["complementarity_equivalent_gap_m"]),
+            TRUE_GEOMETRY_PASS=bool(overlap.max(initial=0) <= min(policy["hard_geometry_m"], policy["contact_overlap_m"])),
+            TRUE_GAP_COMPLEMENTARITY_PASS=bool(truecomp <= policy["actual_geometry_complementarity_m"]),
+            CONTACT_REACTION_BALANCE_PASS=bool(true_m <= policy["mobility_residual_m"] and true_N <= force_tol),
+            CONTACT_CORRECTION=bool(correction <= policy["contact_correction_m"]),
+        )
+        if all(gates.values()) or not gates["LOCAL_QP_PASS"]:
+            break
+        q = y.copy()
+    # safety: no pair outside the candidate list may overlap after the step
+    near = np.array(sorted(cKDTree(y).query_pairs(2 * radius)), dtype=int).reshape(-1, 2)
+    if len(near):
+        cand = set(map(tuple, pairs.tolist()))
+        missed = [p for p in map(tuple, near.tolist()) if p not in cand]
+        gates["CANDIDATE_COVERAGE"] = not missed
+    return dict(positions_m=y, gates=gates, converged=all(gates.values()), qp_iterations=iteration + 1,
+                active_count=int(np.sum(reaction > policy["dual_negative_N"])), n_candidates=len(pairs),
+                max_single_iteration_m=correction, true_force_residual_N=true_N, force_tol_N=force_tol,
+                diag=dict(status=status, local_m=local_m, local_N=local_N, primal=primal, dual=dual, dual_tol=dual_tol,
+                          comp=comp, truecomp=truecomp, scale=scale))
+
+
+# ----------------------------------------------------------------------------- integrators
+def dense_step(x, F, dt):
+    from microbubble.hydrodynamics import resistance
+    from microbubble.contact import sequential_step
+
+    r = sequential_step(x, F, R, ZETA, dt, resistance(x, R)["A"], POLICY)
+    return r
+
+
+def run_fixed(x0, forces, T, dt, out_times, step="dense", budget_s=1e9):
+    x = x0.copy(); t = 0.0; outs = {}; k = 0; n = 0; t0 = time.perf_counter(); fail = None
+    out_times = list(out_times)
+    if out_times and out_times[0] == 0:
+        outs[0.0] = x.copy(); out_times.pop(0)
+    while t < T - 1e-15:
+        h = min(dt, T - t)
+        F, _ = forces(x)
+        r = dense_step(x, F, h) if step == "dense" else sparse_sequential_step(x, F, h, sparse_resistance(x), POLICY)
+        n += 1
+        if not all(r["gates"].values()):
+            fail = (t, [k_ for k_, v in r["gates"].items() if not v]); break
+        x = r["positions_m"].copy(); t += h
+        while out_times and t >= out_times[0] - 1e-12:
+            outs[out_times.pop(0)] = x.copy()
+        if time.perf_counter() - t0 > budget_s:
+            fail = (t, ["BUDGET"]); break
+    return dict(outs=outs, steps=n, wall_s=time.perf_counter() - t0, fail=fail, t_end=t, x=x)
+
+
+def run_adaptive(x0, forces, T, out_times, tol_m, h0=1e-6, hmax=5e-4, hmin=1e-8, budget_s=1e9, policy=None):
+    """Step doubling: one step h vs two steps h/2 (both with the full constrained step).
+    Accept the two-half-step result when both pass all gates and |difference| <= tol."""
+    policy = POLICY if policy is None else policy
+    x = x0.copy(); t = 0.0; h = h0; outs = {}; t0 = time.perf_counter()
+    acc = rej = gate_rej = qp_calls = 0; hs = []; fail = None
+    out_times = list(out_times)
+    if out_times and out_times[0] == 0:
+        outs[0.0] = x.copy(); out_times.pop(0)
+
+    def one(z, hh, F=None):
+        nonlocal qp_calls
+        if F is None:
+            F, _ = forces(z)
+        qp_calls += 1
+        return sparse_sequential_step(z, F, hh, sparse_resistance(z), policy)
+
+    while t < T - 1e-15:
+        if time.perf_counter() - t0 > budget_s:
+            fail = (t, ["BUDGET"]); break
+        target = out_times[0] if out_times else T
+        hh = min(h, target - t, T - t)
+        F0, _ = forces(x)
+        big = one(x, hh, F0)
+        half1 = one(x, hh / 2, F0)
+        ok = big["converged"] and half1["converged"]
+        if ok:
+            half2 = one(half1["positions_m"], hh / 2)
+            ok = half2["converged"]
+        if not ok:
+            gate_rej += 1; h = hh / 2
+            if h < hmin:
+                fail = (t, ["H_MIN"]); break
+            continue
+        y = half2["positions_m"]
+        err = float(np.linalg.norm(y - big["positions_m"], axis=1).max())
+        fac = 0.9 * np.sqrt(tol_m / max(err, 1e-30))
+        if err <= tol_m:
+            x = y; t += hh; acc += 1; hs.append(hh)
+            while out_times and t >= out_times[0] - 1e-12:
+                outs[out_times.pop(0)] = x.copy()
+            h = min(hmax, hh * min(2.0, max(0.3, fac))) if hh == h else max(h, min(hmax, hh * min(2.0, max(0.3, fac))))
+        else:
+            rej += 1; h = hh * max(0.3, fac)
+            if h < hmin:
+                fail = (t, ["H_MIN"]); break
+    return dict(outs=outs, accepted=acc, rejected=rej, gate_rejected=gate_rej, qp_calls=qp_calls,
+                force_calls=forces.calls, wall_s=time.perf_counter() - t0, fail=fail, t_end=t, x=x,
+                h_median=float(np.median(hs)) if hs else None, h_min=float(min(hs)) if hs else None,
+                h_max=float(max(hs)) if hs else None)
+
+
+def run_displacement(x0, forces, T, out_times, delta_m, policy, h0=1e-6, hmax=5e-4, hmin=1e-9, budget_s=1e9):
+    """Cheaper controller: one constrained solve per step. The step size is adapted so that
+    the largest ACTUAL bubble displacement per step stays near delta (forces vary on scales
+    >= R, so a small displacement keeps the frozen-force error small). Failed checks halve h."""
+    x = x0.copy(); t = 0.0; h = h0; outs = {}; t0 = time.perf_counter()
+    acc = gate_rej = solves = 0; hs = []; fail = None
+    out_times = list(out_times)
+    if out_times and out_times[0] == 0:
+        outs[0.0] = x.copy(); out_times.pop(0)
+    while t < T - 1e-15:
+        if time.perf_counter() - t0 > budget_s:
+            fail = (t, ["BUDGET"]); break
+        target = out_times[0] if out_times else T
+        hh = min(h, target - t, T - t)
+        F, _ = forces(x)
+        r = sparse_sequential_step(x, F, hh, sparse_resistance(x), policy); solves += 1
+        if not r["converged"]:
+            gate_rej += 1; h = hh / 2
+            if h < hmin:
+                fail = (t, ["H_MIN"]); break
+            continue
+        y = r["positions_m"]
+        disp = float(np.linalg.norm(y - x, axis=1).max())
+        x = y; t += hh; acc += 1; hs.append(hh)
+        while out_times and t >= out_times[0] - 1e-12:
+            outs[out_times.pop(0)] = x.copy()
+        grow = min(2.0, max(0.5, delta_m / max(disp, 1e-30)))
+        h = min(hmax, max(h, hh) * grow) if hh < h else min(hmax, hh * grow)
+    return dict(outs=outs, accepted=acc, rejected=0, gate_rejected=gate_rej, qp_calls=solves,
+                force_calls=forces.calls, wall_s=time.perf_counter() - t0, fail=fail, t_end=t, x=x,
+                h_median=float(np.median(hs)) if hs else None, h_min=float(min(hs)) if hs else None,
+                h_max=float(max(hs)) if hs else None)
+
+
+# ----------------------------------------------------------------------------- shape metrics
+def shape(x):
+    """Cluster centre, Rg and in-plane (XY) second-moment ellipse of all bubbles."""
+    c = x.mean(0)
+    q = x - c
+    S = q[:, :2].T @ q[:, :2] / len(x)
+    ev, evec = np.linalg.eigh(S)
+    ang = np.degrees(np.arctan2(evec[1, 1], evec[0, 1])) % 180
+    return dict(com=c, Rg=float(np.sqrt((q ** 2).sum(1).mean())), major=float(np.sqrt(ev[1])),
+                minor=float(np.sqrt(ev[0])), aspect=float(np.sqrt(ev[1] / ev[0])), angle=float(ang))
+
+
+def contacts(x, tol=0.01):
+    p = cKDTree(x).query_pairs((2 + tol) * R)
+    return len(p)

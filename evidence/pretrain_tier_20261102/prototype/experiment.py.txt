@@ -1,0 +1,100 @@
+"""One integrator run for one test case; results saved as .npz + .json.
+
+usage: experiment.py ROOT PROTO_DIR OUT_DIR CASE METHOD
+METHOD: ref_strict_1us | ref_strict_0p5us | ref_pre_1us | ref_pre_0p5us | ref_pre_0p25us |
+        ada_strict_2nm | ada_pre_2nm | ada_pre_0p5nm
+"""
+import sys, json, time
+from pathlib import Path
+import numpy as np, h5py
+
+root, proto_dir, out_dir, case, method = sys.argv[1:6]
+sys.path.insert(0, proto_dir)
+import proto as P
+
+C, POL = P.init(root)
+CASES = {
+    # strict reference can run here (historical amplitude)
+    "E1_cluster32_1000": dict(state="AG32_local", amp=1000, offset=[40e-6, 0, 0], T=0.005, dt_out=0.00025),
+    # historical failure case of the strict path
+    "E2_compact64_1000": dict(state="N64_compact_reference", amp=1000, offset=[40e-6, 0, 0], T=0.002, dt_out=0.0001),
+    # higher amplitude, strong compression near the stable point (deformation-relevant)
+    "E3_cluster32_3000": dict(state="AG32_local", amp=3000, offset=[20e-6, 0, 0], T=0.005, dt_out=0.00025),
+    # an already-collapsed, irregular 32-bubble cluster (end state of the E1 reference) driven at
+    # 3000 Pa-eq: drift plus compression without the symmetric-lattice collapse
+    "E4_settled32_3000": dict(init=("E1_cluster32_1000", "ref_pre_0p5us"), amp=3000, offset=[0, 0, 0], T=0.005, dt_out=0.00025),
+    # same cases with all bubbles' oscillations solved together (N-body coupling)
+    "N1_cluster32_1000": dict(state="AG32_local", amp=1000, offset=[40e-6, 0, 0], T=0.005, dt_out=0.00025, coupling="nbody"),
+    "N2_compact64_1000": dict(state="N64_compact_reference", amp=1000, offset=[40e-6, 0, 0], T=0.002, dt_out=0.0001, coupling="nbody"),
+    "N3_cluster32_3000": dict(state="AG32_local", amp=3000, offset=[20e-6, 0, 0], T=0.005, dt_out=0.00025, coupling="nbody"),
+    "N4_settled32_3000": dict(init=("E1_cluster32_1000", "ref_pre_0p5us"), amp=3000, offset=[0, 0, 0], T=0.005, dt_out=0.00025, coupling="nbody"),
+    "N4L_settled32_3000": dict(init=("E1_cluster32_1000", "ref_pre_0p5us"), amp=3000, offset=[0, 0, 0], T=0.020, dt_out=0.0005, coupling="nbody"),
+    "E4L_settled32_3000": dict(init=("E1_cluster32_1000", "ref_pre_0p5us"), amp=3000, offset=[0, 0, 0], T=0.020, dt_out=0.0005),
+    # loose 64-bubble cloud (about 200 x 160 um): does it aggregate, and how, under each model
+    "N5_loose64_3000": dict(state="N64_loose_r0", amp=3000, offset=[40e-6, 0, 0], T=0.010, dt_out=0.0005, coupling="nbody"),
+    "E5_loose64_3000": dict(state="N64_loose_r0", amp=3000, offset=[40e-6, 0, 0], T=0.010, dt_out=0.0005),
+}
+c = CASES[case]
+if "init" in c:
+    x0 = np.load(Path(out_dir) / f"{c['init'][0]}__{c['init'][1]}.npz")["X"][-1] + np.asarray(c["offset"])
+else:
+    with h5py.File(f"{root}/inputs/initial_states.h5") as f:
+        x0 = f[c["state"]][()] + np.asarray(c["offset"])
+outs = list(np.round(np.arange(0, c["T"] + 1e-12, c["dt_out"]), 12))
+forces = P.Forces([0, 0, c["amp"], c["amp"]], [0, 0, 0, 0], coupling=c.get("coupling", "pair"))
+pre = P.pretrain_policy(POL)
+t0 = time.perf_counter()
+if method.startswith("ref_"):
+    tier, dt = method.split("_")[1], {"1us": 1e-6, "0p5us": 5e-7, "0p25us": 2.5e-7}[method.split("_")[2]]
+    if tier == "strict":
+        r = P.run_fixed(x0, forces, c["T"], dt, outs, step="dense")
+    else:  # pretrain tier at a fixed small step, sparse solver
+        # Where a fixed step fails a check (e.g. fast collapse at high amplitude), that step is
+        # split in halves (up to 8 times); elsewhere the grid is fixed.
+        x = x0.copy(); t = 0.0; o = {}; n = 0; fail = None; ol = list(outs); nsplit = 0
+        o[0.0] = x.copy(); ol.pop(0)
+
+        def advance(z, hh, depth=0):
+            global n, nsplit
+            F, _ = forces(z)
+            s = P.sparse_sequential_step(z, F, hh, P.sparse_resistance(z), pre); n += 1
+            if s["converged"]:
+                return s["positions_m"], None
+            bad = [k for k, v in s["gates"].items() if not v]
+            if depth < 8:   # any failed check: retry the same interval as two half steps
+                nsplit += 1
+                y, e = advance(z, hh / 2, depth + 1)
+                return (y, e) if e else advance(y, hh / 2, depth + 1)
+            return z, bad
+
+        while t < c["T"] - 1e-15:
+            h = min(dt, c["T"] - t)
+            y, bad = advance(x, h)
+            if bad:
+                fail = (t, bad); break
+            x = y; t += h
+            while ol and t >= ol[0] - 1e-12:
+                o[ol.pop(0)] = x.copy()
+        r = dict(outs=o, steps=n, fail=fail, t_end=t, x=x, splits=nsplit)
+    info = dict(steps=r["steps"], constrained_solves=r["steps"], force_calls=forces.calls, splits=r.get("splits", 0))
+elif method.startswith("dis_"):
+    frac = {"1pct": 0.01, "3pct": 0.03}[method.split("_")[2]]
+    r = P.run_displacement(x0, forces, c["T"], outs, delta_m=frac * P.R, policy=pre, budget_s=3600)
+    info = dict(steps=r["accepted"], gate_rejected=r["gate_rejected"], constrained_solves=r["qp_calls"],
+                force_calls=r["force_calls"], h_median_s=r["h_median"], h_min_s=r["h_min"], h_max_s=r["h_max"])
+else:
+    tier, tol = method.split("_")[1], {"2nm": 2e-9, "0p5nm": 5e-10}[method.split("_")[2]]
+    # strict gates can force ever smaller steps; cap its wall time so it reports how far it got
+    r = P.run_adaptive(x0, forces, c["T"], outs, tol_m=tol, policy=POL if tier == "strict" else pre,
+                       budget_s=120 if tier == "strict" else 3600)
+    info = dict(steps=r["accepted"], rejected=r["rejected"], gate_rejected=r["gate_rejected"],
+                constrained_solves=r["qp_calls"], force_calls=r["force_calls"],
+                h_median_s=r["h_median"], h_min_s=r["h_min"], h_max_s=r["h_max"])
+wall = time.perf_counter() - t0
+times = sorted(r["outs"])
+X = np.stack([r["outs"][t] for t in times])
+np.savez_compressed(Path(out_dir) / f"{case}__{method}.npz", times=np.array(times), X=X)
+info.update(min_singular_value=forces.min_sv, case=case, method=method, wall_s=wall, fail=r["fail"], t_end=float(r["t_end"]),
+            contacts_end=P.contacts(r["x"]), shape_start=P.shape(X[0]), shape_end=P.shape(X[-1]))
+json.dump(info, open(Path(out_dir) / f"{case}__{method}.json", "w"), indent=1, default=lambda v: v.tolist() if hasattr(v, "tolist") else str(v))
+print(case, method, {k: info[k] for k in ("steps", "constrained_solves", "wall_s", "fail", "t_end")})

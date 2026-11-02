@@ -16,7 +16,7 @@ def main():
     sub.add_parser("history", help="Read frozen scientific admission, without rerunning it")
     r = sub.add_parser("single", help="Separate F1-only RK45 diagnostic, not a full-physics cloud")
     r.add_argument("--out", required=True)
-    r = sub.add_parser("run", help="Run a configured HF or guarded LF trajectory")
+    r = sub.add_parser("run", help="Run a configured HF, guarded LF or CPU PRETRAIN trajectory")
     r.add_argument("--config", default=str(ROOT / "configs/minimal_hf.json"))
     r.add_argument("--out", required=True)
     r = sub.add_parser("analyze", help="Analyze actual stored fixed-ID positions")

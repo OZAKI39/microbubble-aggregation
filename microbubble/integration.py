@@ -1,6 +1,9 @@
-"""Guarded RK45 with unchanged full-physics fallback and separately labeled dense samples."""
+"""Guarded RK45 with unchanged full-physics fallback and separately labeled dense samples.
 
-import time, traceback, resource
+integrate_pretrain() is the separate CPU pretraining tier; integrate_lf() is unchanged.
+"""
+
+import time, traceback, resource, json
 from pathlib import Path
 import numpy as np, h5py
 from scipy.integrate import RK45
@@ -8,6 +11,8 @@ from scipy.spatial.distance import pdist
 from .dynamics import Dynamics
 from .control import schedule
 from .analysis import endpoint
+from .contact import sparse_sequential_step
+from .hydrodynamics import sparse_resistance
 from .io import read, write, sha, clean
 
 
@@ -219,4 +224,170 @@ def integrate_lf(t, c, initial, protocol, policy, out, ident):
     write(out / "STEP_RECORDS.json", records)
     write(out / "SUMMARY.json", r)
     print("LF", t["id"], r["status"], clock, "steps", low_steps, "HF", fallback, flush=True)
+    return clean(r)
+
+
+PRETRAIN_LABELS = [
+    "PRETRAIN_TIER",
+    "NUMERICAL_TOLERANCES_RELAXED_TO_OBSERVATION_SCALE",
+    "NO_WALL_CONTACT_MODEL",
+]
+
+
+def integrate_pretrain(t, c, initial, segments, policy, out, ident):
+    """Pretraining tier: CPU forces, sparse contact step, displacement-controlled step size.
+
+    Each step is one force evaluation and one sparse_sequential_step() at the pretraining
+    tolerances. The step size is adapted so that the largest actual bubble displacement per
+    step stays near displacement_over_R x R; a step that fails any gate is retried at half the
+    size, never accepted. Steps end exactly at control switches and save times. Only the
+    central bore is admitted: the run stops when a bubble comes within wall_guard_over_R x R
+    of the lumen wall or end (no wall contact is modelled here).
+    """
+    import osqp
+    from scipy.spatial import cKDTree
+    from .forces import CPUForces
+
+    begin = time.perf_counter()
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=False)
+    cfg = policy["stepping"]
+    R = c.physics.radius_m
+    zeta = 6 * np.pi * c.physics.viscosity_Pa_s * R
+    x = np.asarray(initial, dtype=float).copy()
+    if t.get("offset_m"):
+        x = x + np.asarray(t["offset_m"])
+    start = x.copy()
+    forces = CPUForces(c.basis, c.response, c.physics, t["coupling"], policy["singular_guard"])
+    T = t["duration"]
+    save = t["save_interval_s"]
+    pending = [float(v) for v in np.round(np.arange(save, T + 1e-12, save), 12)]
+    if not pending or abs(pending[-1] - T) > 1e-12:
+        pending.append(T)
+    boundaries = [s["start_s"] + s["duration_s"] for s in segments]
+    delta = cfg["displacement_over_R"] * R
+    h = cfg["initial_step_s"]
+    clock = 0.0
+    times, states = [0.0], [x.copy()]
+    records, sizes = [], []
+    solves = rejected = 0
+    reason = None
+    guard = policy["wall_guard_over_R"] * R
+
+    def clearance(z):
+        q = c.cavity.lumen.local(z)
+        return float(
+            min(
+                (c.cavity.R - np.linalg.norm(q[:, 1:], axis=1) - R).min(),
+                (c.cavity.L - abs(q[:, 0]) - R).min(),
+            )
+        )
+
+    try:
+        if clearance(x) <= guard:
+            raise RuntimeError("PRETRAIN_WALL_GUARD")
+        while clock < T - 1e-15:
+            if time.perf_counter() - begin > cfg["budget_s"]:
+                raise RuntimeError("PRETRAIN_WALL_BUDGET")
+            k = next(
+                (i for i, b in enumerate(boundaries) if clock < b - 1e-15), len(boundaries) - 1
+            )
+            seg = segments[k]
+            forces.control(seg["amplitude_Pa_equivalent"], seg["phase_rad"])
+            target = min(pending[0], boundaries[k], T)
+            hh = min(h, target - clock, T - clock)
+            f = forces(x)
+            r = sparse_sequential_step(
+                x, f["total_force_N"], R, zeta, hh, sparse_resistance(x, R)["A"], policy
+            )
+            solves += 1
+            row = dict(
+                time_s=clock,
+                dt_s=hh,
+                segment=k,
+                solver_status=r["solver_status"],
+                qp_iterations=r["qp_iterations"],
+                active_count=r["active_count"],
+                candidate_count=r["candidate_count"],
+                gates=r["gates"],
+            )
+            if not r["converged"]:
+                rejected += 1
+                records.append(dict(row, accepted=False))
+                h = hh / 2
+                if h < cfg["min_step_s"]:
+                    raise RuntimeError(
+                        "PRETRAIN_MIN_STEP:"
+                        + ",".join(name for name, ok in r["gates"].items() if not ok)
+                    )
+                continue
+            y = r["positions_m"]
+            if clearance(y) <= guard:
+                raise RuntimeError("PRETRAIN_WALL_GUARD")
+            moved = float(np.linalg.norm(y - x, axis=1).max())
+            x = y
+            clock += hh
+            sizes.append(hh)
+            records.append(dict(row, accepted=True, max_displacement_m=moved))
+            while pending and clock >= pending[0] - 1e-12:
+                pending.pop(0)
+                times.append(clock)
+                states.append(x.copy())
+            grow = min(cfg["max_growth"], max(cfg["min_growth"], delta / max(moved, 1e-30)))
+            h = min(cfg["max_step_s"], (max(h, hh) if hh < h else hh) * grow)
+    except Exception as ex:
+        reason = repr(ex)
+        (out / "exception.txt").write_text(traceback.format_exc())
+    if times[-1] < clock:
+        # Accepted prefix of a failed run: the last accepted state, labelled by its time.
+        times.append(clock)
+        states.append(x.copy())
+    complete = reason is None and abs(clock - T) < 1e-13
+    path = out / "trajectory.h5"
+    with h5py.File(path, "w") as h5:
+        h5["time_s"] = times
+        h5.create_dataset("positions_m", data=np.asarray(states), compression="gzip")
+        h5["particle_id"] = np.arange(len(x))
+        h5.attrs.update(
+            scope="PRETRAIN_TIER",
+            coupling=t["coupling"],
+            sampling="Accepted positions at the requested save times; steps end exactly there",
+            labels=json.dumps(ident["labels"] + PRETRAIN_LABELS),
+            training_ready=False,
+        )
+    ident = dict(ident, versions=dict(ident["versions"], osqp=osqp.__version__))
+    r = dict(
+        id=t["id"],
+        task=t,
+        status="PASS" if complete else "FAIL",
+        reason=reason,
+        completed_s=clock,
+        requested_s=T,
+        N=len(x),
+        scope="PRETRAIN_TIER",
+        coupling=t["coupling"],
+        labels=ident["labels"] + PRETRAIN_LABELS,
+        training_ready=False,
+        trajectory_path=path.name,
+        trajectory_sha256=sha(path),
+        initial=endpoint(start, start),
+        final=endpoint(start, x),
+        contacts_final=len(cKDTree(x).query_pairs(2.01 * R)),
+        accepted_steps=len(sizes),
+        gate_rejected_steps=rejected,
+        constrained_solves=solves,
+        force_evaluations=forces.calls,
+        step_s=dict(
+            median=float(np.median(sizes)) if sizes else None,
+            min=float(min(sizes)) if sizes else None,
+            max=float(max(sizes)) if sizes else None,
+        ),
+        min_collective_singular_value=forces.min_singular_value,
+        wall_s=time.perf_counter() - begin,
+        rss_peak_MiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024,
+        identity=ident,
+    )
+    write(out / "STEP_RECORDS.json", records)
+    write(out / "SUMMARY.json", r)
+    print("PRETRAIN", t["id"], r["status"], clock, "solves", solves, flush=True)
     return clean(r)

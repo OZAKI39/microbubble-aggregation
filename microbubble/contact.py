@@ -1,4 +1,8 @@
-"""Sparse constraints and force-frozen Sequential QP with original rejection gates."""
+"""Sparse constraints and force-frozen Sequential QP with original rejection gates.
+
+sparse_sequential_step() at the end is the pretraining-tier variant; sequential_step() is
+the frozen production solver and is unchanged.
+"""
 
 from time import perf_counter
 import numpy as np
@@ -281,6 +285,212 @@ class Transpose:
 def contact_geometry(x, radius):
     i, j, d, n = normals(x)
     return PairMatrix(len(x), i, j, n), np.column_stack((i, j)), d - 2 * radius
+
+
+# ---------------------------------------------------------------- pretraining tier
+# sparse_sequential_step() repeats sequential_step() line by line with a sparse LU factor
+# and constraints only for candidate pairs. With policy["tier"] != "pretrain" its gates and
+# thresholds are the frozen ones. The pretraining tier (configs/pretrain_policy.json) adds an
+# OSQP fallback for active-set cycling, scales the dual tolerance with the force scale and
+# applies the 0.1R correction limit to the actual step displacement. Evidence:
+# evidence/pretrain_tier_20261102/.
+
+
+class SparseFactor:
+    def __init__(self, A):
+        from scipy.sparse.linalg import splu
+
+        self.lu = splu(A)
+        self.solve_columns = 0
+
+    def solve(self, b):
+        self.solve_columns += 1 if np.ndim(b) == 1 else b.shape[1]
+        return self.lu.solve(np.asarray(b, dtype=float))
+
+
+def candidate_geometry(x, pairs, radius):
+    i, j = pairs[:, 0], pairs[:, 1]
+    dx = x[j] - x[i]
+    d = np.linalg.norm(dx, axis=1)
+    if np.any(d <= 0):
+        raise ValueError("Coincident centers are not a valid contact normal")
+    return PairMatrix(len(x), i, j, dx / d[:, None]), d - 2 * radius
+
+
+def osqp_qp(A, b, B, gap_over_R, settings):
+    """The active-set QP (min 1/2 s'As - b's, B s + gap >= 0) solved by OSQP.
+
+    Polishing normally makes the solution exact. A solved but unpolished result is returned
+    with its own status; the caller's KKT gates decide whether it is accepted.
+    """
+    import osqp
+    from scipy import sparse
+
+    m = len(B)
+    rows = np.repeat(np.arange(m), 6)
+    cols = np.stack([3 * B.i + a for a in range(3)] + [3 * B.j + a for a in range(3)], 1).ravel()
+    vals = np.concatenate([-B.normals, B.normals], 1).ravel()
+    Bs = sparse.csc_matrix((vals, (rows, cols)), shape=(m, 3 * B.n))
+    keys = (
+        "eps_abs",
+        "eps_rel",
+        "max_iter",
+        "time_limit",
+        "polishing",
+        "adaptive_rho_interval",
+        "check_termination",
+        "verbose",
+    )
+    solver = osqp.OSQP()
+    solver.setup(
+        sparse.triu(sparse.csc_matrix(A)).tocsc(),
+        -b,
+        Bs,
+        -gap_over_R,
+        np.full(m, np.inf),
+        **{k: v for k, v in settings.items() if k in keys},
+    )
+    r = solver.solve(raise_error=False)
+    if r.info.status == "solved" and r.info.status_polish in (1, 2):
+        status = "osqp_polished"
+    elif r.info.status == "solved":
+        status = "osqp_solved_unpolished"
+    else:
+        status = f"osqp_{r.info.status}"
+    return r.x, -r.y, status
+
+
+def sparse_sequential_step(x, force, radius, zeta, dt, A, policy):
+    """sequential_step() with a sparse factor and candidate-pair constraints.
+
+    Candidates are all pairs within 2R + 2 x (largest free displacement) + 0.5R, so every pair
+    that can touch in this step is constrained; CANDIDATE_COVERAGE verifies that afterwards.
+    """
+    from scipy.spatial import cKDTree
+
+    begin = perf_counter()
+    x, force = np.asarray(x, dtype=float), np.asarray(force, dtype=float)
+    if min(radius, zeta, dt) <= 0 or x.shape != force.shape or not np.isfinite(force).all():
+        raise ValueError("Finite matching inputs and positive scales required")
+    pretrain = policy.get("tier") == "pretrain"
+    factor = SparseFactor(A)
+    b = dt * force.ravel() / (zeta * radius)
+    free = factor.solve(b)
+    reach = np.linalg.norm(radius * free.reshape(x.shape), axis=1).max()
+    cutoff = 2 * radius + 2 * reach + 0.5 * radius
+    pairs = np.array(sorted(cKDTree(x).query_pairs(cutoff)), dtype=int).reshape(-1, 2)
+    if len(pairs) == 0:
+        return dict(
+            positions_m=x + radius * free.reshape(x.shape),
+            gates=dict(NO_CANDIDATES=True),
+            converged=True,
+            qp_iterations=0,
+            active_count=0,
+            candidate_count=0,
+            solver_status="no_candidates",
+            max_single_iteration_m=0.0,
+            total_s=perf_counter() - begin,
+        )
+    _, g0 = candidate_geometry(x, pairs, radius)
+    if g0.min() < -policy["hard_geometry_m"]:
+        raise ValueError("Illegal initial hard-sphere state")
+    limit = int(policy.get("max_sequential_qp", 3))
+    if not 1 <= limit <= 5:
+        raise ValueError("Sequential QP hard cap is five")
+    accepted = ["active_set_solved", "unconstrained_verified"]
+    if pretrain:
+        accepted += ["osqp_polished", "osqp_solved_unpolished"]
+    q = x.copy()
+    for iteration in range(limit):
+        B, g = candidate_geometry(q, pairs, radius)
+        offset = (g + B @ (x - q).ravel()) / radius
+        if np.all(B @ free + offset >= 0):
+            s, lam, status = free, np.zeros(len(pairs)), "unconstrained_verified"
+        else:
+            s, lam, status, _ = active_set_qp(A, factor, b, B, offset)
+            if pretrain and status != "active_set_solved":
+                # Degenerate contact networks can make the simple active set cycle.
+                s, lam, status = osqp_qp(A, b, B, offset, policy["osqp"])
+        y = x + radius * s.reshape(x.shape)
+        By, gy = candidate_geometry(y, pairs, radius)
+        slack = radius * (B @ s + offset)
+        reaction = zeta * radius / dt * lam
+        local_stat = A @ s - b - B.T @ lam
+        true_stat = A @ s - b - By.T @ lam
+
+        def resid(stat):
+            return (
+                float(np.linalg.norm((radius * factor.solve(stat)).reshape(x.shape), axis=1).max()),
+                float(np.linalg.norm((zeta * radius / dt * stat).reshape(x.shape), axis=1).max()),
+            )
+
+        local_m, local_N = resid(local_stat)
+        true_m, true_N = resid(true_stat)
+        scale = max(
+            float(np.linalg.norm(force, axis=1).max()), float(abs(reaction).max(initial=0)), 1e-18
+        )
+        force_tol = policy["force_residual_atol_N"] + policy["force_residual_rtol"] * scale
+        primal = float(np.maximum(0, -slack).max(initial=0))
+        dual = float(np.maximum(0, -reaction).max(initial=0))
+        dual_tol = (
+            max(policy["dual_negative_N"], 1e-8 * scale) if pretrain else policy["dual_negative_N"]
+        )
+        comp = float(abs(reaction * slack).max(initial=0)) / scale
+        truecomp = float(abs(reaction * gy).max(initial=0)) / scale
+        overlap = np.maximum(0, -gy)
+        if pretrain:  # actual displacement of each bubble in this step
+            correction = float(np.linalg.norm(radius * s.reshape(x.shape), axis=1).max())
+        else:  # frozen definition: push cancelled by contacts (constrained minus free)
+            correction = float(np.linalg.norm(radius * (s - free).reshape(x.shape), axis=1).max())
+        gates = dict(
+            LOCAL_QP_PASS=bool(
+                status in accepted
+                and local_m <= policy["mobility_residual_m"]
+                and local_N <= force_tol
+                and primal <= policy["primal_violation_m"]
+                and dual <= dual_tol
+                and comp <= policy["complementarity_equivalent_gap_m"]
+            ),
+            TRUE_GEOMETRY_PASS=bool(
+                overlap.max(initial=0)
+                <= min(policy["hard_geometry_m"], policy["contact_overlap_m"])
+            ),
+            TRUE_GAP_COMPLEMENTARITY_PASS=bool(
+                truecomp <= policy["actual_geometry_complementarity_m"]
+            ),
+            CONTACT_REACTION_BALANCE_PASS=bool(
+                true_m <= policy["mobility_residual_m"] and true_N <= force_tol
+            ),
+            CONTACT_CORRECTION=bool(correction <= policy["contact_correction_m"]),
+        )
+        if all(gates.values()) or not gates["LOCAL_QP_PASS"]:
+            break
+        q = y.copy()
+    near = np.array(sorted(cKDTree(y).query_pairs(2 * radius)), dtype=int).reshape(-1, 2)
+    if len(near):
+        known = set(map(tuple, pairs.tolist()))
+        gates["CANDIDATE_COVERAGE"] = all(p in known for p in map(tuple, near.tolist()))
+    return dict(
+        positions_m=y,
+        gates=gates,
+        converged=all(gates.values()),
+        qp_iterations=iteration + 1,
+        active_count=int(np.sum(reaction > policy["dual_negative_N"])),
+        candidate_count=len(pairs),
+        solver_status=status,
+        max_single_iteration_m=correction,
+        local_mobility_residual_m=local_m,
+        local_force_residual_N=local_N,
+        mobility_equation_residual_m=true_m,
+        force_equation_residual_N=true_N,
+        force_tolerance_N=force_tol,
+        primal_violation_m=primal,
+        dual_negative_N=dual,
+        complementarity_equivalent_gap_m=comp,
+        actual_complementarity_equivalent_gap_m=truecomp,
+        force_scale_N=scale,
+        total_s=perf_counter() - begin,
+    )
 
 
 def factorize(A, backend="cpu"):

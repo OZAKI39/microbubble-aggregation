@@ -1,0 +1,10 @@
+N=2 check vs coupled_fundamental(): 9.384392846410233e-13 1.1471047141468485e-12
+bubbles 32; coupling chi*k at contact = 0.82
+N-body oscillation amplitude relative to isolated bubble: median 0.120, min 0.019, max 0.325
+phase shift of N-body oscillation vs isolated: median -47.1 deg
+smallest |eigenvalue| of (I + chi K): 0.624  (0 would be an undamped collective resonance)
+pairwise (current)  : touching-pair force median 4.18e-09 N, attractive fraction 1.00, ratio to field-force difference across cluster 650
+N-body coupled      : touching-pair force median 2.13e-11 N, attractive fraction 0.80, ratio to field-force difference across cluster 3
+net primary force on cluster: isolated 8.62e-10 N, N-body 6.67e-11 N
+field-force difference across cluster: isolated-oscillation 6.42e-12 N, N-body 1.17e-11 N
+consistent ratio (N-body cohesion / N-body field-force difference): 2

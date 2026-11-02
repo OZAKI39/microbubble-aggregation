@@ -1,0 +1,68 @@
+"""Pairwise vs N-body coupling: shape evolution, stability, cost and accuracy."""
+import sys, json
+from pathlib import Path
+import numpy as np
+from scipy.spatial import cKDTree
+from scipy.sparse.csgraph import connected_components
+from scipy.sparse import coo_matrix
+
+out = Path(sys.argv[1])
+R = 1.78e-6
+
+
+def load(case, m):
+    p = out / f"{case}__{m}.npz"
+    if not p.exists():
+        return None
+    z = np.load(p)
+    return z["times"], z["X"], json.load(open(out / f"{case}__{m}.json"))
+
+
+def shape(X):
+    q = X - X.mean(0)
+    S = q[:, :2].T @ q[:, :2] / len(X)
+    ev, evec = np.linalg.eigh(S)
+    pairs = np.array(sorted(cKDTree(X).query_pairs(2.1 * R)), dtype=int).reshape(-1, 2)
+    n = len(X)
+    ncomp = connected_components(coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(n, n)), directed=False)[0] if len(pairs) else n
+    return dict(aspect=float(np.sqrt(ev[1] / ev[0])), angle=float(np.degrees(np.arctan2(evec[1, 1], evec[0, 1])) % 180),
+                Rg_um=float(np.sqrt((q ** 2).sum(1).mean()) * 1e6), contacts=int(len(cKDTree(X).query_pairs(2.01 * R))),
+                clusters=int(ncomp), com_um=(X.mean(0) * 1e6).round(3).tolist())
+
+
+summary = {}
+for case in ["E4_settled32_3000", "N4_settled32_3000", "E4L_settled32_3000", "N4L_settled32_3000",
+             "E1_cluster32_1000", "N1_cluster32_1000", "E3_cluster32_3000", "N3_cluster32_3000",
+             "E2_compact64_1000", "N2_compact64_1000", "E5_loose64_3000", "N5_loose64_3000"]:
+    ms = {}
+    for m in ["ref_pre_0p5us", "ref_pre_1us", "dis_pre_3pct", "dis_pre_1pct"]:
+        d = load(case, m)
+        if d is None:
+            continue
+        t, X, info = d
+        s0, s1 = shape(X[0]), shape(X[-1])
+        ms[m] = dict(t_end_ms=round(info["t_end"] * 1e3, 3), fail=info["fail"], solves=info["constrained_solves"],
+                     h_median_us=None if info.get("h_median_s") is None else round(info["h_median_s"] * 1e6, 2),
+                     h_max_us=None if info.get("h_max_s") is None else round(info["h_max_s"] * 1e6, 1),
+                     wall_s=round(info["wall_s"], 1), min_sv=info.get("min_singular_value"),
+                     start={k: s0[k] for k in ("aspect", "Rg_um", "contacts", "clusters")},
+                     end={k: s1[k] for k in ("aspect", "angle", "Rg_um", "contacts", "clusters")},
+                     com_shift_um=float(np.linalg.norm(X[-1].mean(0) - X[0].mean(0)) * 1e6),
+                     internal_change_um=float(np.linalg.norm((X[-1] - X[-1].mean(0)) - (X[0] - X[0].mean(0)), axis=1).max() * 1e6))
+    ref = load(case, "ref_pre_0p5us")
+    base = load(case, "ref_pre_1us")
+    for m, r in ms.items():
+        if base is not None:
+            r["solves_vs_1us"] = round(base[2]["constrained_solves"] / r["solves"], 1)
+        if ref is not None and m != "ref_pre_0p5us":
+            t, X, _ = load(case, m)
+            tr, Xr = ref[0], ref[1]
+            idx = [(k, list(tr).index(v)) for k, v in enumerate(t) if v in set(tr.tolist())]
+            r["max_pos_diff_nm_vs_0p5us"] = float(max(np.linalg.norm(X[k] - Xr[j], axis=1).max() for k, j in idx) * 1e9)
+            r["aspect_diff_vs_0p5us"] = float(abs(shape(X[-1])["aspect"] - shape(Xr[-1])["aspect"]))
+    summary[case] = ms
+json.dump(summary, open(out / "nbody_summary.json", "w"), indent=1, default=str)
+for case, ms in summary.items():
+    print("==", case)
+    for m, r in ms.items():
+        print("  ", m, {k: v for k, v in r.items()})

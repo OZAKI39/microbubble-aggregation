@@ -1,0 +1,113 @@
+"""Prototype summary figure: stability, cost, accuracy, and end-state spread."""
+import sys, json
+from pathlib import Path
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+out = Path(sys.argv[1])
+INK, INK2, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1", "#fcfcfb"
+METH = {"dis_pre_3pct": ("Adaptive, 3% R per step", "#2a78d6", "o"),
+        "dis_pre_1pct": ("Adaptive, 1% R per step", "#eb6834", "s"),
+        "ada_pre_2nm": ("Step doubling, 2 nm", "#1baf7a", "^")}
+FIX1 = ("Fixed 1 µs", MUTED, "D")
+CASES = {"E1_cluster32_1000": "E1  32 bubbles collapse, 1000 Pa-eq",
+         "E2_compact64_1000": "E2  64-bubble compact, 1000 Pa-eq",
+         "E3_cluster32_3000": "E3  32 bubbles collapse, 3000 Pa-eq",
+         "E4_settled32_3000": "E4  settled cluster drift, 3000 Pa-eq"}
+plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "axes.edgecolor": MUTED,
+                     "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2})
+
+
+def J(case, m):
+    p = out / f"{case}__{m}.json"
+    return json.load(open(p)) if p.exists() else None
+
+
+def Z(case, m):
+    z = np.load(out / f"{case}__{m}.npz")
+    return z["times"], z["X"]
+
+
+def style(ax):
+    ax.set_facecolor(SURF)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.grid(True, color=GRID, lw=0.6); ax.set_axisbelow(True)
+
+
+fig, ax = plt.subplots(2, 2, figsize=(13, 8.6))
+fig.patch.set_facecolor(SURF)
+
+# A: how far each run got (original vs prototype)
+a = ax[0, 0]; style(a); a.grid(axis="y", visible=False)
+rows = [("E1_cluster32_1000", "ref_strict_1us", "ref_pre_1us"), ("E2_compact64_1000", "ref_strict_1us", "ref_pre_1us"),
+        ("E3_cluster32_3000", "ref_strict_1us", "ref_pre_1us")]
+for k, (case, orig, new) in enumerate(rows):
+    o, n = J(case, orig)["t_end"] * 1e3, J(case, new)["t_end"] * 1e3
+    a.barh(k - 0.18, o, height=0.32, color=MUTED, edgecolor=SURF, linewidth=2)
+    a.barh(k + 0.18, n, height=0.32, color="#2a78d6", edgecolor=SURF, linewidth=2)
+    a.text(o, k - 0.18, f"  fails at {o:g} ms", va="center", color=INK2, fontsize=8)
+    a.text(n, k + 0.18, f"  completed {n:g} ms", va="center", color=INK2, fontsize=8)
+a.set_yticks(range(3), [CASES[r[0]] for r in rows]); a.invert_yaxis(); a.set_xlim(0, 7.2)
+a.set_xlabel("Simulated time reached (ms), fixed 1 µs step")
+a.set_title("A  Stability: original solver vs prototype", loc="left", color=INK, fontsize=10, pad=24)
+a.legend(handles=[plt.Rectangle((0, 0), 1, 1, color=MUTED), plt.Rectangle((0, 0), 1, 1, color="#2a78d6")],
+         labels=["Original (active set, strict checks)", "Prototype (sparse + OSQP fallback)"],
+         frameon=False, fontsize=8, loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2, labelcolor=INK2)
+
+# B: cost relative to fixed 1 us
+b = ax[0, 1]; style(b)
+names = list(CASES)
+for k, case in enumerate(names):
+    base = J(case, "ref_pre_1us")["constrained_solves"]
+    for m, (lab, col, mk) in METH.items():
+        d = J(case, m)
+        if d:
+            b.plot(base / d["constrained_solves"], k, marker=mk, color=col, ms=8, ls="none",
+                   markeredgecolor=SURF, markeredgewidth=1.5, label=lab if k == 0 else None)
+b.axvline(1, color=MUTED, lw=1, ls="--"); b.text(1.03, -0.3, "fixed 1 µs", color=INK2, fontsize=8)
+b.set_xscale("log"); b.set_xlim(0.7, 25); b.set_xticks([1, 2, 5, 10, 20], ["1×", "2×", "5×", "10×", "20×"])
+b.set_yticks(range(4), [CASES[c] for c in names]); b.set_ylim(3.5, -0.5)
+b.set_xlabel("Fewer solves than a fixed 1 µs step (same amplitude)")
+b.set_title("B  Cost", loc="left", color=INK, fontsize=10)
+b.legend(frameon=False, fontsize=8, loc="lower right", labelcolor=INK2)
+
+# C: accuracy where the motion is well determined (E3, E4)
+c = ax[1, 0]; style(c)
+for case, ls in (("E3_cluster32_3000", "-"), ("E4_settled32_3000", ":")):
+    tr, Xr = Z(case, "ref_pre_0p5us")
+    for m, (lab, col, mk) in [("ref_pre_1us", FIX1), ("dis_pre_1pct", METH["dis_pre_1pct"]), ("ada_pre_2nm", METH["ada_pre_2nm"])]:
+        t, X = Z(case, m)
+        idx = [(k, list(tr).index(v)) for k, v in enumerate(t) if v in set(tr.tolist()) and v > 0]
+        e = np.array([np.linalg.norm(X[k] - Xr[r], axis=1).max() for k, r in idx]) * 1e9
+        c.plot([t[k] * 1e3 for k, _ in idx], np.maximum(e, 1e-3), color=col, lw=2, ls=ls, marker=mk, ms=4,
+               markeredgecolor=SURF, label=f"{lab} — {case[:2]}")
+c.axhline(600, color=MUTED, lw=1, ls="--"); c.text(5.0, 750, "≈ one camera pixel (600 nm)", color=INK2, fontsize=8, ha="right")
+c.set_yscale("log"); c.set_ylim(1e-3, 3e3)
+c.set_xlabel("Simulated time (ms)"); c.set_ylabel("Max bubble position difference\nvs fixed 0.5 µs reference (nm)")
+c.set_title("C  Accuracy where motion is well determined (E3 solid, E4 dotted)", loc="left", color=INK, fontsize=10)
+c.legend(frameon=False, fontsize=7.5, loc="center", bbox_to_anchor=(0.5, 0.46), labelcolor=INK2, ncol=2)
+
+# D: end-state cluster aspect ratio in rearranging cases (even two fixed-step references differ)
+d = ax[1, 1]; style(d); d.grid(axis="y", visible=False)
+order = [("ref_pre_0p5us", ("Fixed 0.5 µs", INK, "D"))] + [("ref_pre_1us", FIX1)] + list(METH.items())
+for k, case in enumerate(["E1_cluster32_1000", "E2_compact64_1000"]):
+    for j, (m, (lab, col, mk)) in enumerate(order):
+        t, X = Z(case, m)
+        q = X[-1] - X[-1].mean(0)
+        ev = np.linalg.eigvalsh(q[:, :2].T @ q[:, :2])
+        d.plot(np.sqrt(ev[1] / ev[0]), k + (j - 2) * 0.09, marker=mk, color=col, ms=8, ls="none",
+               markeredgecolor=SURF, markeredgewidth=1.5, label=lab if k == 0 else None)
+d.set_yticks([0, 1], [CASES["E1_cluster32_1000"], CASES["E2_compact64_1000"]]); d.invert_yaxis()
+d.set_ylim(1.5, -0.5)
+d.set_xlabel("Cluster in-plane aspect ratio at the end of the run")
+d.set_title("D  Rearranging clusters: spread of end states", loc="left", color=INK, fontsize=10)
+d.legend(frameon=False, fontsize=8, loc="upper right", labelcolor=INK2)
+
+fig.suptitle("CPU prototype of the new contact integrator (sparse solve, OSQP fallback, adaptive step)",
+             x=0.01, ha="left", color=INK, fontsize=12)
+fig.tight_layout(rect=(0, 0, 1, 0.965))
+fig.savefig(out / "prototype_results.png", dpi=150, facecolor=SURF)
+print("saved")

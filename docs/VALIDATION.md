@@ -35,3 +35,18 @@
 重构过程中发现过遗漏 `leggauss` 导入、参考脚本缺少 YAML/sha 等工程问题，均已修复。相关失败日志保留在 `evidence/migration/`，不是科学模型失败。原科学失败则在 `evidence/f10ag/` 和新的失败重放中保持原判据。
 
 全部数值证据位于 `evidence/migration/`（上表未写完整前缀）。新执行原始文件位于 `results/`。没有因这些短时PASS修改原 FINAL_GATE、150 ms细化范围或250 ms完成范围。
+
+## 预训练档验证（2026-11-02）
+
+新增的 `fidelity: "PRETRAIN"` 档位单独验证，不改变上表任何结论。环境：Python 3.12.3 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3，仅 CPU（云端会话，非本机 RTX 4060 环境）。
+
+| 验证 | 状态 | 证据/结果 |
+|---|---|---|
+| 原有 CPU 测试 | PASS，19项 | 未修改；GPU 3项未运行 |
+| 新增测试 | PASS，8项 | `tests/test_pretrain.py`：稀疏阻力与 `resistance()` 相同；向量化 F2 与 `pair_reference` 相对差 ≤1e−12；全体耦合 N=2 与 `coupled_fundamental` 一致；严格档稀疏步与 `sequential_step` 位置差 <1e−18 m 且 Gate 判定相同（含 active-set 循环失败）；预训练档解开该循环；冻结策略与 1500 Pa-eq 上限不变；分段切换与已完成输出复用 |
+| 严格档在紧凑团上的失败 | 实际 FAIL，保留 | 原型 E1/E2/E3 在 0.15–0.8 ms 内失败；状态见 `ACTIVE_SET_CYCLE_STATE.npy` |
+| 步长控制与固定步长参考 | 见准入记录 | 不重排时与 0.5 µs 参考逐泡差 0.2–20 nm；重排时逐泡差达 µm 级（两种固定步长参考之间同样如此），长宽比差 ≤0.02（成对 E1 为 0.07，参考之间亦为 0.07） |
+| 仓库实现与原型 | PASS，10个工况 | 保存位置差 0.0 m，求解次数相同；`REPO_REPRODUCTION.json` |
+| 实验校准、壁面接触、GPU 版 | NOT_RUN | 本档无壁面接触模型；全体耦合未经实验校准 |
+
+全部证据位于 `evidence/pretrain_tier_20261102/`。

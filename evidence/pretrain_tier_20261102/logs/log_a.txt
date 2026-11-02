@@ -1,0 +1,6 @@
+E1_cluster32_1000 ref_pre_0p5us {'steps': 10000, 'constrained_solves': 10000, 'wall_s': 259.35216467400005, 'fail': None, 't_end': 0.0049999999999995525}
+E1_cluster32_1000 ref_pre_1us {'steps': 5004, 'constrained_solves': 5004, 'wall_s': 139.17791332599995, 'fail': None, 't_end': 0.005}
+E1_cluster32_1000 ada_pre_2nm {'steps': 261, 'constrained_solves': 1054, 'wall_s': 20.889289911000105, 'fail': None, 't_end': 0.005}
+E1_cluster32_1000 ada_pre_0p5nm {'steps': 457, 'constrained_solves': 1697, 'wall_s': 30.187237447999905, 'fail': None, 't_end': 0.005}
+E1_cluster32_1000 ada_strict_2nm {'steps': 887, 'constrained_solves': 4280, 'wall_s': 120.14797172199997, 'fail': (np.float64(0.0018744320146857653), ['BUDGET']), 't_end': 0.0018744320146857653}
+ALL_DONE

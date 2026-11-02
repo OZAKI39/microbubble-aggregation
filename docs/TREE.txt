@@ -35,11 +35,14 @@ new_microbubble_aggregation/
 │   ├── minimal_lf.json
 │   ├── paired_hf.json
 │   ├── paired_lf.json
+│   ├── pretrain_collective_example.json
+│   ├── pretrain_policy.json
 ├── inputs/
 ├── tests/
 │   ├── test_admission.py
 │   ├── test_capture.py
 │   ├── test_model.py
+│   ├── test_pretrain.py
 ├── evidence/
 ├── results/
 ├── docs/

@@ -1,0 +1,22 @@
+"""Short pilot: per-step cost of the reference and behaviour of both tiers."""
+import sys, json
+import numpy as np, h5py
+sys.path.insert(0, sys.argv[2])
+import proto as P
+
+root = sys.argv[1]
+state, amp, T = sys.argv[3], float(sys.argv[4]), float(sys.argv[5])
+C, POL = P.init(root)
+with h5py.File(f"{root}/inputs/initial_states.h5") as f:
+    x0 = f[state][()]
+outs = list(np.round(np.linspace(0, T, 5), 12))
+ref = P.run_fixed(x0, P.Forces([0, 0, amp, amp], [0] * 4), T, 1e-6, outs)
+print("reference 1us:", dict(steps=ref["steps"], wall_s=round(ref["wall_s"], 2), fail=ref["fail"],
+      contacts_end=P.contacts(ref["x"])))
+for tier, pol in (("strict", POL), ("pretrain", P.pretrain_policy(POL))):
+    fo = P.Forces([0, 0, amp, amp], [0] * 4)
+    ad = P.run_adaptive(x0, fo, T, outs, tol_m=2e-9, policy=pol)
+    diff = {f"{t*1e3:.3f}ms": float(np.linalg.norm(ad["outs"][t] - ref["outs"][t], axis=1).max())
+            for t in ad["outs"] if t in ref["outs"]}
+    print(tier, {k: (round(v, 9) if isinstance(v, float) else v) for k, v in ad.items() if k not in ("outs", "x")})
+    print("   max position difference vs reference (m):", {k: f"{v:.2e}" for k, v in diff.items()})

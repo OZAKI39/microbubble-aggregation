@@ -1,0 +1,24 @@
+{
+ "E1_cluster32_1000": {
+  "strict_completed_us": 450,
+  "strict_failure": {
+   "time_us": 450,
+   "gates": [
+    "CONTACT_REACTION_BALANCE_PASS"
+   ]
+  },
+  "max_diff_strict_vs_pretrain_m": 3.523500518923744e-08,
+  "strict_travel_um": 2.4878206573953583
+ },
+ "E2_compact64_1000": {
+  "strict_completed_us": 150,
+  "strict_failure": {
+   "time_us": 150,
+   "gates": [
+    "CONTACT_REACTION_BALANCE_PASS"
+   ]
+  },
+  "max_diff_strict_vs_pretrain_m": 2.609860854219499e-10,
+  "strict_travel_um": 4.425037666291304
+ }
+}

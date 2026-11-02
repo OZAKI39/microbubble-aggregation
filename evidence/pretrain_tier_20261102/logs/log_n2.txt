@@ -1,0 +1,6 @@
+N4_settled32_3000 ref_pre_0p5us {'steps': 3170, 'constrained_solves': 3170, 'wall_s': 58.11515002199985, 'fail': (0.0015775000000000472, ['LOCAL_QP_PASS']), 't_end': 0.0015775000000000472}
+N3_cluster32_3000 ref_pre_0p5us {'steps': 10000, 'constrained_solves': 10000, 'wall_s': 231.31476091700006, 'fail': None, 't_end': 0.0049999999999995525}
+N1_cluster32_1000 ref_pre_0p5us {'steps': 10000, 'constrained_solves': 10000, 'wall_s': 122.10984355400024, 'fail': None, 't_end': 0.0049999999999995525}
+N2_compact64_1000 ref_pre_0p5us {'steps': 4000, 'constrained_solves': 4000, 'wall_s': 52.93158947300026, 'fail': None, 't_end': 0.002}
+N3_cluster32_3000 ref_pre_1us {'steps': 5000, 'constrained_solves': 5000, 'wall_s': 58.89971334899974, 'fail': None, 't_end': 0.005}
+N2_compact64_1000 ref_pre_1us {'steps': 2000, 'constrained_solves': 2000, 'wall_s': 25.125872093999988, 'fail': None, 't_end': 0.001999999999999941}

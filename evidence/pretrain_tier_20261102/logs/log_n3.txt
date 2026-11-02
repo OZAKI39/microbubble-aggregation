@@ -1,0 +1,4 @@
+N4_settled32_3000 dis_pre_3pct {'steps': 245, 'constrained_solves': 246, 'wall_s': 6.200891044999935, 'fail': None, 't_end': 0.005}
+N4_settled32_3000 dis_pre_1pct {'steps': 708, 'constrained_solves': 708, 'wall_s': 14.579440562999935, 'fail': None, 't_end': 0.005}
+N4_settled32_3000 ref_pre_0p5us {'steps': 10000, 'constrained_solves': 10000, 'wall_s': 160.47902836100002, 'fail': None, 't_end': 0.0049999999999995525}
+NBODY2_DONE

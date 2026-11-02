@@ -32,3 +32,15 @@ LF 是原 SciPy RK45（rtol=1e−7、atol=1e−12 m、max_step=0.5 ms）。远�
 - 形态、协方差、Rg、Kabsch 去刚体残差、结构因子、近邻连通分量均保留原数值。
 - 旋转去掉 COM，用原 Ωz、xy 刚体速度残差、时间加权刚体占比和方向持续性。只有存储数据足够时才重新计算；抽样历史数据不用于伪造全步旋转积分。
 - 目前通用 `analyze` 给出单例候选，不自动替代完整研究的随机初态、null、误差与长期持续性 Gate。历史正式 Gate 只读保留。
+
+## 预训练档（PRETRAIN，2026-11-02 加入）
+
+调用链：`main.py run`（`fidelity: "PRETRAIN"`）→ `workflows.f10ag.run_pretrain` → `control.pretrain_segments` → `integration.integrate_pretrain`。每一步：
+
+1. `forces.CPUForces`：与 GPU 内核相同的三次复压力缓存和 APECSS 表，在 CPU 上算 P、∇P 和响应。`coupling="pairwise"` 时 F2 与 `pair_reference` 逐项相同（向量化）。`coupling="collective"` 时，基频振动由 `u = χ(P − K u)`（`K_ij = ρω²/(4π d_ij)`）对全部泡联立求解；F1 用 u，F2 的基频项用 `Re[u_i u_j*]`，高次谐波保持单泡值，不再叠加双泡反馈。N = 2 时与 `coupled_fundamental` 相同。`I + χK` 的最小奇异值低于 1e−3 时失败，不做正则化。
+2. `hydrodynamics.sparse_resistance`：与 `resistance()` 同一矩阵，稀疏存储。
+3. `contact.sparse_sequential_step`：与 `sequential_step` 逐行对应，只对候选泡对（本步可能接触的泡对）施加约束，并检查步后没有候选外的接触（`CANDIDATE_COVERAGE`）。`tier=pretrain` 时：active-set 未返回 `active_set_solved` 就用 OSQP 解同一 QP；残差容差为 1e−10 m、rtol 1e−4；对偶容差随力尺度；0.1R 限制作用于本步实际位移。是否接受仍由同名 Gate 决定。
+4. 步长：每步一次约束求解；按本步最大实际位移相对 3% R 调整（0.5–2 倍，上限 0.5 ms），任一 Gate 失败则同一区间减半重算，不接受失败步。控制切换和保存时刻处精确截断。
+5. 泡距通道壁或端面 2R 时停止（本档没有壁面接触模型）。只保存请求的保存时刻，失败时保留接受前缀。
+
+冻结 HF/LF 路径（`Dynamics.step`、`sequential_step`、Warp 内核、`schedule()` 的 1500 Pa-eq 上限）没有改动。准入和证据见 `evidence/pretrain_tier_20261102/`。

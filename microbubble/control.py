@@ -178,6 +178,52 @@ def shorten(schedule, duration):
     return Schedule(tuple(segments))
 
 
+def pretrain_segments(t, max_amplitude, max_segments):
+    """Stepped four-channel schedule for the CPU pretraining tier only.
+
+    Same channel order, phase convention, registered frequencies and contiguous-duration rule
+    as schedule(), but the source cap and segment count come from configs/pretrain_policy.json.
+    Segment and schedule() keep the frozen 0-1500 Pa-equivalent HF/LF limit.
+    """
+    actions = t.get(
+        "segments", [dict(amplitudes=t["amplitudes"], phases=t["phases"], duration=t["duration"])]
+    )
+    if not 1 <= len(actions) <= max_segments:
+        raise ValueError(f"One to {max_segments} pretraining segments required")
+    frequency = t.get("frequency", 2.5e6)
+    if frequency not in FREQUENCIES:
+        raise ValueError("Only the registered 2.4/2.5/2.6 MHz water bases are admitted")
+    segments = []
+    start = 0.0
+    for a in actions:
+        amplitudes = tuple(float(v) for v in a["amplitudes"])
+        phases = tuple(float(v) for v in a["phases"])
+        duration = float(a["duration"])
+        if len(amplitudes) != 4 or len(phases) != 4:
+            raise ValueError("Channel order must be Y-, Y+, X-, X+")
+        if not all(math.isfinite(v) and 0 <= v <= max_amplitude for v in amplitudes):
+            raise ValueError(
+                f"Pretraining source limit 0-{max_amplitude} Pa-equivalent; no clipping"
+            )
+        if not all(math.isfinite(v) for v in phases):
+            raise ValueError("Finite phases required")
+        if not math.isfinite(duration) or duration <= 0:
+            raise ValueError("Positive finite segment duration required")
+        segments.append(
+            dict(
+                start_s=start,
+                duration_s=duration,
+                amplitude_Pa_equivalent=amplitudes,
+                phase_rad=phases,
+                frequency_Hz=frequency,
+            )
+        )
+        start += duration
+    if abs(start - t["duration"]) > 1e-15:
+        raise ValueError("Total duration mismatch")
+    return segments
+
+
 def schedule(t):
     actions = t.get(
         "segments", [dict(amplitudes=t["amplitudes"], phases=t["phases"], duration=t["duration"])]

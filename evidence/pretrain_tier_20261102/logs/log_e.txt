@@ -1,0 +1,12 @@
+E4_settled32_3000 ref_pre_0p5us {'steps': 10000, 'constrained_solves': 10000, 'wall_s': 176.80195176300003, 'fail': None, 't_end': 0.0049999999999995525}
+E4_settled32_3000 dis_pre_1pct {'steps': 889, 'constrained_solves': 1773, 'wall_s': 50.1253017009999, 'fail': None, 't_end': 0.005}
+E4_settled32_3000 dis_pre_3pct {'steps': 889, 'constrained_solves': 1773, 'wall_s': 47.891326271000025, 'fail': None, 't_end': 0.005}
+E4_settled32_3000 ada_pre_2nm {'steps': 650, 'constrained_solves': 3202, 'wall_s': 49.62776439899994, 'fail': None, 't_end': 0.005}
+E1_cluster32_1000 dis_pre_1pct {'steps': 405, 'constrained_solves': 497, 'wall_s': 9.606068907999997, 'fail': None, 't_end': 0.005}
+E1_cluster32_1000 dis_pre_3pct {'steps': 214, 'constrained_solves': 330, 'wall_s': 7.296871448999809, 'fail': None, 't_end': 0.005}
+E3_cluster32_3000 dis_pre_1pct {'steps': 1331, 'constrained_solves': 2383, 'wall_s': 57.61671579899985, 'fail': None, 't_end': 0.005}
+E3_cluster32_3000 dis_pre_3pct {'steps': 1139, 'constrained_solves': 2187, 'wall_s': 58.955627880000065, 'fail': None, 't_end': 0.005}
+E2_compact64_1000 dis_pre_1pct {'steps': 1196, 'constrained_solves': 1203, 'wall_s': 58.01385435700013, 'fail': None, 't_end': 0.002}
+E2_compact64_1000 dis_pre_3pct {'steps': 420, 'constrained_solves': 456, 'wall_s': 53.06412589799993, 'fail': None, 't_end': 0.002}
+E4_settled32_3000 ref_pre_1us {'steps': 5000, 'constrained_solves': 5000, 'wall_s': 90.57605680500001, 'fail': None, 't_end': 0.005}
+MORE_DONE

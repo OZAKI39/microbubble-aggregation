@@ -1,0 +1,6 @@
+E3_cluster32_3000 ada_pre_2nm {'steps': 952, 'constrained_solves': 4537, 'wall_s': 73.30500070999994, 'fail': None, 't_end': 0.005}
+E2_compact64_1000 ref_pre_0p5us {'steps': 4000, 'constrained_solves': 4000, 'wall_s': 206.31738855800006, 'fail': None, 't_end': 0.002}
+E2_compact64_1000 ref_pre_1us {'steps': 2000, 'constrained_solves': 2000, 'wall_s': 102.04082065099988, 'fail': None, 't_end': 0.001999999999999941}
+E2_compact64_1000 ada_pre_2nm {'steps': 476, 'constrained_solves': 1799, 'wall_s': 132.46980367100014, 'fail': None, 't_end': 0.002}
+E2_compact64_1000 ada_pre_0p5nm {'steps': 1091, 'constrained_solves': 3762, 'wall_s': 129.84955318200014, 'fail': None, 't_end': 0.002}
+E2_compact64_1000 ref_strict_1us {'steps': 151, 'constrained_solves': 151, 'wall_s': 5.779293150000058, 'fail': (0.0001499999999999997, ['CONTACT_REACTION_BALANCE_PASS']), 't_end': 0.0001499999999999997}

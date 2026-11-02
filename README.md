@@ -56,6 +56,17 @@ python main.py history
 OPENBLAS_NUM_THREADS=1 python main.py validate --out results/my_regression
 ```
 
+## 预训练档（PRETRAIN，仅 CPU）
+
+为世界模型生成预训练数据的独立档位，与冻结 HF/LF 并列，不替代它们的科学结论。它使用同一声场缓存和 APECSS 表，在 CPU 上计算 F1/F2，接触用稀疏求解（候选泡对约束；active-set 循环时用 OSQP 求同一 QP），容差放宽到观测尺度，步长按每步最大实际位移约 3% R 自动调节。泡间耦合必须在配置中写明：`pairwise` 为原成对模型，`collective` 为全体泡基频振动联立求解（Foldy 型单极闭合，N = 2 时与原双泡反馈一致）。
+
+```bash
+python -m pip install -e '.[pretrain]'   # OSQP 1.1.3
+OPENBLAS_NUM_THREADS=1 python main.py run --config configs/pretrain_collective_example.json --out results/my_pretrain
+```
+
+档位定义见 `configs/pretrain_policy.json`，准入与原型证据见 [预训练档证据](evidence/pretrain_tier_20261102/README.md)。本档声源上限为 3000 Pa-eq；HF/LF 仍为 1500。没有壁面接触模型，泡距通道壁或端面 2R 时停止。结果标记 `PRETRAIN_TIER`、`training_ready=false`，不能作为冻结档证据。
+
 每次新实验使用新输出目录。同配置、同输入、同源码且轨迹 SHA 一致的已完成尝试可原样读取；部分写入的目录、不同配置或源码不会被覆盖。失败状态也原样保留，不从失败提议位置继续积分。100 µs HF/LF 的共同点不足原准入要求时，`compare` 明确返回 `INCONCLUSIVE`。
 
 完整历史细缓存未在本地。选择 `FINE` 会明确拒绝，不能自动换成粗缓存。详见 [数据状态](docs/DATA_STATUS.md)。
@@ -88,17 +99,18 @@ LF 保留 F1/F2。只有阻力恰为单位阵且整个 RK 多项式区间满足�
 | `microbubble/acoustics.py` | 圆片 FNM、缓存、Catmull–Rom 压力及梯度；候选缓存生成 |
 | `microbubble/bubble_response.py` | 固定频率 APECSS 表、低压扩展、严格域检查 |
 | `microbubble/parameters.py` | 当前原始物理参数；历史 PBD 字段不是求解器开关 |
-| `microbubble/forces.py` / `_warp_forces.py` | NumPy 独立核查 / 实际 GPU 声力内核 |
-| `microbubble/hydrodynamics.py` | 全部有效近邻贡献的集体阻力，不是独立 Stokes 替代 |
-| `microbubble/contact.py` | 稀疏约束、Cholesky、active-set、Sequential QP 和原 Gate |
+| `microbubble/forces.py` / `_warp_forces.py` | NumPy 独立核查及预训练档 CPU 声力（含全体耦合） / 实际 GPU 声力内核 |
+| `microbubble/hydrodynamics.py` | 全部有效近邻贡献的集体阻力，不是独立 Stokes 替代；另有同一矩阵的稀疏装配 |
+| `microbubble/contact.py` | 稀疏约束、Cholesky、active-set、Sequential QP 和原 Gate；预训练档稀疏步 |
 | `microbubble/geometry.py` / `_warp_walls.py` | CPU 几何参考 / 实际 GPU 暴露壁面查询 |
 | `microbubble/gpu.py` / `dynamics.py` | 显式缓冲区与一个完整物理步 |
-| `microbubble/high_fidelity.py` / `integration.py` | HF 全步输出 / 受约束 LF 与回退 |
-| `microbubble/control.py` / `initial_conditions.py` | 四路幅相、事件对齐、固定原始 ID 初态 |
+| `microbubble/high_fidelity.py` / `integration.py` | HF 全步输出 / 受约束 LF 与回退；预训练档步长控制 |
+| `microbubble/control.py` / `initial_conditions.py` | 四路幅相、事件对齐、预训练档分段控制、固定原始 ID 初态 |
 | `microbubble/analysis.py` | 形态、连通、捕获/右删失、旋转、共同时间及窗口准入 |
 | `microbubble/io.py` | 路径、输入校验、SHA、结果身份 |
 | `workflows/` | 运行、诊断、分析、回归和绘图流程 |
 | `configs/frozen/` | 原始协议及接触策略，字节保留 |
+| `configs/pretrain_policy.json` | 预训练档相对冻结策略的改动，仅 `fidelity: "PRETRAIN"` 使用 |
 | `inputs/` | 唯一运行输入，无旧路径符号链接 |
 | `evidence/` | 原报告/Gate/失败、少量参考数据和迁移审计；不是运行源码 |
 | `results/` | 新工程生成的数据，与历史证据分开 |
@@ -109,8 +121,9 @@ LF 保留 F1/F2。只有阻力恰为单位阵且整个 RK 多项式区间满足�
 - **幅相/频率**：运行 JSON 可加入 `control`，例如 `{"amplitudes":[0,0,1000,1000],"phases":[0,0,0,0.1],"frequency":2500000}`。相位用弧度，顺序始终 Y−、Y+、X−、X+。`segments` 可给出最多 8 段、总时长等于 `duration_s` 的幅相控制。所有幅值和响应域校验继续生效。
 - **声源尺寸/位置或几何模型**：`acoustics.py` / `geometry.py`；现有 `inputs/apparatus_snapshot.json` 属于冻结实验身份，改动需要建立新的输入、缓存和准入记录，不能只改旧输入哈希冒充原模型。
 - **F1/F2**：实际 GPU 算式在 `_warp_forces.py`；`forces.py` 是独立数值参考。改方程意味着新物理研究，必须重做对应数值核查。
-- **阻力/接触**：`hydrodynamics.py` 和 `contact.py`。原容差来自 `configs/frozen/contact_policy.json` 加 `contact_revision.json`；本轮没有放宽。
+- **阻力/接触**：`hydrodynamics.py` 和 `contact.py`。原容差来自 `configs/frozen/contact_policy.json` 加 `contact_revision.json`；冻结路径没有放宽，预训练档的放宽只写在 `configs/pretrain_policy.json`。
 - **积分**：`high_fidelity.py`、`integration.py`。LF 设置来自原协议 `LF` 节，不能靠忽略拒绝条件获得长轨迹。
+- **预训练档**：容差、步长控制、声源上限和壁面距离都在 `configs/pretrain_policy.json`；运行配置用 `fidelity: "PRETRAIN"`，并写明 `coupling`。`control.segments` 可给出最多 64 段阶跃幅相。改这些设置只影响预训练档，需要在 `evidence/` 中新建对应的准入记录。
 - **捕获与形态**：`analysis.py`。保持固定 ID、10/20/30 µm、10 ms hold、重离开和右删失的区别。
 
 ## 环境重建与范围
@@ -121,7 +134,7 @@ source .venv/bin/activate
 python -m pip install -e '.[gpu,plot,test]'
 ```
 
-仅 CPU 读取、解析和参考计算可安装 `.[plot,test]`，然后 `pytest -m 'not gpu'`。完整逐泡积分和当前 LF 力计算均需要 Warp/CUDA。核心依赖 NumPy 2.2.6、SciPy 1.15.3、h5py 3.16.0；本机 Warp 1.18.0，RTX 4060 Laptop GPU。`requirements-lock.txt` 保存实际环境，包括只在本次旧实现取参考值时用到的额外包；它们不是新工程运行链依赖。
+仅 CPU 读取、解析和参考计算可安装 `.[plot,test]`，然后 `pytest -m 'not gpu'`；预训练档另需 `.[pretrain]`（OSQP 1.1.3），未安装时其两项测试跳过。完整逐泡积分和当前 LF 力计算均需要 Warp/CUDA。核心依赖 NumPy 2.2.6、SciPy 1.15.3、h5py 3.16.0；本机 Warp 1.18.0，RTX 4060 Laptop GPU。`requirements-lock.txt` 保存实际环境，包括只在本次旧实现取参考值时用到的额外包；它们不是新工程运行链依赖。
 
 当前只读取预计算 APECSS 响应表，不需要原生 APECSS 或 k-Wave。重新生成响应表需要原始 APECSS 可执行程序、原参数及独立响应验证，本工程未复制原生构建工具。CuPy Cholesky 比较后端保留为可选接口，但本次未安装/验证，不是默认求解路径。
 

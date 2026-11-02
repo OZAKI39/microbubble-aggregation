@@ -1,0 +1,17 @@
+"""Pairwise loose 64-bubble cloud, same settings as N5, capped at 300 s wall time: how far does it get?"""
+import sys, json
+import numpy as np, h5py
+sys.path.insert(0, sys.argv[2])
+import proto as P
+root = sys.argv[1]
+C, POL = P.init(root)
+with h5py.File(f"{root}/inputs/initial_states.h5") as f:
+    x0 = f["N64_loose_r0"][()] + np.array([40e-6, 0, 0])
+outs = list(np.round(np.arange(0, 0.010 + 1e-12, 0.0005), 12))
+res = {}
+for coupling in ("pair", "nbody"):
+    fo = P.Forces([0, 0, 3000, 3000], [0] * 4, coupling=coupling)
+    r = P.run_displacement(x0, fo, 0.010, outs, 0.03 * P.R, P.pretrain_policy(POL), budget_s=300)
+    res[coupling] = dict(t_end_ms=r["t_end"] * 1e3, solves=r["qp_calls"], wall_s=round(r["wall_s"], 1), fail=r["fail"],
+                         h_median_us=None if r["h_median"] is None else r["h_median"] * 1e6)
+print(json.dumps(res, indent=1, default=str))

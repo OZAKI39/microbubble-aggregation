@@ -1,0 +1,14 @@
+{
+  "fidelity": "PRETRAIN",
+  "coupling": "collective",
+  "state": "AG32_local",
+  "action": "X_PAIR",
+  "duration_s": 0.005,
+  "save_interval_s": 0.00025,
+  "control": {
+    "amplitudes": [0, 0, 3000, 3000],
+    "phases": [0, 0, 0, 0],
+    "frequency": 2500000,
+    "offset_m": [2e-05, 0, 0]
+  }
+}

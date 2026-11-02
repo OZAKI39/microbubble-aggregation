@@ -37,3 +37,14 @@
 本轮是 Git 同步与文档状态更新，没有修改物理方程、阈值、求解器或科研结论，没有启动新仿真、远程计算或 GPU 性能测试。
 
 `EXPLORATORY / PHYSICS_UNCALIBRATED / training_ready=false`
+
+## 2026-11-02 同步：预训练档
+
+根据用户明确请求，把预训练档（稀疏接触步、OSQP 兜底、按位移调步长、全体泡耦合）同步到 `main`。
+
+- **工作树**：提交由 Claude 云端会话生成，该会话无法访问 `/home/lzy/projects/new_microbubble_aggregation`。会话内唯一的工作树是此前为审阅而从 `origin/main`（`b0c097e`）取得的 Git 检出，提交直接建立在 `b0c097e` 之上，没有另建同步目录、export、日期分支或重写历史。该会话向 GitHub 推送被拒（HTTP 403，Claude GitHub App 无此仓库权限），因此提交以 `git format-patch --binary` 补丁交给用户，在本地工作树用 `git am` 应用后按常规 `git push`；或在授予权限后由会话直接推送。两种方式都不 force-push。
+- **内容**：`microbubble/{forces,hydrodynamics,contact,integration,control}.py`、`workflows/f10ag.py` 的新增函数；`configs/pretrain_policy.json`、`configs/pretrain_collective_example.json`；`tests/test_pretrain.py`；`pyproject.toml` 的可选依赖 `pretrain`；`evidence/pretrain_tier_20261102/`（准入记录、原型数据约 2 MB、原型脚本 `.py.txt`、日志、图）；README 与 `docs/` 说明。
+- **未改动**：冻结 HF/LF 方程、阈值、积分算法、Gate、`configs/frozen/`、`inputs/`、Warp 内核和所有已有科研结论。`requirements-lock.txt` 记录的是本地实际环境，未加入 OSQP。
+- **验证**：Python 3.12 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3 下 CPU 测试 27 项通过（原 19 项 + 新 8 项），GPU 测试 3 项未运行（无 CUDA）；仓库实现按原型工况重跑，保存位置与求解次数一致。提交前的文件清单、大小、SHA-256 和凭据格式检查见 `evidence/pretrain_tier_20261102/SYNC_CHECK.json`。没有启动 GPU、远程或长时仿真。
+
+`EXPLORATORY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`

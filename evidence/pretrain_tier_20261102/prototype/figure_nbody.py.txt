@@ -1,0 +1,103 @@
+"""Pairwise vs N-body coupling for a settled 32-bubble cluster at 3000 Pa-eq (20 ms), plus cost."""
+import sys, json
+from pathlib import Path
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+
+out = Path(sys.argv[1])
+R = 1.78e-6
+INK, INK2, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1", "#fcfcfb"
+PAIR, NB = "#8a8984", "#2a78d6"
+plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "axes.edgecolor": MUTED,
+                     "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2})
+
+
+def Z(case, m):
+    z = np.load(out / f"{case}__{m}.npz")
+    return z["times"], z["X"]
+
+
+def J(case, m):
+    p = out / f"{case}__{m}.json"
+    return json.load(open(p)) if p.exists() else None
+
+
+def shape(X):
+    q = X - X.mean(0)
+    ev = np.linalg.eigvalsh(q[:, :2].T @ q[:, :2] / len(X))
+    return np.sqrt(ev[1] / ev[0]), np.sqrt((q ** 2).sum(1).mean()) * 1e6
+
+
+def style(ax):
+    ax.set_facecolor(SURF)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.grid(True, color=GRID, lw=0.6); ax.set_axisbelow(True)
+
+
+fig = plt.figure(figsize=(13, 9))
+fig.patch.set_facecolor(SURF)
+gs = fig.add_gridspec(3, 4, height_ratios=[1, 1, 1.15], hspace=0.55, wspace=0.62)
+runs = [("E4L_settled32_3000", "Pairwise model (current)", PAIR), ("N4L_settled32_3000", "All bubbles coupled", NB)]
+snap_t = [0.0, 0.005, 0.010, 0.020]
+for r, (case, lab, col) in enumerate(runs):
+    t, X = Z(case, "dis_pre_3pct")
+    for c, ts in enumerate(snap_t):
+        ax = fig.add_subplot(gs[r, c]); ax.set_facecolor(SURF)
+        k = int(np.argmin(abs(t - ts)))
+        P = (X[k] - X[k].mean(0)) * 1e6
+        for p in P:
+            ax.add_patch(Circle((p[0], p[1]), R * 1e6, facecolor=col, edgecolor=SURF, lw=0.8, alpha=0.9))
+        a, rg = shape(X[k])
+        ax.set_xlim(-16, 16); ax.set_ylim(-16, 16); ax.set_aspect("equal")
+        ax.set_xticks([-10, 0, 10]); ax.set_yticks([-10, 0, 10])
+        for s in ("top", "right"):
+            ax.spines[s].set_visible(False)
+        ax.set_title(f"t = {t[k] * 1e3:.0f} ms   aspect {a:.2f}", fontsize=8.5, color=INK2)
+        if c == 0:
+            ax.set_ylabel(f"{lab}\n\ny (µm)", color=INK, fontsize=9)
+        if r == 1:
+            ax.set_xlabel("x (µm), centred")
+
+# aspect and Rg vs time
+ax1 = fig.add_subplot(gs[2, 0:2]); style(ax1)
+ax2 = fig.add_subplot(gs[2, 2]); style(ax2)
+for case, lab, col in runs:
+    t, X = Z(case, "dis_pre_3pct")
+    sh = np.array([shape(x) for x in X])
+    ax1.plot(t * 1e3, sh[:, 0], color=col, lw=2, label=lab)
+    ax2.plot(t * 1e3, (X.mean(1)[:, 0] - X[0].mean(0)[0]) * 1e6, color=col, lw=2, label=lab)
+ax1.set_xlabel("Simulated time (ms)"); ax1.set_ylabel("In-plane aspect ratio")
+ax1.set_title("Cluster shape over 20 ms (3000 Pa-eq, X pair)", loc="left", color=INK, fontsize=10)
+ax1.legend(frameon=False, fontsize=8, labelcolor=INK2, loc="upper left")
+ax2.axhline(0, color=MUTED, lw=1)
+ax2.set_xlabel("Simulated time (ms)"); ax2.set_ylabel("Centre shift along x (µm)")
+ax2.set_title("Drift (stable point at x = 0)", loc="left", color=INK, fontsize=10)
+
+# cost: solves per ms of simulated time, displacement controller (3% R per step)
+ax3 = fig.add_subplot(gs[2, 3]); style(ax3); ax3.grid(axis="y", visible=False)
+pairs = [("E1_cluster32_1000", "N1_cluster32_1000", "32 collapse\n1000 Pa-eq"),
+         ("E2_compact64_1000", "N2_compact64_1000", "64 compact\n1000 Pa-eq"),
+         ("E3_cluster32_3000", "N3_cluster32_3000", "32 collapse\n3000 Pa-eq"),
+         ("E4_settled32_3000", "N4_settled32_3000", "32 settled\n3000 Pa-eq")]
+y = np.arange(len(pairs))
+for k, (e, n, lab) in enumerate(pairs):
+    je, jn = J(e, "dis_pre_3pct"), J(n, "dis_pre_3pct")
+    ve = je["constrained_solves"] / (je["t_end"] * 1e3); vn = jn["constrained_solves"] / (jn["t_end"] * 1e3)
+    ax3.barh(k - 0.18, ve, height=0.34, color=PAIR, edgecolor=SURF, linewidth=1.5)
+    ax3.barh(k + 0.18, vn, height=0.34, color=NB, edgecolor=SURF, linewidth=1.5)
+    ax3.text(ve, k - 0.18, f" {ve:,.0f}", va="center", fontsize=7.5, color=INK2)
+    ax3.text(vn, k + 0.18, f" {vn:,.0f}", va="center", fontsize=7.5, color=INK2)
+ax3.set_yticks(y, [p[2] for p in pairs], fontsize=8); ax3.invert_yaxis(); ax3.set_xscale("log")
+ax3.set_xlim(3, 2e5)
+ax3.set_xlabel("Solves per ms simulated (log)")
+ax3.set_title("Cost (adaptive, 3% R)", loc="left", color=INK, fontsize=10)
+ax3.legend(handles=[plt.Rectangle((0, 0), 1, 1, color=PAIR), plt.Rectangle((0, 0), 1, 1, color=NB)], labels=["Pairwise", "All coupled"], frameon=False, fontsize=7.5, labelcolor=INK2, loc="upper right")
+
+fig.suptitle("Settled 32-bubble cluster: pairwise model stays rigid, all-bubble coupling lets it deform",
+             x=0.01, ha="left", color=INK, fontsize=12)
+fig.savefig(out / "nbody_results.png", dpi=150, facecolor=SURF, bbox_inches="tight")
+print("saved")

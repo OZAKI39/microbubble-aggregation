@@ -1,0 +1,33 @@
+"""Check that the prototype pieces reproduce the simulator's own functions."""
+import sys, json
+import numpy as np, h5py
+sys.path.insert(0, sys.argv[2])
+import proto as P
+
+root = sys.argv[1]
+C, POL = P.init(root)
+from microbubble.forces import pair_reference
+from microbubble.hydrodynamics import resistance
+
+amps, phases = [0, 0, 3000, 3000], [0, 0, 0, 0]
+forces = P.Forces(amps, phases)
+out = {}
+with h5py.File(f"{root}/inputs/initial_states.h5") as f:
+    states = {k: f[k][()] for k in ["AG32_local", "N64_compact_reference", "N64_loose_r0"]}
+for name, x in states.items():
+    Pp, G = forces.fields(x)
+    H = C.response.query(Pp)
+    f_vec = forces.pair(x, H, Pp)
+    f_ref = pair_reference(x, H, Pp, P.PHYS, forces.chi0)
+    e_f2 = float(np.abs(f_vec - f_ref).max() / np.abs(f_ref).max())
+    A_d = resistance(x, P.R)["A"]
+    A_s = P.sparse_resistance(x).toarray()
+    e_A = float(np.abs(A_d - A_s).max())
+    F, _ = forces(x)
+    r_d = P.dense_step(x, F, 1e-6)
+    r_s = P.sparse_sequential_step(x, F, 1e-6, P.sparse_resistance(x), POL)
+    e_x = float(np.linalg.norm(r_d["positions_m"] - r_s["positions_m"], axis=1).max())
+    out[name] = dict(F2_rel_diff=e_f2, A_max_abs_diff=e_A, step_pos_diff_m=e_x,
+                     dense_gates=all(r_d["gates"].values()), sparse_gates=r_s["converged"],
+                     max_pressure_Pa=float(np.abs(Pp).max()))
+print(json.dumps(out, indent=1))

@@ -1,0 +1,37 @@
+"""Reproduce the pretraining-tier failure in E1 and look inside the failing step."""
+import sys, json
+import numpy as np, h5py
+sys.path.insert(0, sys.argv[2])
+import proto as P
+
+root = sys.argv[1]
+C, POL = P.init(root)
+from microbubble.contact import active_set_qp
+pre = P.pretrain_policy(POL)
+with h5py.File(f"{root}/inputs/initial_states.h5") as f:
+    x = f["AG32_local"][()] + np.array([40e-6, 0, 0])
+fo = P.Forces([0, 0, 1000, 1000], [0] * 4)
+for k in range(2000):
+    F, _ = fo(x)
+    r = P.sparse_sequential_step(x, F, 1e-6, P.sparse_resistance(x), pre)
+    if not r["converged"]:
+        break
+    x = r["positions_m"]
+print("failed at step", k, [g for g, v in r["gates"].items() if not v])
+np.save(sys.argv[3], x)
+# look inside: redo the first QP and report status / constraint structure
+A = P.sparse_resistance(x)
+fac = P.SparseFactor(A)
+b = 1e-6 * F.ravel() / (P.ZETA * P.R)
+free = fac.solve(b)
+from scipy.spatial import cKDTree
+pairs = np.array(sorted(cKDTree(x).query_pairs(2.5 * P.R)), dtype=int)
+B, g = P.candidate_geometry(x, pairs)
+s, lam, status, its = active_set_qp(A, fac, b, B, g / P.R)
+act = np.flatnonzero(lam > 0)
+rows = B.rows(act)
+sv = np.linalg.svd(rows, compute_uv=False)
+print(dict(status=status, working_set_iterations=its, candidates=len(pairs), active=len(act),
+           dof=3 * len(x), rank_active=int((sv > 1e-10 * sv[0]).sum()),
+           smallest_singular=float(sv[-1]), min_gap_over_R=float((g / P.R).min()),
+           contacts_within_1pct=int((g / P.R < 0.01).sum())))

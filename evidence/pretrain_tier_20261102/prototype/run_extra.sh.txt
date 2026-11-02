@@ -1,0 +1,9 @@
+#!/bin/bash
+S=/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/proto
+ROOT=/home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+cd /tmp
+python3 $S/experiment.py $ROOT $S $S/out E1_cluster32_1000 ref_pre_0p5us >> $S/out/log_c.txt 2>&1 &
+python3 $S/experiment.py $ROOT $S $S/out E1_cluster32_1000 ref_pre_1us >> $S/out/log_d.txt 2>&1 &
+wait
+echo EXTRA_DONE >> $S/out/log_c.txt

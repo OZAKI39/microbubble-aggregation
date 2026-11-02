@@ -1,0 +1,14 @@
+N4_settled32_3000 dis_pre_3pct {'steps': 38, 'constrained_solves': 58, 'wall_s': 1.1169330640000226, 'fail': (np.float64(0.001928976214303908), ['H_MIN']), 't_end': 0.001928976214303908}
+N4_settled32_3000 dis_pre_1pct {'steps': 87, 'constrained_solves': 107, 'wall_s': 2.2298109640000803, 'fail': (np.float64(0.0018548596831792067), ['H_MIN']), 't_end': 0.0018548596831792067}
+N4L_settled32_3000 dis_pre_3pct {'steps': 1569, 'constrained_solves': 2006, 'wall_s': 41.89148776999991, 'fail': None, 't_end': 0.02}
+E4L_settled32_3000 dis_pre_3pct {'steps': 3182, 'constrained_solves': 6359, 'wall_s': 248.30993437999996, 'fail': None, 't_end': 0.02}
+N1_cluster32_1000 dis_pre_3pct {'steps': 37, 'constrained_solves': 37, 'wall_s': 0.42800726500036035, 'fail': None, 't_end': 0.005}
+N1_cluster32_1000 dis_pre_1pct {'steps': 82, 'constrained_solves': 82, 'wall_s': 1.0474443659995814, 'fail': None, 't_end': 0.005}
+N3_cluster32_3000 dis_pre_3pct {'steps': 112, 'constrained_solves': 119, 'wall_s': 1.608757708000212, 'fail': None, 't_end': 0.005}
+N3_cluster32_3000 dis_pre_1pct {'steps': 330, 'constrained_solves': 330, 'wall_s': 4.973110567999811, 'fail': None, 't_end': 0.005}
+N2_compact64_1000 dis_pre_3pct {'steps': 26, 'constrained_solves': 26, 'wall_s': 0.43504771600009917, 'fail': None, 't_end': 0.002}
+N2_compact64_1000 dis_pre_1pct {'steps': 54, 'constrained_solves': 54, 'wall_s': 0.7292787370001861, 'fail': None, 't_end': 0.002}
+N5_loose64_3000 dis_pre_3pct {'steps': 1276, 'constrained_solves': 1294, 'wall_s': 20.11593658200036, 'fail': None, 't_end': 0.01}
+N4_settled32_3000 ref_pre_1us {'steps': 5000, 'constrained_solves': 5000, 'wall_s': 77.58705617400028, 'fail': None, 't_end': 0.005}
+N1_cluster32_1000 ref_pre_1us {'steps': 5000, 'constrained_solves': 5000, 'wall_s': 55.60425944899998, 'fail': None, 't_end': 0.005}
+NBODY_DONE

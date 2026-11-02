@@ -1,0 +1,14 @@
+#!/bin/bash
+S=/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/proto
+ROOT=/home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+cd /tmp
+chain() { tag=$1; shift; for job in "$@"; do python3 $S/experiment.py $ROOT $S $S/out $job >> $S/out/log_$tag.txt 2>&1; done; }
+chain n1 "N4_settled32_3000 dis_pre_3pct" "N4_settled32_3000 dis_pre_1pct" "N4L_settled32_3000 dis_pre_3pct" "E4L_settled32_3000 dis_pre_3pct" \
+         "N1_cluster32_1000 dis_pre_3pct" "N1_cluster32_1000 dis_pre_1pct" "N3_cluster32_3000 dis_pre_3pct" "N3_cluster32_3000 dis_pre_1pct" \
+         "N2_compact64_1000 dis_pre_3pct" "N2_compact64_1000 dis_pre_1pct" "N5_loose64_3000 dis_pre_3pct" "E5_loose64_3000 dis_pre_3pct" \
+         "N4_settled32_3000 ref_pre_1us" "N1_cluster32_1000 ref_pre_1us" &
+chain n2 "N4_settled32_3000 ref_pre_0p5us" "N3_cluster32_3000 ref_pre_0p5us" "N1_cluster32_1000 ref_pre_0p5us" "N2_compact64_1000 ref_pre_0p5us" \
+         "N3_cluster32_3000 ref_pre_1us" "N2_compact64_1000 ref_pre_1us" &
+wait
+echo NBODY_DONE >> $S/out/log_n1.txt

@@ -1,0 +1,86 @@
+"""How much does N-body coupled oscillation (Foldy-type self-consistent solve) change the
+cohesion of a settled cluster, compared with the simulator's pairwise model?
+
+Pairwise model (current): each bubble oscillates as if alone in the incident field; for pairs
+closer than 8R a two-bubble coupled correction (contact-weighted) replaces the fundamental term.
+N-body model: all bubbles' fundamental oscillations solved together,
+    u_i = chi * (P_inc,i - sum_j k_ij u_j),  k_ij = rho w^2 / (4 pi d_ij)
+which reduces exactly to the simulator's coupled_fundamental() for N = 2.
+"""
+import sys
+import numpy as np
+sys.path.insert(0, sys.argv[2])
+import proto as P
+
+C, POL = P.init(sys.argv[1])
+from microbubble.forces import coupled_fundamental, feedback_weight
+
+x = np.load(sys.argv[3])
+fo = P.Forces([0, 0, 3000, 3000], [0] * 4)
+Pinc, G = fo.fields(x)
+H = C.response.query(Pinc)
+v = H[:, 0]
+chi = v / Pinc
+assert np.allclose(chi, chi[0], rtol=1e-6)            # linear, same radius: one complex chi
+chi = chi[0]
+n = len(x)
+D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+K = np.where(D > 0, P.RHO_W2 / (4 * np.pi * np.where(D > 0, D, 1)), 0.0)
+M = np.eye(n) + chi * K
+u = np.linalg.solve(M, chi * Pinc)
+ev = np.linalg.eigvals(M)
+
+# sanity: N = 2 reproduces the simulator's two-bubble closure
+a, b = 0, int(np.argmin(np.where(D[0] > 0, D[0], np.inf)))
+u2 = np.linalg.solve(np.eye(2) + chi * K[np.ix_([a, b], [a, b])], chi * Pinc[[a, b]])
+ui, uj, _, _, _ = coupled_fundamental(v[a], v[b], Pinc[a], Pinc[b], D[a, b], P.PHYS, chi)
+print("N=2 check vs coupled_fundamental():", float(abs(u2[0] - ui) / abs(ui)), float(abs(u2[1] - uj) / abs(uj)))
+
+
+def pair_forces(fund):
+    """Pair force vectors for all pairs, with the fundamental product given by fund(i, j)."""
+    i, j = np.triu_indices(n, 1)
+    delta = x[j] - x[i]; d = np.linalg.norm(delta, axis=1)
+    corr = np.sum(np.arange(2, 9) ** 2 * np.real(H[i, 1:] * np.conj(H[j, 1:])), axis=1) + fund(i, j, d)
+    q = np.minimum(d / (P.PHYS.transition_over_sum * 2 * P.R), 1)
+    core = P.PHYS.soft_core_over_sum * 2 * P.R * (1 - q) ** 2
+    f = P.RHO_W2 / (8 * np.pi) * corr[:, None] * delta / ((d * d + core * core) ** 1.5)[:, None]
+    return i, j, d, f
+
+
+def fund_pairwise(i, j, d):
+    base = np.real(v[i] * np.conj(v[j]))
+    w = feedback_weight(d, P.R, P.PHYS.feedback_end_over_sum)
+    out = base.copy()
+    for k in np.flatnonzero(w > 0):
+        a_, b_ = i[k], j[k]
+        ui_, uj_, _, _, _ = coupled_fundamental(v[a_], v[b_], Pinc[a_], Pinc[b_], d[k], P.PHYS, chi)
+        out[k] += w[k] * (np.real(ui_ * np.conj(uj_)) - base[k])
+    return out
+
+
+def fund_nbody(i, j, d):
+    return np.real(u[i] * np.conj(u[j]))
+
+
+res = {}
+for name, fn in (("pairwise (current)", fund_pairwise), ("N-body coupled", fund_nbody)):
+    i, j, d, f = pair_forces(fn)
+    touch = d < 2.01 * P.R
+    # sign: projection on the line of centres; positive = attraction (force on i towards j)
+    proj = np.einsum("kd,kd->k", f, (x[j] - x[i]) / d[:, None])
+    res[name] = dict(touch_med=float(np.median(np.abs(proj[touch]))), attract_frac=float(np.mean(proj[touch] > 0)))
+uf = np.abs(u) / np.abs(v)
+F1_un = -0.5 * np.real(v[:, None] * np.conj(G))
+F1_nb = -0.5 * np.real(u[:, None] * np.conj(G))
+dF = (F1_un[:, 0].max() - F1_un[:, 0].min())
+print(f"bubbles {n}; coupling chi*k at contact = {abs(chi) * P.RHO_W2 / (4 * np.pi * 2 * P.R):.2f}")
+print(f"N-body oscillation amplitude relative to isolated bubble: median {np.median(uf):.3f}, min {uf.min():.3f}, max {uf.max():.3f}")
+print(f"phase shift of N-body oscillation vs isolated: median {np.degrees(np.median(np.angle(u / v))):.1f} deg")
+print(f"smallest |eigenvalue| of (I + chi K): {np.abs(ev).min():.3f}  (0 would be an undamped collective resonance)")
+for k, r in res.items():
+    print(f"{k:20s}: touching-pair force median {r['touch_med']:.2e} N, attractive fraction {r['attract_frac']:.2f}, ratio to field-force difference across cluster {r['touch_med'] / dF:.0f}")
+print(f"net primary force on cluster: isolated {np.linalg.norm(F1_un.sum(0)):.2e} N, N-body {np.linalg.norm(F1_nb.sum(0)):.2e} N")
+dF_nb = (F1_nb[:, 0].max() - F1_nb[:, 0].min())
+print(f"field-force difference across cluster: isolated-oscillation {dF:.2e} N, N-body {dF_nb:.2e} N")
+print(f"consistent ratio (N-body cohesion / N-body field-force difference): {res['N-body coupled']['touch_med'] / dF_nb:.0f}")

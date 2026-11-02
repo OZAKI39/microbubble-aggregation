@@ -1,0 +1,71 @@
+"""Compare every method with the finest reference of its case."""
+import sys, json, glob
+from pathlib import Path
+import numpy as np
+
+out = Path(sys.argv[1])
+R = 1.78e-6
+runs = {}
+for j in sorted(out.glob("*.json")):
+    if j.name == "summary.json" or "__" not in j.stem:
+        continue
+    case, method = j.stem.split("__")
+    d = json.load(open(j))
+    z = np.load(out / f"{j.stem}.npz")
+    d["times"], d["X"] = z["times"], z["X"]
+    runs.setdefault(case, {})[method] = d
+
+# The strict (original) path fails early on these clusters, so the finest complete
+# reference is the pretraining tier at a fixed 0.5 us step; the strict runs are
+# compared against it over the window where they ran.
+FINEST = {"E1_cluster32_1000": "ref_pre_0p5us", "E2_compact64_1000": "ref_pre_0p5us",
+          "E3_cluster32_3000": "ref_pre_0p5us", "E4_settled32_3000": "ref_pre_0p5us"}
+BASE = {"E1_cluster32_1000": "ref_pre_1us", "E2_compact64_1000": "ref_pre_1us",
+        "E3_cluster32_3000": "ref_pre_1us", "E4_settled32_3000": "ref_pre_1us"}
+
+
+def xy_shape(X):
+    q = X - X.mean(0)
+    S = q[:, :2].T @ q[:, :2] / len(X)
+    ev, evec = np.linalg.eigh(S)
+    return np.sqrt(ev[1] / ev[0]), np.sqrt((q ** 2).sum(1).mean())
+
+
+summary = {}
+for case, ms in runs.items():
+    ref = ms.get(FINEST[case])
+    base = ms.get(BASE[case])
+    rows = {}
+    for m, d in ms.items():
+        r = dict(steps=d.get("steps"), constrained_solves=d.get("constrained_solves"), force_calls=d.get("force_calls"),
+                 wall_s=round(d["wall_s"], 1), fail=d["fail"], t_end_ms=round(d["t_end"] * 1e3, 4),
+                 h_median_us=None if d.get("h_median_s") is None else round(d["h_median_s"] * 1e6, 2),
+                 h_max_us=None if d.get("h_max_s") is None else round(d["h_max_s"] * 1e6, 1))
+        if ref is not None and m != FINEST[case]:
+            common = [k for k, t in enumerate(d["times"]) if t in set(ref["times"].tolist())]
+            ir = [list(ref["times"]).index(d["times"][k]) for k in common]
+            if common:
+                diff = np.linalg.norm(d["X"][common] - ref["X"][ir], axis=2).max(axis=1)
+                r["max_pos_diff_nm"] = float(diff.max() * 1e9)
+                r["compared_until_ms"] = float(d["times"][common[-1]] * 1e3)
+                a_m, rg_m = xy_shape(d["X"][common[-1]])
+                a_r, rg_r = xy_shape(ref["X"][ir[-1]])
+                r["aspect_end"] = round(float(a_m), 4)
+                r["aspect_diff"] = float(abs(a_m - a_r))
+                r["Rg_diff_nm"] = float(abs(rg_m - rg_r) * 1e9)
+        if base is not None and base.get("steps") and d.get("constrained_solves"):
+            r["solves_vs_1us"] = round(base["steps"] / d["constrained_solves"], 1)
+        rows[m] = r
+    if ref is not None:
+        X = ref["X"]
+        a0, rg0 = xy_shape(X[0]); a1, rg1 = xy_shape(X[-1])
+        rows["_motion_in_reference"] = dict(
+            com_shift_um=float(np.linalg.norm(X[-1].mean(0) - X[0].mean(0)) * 1e6),
+            max_bubble_travel_um=float(np.linalg.norm(X[-1] - X[0], axis=1).max() * 1e6),
+            xy_aspect_start=float(a0), xy_aspect_end=float(a1), Rg_start_um=float(rg0 * 1e6), Rg_end_um=float(rg1 * 1e6))
+    summary[case] = rows
+json.dump(summary, open(out / "summary.json", "w"), indent=1, default=str)
+for case, rows in summary.items():
+    print("==", case)
+    for m, r in rows.items():
+        print("  ", m, r)

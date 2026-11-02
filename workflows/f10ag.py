@@ -30,6 +30,51 @@ def load_policy(root):
     return p
 
 
+def load_pretrain_policy(root):
+    """Frozen contact policy with the pretraining-tier overrides on top (frozen files untouched)."""
+    p = load_policy(root)
+    tier = read(Path(root) / "configs/pretrain_policy.json")
+    overrides = dict(tier["overrides"])
+    p["osqp"] = dict(p["osqp"], **overrides.pop("osqp"))
+    p.update(overrides)
+    for key in (
+        "tier",
+        "singular_guard",
+        "max_source_amplitude_Pa_equivalent",
+        "max_segments",
+        "stepping",
+        "wall_guard_over_R",
+    ):
+        p[key] = tier[key]
+    return p
+
+
+def run_pretrain(root, config_path, cfg, task, out):
+    """CPU pretraining-tier trajectory; see configs/pretrain_policy.json and its admission."""
+    from microbubble.control import pretrain_segments
+    from microbubble.integration import integrate_pretrain
+
+    p = load_pretrain_policy(root)
+    if cfg.get("coupling") not in ("pairwise", "collective"):
+        raise ValueError("PRETRAIN requires an explicit coupling: 'pairwise' or 'collective'")
+    task.update(
+        variant="ADAPTIVE",
+        coupling=cfg["coupling"],
+        save_interval_s=cfg.get("save_interval_s", p["stepping"]["save_interval_s"]),
+    )
+    segments = pretrain_segments(task, p["max_source_amplitude_Pa_equivalent"], p["max_segments"])
+    c = context(root, task.get("frequency", 2500000.0), "coarse", "cpu")
+    x, ids = load_state(root / "inputs/initial_states.h5", task["state"])
+    ident = identity(root)
+    ident["run_config_sha256"] = sha(config_path)
+    result = integrate_pretrain(task, c, x, segments, p, out, ident)
+    write(
+        out / "EXECUTION.json",
+        dict(identity=ident, task=task, config=cfg, fixed_ids=ids, status=result["status"]),
+    )
+    return result
+
+
 def context(root, frequency=2500000.0, cache="coarse", device="cuda:0"):
     root = Path(root)
     verify_inputs(root)
@@ -103,6 +148,8 @@ def run(root, config_path, out):
             "Unknown control key; controls must not silently override model/config semantics"
         )
     task.update(controls)
+    if cfg["fidelity"] == "PRETRAIN":
+        return run_pretrain(root, config_path, cfg, task, out)
     s = schedule(task)
     variant = task["variant"]
     if variant not in ("DT1", "DT05", "FINE"):

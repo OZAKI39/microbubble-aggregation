@@ -1,0 +1,136 @@
+{
+  "record": "Pretraining tier admission",
+  "date": "2026-11-02",
+  "status": "ADMITTED_AS_SEPARATE_PRETRAIN_TIER",
+  "admitted_use": "CPU generation of broadly randomized pretraining trajectories for a world model, deformation-focused. Not a calibration of the experimental chip; does not change, extend or replace any frozen F10AG HF/LF result, gate or scope.",
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "PRETRAIN_TIER",
+    "NUMERICAL_TOLERANCES_RELAXED_TO_OBSERVATION_SCALE",
+    "NO_WALL_CONTACT_MODEL"
+  ],
+  "training_ready": false,
+  "authorization": {
+    "conversation": "Claude session with the user, 2026-11-01 to 2026-11-02",
+    "statements": [
+      {
+        "user": "我接受你的这5项改进建议，同意你进行原型测试",
+        "scope": "Cost improvements for contact/force computation (adaptive step with constraint projection, sparse per-cluster solve, batched runs, pretraining precision tier, reduced-order deformation) and their prototype test"
+      },
+      {
+        "user": "这个是肯定存在问题的，但是对这部分标定是不现实的，如果有文献依据或者方法，能够对这部分进行调整，使其能够在合理范围内就好了",
+        "scope": "Literature-based adjustment of the pairwise near-field cohesion without calibration"
+      },
+      {
+        "user": "同意开始",
+        "scope": "Add all-bubble (N-body) coupled oscillation to the prototype and rerun the comparison cases"
+      },
+      {
+        "user": "请将你目前做的这些优化的相关内容同步到仓库【https://github.com/OZAKI39/microbubble-aggregation】的main分支，注意按照 AGENT.md的内容要求进行同步",
+        "scope": "Integrate the tested optimizations into the repository main branch following AGENTS.md"
+      }
+    ],
+    "earlier_design_decisions": "Continuous amplitude; four channels each on its own frequency; shared AFG clock; GPU direct field computation plus a linear response formula; raise the 1500 Pa-equivalent cap; active phase control; deformation is the main subject. Only the cap (pretraining tier only) is implemented here; see not_implemented."
+  },
+  "frozen_path_unchanged": {
+    "statement": "sequential_step, resistance, pair_reference, coupled_fundamental, Warp kernels, Dynamics, HighFidelity, integrate_lf, Segment/schedule (0-1500 Pa-equivalent), configs/frozen/* and all inputs are unchanged. The new code is reached only through fidelity=PRETRAIN.",
+    "checks": [
+      "git diff of configs/frozen, inputs, microbubble/{_warp_forces,_warp_walls,gpu,dynamics,high_fidelity,acoustics,bubble_response,geometry,parameters,analysis,io}.py is empty",
+      "All 19 pre-existing CPU tests pass unchanged (CPU_TESTS.log; 27 in total with 8 new)",
+      "Strict-tier sparse_sequential_step reproduces sequential_step positions (< 1e-18 m) and gate decisions, including the active-set-cycle failure (tests/test_pretrain.py)"
+    ],
+    "gpu_tests": "NOT_RUN in this environment (no CUDA/Warp); the GPU code was not modified"
+  },
+  "changes": {
+    "microbubble/forces.py": "pair_forces (vectorized pair_reference, optional collective fundamental), collective_fundamental (Foldy-type N-bubble fundamental closure with singular guard), CPUForces (CPU fields + F1/F2 on the same cubic cache and response table)",
+    "microbubble/hydrodynamics.py": "sparse_resistance: the same matrix as resistance(), sparse CSC from KD-tree neighbours",
+    "microbubble/contact.py": "SparseFactor (SuperLU), candidate_geometry, osqp_qp, sparse_sequential_step (candidate-pair constraints, CANDIDATE_COVERAGE check, pretraining-tier rules)",
+    "microbubble/integration.py": "integrate_pretrain: displacement-controlled step size, halving on any failed gate, steps end at control switches and save times, wall guard, immutable outputs",
+    "microbubble/control.py": "pretrain_segments: stepped four-channel schedule with the pretraining cap; schedule() keeps 1500",
+    "workflows/f10ag.py": "load_pretrain_policy, run_pretrain; run() dispatches fidelity=PRETRAIN",
+    "configs/pretrain_policy.json": "Tier definition (overrides on top of the frozen policy)",
+    "configs/pretrain_collective_example.json": "Example run (prototype case N3)",
+    "pyproject.toml": "Optional dependency group pretrain = osqp==1.1.3",
+    "tests/test_pretrain.py": "8 tests"
+  },
+  "tier_definition": {
+    "file": "configs/pretrain_policy.json",
+    "tolerances_frozen_to_pretrain": {
+      "mobility_residual_m": [1e-13, 1e-10],
+      "primal_violation_m": [1e-12, 1e-10],
+      "complementarity_equivalent_gap_m": [1e-12, 1e-10],
+      "actual_geometry_complementarity_m": [1e-11, 1e-10],
+      "force_residual_rtol": [1e-08, 0.0001],
+      "dual_negative_N": ["1e-16", "max(1e-16, 1e-8 x force scale)"],
+      "contact_correction_m (0.1R)": ["push cancelled by contacts", "actual step displacement"],
+      "osqp eps_abs / eps_rel / max_iter / time_limit": ["1e-12 / 1e-10 / 3000 / 0.2 (unused by the frozen solver)", "1e-9 / 1e-9 / 50000 / 10 (fallback only)"]
+    },
+    "unchanged": "hard_geometry_m 1 nm, contact_overlap_m 0.01R, max_sequential_qp 5, force_residual_atol_N, non-penetration and all gate names",
+    "step_control": "One constrained solve per step; target largest actual displacement 3% of R; growth 0.5-2x; max step 0.5 ms; halve on any failed gate; minimum step 1 ns",
+    "coupling": "Must be stated in every run config: pairwise (frozen terms) or collective",
+    "source_cap_Pa_equivalent": 3000,
+    "wall_guard": "Stop when a bubble is within 2R of the lumen wall or end"
+  },
+  "evidence": {
+    "strict_tier_failures": {
+      "file": "PAIRWISE_SUMMARY.json, STRICT_VS_PRETRAIN.json, prototype_runs/*ref_strict*, *ada_strict*",
+      "E1_cluster32_1000 (AG32_local +40 um, 1000 Pa-eq X pair)": "fixed 1 us fails at 0.45 ms (CONTACT_REACTION_BALANCE_PASS); fixed 0.5 us fails at 0.807 ms (LOCAL_QP_PASS, TRUE_GAP_COMPLEMENTARITY_PASS, CONTACT_REACTION_BALANCE_PASS); strict adaptive reaches 1.87 ms in its 120 s budget",
+      "E2_compact64_1000": "fixed 1 us fails at 0.15 ms (CONTACT_REACTION_BALANCE_PASS)",
+      "E3_cluster32_3000": "fixed 1 us fails at the second step (CONTACT_CORRECTION)",
+      "root_cause": "Active-set cycling on degenerate contact networks (about 88 active contacts for 96 degrees of freedom). State stored as ACTIVE_SET_CYCLE_STATE.npy and used in tests/test_pretrain.py",
+      "strict_vs_pretrain_before_strict_failure": "E1 35 nm, E2 0.26 nm largest per-bubble difference"
+    },
+    "step_control_cost_and_accuracy": {
+      "files": "PAIRWISE_SUMMARY.json, NBODY_SUMMARY.json",
+      "pairwise_solves_fixed_1us_over_adaptive_3pct": {"E1": 15.2, "E2": 4.4, "E3": 2.3, "E4": 2.8},
+      "pairwise_note": "E1/E3 stored runs predate admitting solved-but-unpolished OSQP solutions; with the final rule E1 needs 322 solves (ratio 15.5) and E3 1931 (ratio 2.6), see REPO_REPRODUCTION.json",
+      "collective_solves_fixed_1us_over_adaptive_3pct": {"N1": 135.1, "N2": 76.9, "N3": 42.0, "N4": 20.3},
+      "accuracy_without_rearrangement_vs_0p5us_reference": "per-bubble 0.2 nm (E4), 16-20 nm (N1, N2)",
+      "accuracy_with_rearrangement": "per-bubble differences reach the micrometre level, as between the 1 us and 0.5 us references themselves (bifurcation sensitivity). Aspect-ratio difference to the 0.5 us reference: N3 0.018, N4 0.012, E2 0.008; E1 0.071, where the 1 us reference also differs by 0.071",
+      "consequence": "Pretraining labels should be shape-level quantities (aspect, orientation, Rg, contacts) or statistics, not single-bubble trajectories"
+    },
+    "collective_coupling": {
+      "files": "STATIC_COHESION.txt, NBODY_SUMMARY.json, LOOSE_CLOUD_BUDGET.json, figures/nbody_results.png",
+      "static_settled_32_cluster_3000_Pa_eq": "touching-pair force median 4.18e-9 N pairwise vs 2.13e-11 N collective; ratio to the field-force difference across the cluster 650 vs 2-3; 20% of touching pairs repulsive; collective amplitude median 0.12 of the isolated bubble, phase -47 deg; smallest |eigenvalue| of I + chi K 0.624; N = 2 matches coupled_fundamental to 1e-12",
+      "settled_32_cluster_3000_Pa_eq_20_ms": "pairwise: rigid, aspect 1.24 throughout, centre shift -13.6 um along x, 6359 solves, 248 s. collective: aspect 1.15-2.04 (1.86 at 20 ms), 104 -> 63 contacts, 2 groups, centre +1.7 um, 1221 solves, 20 s",
+      "lattice_32_3000_Pa_eq": "pairwise compact aspect 1.17; collective elongated aggregate aspect 1.62",
+      "lattice_32_1000_Pa_eq": "pairwise full collapse; collective 5 groups, 20 contacts",
+      "compact_64_1000_Pa_eq_2_ms": "pairwise collapses to aspect 1.7; collective stays at 2.32",
+      "loose_64_cloud_3000_Pa_eq_10_ms": "pairwise reaches 8.8 ms in a 300 s cap (8214 solves, median step 0.81 us); collective completes 10 ms in 21.5 s (1294 solves, median step 6.1 us), 64 -> 39 groups",
+      "smallest_singular_value_all_runs": "0.62-0.64 at 2.5 MHz (guard 1e-3)"
+    },
+    "repository_reproduction": {
+      "file": "REPO_REPRODUCTION.json",
+      "summary": "In Python 3.12 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3 the repository implementation gives positions identical (difference 0.0 m) to the final prototype (Python 3.13 / NumPy 2.5.3 / SciPy 1.18.1) for all 10 rerun cases (N1-N5, N4L, E1-E4) and the same solve counts. E4L and E5 were not rerun."
+    },
+    "prototype_sources": "prototype/*.py.txt and *.sh.txt: the session prototype that produced prototype_runs/, kept as evidence only, never imported. Paths inside are the session scratch paths.",
+    "failures_retained": "logs/ keeps the run logs including N4 H_MIN stalls before solved-but-unpolished OSQP solutions were admitted to the KKT gates, the first N4L run (2006 solves), and strict-tier budget stops. prototype_runs/n4_fail.npy is the N4 stall state."
+  },
+  "literature_basis_for_collective_coupling": [
+    "L. L. Foldy, Phys. Rev. 67, 107 (1945): self-consistent multiple scattering of point scatterers",
+    "Z. Zeravcic, D. Lohse, W. van Saarloos, J. Fluid Mech. 680, 114 (2011): collective oscillations in bubble clouds",
+    "M. Lanoy, C. Derec, A. Tourin, V. Leroy, Appl. Phys. Lett. 107, 214101 (2015): secondary Bjerknes forces in bubble groups require the coupled response",
+    "Chin. Phys. B 22(1), 014304 (2013): higher bubble density suppresses the interaction force inside a cluster",
+    "M. Ida, arXiv:physics/0109005: sign reversal of the secondary Bjerknes force at close range"
+  ],
+  "limitations": [
+    "Collective coupling is a linear monopole (fundamental-only) closure: no translation coupling, no multipoles or non-spherical modes, higher harmonics isolated, no shell contact, fusion or breakup",
+    "Not calibrated against any experiment; the drift reversal of a dense cluster is a model prediction to test, not a finding",
+    "O(N^3) dense solve per force evaluation; fine for hundreds of bubbles, larger N needs an iterative or GPU solver",
+    "Other frequencies or radii may approach a collective resonance; the run fails at the singular guard instead of regularizing",
+    "Pretraining tolerances (1e-10 m residuals, rtol 1e-4) are tied to the observation scale; results are not admissible as frozen-tier evidence",
+    "No wall contact model; runs stop 2R from the lumen wall or end",
+    "Coarse 2.5/2.4/2.6 MHz field caches only; same cubic-cache interior restriction as HF/LF"
+  ],
+  "not_implemented": [
+    "Per-channel frequencies and GPU direct field computation with a linear response formula",
+    "Raising the frozen HF/LF 1500 Pa-equivalent cap (only the pretraining tier has its own 3000 cap)",
+    "Batched in-process parallel runs (runs were parallel processes)",
+    "Reduced-order deformation model and rigid-group integration",
+    "GPU kernels for the collective closure or the sparse contact step",
+    "Active phase control beyond the existing per-segment phases"
+  ]
+}

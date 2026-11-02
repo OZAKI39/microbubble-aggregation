@@ -1,0 +1,181 @@
+{
+ "purpose": "Repository implementation vs prototype (displacement controller, 3% R, pretraining tier), same cases and save times",
+ "environment": {
+  "python": "3.12.3",
+  "versions": {
+   "numpy": "2.2.6",
+   "scipy": "1.15.3",
+   "h5py": "3.16.0",
+   "warp-lang": "NOT_INSTALLED",
+   "matplotlib": "NOT_INSTALLED"
+  }
+ },
+ "prototype_environment": "Python 3.13, NumPy 2.5.3, SciPy 1.18.1, OSQP 1.1.3 (session scratch prototype, see prototype/*.py.txt)",
+ "not_rerun": "E4L (20 ms pairwise, 248 s) and E5 (pairwise loose cloud, budget-capped) were not repeated here",
+ "rows": {
+  "N1_cluster32_1000": {
+   "coupling": "collective",
+   "status": "PASS",
+   "completed_s": 0.005,
+   "repo_solves": 37,
+   "prototype_solves": 37,
+   "same_save_times": true,
+   "max_position_difference_m": 0.0,
+   "repo_min_singular_value": 0.6236409744340583,
+   "prototype_min_singular_value": 0.6236409744340584,
+   "repo_wall_s": 0.54,
+   "prototype_wall_s": 0.43,
+   "final_aspect": 1.006001172471615,
+   "final_contacts": 20
+  },
+  "N2_compact64_1000": {
+   "coupling": "collective",
+   "status": "PASS",
+   "completed_s": 0.002,
+   "repo_solves": 26,
+   "prototype_solves": 26,
+   "same_save_times": true,
+   "max_position_difference_m": 0.0,
+   "repo_min_singular_value": 0.6355472519742127,
+   "prototype_min_singular_value": 0.6355472519742126,
+   "repo_wall_s": 0.38,
+   "prototype_wall_s": 0.44,
+   "final_aspect": 2.320466684680978,
+   "final_contacts": 13
+  },
+  "N3_cluster32_3000": {
+   "coupling": "collective",
+   "status": "PASS",
+   "completed_s": 0.005,
+   "repo_solves": 119,
+   "prototype_solves": 119,
+   "same_save_times": true,
+   "max_position_difference_m": 0.0,
+   "repo_min_singular_value": 0.623652956395183,
+   "prototype_min_singular_value": 0.6236529563951831,
+   "repo_wall_s": 1.95,
+   "prototype_wall_s": 1.61,
+   "final_aspect": 1.6029709607016038,
+   "final_contacts": 56
+  },
+  "N4_settled32_3000": {
+   "coupling": "collective",
+   "status": "PASS",
+   "completed_s": 0.005,
+   "repo_solves": 246,
+   "prototype_solves": 246,
+   "same_save_times": true,
+   "max_position_difference_m": 0.0,
+   "repo_min_singular_value": 0.6236209690885212,
+   "prototype_min_singular_value": 0.6236209690885212,
+   "repo_wall_s": 4.95,
+   "prototype_wall_s": 6.2,
+   "final_aspect": 1.8506180270839476,
+   "final_contacts": 76
+  },
+  "N4L_settled32_3000": {
+   "coupling": "collective",
+   "status": "PASS",
+   "completed_s": 0.02,
+   "repo_solves": 1221,
+   "prototype_solves": 1221,
+   "same_save_times": true,
+   "max_position_difference_m": 0.0,
+   "repo_min_singular_value": 0.6236208662715751,
+   "prototype_min_singular_value": 0.6236208662715752,
+   "repo_wall_s": 20.61,
+   "prototype_wall_s": 20.26,
+   "final_aspect": 1.8587742001652123,
+   "final_contacts": 63
+  },
+  "N5_loose64_3000": {
+   "coupling": "collective",
+   "status": "PASS",
+   "completed_s": 0.01,
+   "repo_solves": 1294,
+   "prototype_solves": 1294,
+   "same_save_times": true,
+   "max_position_difference_m": 0.0,
+   "repo_min_singular_value": 0.6236208664106725,
+   "prototype_min_singular_value": 0.6236208664106723,
+   "repo_wall_s": 19.23,
+   "prototype_wall_s": 20.12,
+   "final_aspect": 1.3016460510122243,
+   "final_contacts": 33
+  },
+  "E1_cluster32_1000": {
+   "coupling": "pairwise",
+   "status": "PASS",
+   "completed_s": 0.005,
+   "repo_solves": 322,
+   "prototype_solves": 330,
+   "same_save_times": true,
+   "max_position_difference_m": 4.908609526339497e-08,
+   "repo_min_singular_value": null,
+   "prototype_min_singular_value": null,
+   "repo_wall_s": 6.51,
+   "prototype_wall_s": 7.3,
+   "final_aspect": 1.166642952667901,
+   "final_contacts": 106
+  },
+  "E2_compact64_1000": {
+   "coupling": "pairwise",
+   "status": "PASS",
+   "completed_s": 0.002,
+   "repo_solves": 456,
+   "prototype_solves": 456,
+   "same_save_times": true,
+   "max_position_difference_m": 7.20622224033511e-17,
+   "repo_min_singular_value": null,
+   "prototype_min_singular_value": null,
+   "repo_wall_s": 40.13,
+   "prototype_wall_s": 53.06,
+   "final_aspect": 1.6786054388295362,
+   "final_contacts": 190
+  },
+  "E3_cluster32_3000": {
+   "coupling": "pairwise",
+   "status": "PASS",
+   "completed_s": 0.005,
+   "repo_solves": 1931,
+   "prototype_solves": 2187,
+   "same_save_times": true,
+   "max_position_difference_m": 9.378912603772843e-10,
+   "repo_min_singular_value": null,
+   "prototype_min_singular_value": null,
+   "repo_wall_s": 41.37,
+   "prototype_wall_s": 58.96,
+   "final_aspect": 1.1666429220194456,
+   "final_contacts": 106
+  },
+  "E4_settled32_3000": {
+   "coupling": "pairwise",
+   "status": "PASS",
+   "completed_s": 0.005,
+   "repo_solves": 1773,
+   "prototype_solves": 1773,
+   "same_save_times": true,
+   "max_position_difference_m": 0.0,
+   "repo_min_singular_value": null,
+   "prototype_min_singular_value": null,
+   "repo_wall_s": 42.77,
+   "prototype_wall_s": 47.89,
+   "final_aspect": 1.2373440174493542,
+   "final_contacts": 104
+  }
+ },
+ "notes": [
+  "Collective cases N1-N5 and pairwise E2/E4: identical positions and solve counts.",
+  "E1 and E3 (pairwise): the stored prototype runs were made before solved-but-unpolished OSQP solutions were admitted to the KKT gates, so they rejected and halved more steps (E1 330 vs 322 solves, E3 2187 vs 1931). Re-running the final prototype for E1 and E3 gives 322 and 1931 solves and positions identical to the repository (difference 0.0 m); those reruns are in prototype_runs/recheck_final_prototype/."
+ ],
+ "final_prototype_recheck": {
+  "E1_cluster32_1000": {
+   "solves": 322,
+   "max_position_difference_to_repository_m": 0.0
+  },
+  "E3_cluster32_3000": {
+   "solves": 1931,
+   "max_position_difference_to_repository_m": 0.0
+  }
+ }
+}

@@ -1,0 +1,53 @@
+{
+  "tier": "pretrain",
+  "purpose": "Broadly randomized pretraining data for a world model (deformation-focused). Not a calibration of the experimental chip; not a replacement for the frozen HF/LF science path.",
+  "base": "configs/frozen/contact_policy.json + configs/frozen/contact_revision.json; only the keys below change, and only in sparse_sequential_step with tier=pretrain",
+  "admission": "evidence/pretrain_tier_20261102/ADMISSION.json",
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "PRETRAIN_TIER"
+  ],
+  "training_ready": false,
+  "overrides": {
+    "mobility_residual_m": 1e-10,
+    "primal_violation_m": 1e-10,
+    "complementarity_equivalent_gap_m": 1e-10,
+    "actual_geometry_complementarity_m": 1e-10,
+    "force_residual_rtol": 0.0001,
+    "osqp": {
+      "eps_abs": 1e-09,
+      "eps_rel": 1e-09,
+      "max_iter": 50000,
+      "time_limit": 10.0
+    }
+  },
+  "unchanged": "hard_geometry_m 1 nm, contact_overlap_m 0.01R, contact_correction_m 0.1R (applied to the actual step displacement), max_sequential_qp 5, force_residual_atol_N, hard-sphere non-penetration and all gate names",
+  "tier_rules": {
+    "osqp_fallback": "Only when the active-set QP does not return active_set_solved (observed: active_set_cycle on degenerate contact networks). Same QP; accepted only if every KKT gate passes.",
+    "dual_tolerance": "max(dual_negative_N, 1e-8 x force scale)",
+    "contact_correction": "0.1R limit applies to the largest actual bubble displacement of the step instead of the push cancelled by contacts"
+  },
+  "singular_guard": 0.001,
+  "max_source_amplitude_Pa_equivalent": 3000,
+  "max_segments": 64,
+  "stepping": {
+    "displacement_over_R": 0.03,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.0005,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+  },
+  "wall_guard_over_R": 2.0,
+  "reasons": {
+    "tolerances": "Residual tolerances tied to the observation scale (a camera pixel is about 600 nm) instead of 1e-13 m; the strict tier stalls on degenerate contact networks (evidence: STRICT_VS_PRETRAIN.json).",
+    "stepping": "One constrained solve per step; the step grows while the largest actual displacement stays near 3% of R and halves on any failed gate. Compared against fixed 1 us and 0.5 us references in NBODY_SUMMARY.json and PAIRWISE_SUMMARY.json.",
+    "source_cap": "3000 Pa-equivalent is the largest amplitude exercised in the prototype comparisons; the response-table domain check still fails outside the table. The frozen HF/LF cap stays 1500.",
+    "wall_guard": "No wall contact is modelled in this tier; runs stop 2R from the lumen wall or end."
+  }
+}

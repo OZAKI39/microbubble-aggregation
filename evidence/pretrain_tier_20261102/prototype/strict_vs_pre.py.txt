@@ -1,0 +1,31 @@
+"""Where the original strict path still runs, does the pretraining tier reproduce it?
+Both at the same fixed 1 us step; positions compared every 10 us until strict fails."""
+import sys, json
+import numpy as np, h5py
+sys.path.insert(0, sys.argv[2])
+import proto as P
+
+root = sys.argv[1]
+C, POL = P.init(root)
+pre = P.pretrain_policy(POL)
+res = {}
+for case, state, amp, off in (("E1_cluster32_1000", "AG32_local", 1000, [40e-6, 0, 0]),
+                              ("E2_compact64_1000", "N64_compact_reference", 1000, [40e-6, 0, 0])):
+    with h5py.File(f"{root}/inputs/initial_states.h5") as f:
+        x0 = f[state][()] + np.asarray(off)
+    fo = P.Forces([0, 0, amp, amp], [0] * 4)
+    xs, xp, t, worst, fail = x0.copy(), x0.copy(), 0.0, 0.0, None
+    for k in range(1, 2001):
+        Fs, _ = fo(xs)
+        rs = P.dense_step(xs, Fs, 1e-6)
+        if not all(rs["gates"].values()):
+            fail = dict(time_us=k - 1, gates=[g for g, v in rs["gates"].items() if not v])
+            break
+        Fp, _ = fo(xp)
+        rp = P.sparse_sequential_step(xp, Fp, 1e-6, P.sparse_resistance(xp), pre)
+        xs, xp = rs["positions_m"], rp["positions_m"]
+        worst = max(worst, float(np.linalg.norm(xs - xp, axis=1).max()))
+    res[case] = dict(strict_completed_us=k - 1 if fail else k, strict_failure=fail,
+                     max_diff_strict_vs_pretrain_m=worst,
+                     strict_travel_um=float(np.linalg.norm(xs - x0, axis=1).max() * 1e6))
+print(json.dumps(res, indent=1))
