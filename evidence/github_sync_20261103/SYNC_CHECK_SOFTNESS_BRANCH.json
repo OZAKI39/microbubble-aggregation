@@ -1,0 +1,312 @@
+{
+  "date": "2026-11-03",
+  "request": "请根据【/home/lzy/projects/new_microbubble_aggregation/AGENTS.md】的要求，将当前【/home/lzy/projects/new_microbubble_aggregation】目录下的项目内容同步到【https://github.com/OZAKI39/microbubble-aggregation】的新的分支，并且把目前“团太软”的检查脚本也推到 GitHub",
+  "branch": "pretrain-softness-check",
+  "base": {
+    "branch_point": "22e83268f741e37219fd1c0b2c7b6baef52e096d",
+    "local_main": "22e83268f741e37219fd1c0b2c7b6baef52e096d",
+    "origin_main": "22e83268f741e37219fd1c0b2c7b6baef52e096d"
+  },
+  "note": "Listed after the docs/GITHUB_SYNC.md section was written (its final content is included); this record itself is also committed but not listed.",
+  "files": [
+    {
+      "path": "configs/pretrain_protocol_ab/center_collective.json",
+      "state": "new",
+      "bytes": 942,
+      "sha256": "223d319a4e83ce664bcd94e36c27af5c76b3998b27bdb299cc2826f9e08b2672"
+    },
+    {
+      "path": "configs/pretrain_protocol_ab/center_pairwise.json",
+      "state": "new",
+      "bytes": 940,
+      "sha256": "3f22fb0914cd766aefdad13a0fee2384a720ff8d63689e413bf9e0242dffd707"
+    },
+    {
+      "path": "configs/pretrain_protocol_ab/offset_collective.json",
+      "state": "new",
+      "bytes": 1006,
+      "sha256": "910c2c285955bedb2be4d5a6feaa111702425bd9274c2e3f3ee98ad1e5fb3393"
+    },
+    {
+      "path": "configs/pretrain_protocol_ab/offset_pairwise.json",
+      "state": "new",
+      "bytes": 1004,
+      "sha256": "ab6066db8177232f600567be4fde5c5b37bea06f024f25394977571bd7253164"
+    },
+    {
+      "path": "docs/GITHUB_SYNC.md",
+      "state": "modified",
+      "bytes": 10520,
+      "sha256": "e9c5326da096bbf6f481ce5bf818f18b9917d53db0782c7f4e5a67b278f43c0e"
+    },
+    {
+      "path": "evidence/ab_reference_20261103/AB_REFERENCE.json",
+      "state": "new",
+      "bytes": 48964,
+      "sha256": "bc656cb904cfcd4fe76ead866880823afacfbf53bbda9886f322e2c0f8219e23"
+    },
+    {
+      "path": "evidence/ab_reference_20261103/AB_REFERENCE_SCRIPT.py.txt",
+      "state": "new",
+      "bytes": 25520,
+      "sha256": "5207d3464f26f8a2954fadbba437e1557d424a235040d17a92a6abc2f2e4ca62"
+    },
+    {
+      "path": "evidence/ab_reference_20261103/README.md",
+      "state": "new",
+      "bytes": 5426,
+      "sha256": "c7af5b64f569c7c96d39398c211c6e2e75751fa95489022e6c606200d5b2eab6"
+    },
+    {
+      "path": "evidence/ab_reference_20261103/fig1_cluster_speed_after_switch.png",
+      "state": "new",
+      "bytes": 177509,
+      "sha256": "6017966fa2ca97f7f2a1e0838cbdd62c1d0a49fbb678aa356eb15f7c6819050e"
+    },
+    {
+      "path": "evidence/ab_reference_20261103/fig2_cluster_deformation.png",
+      "state": "new",
+      "bytes": 151040,
+      "sha256": "05fd7f033b362be663b537b4e5256ef85bafce4547299701f55caef60fd86925"
+    },
+    {
+      "path": "evidence/ab_reference_20261103/fig3_implied_gain.png",
+      "state": "new",
+      "bytes": 66234,
+      "sha256": "e03ef3827720d437ee3f6d583ab87cd2c299597c5e2b9c18771cde8657d1098a"
+    },
+    {
+      "path": "pyproject.toml",
+      "state": "modified",
+      "bytes": 828,
+      "sha256": "ea0941913f9f6d3f7d1341dc8d55e8c3c27622da31a196f91d86295c48aa9c7a"
+    },
+    {
+      "path": "requirements-lock.txt",
+      "state": "modified",
+      "bytes": 450,
+      "sha256": "2932fad9f8725dc1e307ea57580093bca5c0307c8e1f461f5bfa132ea8200efc"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/DONE.txt",
+      "state": "new",
+      "bytes": 96,
+      "sha256": "52eba6096e28d56351cfedec8b890a2033a5cf228e4360fdf08613febc7b0600"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/center_collective.log",
+      "state": "new",
+      "bytes": 128362,
+      "sha256": "217f96710edff8eb8f8dd5b83f4ef77ea8820833dc2bc37ea69c3172e35bc275"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/center_collective/EXECUTION.json",
+      "state": "new",
+      "bytes": 8373,
+      "sha256": "f1710a2c01d36ee096ad77fac789daa3d0b1ff30541738a214dde65f4de1799e"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/center_collective/SUMMARY.json",
+      "state": "new",
+      "bytes": 128313,
+      "sha256": "9bebdd846ef71062953c0270fe3c28711c22166fca5316d13efcc8c60fffd6ea"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/center_pairwise.log",
+      "state": "new",
+      "bytes": 128037,
+      "sha256": "b410d99f1bcc5e274024ad94bdea9816e07bb45869cf7d8287917859246e00f5"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/center_pairwise/EXECUTION.json",
+      "state": "new",
+      "bytes": 8367,
+      "sha256": "cc17e3d21881173aa17510098aec252f95bdcae9303a8877be7b671f3dbe9685"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/center_pairwise/SUMMARY.json",
+      "state": "new",
+      "bytes": 127990,
+      "sha256": "5d5836b961de9f3babe301ccf5feaaeb54c6ddd6bf0cce8667bc42b408f1af8d"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/offset_collective.log",
+      "state": "new",
+      "bytes": 128508,
+      "sha256": "5ab5a3ba5319ecebf0a0133e5ef225d3731d369daf6956fafbe351288ed499cd"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/offset_collective/EXECUTION.json",
+      "state": "new",
+      "bytes": 8511,
+      "sha256": "891d22f61819823923e5f3df61502e07dded0c9b2f5fcde368dfe46d0f4b9113"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/offset_collective/SUMMARY.json",
+      "state": "new",
+      "bytes": 128459,
+      "sha256": "a090e03526cb78550f1ddca44ae414f5f533b7c10a221d356de5e4aa65188caf"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/offset_pairwise.log",
+      "state": "new",
+      "bytes": 128205,
+      "sha256": "8e38f4c3781611b340b70e3394218b4727a6cf3a14c256e0cc9fdedfc05b027e"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/offset_pairwise/EXECUTION.json",
+      "state": "new",
+      "bytes": 8505,
+      "sha256": "636689aca00121b5592a676f134af8cd0a7a4564c6fe44f7ac39fe3b37b51b65"
+    },
+    {
+      "path": "results/pretrain_protocol_ab/offset_pairwise/SUMMARY.json",
+      "state": "new",
+      "bytes": 128158,
+      "sha256": "f19c90c0bf2a451f8e8d5992641695ee233b785d44a92eb181b315bf866845aa"
+    },
+    {
+      "path": "visualization/ab_protocol_figures.py",
+      "state": "new",
+      "bytes": 26632,
+      "sha256": "fe0f228574c453be6142eb0c9024d101c1de9f346c654193f41a6218d7683c08"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/COMPARISON.json",
+      "state": "new",
+      "bytes": 33334,
+      "sha256": "571c9be8454037f6f33c02b8f75fe973f6c10ce5519074db133fe33c1ea0cce3"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/README.md",
+      "state": "new",
+      "bytes": 2815,
+      "sha256": "872dc6a91425ade57150880240f8f4a658c8b879f567fd30bd56defa8bd94a86"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/anim_protocol_runs.mp4",
+      "state": "new",
+      "bytes": 1679202,
+      "sha256": "a96524b8fa397d5fb28fbe592f847ef90477b96d506d7034063bfdcc649500ea"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/fig1_speed_after_switch.png",
+      "state": "new",
+      "bytes": 229140,
+      "sha256": "94cd93b2a6e6c21feb57b1862bf5e0fba4a65dcb4581fec10772d050c319d8c7"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/fig2_deformation.png",
+      "state": "new",
+      "bytes": 232946,
+      "sha256": "9b87993270c34a46499a4a920452c967d36b7c5a787a59792f254da23895d9b8"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/fig3_shape_over_time.png",
+      "state": "new",
+      "bytes": 259055,
+      "sha256": "fba503f628f5279b4f68b743f4f0e00e7c5d9f7af0b57a22893c3666f623fc39"
+    }
+  ],
+  "total_bytes": 4013391,
+  "largest": [
+    {
+      "path": "visualization/ab_protocol_sim/anim_protocol_runs.mp4",
+      "state": "new",
+      "bytes": 1679202,
+      "sha256": "a96524b8fa397d5fb28fbe592f847ef90477b96d506d7034063bfdcc649500ea"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/fig3_shape_over_time.png",
+      "state": "new",
+      "bytes": 259055,
+      "sha256": "fba503f628f5279b4f68b743f4f0e00e7c5d9f7af0b57a22893c3666f623fc39"
+    },
+    {
+      "path": "visualization/ab_protocol_sim/fig2_deformation.png",
+      "state": "new",
+      "bytes": 232946,
+      "sha256": "9b87993270c34a46499a4a920452c967d36b7c5a787a59792f254da23895d9b8"
+    }
+  ],
+  "credential_scan": {
+    "pattern": "ghp_|gho_|github_pat_|AKIA[0-9A-Z]{16}|-----BEGIN|sk-[A-Za-z0-9]{20}|xox[abp]-|passw(or)?d|api[_-]?key|secret|bearer |authorization:|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[a-z]{2,}",
+    "scope": "raw bytes of every file above (text and binary)",
+    "hits": [
+      {
+        "path": "evidence/ab_reference_20261103/fig1_cluster_speed_after_switch.png",
+        "match": "ni@An.Xvq",
+        "assessment": "False positive: bytes inside the compressed PNG image data that happen to match the e-mail pattern; not text."
+      }
+    ],
+    "limitation": "Common credential formats only; not a guarantee for unknown secret formats."
+  },
+  "kept_local": {
+    "reason": "Existing purpose rules in .gitignore (full trajectories, step records); kept on this machine, not a backup. visualization/ab_protocol_figures.py reads these trajectory.h5 files and the ignored trajectory.h5 of the four random-action runs, plus MB_track A/B results outside this repo.",
+    "files": [
+      {
+        "path": "results/pretrain_protocol_ab/center_collective/STEP_RECORDS.json",
+        "bytes": 18612932,
+        "sha256": "deb97ac3e8b5bb05fc55965289c3277499964e87cdb373bbf90edeb1f58789a6"
+      },
+      {
+        "path": "results/pretrain_protocol_ab/center_collective/trajectory.h5",
+        "bytes": 778464,
+        "sha256": "15a7606165e9d35d1eb25b8495e1db27a20985507a37a4767fa1b7f9e99973e3"
+      },
+      {
+        "path": "results/pretrain_protocol_ab/center_pairwise/STEP_RECORDS.json",
+        "bytes": 11801668,
+        "sha256": "14a8989ab0fc756265ffae5f9f89df55c62d8119db664e1f2ecc101cf300eff4"
+      },
+      {
+        "path": "results/pretrain_protocol_ab/center_pairwise/trajectory.h5",
+        "bytes": 675774,
+        "sha256": "6f98c1ebbbdf903d05783345093ac676652160e4c63855b1936390e03006d015"
+      },
+      {
+        "path": "results/pretrain_protocol_ab/offset_collective/STEP_RECORDS.json",
+        "bytes": 25359959,
+        "sha256": "4f31219eb50d9504907986dc5bcb0ad17f2636d0783a6d8f65f0164427af375d"
+      },
+      {
+        "path": "results/pretrain_protocol_ab/offset_collective/trajectory.h5",
+        "bytes": 775123,
+        "sha256": "483880937bb0a07434a07d4c55f4f6e9a008c0c8023ad22d9e0c85d5b1886d65"
+      },
+      {
+        "path": "results/pretrain_protocol_ab/offset_pairwise/STEP_RECORDS.json",
+        "bytes": 39142874,
+        "sha256": "4f764017d28f10fb141728f12ed2beff76bee5230ef6212f6ea1a5b62250431b"
+      },
+      {
+        "path": "results/pretrain_protocol_ab/offset_pairwise/trajectory.h5",
+        "bytes": 665081,
+        "sha256": "6c7c4cdfd85ad07bb8eb80727c315667acb198b3e1234e523d2349e36e3cd0c1"
+      }
+    ],
+    "total_bytes": 97811875
+  },
+  "tests": {
+    "command": "OPENBLAS_NUM_THREADS=1 .venv/bin/python -m pytest -q",
+    "result": "38 passed",
+    "includes_gpu": true,
+    "device": "RTX 4060 Laptop GPU, Warp 1.18.0",
+    "versions": {
+      "python": "3.12.3",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "osqp": "1.1.3",
+      "matplotlib": "3.11.2",
+      "imageio_ffmpeg": "0.8.1"
+    }
+  },
+  "softness_script_rerun": {
+    "command": ".venv/bin/python visualization/ab_protocol_figures.py --mb /home/lzy/projects/new_microbubble_experiment/customer_workspace/microbubble_tracking/results --out <session scratch dir>",
+    "wall_time_s": 45.5,
+    "exit_code": 0,
+    "result": "fig1/fig2/fig3 PNG, anim_protocol_runs.mp4 and COMPARISON.json byte-identical to visualization/ab_protocol_sim/ (README.md is hand-written, not generated)"
+  },
+  "not_run": "No new simulations, GPU benchmarks or remote computations were started for this sync."
+}

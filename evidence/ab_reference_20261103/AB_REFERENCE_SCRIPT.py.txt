@@ -1,0 +1,497 @@
+"""A/B 真实追踪与预训练档仿真的粗对照：团的速度、变形和由此推出的增益范围（只读，不跑仿真）。
+
+真实侧：MB_track 的 A_offline、B_offline 追踪结果（state.csv，只用 trusted 行）和逐帧 PZT 状态
+（analysis/pzt_analysis/aligned_frames.csv）。每个区域在同一段轨迹内、同一个动作内取 0.1 s
+（6 帧）窗口，量位移、长宽比和面积的变化。"团"沿用追踪程序的定义：面积 >= 300 px²；形状量只用
+两端 shape_quality 都是 good（面积 >= 200 px²、贴壁 <= 20%、不在画面边缘）的窗口。
+
+仿真侧：预训练档 4 条成团运行（collective、查表声场、2.5 MHz）。每个 0.1 s 动作段开头，按
+0.6 µm/px 把泡画成半径 R 的圆盘，取最大的连通区域里的那批泡；段末只用这批泡再画一次：
+位移 = 这批泡平均位置的移动，形状 = 段末区域的长宽比和面积。这批泡在段末分成几块时视为分裂，
+不进形状统计（真实追踪在分裂处也会切断轨迹）。长宽比与追踪程序相同：像素坐标协方差两个特征值
+之比的平方根。
+
+用法（仿真仓库根目录；证据里存为 .py.txt，先复制成 .py 再运行）：
+    OPENBLAS_NUM_THREADS=1 PYTHONPATH=. .venv/bin/python ab_reference.py \\
+        --mb <MB_track 的 microbubble_tracking/results> --out evidence/ab_reference_20261103
+输出：AB_REFERENCE.json 和 3 张图。不修改 MB_track，也不修改 results/、inputs/。
+敏感性：仿真侧另把圆盘放大 1 px 重算一遍（粗略模拟光学模糊），结果在 sim_sensitivity_grow_1px。
+"""
+
+import argparse
+import csv
+import json
+import shutil
+import tempfile
+from collections import defaultdict
+from pathlib import Path
+
+import h5py
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager, ticker
+from scipy import ndimage
+
+from microbubble.io import sha
+
+UM_PER_PX = 0.6  # 用户定的暂用像素尺度（实验 report.json 里 um_per_px 仍为 null）
+FPS = 60.0
+WINDOW_FRAMES = 6  # 0.1 s，与世界模型一步相同
+CLUSTER_AREA_PX2 = 300.0  # 追踪程序 analyze.py 的 cluster_area_px
+RADIUS_M = 1.78e-6
+EARLY_S = (0.0, 0.5)  # 切换后的"刚开始"窗口：用来和仿真每段 0.1 s（每段都是新切换）对比速度
+SHAPE_EARLY_S = (0.0, 1.0)
+MIN_DISP_PX = 1.0  # 算"每移动 1 px 的变形"时，位移小于它的窗口不计（追踪抖动量级）
+PRETRAIN_CAP_PA = 3000.0  # configs/pretrain_policy.json 的 max_source_amplitude_Pa_equivalent
+EXPERIMENTS = {"A": "A_offline", "B": "B_offline"}
+SIM_RUNS = {
+    "center_A": ("results/pretrain_feasibility_2s", "configs/pretrain_feasibility_2s.json"),
+    "center_B": ("results/pretrain_stability_2s/center_B", "configs/pretrain_stability_2s/center_B.json"),
+    "offset_A": ("results/pretrain_stability_2s/offset_A", "configs/pretrain_stability_2s/offset_A.json"),
+    "offset_B": ("results/pretrain_stability_2s/offset_B", "configs/pretrain_stability_2s/offset_B.json"),
+}
+SIM_CHANNELS = ("Y-", "Y+", "X-", "X+")
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK = dict(primary="#0b0b0b", secondary="#52514e", muted="#898781", grid="#e1e0d9", axis="#c3c2b7")
+# 参考配色按固定顺序分给实体：同一路 PZT 在所有图里同色
+ACTION_COLOR = {
+    "PZT1": "#2a78d6",
+    "PZT2": "#eb6834",
+    "PZT3": "#1baf7a",
+    "PZT4": "#eda100",
+    "PZT1+PZT3": "#e87ba4",
+    "none": INK["muted"],
+}
+SOURCE_COLOR = {"real_idle": INK["muted"], "real_on": "#2a78d6", "sim": "#eb6834"}
+FOOTER = "Exploratory · 2 recordings (A/B) vs 4 PRETRAIN collective runs · provisional 0.6 µm/px"
+
+
+# ----------------------------------------------------------------------------- 真实数据
+
+
+def read_csv(path):
+    with open(path, newline="", encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
+
+
+def real_windows(result_dir):
+    """一个录像里所有 0.1 s 窗口：同一段轨迹、同一个动作、两端都不在画面边缘。"""
+    frames = {int(r["frame"]): r for r in read_csv(result_dir / "analysis/pzt_analysis/aligned_frames.csv")}
+    pieces = defaultdict(dict)
+    for r in read_csv(result_dir / "analysis/state.csv"):
+        if r["review_status"] == "trusted":
+            pieces[int(r["segment"])][int(r["frame"])] = r
+    out = []
+    for piece, rows in pieces.items():
+        for f, r0 in rows.items():
+            r1 = rows.get(f + WINDOW_FRAMES)
+            if r1 is None or r0["at_image_edge"] == "1" or r1["at_image_edge"] == "1":
+                continue
+            a0, a1 = frames[f], frames[f + WINDOW_FRAMES]
+            if a0["action_no"] != a1["action_no"]:
+                continue
+            good = r0["shape_quality"] == "good" and r1["shape_quality"] == "good"
+            out.append(
+                dict(
+                    object_id=r0["object_id"],
+                    action_no=int(a0["action_no"]),
+                    action=a0["active_pzts"],
+                    t_since_s=float(a0["t_since_action_s"]),
+                    area_px2=float(r0["area_px2"]),
+                    disp_px=float(np.hypot(float(r1["x_px"]) - float(r0["x_px"]), float(r1["y_px"]) - float(r0["y_px"]))),
+                    shape_good=good,
+                    wall=r0["shape_quality"] == "wall contact",
+                    aspect=float(r0["aspect_ratio"]),
+                    dln_aspect=abs(np.log(float(r1["aspect_ratio"]) / float(r0["aspect_ratio"]))) if good else None,
+                    dln_area=abs(np.log(float(r1["area_px2"]) / float(r0["area_px2"]))) if good else None,
+                )
+            )
+    return out
+
+
+# ----------------------------------------------------------------------------- 仿真数据
+
+
+def raster_labels(xy_m, grow_px=0.0):
+    """按 UM_PER_PX 画半径 R + grow_px 的圆盘并做 8 邻接标记；返回 (标记图, 区域数, 每个泡所在区域)。
+
+    grow_px > 0 粗略模拟光学模糊：间隙小于约 2 × grow_px 的泡在图像里连成一块。
+    """
+    px = xy_m * 1e6 / UM_PER_PX
+    r = RADIUS_M * 1e6 / UM_PER_PX + grow_px
+    origin = np.floor(px.min(0) - r - 2)
+    size = np.ceil(px.max(0) + r + 2 - origin).astype(int) + 1
+    yy, xx = np.mgrid[0 : size[1], 0 : size[0]]
+    image = np.zeros(size[::-1], bool)
+    local = px - origin
+    for cx, cy in local:
+        image |= (xx + 0.5 - cx) ** 2 + (yy + 0.5 - cy) ** 2 <= r * r
+    labels, n = ndimage.label(image, structure=np.ones((3, 3)))
+    owner = labels[np.clip(local[:, 1].astype(int), 0, size[1] - 1), np.clip(local[:, 0].astype(int), 0, size[0] - 1)]
+    return labels, n, owner
+
+
+def region_shape(labels, k):
+    ys, xs = np.nonzero(labels == k)
+    small, large = np.linalg.eigvalsh(np.cov(np.vstack([xs, ys])))
+    return len(xs), float(np.sqrt(large / small))
+
+
+def sim_segments(root, grow_px=0.0):
+    """每条成团运行、每个 0.1 s 动作段的位移和形状变化（跟踪段开头最大区域里的同一批泡）。"""
+    out = []
+    for run, (result, config) in SIM_RUNS.items():
+        segments = json.loads((root / config).read_text())["control"]["segments"]
+        with h5py.File(root / result / "trajectory.h5") as h:
+            time_s = h["time_s"][:]
+            positions = h["positions_m"][:, :, :2]  # 相机俯视：只看 xy
+        start_s = 0.0
+        for number, seg in enumerate(segments):
+            i0 = int(np.argmin(abs(time_s - start_s)))
+            i1 = int(np.argmin(abs(time_s - start_s - seg["duration"])))
+            labels, n, owner = raster_labels(positions[i0], grow_px)
+            areas = ndimage.sum(np.ones_like(labels), labels, index=np.arange(1, n + 1))
+            biggest = int(np.argmax(areas)) + 1
+            members = owner == biggest
+            area0, aspect0 = region_shape(labels, biggest)
+            end_labels, end_n, _ = raster_labels(positions[i1][members], grow_px)
+            disp_px = np.linalg.norm(positions[i1][members].mean(0) - positions[i0][members].mean(0)) * 1e6 / UM_PER_PX
+            split = end_n > 1
+            area1, aspect1 = (None, None) if split else region_shape(end_labels, 1)
+            amplitudes = seg["amplitudes"]
+            out.append(
+                dict(
+                    run=run,
+                    segment=number,
+                    channels="+".join(c for c, a in zip(SIM_CHANNELS, amplitudes) if a > 0),
+                    sum_a2=float(sum(a * a for a in amplitudes)),
+                    bubbles=int(members.sum()),
+                    area_px2=float(area0),
+                    aspect=aspect0,
+                    disp_px=float(disp_px),
+                    split=bool(split),
+                    dln_aspect=None if split else abs(np.log(aspect1 / aspect0)),
+                    dln_area=None if split else abs(np.log(area1 / area0)),
+                )
+            )
+            start_s += seg["duration"]
+    return out
+
+
+# ----------------------------------------------------------------------------- 统计
+
+
+def quantiles(values):
+    v = np.asarray([x for x in values if x is not None], float)
+    if len(v) == 0:
+        return dict(n=0)
+    p10, p25, p50, p75, p90 = np.percentile(v, [10, 25, 50, 75, 90])
+    return dict(n=int(len(v)), p10=p10, p25=p25, median=p50, p75=p75, p90=p90, max=float(v.max()))
+
+
+def summarise(real, sim):
+    s = {}
+    clusters = {e: [w for w in ws if w["area_px2"] >= CLUSTER_AREA_PX2] for e, ws in real.items()}
+    s["real_units"] = {
+        e: dict(
+            cluster_objects=len({w["object_id"] for w in ws}),
+            cluster_objects_with_good_shape=len({w["object_id"] for w in ws if w["shape_good"]}),
+            switch_on_events=len({w["action_no"] for w in ws if w["action"] != "none"}),
+            note="windows overlap (one per frame); independent units are the objects and switch events",
+        )
+        for e, ws in clusters.items()
+    }
+    # 速度随切换后时间的变化（团）
+    bins = [0, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0]
+    course = {}
+    for e, ws in clusters.items():
+        for no in sorted({w["action_no"] for w in ws}):
+            sel = [w for w in ws if w["action_no"] == no]
+            rows = []
+            for lo, hi in zip(bins[:-1], bins[1:]):
+                v = [w["disp_px"] * FPS / WINDOW_FRAMES for w in sel if lo <= w["t_since_s"] < hi]
+                if v:
+                    rows.append(dict(t_from_s=lo, t_to_s=hi, **quantiles(v)))
+            course[f"{e}{no}:{sel[0]['action']}"] = rows
+    s["real_cluster_speed_px_s_by_time_since_switch"] = course
+    # 刚切换后的速度（用于增益）
+    early = defaultdict(list)
+    for e, ws in clusters.items():
+        for w in ws:
+            if w["action"] != "none" and EARLY_S[0] <= w["t_since_s"] < EARLY_S[1]:
+                early[f"{e}:{w['action']}"].append(w["disp_px"] * FPS / WINDOW_FRAMES)
+                early[f"all:{w['action']}"].append(w["disp_px"] * FPS / WINDOW_FRAMES)
+    s["real_cluster_speed_px_s_first_0p5s"] = {k: quantiles(v) for k, v in sorted(early.items())}
+    s["real_cluster_speed_px_s_idle"] = {
+        e: quantiles([w["disp_px"] * FPS / WINDOW_FRAMES for w in ws if w["action"] == "none"]) for e, ws in clusters.items()
+    }
+    # 变形：只用形状可靠的窗口
+    groups = defaultdict(list)
+    for e, ws in clusters.items():
+        for w in ws:
+            if not w["shape_good"]:
+                continue
+            if w["action"] == "none":
+                key = "idle"
+            elif SHAPE_EARLY_S[0] <= w["t_since_s"] < SHAPE_EARLY_S[1]:
+                key = "on_first_1s"
+            else:
+                key = "on_after_1s"
+            groups[key].append(w)
+    s["real_cluster_dln_aspect_0p1s"] = {k: quantiles([w["dln_aspect"] for w in v]) for k, v in groups.items()}
+    s["real_cluster_dln_area_0p1s"] = {k: quantiles([w["dln_area"] for w in v]) for k, v in groups.items()}
+    s["real_cluster_aspect"] = quantiles([w["aspect"] for ws in clusters.values() for w in ws if w["shape_good"]])
+    s["real_cluster_area_px2"] = quantiles([w["area_px2"] for ws in clusters.values() for w in ws])
+    s["real_dln_aspect_per_px_on_first_1s"] = quantiles(
+        [w["dln_aspect"] / w["disp_px"] for w in groups["on_first_1s"] if w["disp_px"] > MIN_DISP_PX]
+    )
+    wall = {}
+    for e, ws in clusters.items():
+        for key, sel in (("idle", [w for w in ws if w["action"] == "none"]), ("on", [w for w in ws if w["action"] != "none"])):
+            wall[f"{e}:{key}"] = dict(windows=len(sel), wall_contact_share=float(np.mean([w["wall"] for w in sel])))
+    for lo, hi in ((0.0, 0.3), (0.3, 1.0), (1.0, 4.0)):
+        sel = [w for ws in clusters.values() for w in ws if w["action"] != "none" and lo <= w["t_since_s"] < hi]
+        wall[f"on_{lo}-{hi}s"] = dict(windows=len(sel), wall_contact_share=float(np.mean([w["wall"] for w in sel])))
+    s["real_cluster_wall_contact"] = wall
+
+    # 仿真
+    speed = [g["disp_px"] * 10 for g in sim]  # 每段 0.1 s
+    s["sim_units"] = dict(runs=len(SIM_RUNS), segments=len(sim), split_segments=int(sum(g["split"] for g in sim)),
+                          bubbles_in_tracked_region=quantiles([g["bubbles"] for g in sim]))
+    s["sim_cluster_speed_px_s"] = quantiles(speed)
+    s["sim_cluster_area_px2"] = quantiles([g["area_px2"] for g in sim])
+    s["sim_cluster_aspect"] = quantiles([g["aspect"] for g in sim])
+    s["sim_cluster_dln_aspect_0p1s"] = quantiles([g["dln_aspect"] for g in sim])
+    s["sim_cluster_dln_area_0p1s"] = quantiles([g["dln_area"] for g in sim])
+    s["sim_dln_aspect_per_px"] = quantiles(
+        [g["dln_aspect"] / g["disp_px"] for g in sim if g["dln_aspect"] is not None and g["disp_px"] > MIN_DISP_PX]
+    )
+    k_all = [g["disp_px"] * 10 / g["sum_a2"] for g in sim]
+    s["sim_speed_per_pa2_all_segments"] = quantiles(k_all)
+    single = defaultdict(list)
+    for g in sim:
+        if "+" not in g["channels"]:
+            single[g["channels"]].append(dict(run=g["run"], segment=g["segment"], amplitude=np.sqrt(g["sum_a2"]),
+                                              speed_px_s=g["disp_px"] * 10, k=g["disp_px"] * 10 / g["sum_a2"]))
+    s["sim_single_channel_segments"] = dict(single)
+    return s
+
+
+def gain_estimates(s):
+    """增益 g（命令 1 = 0.8 Vpp 时的 Pa-eq）：速度近似与源强度平方成正比，g = sqrt(v_real / k_sim)。"""
+    k_x = [r["k"] for c in ("X-", "X+") for r in s["sim_single_channel_segments"].get(c, []) if r["speed_px_s"] > 1]
+    k_y = [r["k"] for c in ("Y-", "Y+") for r in s["sim_single_channel_segments"].get(c, []) if r["speed_px_s"] > 1]
+    k_all = s["sim_speed_per_pa2_all_segments"]["median"]
+    out = dict(
+        method="g = sqrt(real cluster speed in the first 0.5 s after switch-on / simulated speed per Pa-eq^2); "
+        "speed ~ source^2 in the overdamped, near-linear regime",
+        k_sim_px_s_per_pa2=dict(x_single=k_x, y_single_moving=k_y, all_segments_median=k_all),
+        scale_note="g scales with sqrt(um_per_px / 0.6): x0.71 at 0.3 um/px, x1.41 at 1.2 um/px",
+        per_action={},
+    )
+    for key, q in s["real_cluster_speed_px_s_first_0p5s"].items():
+        if not key.startswith("all:") or q["n"] == 0:
+            continue
+        action = key.split(":", 1)[1]
+        v = np.array([q["p25"], q["median"], q["p75"]])
+        row = dict(real_speed_px_s=dict(p25=v[0], median=v[1], p75=v[2]))
+        for name, ks in (("if_x_like", k_x), ("if_y_like", k_y), ("pooled", [k_all])):
+            if ks:
+                km = float(np.median(ks))
+                row[name] = dict(p25=float(np.sqrt(v[0] / km)), median=float(np.sqrt(v[1] / km)), p75=float(np.sqrt(v[2] / km)))
+        out["per_action"][action] = row
+    return out
+
+
+# ----------------------------------------------------------------------------- 图
+
+
+def setup_style(font_dir):
+    family = "DejaVu Sans"
+    if (ARIAL_DIR / "arial.ttf").is_file():
+        for name in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / name).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+        family = "Arial"
+    plt.rcParams.update({
+        "font.family": family, "font.size": 9, "axes.edgecolor": INK["axis"], "axes.labelcolor": INK["secondary"],
+        "axes.titlesize": 10, "axes.titleweight": "bold", "axes.titlelocation": "left", "axes.titlecolor": INK["primary"],
+        "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "grid.color": INK["grid"],
+        "grid.linewidth": 0.6, "xtick.color": INK["secondary"], "ytick.color": INK["secondary"],
+        "legend.frameon": False, "figure.facecolor": "white", "savefig.dpi": 160,
+    })
+    return family
+
+
+def footer(fig):
+    fig.text(0.01, 0.01, FOOTER, fontsize=7, color=INK["muted"])
+
+
+def fig_speed(s, path):
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.2), sharey=True)
+    sim = s["sim_cluster_speed_px_s"]
+    for ax, exp in zip(axes, ("A", "B")):
+        ax.axhspan(sim["p10"], sim["p90"], color="#eb6834", alpha=0.10, lw=0)
+        ax.axhline(sim["median"], color="#eb6834", lw=1.2, ls=":")
+        seen = defaultdict(int)
+        for key, rows in s["real_cluster_speed_px_s_by_time_since_switch"].items():
+            if not key.startswith(exp):
+                continue
+            action = key.split(":", 1)[1]
+            seen[action] += 1
+            t = [(r["t_from_s"] + r["t_to_s"]) / 2 for r in rows]
+            m = [max(r["median"], 0.3) for r in rows]
+            # 同一状态第二次出现（B 的 PZT1、各段空闲）用虚线
+            ax.plot(t, m, color=ACTION_COLOR[action], lw=2 if action != "none" else 1.4,
+                    ls="-" if seen[action] == 1 else "--", marker="o", ms=3.5)
+        ax.set_yscale("log")
+        ax.set_ylim(0.3, 1000)
+        ax.set_xlabel("Time since the PZT switch (s)")
+        ax.set_title(f"Recording {exp}: cluster speed after each switch")
+        ax.text(0.98, 0.96, "Simulation, 0.1 s segments at 300–3000 Pa-eq:\ndotted = median, band = p10–p90",
+                transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color="#b8501f")
+    axes[0].set_ylabel("Median cluster speed over 0.1 s (px/s)")
+    handles = [plt.Line2D([], [], color=ACTION_COLOR[a], lw=2, label=a if a != "none" else "no PZT")
+               for a in ("PZT1", "PZT2", "PZT3", "PZT4", "PZT1+PZT3", "none")]
+    handles.append(plt.Line2D([], [], color=INK["secondary"], lw=1.4, ls="--", label="same state again"))
+    fig.legend(handles=handles, loc="upper center", ncol=7, bbox_to_anchor=(0.5, 1.0), fontsize=8)
+    fig.tight_layout(rect=(0, 0.04, 1, 0.93))
+    footer(fig)
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def ecdf(ax, values, color, label, lw=2):
+    v = np.sort(np.asarray([x for x in values if x is not None], float))
+    ax.plot(v, np.arange(1, len(v) + 1) / len(v), color=color, lw=lw, label=f"{label} (n={len(v)})")
+
+
+def fig_deformation(real, sim, path):
+    clusters = [w for ws in real.values() for w in ws if w["area_px2"] >= CLUSTER_AREA_PX2 and w["shape_good"]]
+    idle = [w for w in clusters if w["action"] == "none"]
+    on = [w for w in clusters if w["action"] != "none" and w["t_since_s"] < SHAPE_EARLY_S[1]]
+    fig, axes = plt.subplots(1, 3, figsize=(12, 3.9))
+    ax = axes[0]
+    floor = 1e-4
+    ecdf(ax, [max(w["dln_aspect"], floor) for w in idle], SOURCE_COLOR["real_idle"], "Real, no PZT")
+    ecdf(ax, [max(w["dln_aspect"], floor) for w in on], SOURCE_COLOR["real_on"], "Real, PZT on (first 1 s)")
+    ecdf(ax, [max(g["dln_aspect"], floor) for g in sim if g["dln_aspect"] is not None], SOURCE_COLOR["sim"], "Simulation")
+    ax.set_xscale("log")
+    ax.set_xlabel("|Δ ln aspect ratio| over 0.1 s")
+    ax.set_ylabel("Share of windows")
+    ax.set_title("a  Shape change per 0.1 s")
+    ax.legend(loc="upper left", fontsize=7.5)
+    ax = axes[1]
+    ecdf(ax, [w["aspect"] for w in clusters], SOURCE_COLOR["real_on"], "Real clusters")
+    ecdf(ax, [g["aspect"] for g in sim], SOURCE_COLOR["sim"], "Simulation")
+    ax.set_xlabel("Aspect ratio")
+    ax.set_ylabel("Share of samples")
+    ax.set_title("b  How elongated clusters are")
+    ax.legend(loc="lower right", fontsize=7.5)
+    ax = axes[2]
+    ecdf(ax, [w["dln_aspect"] / w["disp_px"] for w in on if w["disp_px"] > MIN_DISP_PX and w["dln_aspect"] > 0],
+         SOURCE_COLOR["real_on"], "Real, PZT on (first 1 s)")
+    ecdf(ax, [g["dln_aspect"] / g["disp_px"] for g in sim if g["dln_aspect"] and g["disp_px"] > MIN_DISP_PX],
+         SOURCE_COLOR["sim"], "Simulation")
+    ax.set_xscale("log")
+    ax.set_xlabel("|Δ ln aspect| per px moved (0.1 s windows moving > 1 px)")
+    ax.set_ylabel("Share of windows")
+    ax.set_title("c  Shape change per distance moved")
+    ax.legend(loc="upper left", fontsize=7.5)
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    footer(fig)
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def fig_gain(g, path):
+    order = [a for a in ("PZT1", "PZT2", "PZT3", "PZT4", "PZT1+PZT3") if a in g["per_action"]]
+    fig, ax = plt.subplots(figsize=(7.5, 3.6))
+    styles = (("if_x_like", "#2a78d6", "If it acts like an end (X) disc", -0.12),
+              ("if_y_like", "#eb6834", "If it acts like a side (Y) disc", 0.12))
+    for name, color, label, dy in styles:
+        for i, a in enumerate(order):
+            r = g["per_action"][a].get(name)
+            if r is None:
+                continue
+            ax.plot([r["p25"], r["p75"]], [i + dy] * 2, color=color, lw=2.5, solid_capstyle="round")
+            ax.plot(r["median"], i + dy, "o", color=color, ms=7, mec="white", mew=1.5, label=label if i == 0 else None)
+            ax.annotate(f"{r['median']:.0f}", (r["median"], i + dy), xytext=(0, 6), textcoords="offset points",
+                        ha="center", fontsize=7.5, color=INK["secondary"])
+    ax.axvline(PRETRAIN_CAP_PA, color=INK["secondary"], lw=1, ls="--")
+    ax.set_yticks(range(len(order)), order)
+    ax.set_ylim(len(order) - 0.5, -0.9)  # 倒序，并在顶上留一行给上限标注
+    ax.text(PRETRAIN_CAP_PA, -0.65, " current PRETRAIN source cap: 3000", fontsize=7.5, color=INK["secondary"], va="center")
+    ax.set_xscale("log")
+    ticks = [300, 500, 1000, 2000, 3000, 5000, 10000]
+    ax.set_xticks(ticks, [f"{t:,}" for t in ticks])
+    ax.xaxis.set_minor_formatter(ticker.NullFormatter())
+    ax.set_xlim(300, 14000)
+    ax.set_xlabel("Implied gain: Pa-eq at command 1 (0.8 Vpp)  ·  dot = median, bar = from p25–p75 speeds")
+    ax.set_title("Gain that makes simulated cluster speed match the first 0.5 s after switch-on", pad=26)
+    ax.legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2, fontsize=7.5)
+    ax.grid(axis="y", visible=False)
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    footer(fig)
+    fig.savefig(path)
+    plt.close(fig)
+
+
+# ----------------------------------------------------------------------------- 入口
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--mb", type=Path, required=True, help="MB_track microbubble_tracking/results")
+    parser.add_argument("--out", type=Path, required=True)
+    a = parser.parse_args()
+    root = Path.cwd()
+    a.out.mkdir(parents=True, exist_ok=True)
+    real = {e: real_windows(a.mb / d) for e, d in EXPERIMENTS.items()}
+    sim = sim_segments(root)
+    s = summarise(real, sim)
+    g = gain_estimates(s)
+    # 敏感性：把圆盘放大 1 px（约 0.6 µm）粗略模拟光学模糊，看仿真侧结论是否随分割方式改变
+    blurred = sim_segments(root, grow_px=1.0)
+    s["sim_sensitivity_grow_1px"] = dict(
+        split_segments=int(sum(g_["split"] for g_ in blurred)),
+        dln_aspect_0p1s=quantiles([g_["dln_aspect"] for g_ in blurred]),
+        aspect=quantiles([g_["aspect"] for g_ in blurred]),
+        dln_aspect_per_px=quantiles(
+            [g_["dln_aspect"] / g_["disp_px"] for g_ in blurred if g_["dln_aspect"] is not None and g_["disp_px"] > MIN_DISP_PX]
+        ),
+        speed_px_s=quantiles([g_["disp_px"] * 10 for g_ in blurred]),
+    )
+    inputs = {}
+    for d in EXPERIMENTS.values():
+        for rel in ("analysis/state.csv", "analysis/pzt_analysis/aligned_frames.csv"):
+            inputs[f"MB_track/results/{d}/{rel}"] = sha(a.mb / d / rel)
+    for result, config in SIM_RUNS.values():
+        inputs[f"{result}/trajectory.h5"] = sha(root / result / "trajectory.h5")
+        inputs[config] = sha(root / config)
+    with tempfile.TemporaryDirectory() as tmp:
+        family = setup_style(Path(tmp))
+        fig_speed(s, a.out / "fig1_cluster_speed_after_switch.png")
+        fig_deformation(real, sim, a.out / "fig2_cluster_deformation.png")
+        fig_gain(g, a.out / "fig3_implied_gain.png")
+    report = dict(
+        purpose="Coarse A/B vs PRETRAIN comparison: cluster speed and deformation, and the gain range they imply",
+        parameters=dict(um_per_px=UM_PER_PX, um_per_px_status="provisional (user choice); not measured",
+                        window_s=WINDOW_FRAMES / FPS, cluster_area_px2=CLUSTER_AREA_PX2, early_window_s=EARLY_S,
+                        shape_early_window_s=SHAPE_EARLY_S, min_disp_px=MIN_DISP_PX, sim_radius_m=RADIUS_M,
+                        sim_runs=list(SIM_RUNS), sim_model="PRETRAIN collective, cache field, 2.5 MHz, 20 x 0.1 s random segments"),
+        inputs_sha256=inputs,
+        font=family,
+        summary=s,
+        gain=g,
+    )
+    (a.out / "AB_REFERENCE.json").write_text(json.dumps(report, indent=1, ensure_ascii=False, default=float) + "\n")
+    print("wrote", a.out)
+
+
+if __name__ == "__main__":
+    main()

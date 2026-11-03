@@ -1,0 +1,4 @@
+center_pairwise exit 0
+center_collective exit 0
+offset_collective exit 0
+offset_pairwise exit 0

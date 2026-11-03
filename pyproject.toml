@@ -11,7 +11,7 @@ dependencies = ["numpy==2.2.6", "scipy==1.15.3", "h5py==3.16.0"]
 
 [project.optional-dependencies]
 gpu = ["warp-lang==1.18.0"]
-plot = ["matplotlib==3.11.2"]
+plot = ["matplotlib==3.11.2", "imageio-ffmpeg==0.8.1"]  # imageio-ffmpeg: bundled ffmpeg for mp4 animations
 test = ["pytest==9.1.1"]
 dev = ["ruff"]
 reference = ["PyYAML", "scikit-learn"]

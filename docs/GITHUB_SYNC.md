@@ -61,3 +61,22 @@
 - **验证**：Python 3.12.3 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3 / Warp 1.18.0 下全部 38 项测试通过（含 GPU，RTX 4060 Laptop GPU）。提交前的文件清单、大小、SHA-256 和常见凭据格式检查见 [SYNC_CHECK.json](../evidence/github_sync_20261103/SYNC_CHECK.json)，未发现命中；该检查不等于对任意未知格式秘密的完整保证。本次同步没有启动新仿真、远程计算或 GPU 性能测试。
 
 `EXPLORATORY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`
+
+## 2026-11-03 第二次同步：A/B 对照与"团太软"检查（分支 `pretrain-softness-check`）
+
+根据用户明确请求，推送到**新分支** `pretrain-softness-check`，而不是 `main`。分支从 `main` 的 `22e8326`（与当时的 `origin/main` 一致）分出，直接在当前工作树中提交；`main` 本地和远程都没有改动。分支按内容命名，不用日期（见 [GIT_WORKFLOW.md](GIT_WORKFLOW.md)）。没有建立同步目录或 clone，没有 force-push，也没有重写历史。
+
+- **"团太软"的检查脚本**，共三份：
+  1. 静态团内力对比：`evidence/pretrain_tier_20261102/prototype/nbody_check.py.txt`，结果见 `STATIC_COHESION.txt`。这份 2026-11-02 已经在 `main` 上，本次没有改动。它依赖当时的原型 `proto.py`，只作为证据保存。
+  2. A/B 真实数据与"每 0.1 s 随机换动作"仿真的对照：`evidence/ab_reference_20261103/`，包括脚本 `AB_REFERENCE_SCRIPT.py.txt`（只作为证据，不被任何代码导入）、`AB_REFERENCE.json`、3 张图和中文结论。
+  3. 按实验方式（单路持续开启）跑的仿真与 A/B 的对照：`visualization/ab_protocol_figures.py`（可直接运行），输出在 `visualization/ab_protocol_sim/`（3 张 PNG、1 个 mp4、`COMPARISON.json` 和中文结论）；运行配置在 `configs/pretrain_protocol_ab/`，运行摘要和执行身份在 `results/pretrain_protocol_ab/`。
+- **依赖**：`pyproject.toml` 的 `plot` 可选依赖新增 `imageio-ffmpeg==0.8.1`（自带 ffmpeg，用于写 mp4），`requirements-lock.txt` 同步更新。
+- **留在本地**：4 条按实验方式运行的 `trajectory.h5` 和 `STEP_RECORDS.json`，共 8 个文件、约 98 MB，按已有 `.gitignore` 用途规则不进 Git；清单、大小和 SHA-256 记在检查记录里。忽略不等于备份。
+- **只从 GitHub 不能直接重跑第 3 份脚本**：它要读取上述被忽略的 `trajectory.h5`、4 条随机动作运行（同样被忽略）的 `trajectory.h5`，以及本仓库之外 MB_track 的 A/B 追踪结果。轨迹可以用已提交的配置重新计算得到（每条单核约 3–9 分钟），A/B 结果需要另行获取。
+- **验证**：在 Python 3.12.3 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3 / Warp 1.18.0 / matplotlib 3.11.2 / imageio-ffmpeg 0.8.1 环境下：
+  - 全部 38 项测试通过，包括 GPU 测试（RTX 4060 Laptop GPU）。
+  - 第 3 份脚本按当前工作树重跑到临时目录，用时 45 s；3 张图、mp4 和 `COMPARISON.json` 与提交的文件逐字节相同。
+  - 提交前的文件清单、大小、SHA-256 和常见凭据格式检查见 [SYNC_CHECK_SOFTNESS_BRANCH.json](../evidence/github_sync_20261103/SYNC_CHECK_SOFTNESS_BRANCH.json)：唯一命中是一张 PNG 压缩数据里恰好像邮箱格式的字节，不是文字；该检查不等于对任意未知格式秘密的完整保证。
+  - 本次同步没有启动新仿真、远程计算或 GPU 性能测试。
+
+`EXPLORATORY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`
