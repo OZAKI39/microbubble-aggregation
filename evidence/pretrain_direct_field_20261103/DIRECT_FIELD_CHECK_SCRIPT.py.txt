@@ -1,0 +1,146 @@
+"""直接现算声场的准入测量：积分点数收敛、与查表的差异、CPU/GPU 一致性与耗时。
+
+用法：.venv/bin/python direct_field_check.py <输出目录>
+写出 DIRECT_FIELD_CHECK.json 与 GPU_CHECK.json；只读仓库输入，不改任何结果。
+"""
+import json
+import platform
+import sys
+import time
+from pathlib import Path
+
+import numpy as np
+import warp as wp
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from microbubble.forces import CPUForces
+from microbubble.gpu import GPUWaterDiscs
+from microbubble.initial_conditions import load_state
+from microbubble.io import identity, read, write
+from workflows.f10ag import context
+
+ROOT = Path("/home/lzy/projects/new_microbubble_aggregation")
+FREQUENCIES_HZ = (2.4e6, 2.5e6, 2.6e6, 5e6, 10e6)
+ORDERS = (48, 96, 192, 256)
+REFERENCE_ORDER = 800
+
+
+def lumen_points(n, seed):
+    rng = np.random.default_rng(seed)
+    x = rng.uniform([-16e-3, -0.75e-3, -0.75e-3], [16e-3, 0.75e-3, 0.75e-3], (4 * n, 3))
+    return x[np.linalg.norm(x[:, 1:], axis=1) < 0.75e-3][:n]
+
+
+def box_points(n, seed):
+    rng = np.random.default_rng(seed)
+    return rng.uniform([-610e-6, -510e-6, -90e-6], [610e-6, 510e-6, 90e-6], (n, 3))
+
+
+def relative_error(p, g, p_ref, g_ref):
+    return dict(
+        pressure=float(np.abs(p - p_ref).max() / np.abs(p_ref).max()),
+        gradient=float(np.linalg.norm(g - g_ref, axis=-1).max() / np.linalg.norm(g_ref, axis=-1).max()),
+    )
+
+
+def median_ms(fn, repeat):
+    fn()
+    samples = []
+    for _ in range(repeat):
+        begin = time.perf_counter()
+        fn()
+        samples.append(time.perf_counter() - begin)
+    return float(np.median(samples) * 1e3)
+
+
+def main():
+    out = Path(sys.argv[1])
+    c = context(ROOT, device="cpu")
+    elements = c.discs.elements
+    regions = {"cache_box": box_points(600, 1), "whole_lumen": lumen_points(600, 2)}
+
+    convergence = []
+    for f in FREQUENCIES_HZ:
+        discs = WaterDiscs(elements, f)
+        for name, x in regions.items():
+            p_ref, g_ref = discs.evaluate(x, REFERENCE_ORDER)
+            row = dict(frequency_Hz=f, region=name, points=len(x), reference_order=REFERENCE_ORDER)
+            for order in ORDERS:
+                row[f"order_{order}"] = relative_error(*discs.evaluate(x, order), p_ref, g_ref)
+            convergence.append(row)
+
+    limits = read(ROOT / "inputs/fields/2500000/FIELD_GATE.json")["limits"]
+    x = box_points(5000, 3)
+    hc, gc = c.basis.query_basis(x)
+    hd, gd = c.discs.evaluate(x, direct_quadrature_order(2.5e6))
+    cache_vs_direct = dict(
+        points=len(x),
+        normalisation="per channel, by the largest direct value in the sample",
+        pressure=[float(np.abs(hc[k] - hd[k]).max() / np.abs(hd[k]).max()) for k in range(4)],
+        gradient=[
+            float(np.linalg.norm(gc[k] - gd[k], axis=-1).max() / np.linalg.norm(gd[k], axis=-1).max())
+            for k in range(4)
+        ],
+        admitted_cache_limits=dict(pressure=limits["coarse_pressure"], gradient=limits["coarse_gradient"]),
+    )
+
+    lattice, _ = load_state(ROOT / "inputs/initial_states.h5", "AG32_local")
+    wide, _ = load_state(ROOT / "inputs/initial_states.h5", "N64_wide_r0")
+    force_timing = []
+    for name, xs in (("AG32_local at (300,150) um", lattice + [300e-6, 150e-6, 0]), ("N64_wide_r0", wide)):
+        row = dict(state=name, N=len(xs), coupling="collective")
+        for mode, discs in (("cache", None), ("direct", c.discs)):
+            forces = CPUForces(c.basis, c.response, c.physics, "collective", discs=discs)
+            forces.control([2000, 1500, 0, 2500], [0.3, 1.1, 0, 2.0])
+            row[f"{mode}_ms_per_force_call"] = median_ms(lambda: forces(xs), 30)
+            row[f"{mode}_field_only_ms"] = median_ms(
+                (lambda: c.basis.query_basis(xs)) if discs is None else (lambda: c.discs.evaluate(xs, 96)), 30
+            )
+        force_timing.append(row)
+
+    write(out / "DIRECT_FIELD_CHECK.json", dict(
+        purpose="Admission measurements for field='direct' in the pretraining tier",
+        identity=identity(ROOT),
+        machine=dict(processor=platform.processor(), python=platform.python_version(),
+                     note="single process, OPENBLAS_NUM_THREADS=1; one other 1-core PRETRAIN run was active"),
+        quadrature_convergence=convergence,
+        registered_orders=dict(up_to_5MHz=direct_quadrature_order(5e6), up_to_10MHz=direct_quadrature_order(10e6)),
+        cache_vs_direct_2p5MHz=cache_vs_direct,
+        cpu_force_call_timing=force_timing,
+    ))
+
+    wp.init()
+    device = wp.get_device("cuda:0")
+    agreement = []
+    for f in (2.5e6, 10e6):
+        discs = WaterDiscs(elements, f)
+        order = direct_quadrature_order(f)
+        xs = lumen_points(20000, 4)
+        p_cpu, g_cpu = discs.evaluate(xs, order)
+        p_gpu, g_gpu = GPUWaterDiscs(discs, order).evaluate(xs)
+        agreement.append(dict(frequency_Hz=f, order=order, points=len(xs), **relative_error(p_gpu, g_gpu, p_cpu, g_cpu)))
+    timing = []
+    discs = WaterDiscs(elements, 2.5e6)
+    for order in (96, 192):
+        gpu = GPUWaterDiscs(discs, order)
+        for n in (32, 256, 4096, 32768, 262144):
+            xs = lumen_points(n, 5)
+            row = dict(order=order, points=n, gpu_ms_including_transfers=median_ms(lambda: gpu.evaluate(xs), 10))
+            row["cpu_ms"] = median_ms(lambda: discs.evaluate(xs, order), 3) if n <= 32768 else None
+            if row["cpu_ms"] is not None:
+                row["cpu_over_gpu"] = round(row["cpu_ms"] / row["gpu_ms_including_transfers"], 2)
+            timing.append(row)
+    write(out / "GPU_CHECK.json", dict(
+        purpose="GPUWaterDiscs against WaterDiscs.evaluate: agreement and wall time per call",
+        identity=identity(ROOT),
+        device=dict(name=device.name, warp=wp.config.version),
+        agreement=agreement,
+        timing_note="median wall time of evaluate(): host-to-device copy, launch, device-to-host copy; "
+                    "CPU = NumPy WaterDiscs.evaluate in one process; CPU not measured above 32768 points",
+        timing=timing,
+    ))
+    print("wrote", out)
+
+
+if __name__ == "__main__":
+    main()

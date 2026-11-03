@@ -165,6 +165,25 @@ class WaterDiscs:
         return np.asarray(pp), np.asarray(gg)
 
 
+# FNM quadrature order for direct evaluation at arbitrary points in the lumen (no cache).
+# Order 48 is exact only near the centre: against order 800 over the whole lumen
+# (|x| < 16 mm, r < 0.75 mm) it errs by 6e-10 at 2.5 MHz, 1.5e-2 at 5 MHz and 1e-1 at
+# 10 MHz, while 96 points (up to 5 MHz) and 192 points (up to 10 MHz) stay below 1e-13.
+# See evidence/pretrain_direct_field_20261103/DIRECT_FIELD_CHECK.json.
+DIRECT_QUADRATURE_ORDERS = ((5e6, 96), (10e6, 192))
+
+
+def direct_quadrature_order(frequency_Hz):
+    """Registered FNM order for direct evaluation anywhere in the lumen at this frequency.
+
+    Raises above 10 MHz (the AFG limit): no order has been checked there.
+    """
+    for limit_Hz, order in DIRECT_QUADRATURE_ORDERS:
+        if frequency_Hz <= limit_Hz:
+            return order
+    raise ValueError("No checked direct-field quadrature order above 10 MHz")
+
+
 def cubic_weights(t):
     w = np.stack(
         [

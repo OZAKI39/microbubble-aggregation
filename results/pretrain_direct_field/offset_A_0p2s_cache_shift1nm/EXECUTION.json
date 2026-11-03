@@ -1,0 +1,220 @@
+{
+  "identity": {
+    "commit": "bfa994787a3febbd597b6db6821e4d4015016fa2",
+    "git_status": "M microbubble/acoustics.py\n M microbubble/forces.py\n M microbubble/gpu.py\n M microbubble/integration.py\n M tests/test_model.py\n M tests/test_pretrain.py\n M workflows/f10ag.py\n?? AGENTS_CODING.md\n?? HANDOFF_20261102.md\n?? configs/pretrain_direct_field/\n?? configs/pretrain_feasibility_2s.json\n?? configs/pretrain_stability_2s/\n?? microbubble/_warp_discs.py\n?? results/pretrain_direct_field/\n?? results/pretrain_feasibility_2s/\n?? results/pretrain_stability_2s/\n?? visualization/",
+    "utc": "2026-11-03T11:04:31.035156+00:00",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "/home/lzy/projects/new_microbubble_aggregation/.venv/bin/python",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "warp-lang": "1.18.0",
+      "matplotlib": "3.11.2"
+    },
+    "source_sha256": {
+      "main.py": "e6304cd7edca536419bf040d38e28921eb758ea8070beefcabd4a02fe71df0bf",
+      "microbubble/__init__.py": "d882fce9cad7c5bb94cda8300a2dd3bc6e633d047f713b9fcff3a8b675a9e59e",
+      "microbubble/_warp_discs.py": "440956710c68078dbaa7ac97a3ced310869b705a924af0431239308f63ded469",
+      "microbubble/_warp_forces.py": "bad94891b3823f82b426e66487b7e6bb7a179d0c8495961807845230cbd1643d",
+      "microbubble/_warp_walls.py": "151fc5295aaffb2062fbd4fd24aca3deb720287ce9c0eae5d586b456bdaced2b",
+      "microbubble/acoustics.py": "63761e82027c2d2fe2cc9abd38b8e9fe42670314ea343a00bfa676d3196b6090",
+      "microbubble/analysis.py": "57127d8767f495d81a985461420b7f01aafb01856cd410c238653e97d3508440",
+      "microbubble/bubble_response.py": "01ca701d9cc1c0c4ae30c780b628694465d57625be4640ca237ec3473d91a642",
+      "microbubble/contact.py": "1511cdbb82c64f57444034612303295eef79b58cbf869481b3b6a39b1f98a9e8",
+      "microbubble/control.py": "932fed41318d347e0d50600874f1d7a08f7fbfead0dd8fb852679a4b4267837b",
+      "microbubble/dynamics.py": "620745969162366dec0614ee12fb460f3df6873479288d82ed74a0207993c28f",
+      "microbubble/forces.py": "5f0af514b3ed23e497f9b3fc366c7b4cfee631c048b293ae981a02162dcda491",
+      "microbubble/geometry.py": "1c165ad8b644a713a88407aa24f1ad465866f15ac180ede33132f6f61a7d046c",
+      "microbubble/gpu.py": "3c1aea4e9a9c08d7a594eb39c0f5b365dc8f64d53d28553d5c6dd9bff95cb3b8",
+      "microbubble/high_fidelity.py": "ac19d775b3a870a88f58566020cec2b159e0cb7928ff3626aaf12378bba42023",
+      "microbubble/hydrodynamics.py": "2fb7a63d0cccb9b3b001bf8f69350c99335689d20db6baa31eb1faadfec6bc54",
+      "microbubble/initial_conditions.py": "e2ab23fe227071836280f4c78917839cf9e83f568eb699d4268feb25a9ba71db",
+      "microbubble/integration.py": "5b9c7a295e8c5e762c6c4ba373a1e40047e890b46570b01a3ef2d5c422d9b13b",
+      "microbubble/io.py": "d3197922cd2553e9668bd05643c27376434bb054c446796695378d3d317a676f",
+      "microbubble/parameters.py": "c481165e6124bdb976a787e067624f80e3d63528ba0d988ea679f4f5751574f2",
+      "workflows/__init__.py": "0a7c39e4b3d15cdd0bbd515cc6f8e76f6c278cf3f2f315e680d05b0bdd50053d",
+      "workflows/analysis.py": "0b0a16a96181fd9396897913db0955bb80d8ab1ec1fbc9d69459563133a701db",
+      "workflows/diagnostics.py": "1733f132c6bfd80ee8c5d0f3a3fd84f7fcfd5a3d81cf7f3eadccb4b0734714c5",
+      "workflows/f10ag.py": "7ad3b20b7ca4cc144c846b683390577b38ad69c5e0eb03b7156a3d847d143484",
+      "workflows/validation.py": "4c23115f4258e31613847eb756b1eb36eb4f000b7f3c8e49dffe43e88e0b72f1",
+      "workflows/visualization.py": "07c6db6adbe69445521e453dd8114a568f811cff9e48c458d9239f9430cf548e"
+    },
+    "input_sha256": {
+      "configs/frozen/f10ag_protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+      "configs/frozen/contact_policy.json": "2083c6fe0f4cfe199abad5c5bcef154f8fa8ad0175a062013abffa44f1d673e5",
+      "configs/frozen/contact_revision.json": "fd41b0dd567557166fe3d49771d5e3eca88f13b6ffe8bbd261bfeab8351ecaf5",
+      "inputs/apparatus_snapshot.json": "22263a9275aaca26158720a55fce02d620d07d4868b9658aca6c16e914f45bcb",
+      "inputs/response/adaptive_2500000.h5": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+      "inputs/response/LOW_PRESSURE_ADMISSION.json": "4afea0ba48f44f08d80bca2a533b699d8a52b87a81454ff79caa80e9cb94c000",
+      "inputs/response/low_pressure_2500000.h5": "aefe1d459c6667c0e459a1b7a070fe04960675d3fdaa4c14e7c11afc5878c6df",
+      "inputs/initial_states.h5": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "inputs/actions.json": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "inputs/source_order.json": "df940909e1f822995497855f3aa5260b1fe1e82aef4e203e279c5346f34c8ab5",
+      "inputs/fields/2400000/coarse.h5": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "inputs/fields/2400000/FIELD_GATE.json": "42a1e5ff5e1c301740ef99de31b3928e9659b327af0a67427a754264bfa3577a",
+      "inputs/response/2400000/response_shell_1.0.h5": "74606fc70639d262bd3b186a56ef1c6dfa48778a4c3d3822cebab6a870a24adc",
+      "inputs/response/2400000/PHYSICS_GATE.json": "ac7d87d73239516b61196e442dfab1e704eb303af653b0d2a92c14148cde256c",
+      "inputs/fields/2500000/coarse.h5": "3a20420af0b4f2e3168cdc5aaee636e62480f2b277d4bc5de0133856aea7251a",
+      "inputs/fields/2500000/FIELD_GATE.json": "5653310b677a7c1b4523b5a7ad767cc7dcad423836b8cbf24660ca4363bcff79",
+      "inputs/fields/2600000/coarse.h5": "06e1ea4f3d832c3f6fc744b8e2e1a143e13f2f9c3f64bb8860dae14ead296328",
+      "inputs/fields/2600000/FIELD_GATE.json": "da3990935c75e9e324a0a9292c7e150bea15ef5578c2f5ac34c8361acbff15a0",
+      "inputs/response/2600000/response_shell_1.0.h5": "6ccc1d8fafc3429063c05d45ce049f1ba935d8074770fd66456296002ddd7747",
+      "inputs/response/2600000/PHYSICS_GATE.json": "bc927860532eb3c024cb7b71b29dbfea438944a0e5844bd14cb1129c0c778c9d"
+    },
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "run_config_sha256": "2cc37f72cde6a0c13651d98e5f2b9b1cffedca5944596e44cd79e86d6d859e3d"
+  },
+  "task": {
+    "name": "X_PAIR",
+    "amplitudes": [
+      0,
+      0,
+      1000,
+      1000
+    ],
+    "phases": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frequency": 2500000,
+    "scope": "Pa-equivalent sources, not hardware voltage",
+    "id": "offset_A_0p2s_cache_shift1nm",
+    "state": "AG32_local",
+    "action": "X_PAIR",
+    "duration": 0.2,
+    "variant": "ADAPTIVE",
+    "segments": [
+      {
+        "amplitudes": [
+          0.0,
+          797.9,
+          0.0,
+          0.0
+        ],
+        "phases": [
+          3.0383,
+          3.3732,
+          4.1749,
+          3.1484
+        ],
+        "duration": 0.1
+      },
+      {
+        "amplitudes": [
+          569.5,
+          1755.3,
+          2544.4,
+          0.0
+        ],
+        "phases": [
+          4.2117,
+          5.5961,
+          3.7774,
+          4.9445
+        ],
+        "duration": 0.1
+      }
+    ],
+    "offset_m": [
+      0.000300001,
+      0.00015,
+      0.0
+    ],
+    "coupling": "collective",
+    "field": "cache",
+    "save_interval_s": 0.004166666666666667
+  },
+  "config": {
+    "fidelity": "PRETRAIN",
+    "coupling": "collective",
+    "state": "AG32_local",
+    "action": "X_PAIR",
+    "save_interval_s": 0.004166666666666667,
+    "duration_s": 0.2,
+    "control": {
+      "frequency": 2500000,
+      "segments": [
+        {
+          "amplitudes": [
+            0.0,
+            797.9,
+            0.0,
+            0.0
+          ],
+          "phases": [
+            3.0383,
+            3.3732,
+            4.1749,
+            3.1484
+          ],
+          "duration": 0.1
+        },
+        {
+          "amplitudes": [
+            569.5,
+            1755.3,
+            2544.4,
+            0.0
+          ],
+          "phases": [
+            4.2117,
+            5.5961,
+            3.7774,
+            4.9445
+          ],
+          "duration": 0.1
+        }
+      ],
+      "offset_m": [
+        0.000300001,
+        0.00015,
+        0.0
+      ]
+    },
+    "field": "cache"
+  },
+  "fixed_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "status": "PASS"
+}

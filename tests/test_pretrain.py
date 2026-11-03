@@ -5,6 +5,7 @@ import json
 import numpy as np
 import pytest
 import microbubble.contact as contact
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
 from microbubble.control import pretrain_segments, schedule
 from microbubble.contact import sequential_step, sparse_sequential_step
 from microbubble.forces import (
@@ -16,6 +17,7 @@ from microbubble.forces import (
 )
 from microbubble.hydrodynamics import resistance, sparse_resistance
 from microbubble.initial_conditions import load_state
+from microbubble.io import read
 from workflows.f10ag import context, load_policy, load_pretrain_policy, run
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -181,4 +183,77 @@ def test_pretrain_run_switches_controls_and_is_reused(tmp_path):
     assert run(ROOT, path, tmp_path / "out") == r
     path.write_text(json.dumps(dict(cfg, coupling=None)))
     with pytest.raises(ValueError, match="explicit coupling"):
+        run(ROOT, path, tmp_path / "other")
+
+
+def lumen_points(n, seed=0):
+    """Points over the whole lumen (|x| < 16 mm, r < 0.75 mm), not only the cache box."""
+    rng = np.random.default_rng(seed)
+    x = rng.uniform([-16e-3, -0.75e-3, -0.75e-3], [16e-3, 0.75e-3, 0.75e-3], (4 * n, 3))
+    return x[np.linalg.norm(x[:, 1:], axis=1) < 0.75e-3][:n]
+
+
+@pytest.mark.parametrize("frequency_Hz", [2.4e6, 2.5e6, 2.6e6, 5e6, 10e6])
+def test_direct_quadrature_order_converges_in_the_whole_lumen(cpu, frequency_Hz):
+    c, _, _ = cpu
+    discs = WaterDiscs(c.discs.elements, frequency_Hz)
+    x = lumen_points(150)
+    p, g = discs.evaluate(x, direct_quadrature_order(frequency_Hz))
+    p_ref, g_ref = discs.evaluate(x, 800)
+    assert np.abs(p - p_ref).max() <= 1e-12 * np.abs(p_ref).max()
+    gradient_error = np.linalg.norm(g - g_ref, axis=-1).max()
+    assert gradient_error <= 1e-12 * np.linalg.norm(g_ref, axis=-1).max()
+    with pytest.raises(ValueError, match="above 10 MHz"):
+        direct_quadrature_order(10.5e6)
+
+
+def test_direct_field_matches_cache_inside_the_box(cpu):
+    # Within the cache interior the two modes differ only by the admitted interpolation error.
+    c, _, _ = cpu
+    limits = read(ROOT / "inputs/fields/2500000/FIELD_GATE.json")["limits"]
+    rng = np.random.default_rng(3)
+    x = rng.uniform([-600e-6, -500e-6, -85e-6], [600e-6, 500e-6, 85e-6], (400, 3))
+    hc, gc = c.basis.query_basis(x)
+    hd, gd = c.discs.evaluate(x, direct_quadrature_order(c.physics.frequency_Hz))
+    for channel in range(4):
+        p_scale = np.abs(hd[channel]).max()
+        g_scale = np.linalg.norm(gd[channel], axis=-1).max()
+        assert np.abs(hc[channel] - hd[channel]).max() <= limits["coarse_pressure"] * p_scale
+        g_error = np.linalg.norm(gc[channel] - gd[channel], axis=-1).max()
+        assert g_error <= limits["coarse_gradient"] * g_scale
+    cache = CPUForces(c.basis, c.response, c.physics, "collective")
+    direct = CPUForces(c.basis, c.response, c.physics, "collective", discs=c.discs)
+    for f in (cache, direct):
+        f.control([2000, 1500, 0, 2500], [0.3, 1.1, 0, 2.0])
+    x = compressed_cluster()
+    a, b = cache(x)["total_force_N"], direct(x)["total_force_N"]
+    assert np.abs(a - b).max() <= limits["coarse_gradient"] * np.abs(a).max()
+    with pytest.raises(ValueError, match="frequency"):
+        CPUForces(c.basis, c.response, c.physics, discs=WaterDiscs(c.discs.elements, 2.4e6))
+
+
+def test_pretrain_direct_field_runs_outside_the_cache_box(tmp_path):
+    pytest.importorskip("osqp", reason="pretraining tier needs the optional pretrain extra")
+    cfg = dict(
+        fidelity="PRETRAIN",
+        coupling="collective",
+        field="direct",
+        state="AG32_local",
+        action="X_PAIR",
+        duration_s=2e-4,
+        save_interval_s=1e-4,
+        control=dict(
+            segments=[dict(amplitudes=[0, 0, 3000, 3000], phases=[0] * 4, duration=2e-4)],
+            offset_m=[2e-3, 0, 0],  # 2 mm along the lumen: far outside the +-0.61 mm cache box
+        ),
+    )
+    path = tmp_path / "cfg.json"
+    path.write_text(json.dumps(cfg))
+    r = run(ROOT, path, tmp_path / "direct")
+    assert r["status"] == "PASS" and r["field"] == "direct" and r["task"]["field"] == "direct"
+    path.write_text(json.dumps(dict(cfg, field="cache")))
+    r = run(ROOT, path, tmp_path / "cache")
+    assert r["status"] == "FAIL" and "Outside stored cubic field interior" in r["reason"]
+    path.write_text(json.dumps(dict(cfg, field="fine")))
+    with pytest.raises(ValueError, match="field must be"):
         run(ROOT, path, tmp_path / "other")

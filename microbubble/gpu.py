@@ -1,11 +1,15 @@
 """Float64 field/response/pair kernels and exposed-wall buffers, with explicit ownership.
 
-Only allocation and call plumbing are new. Kernel arithmetic and launch dimensions
-are copied from the active production path. No independent-Stokes substitute.
+FieldForces: only allocation and call plumbing are new. Kernel arithmetic and launch
+dimensions are copied from the active production path. No independent-Stokes substitute.
+GPUWaterDiscs (pretraining-tier addition): the direct FNM disc field of
+acoustics.WaterDiscs.evaluate on the GPU, for evaluating many points in one launch.
 """
 
 import numpy as np
 import warp as wp
+from numpy.polynomial.legendre import leggauss
+from . import _warp_discs
 from . import _warp_forces as k
 from ._warp_walls import cavity_project
 
@@ -141,3 +145,65 @@ class FieldForces:
                     self.error,
                 ],
             )
+
+
+class GPUWaterDiscs:
+    """Direct FNM pressure and gradient of the four discs on a CUDA device, in float64.
+
+    Same elements, frequency, quadrature nodes and integrand as WaterDiscs.evaluate(points,
+    order); holds the disc parameters and quadrature on the device. evaluate() copies the
+    points in and the results out on every call, so it only pays off for large batches of
+    points (for example all bubbles of many trajectories at once), not for one small cluster.
+    """
+
+    def __init__(self, discs, order, device="cuda:0"):
+        wp.init()
+        self.device = wp.get_device(device)
+        if not self.device.is_cuda:
+            raise ValueError("GPUWaterDiscs requires a CUDA device")
+        self.discs, self.order = discs, int(order)
+        nodes, weights = leggauss(self.order)
+        elements = discs.elements
+        self.centers_m = np.array([e["center_local_m"] for e in elements], dtype=float)
+        self.normals = np.array([e["normal_local"] for e in elements], dtype=float)
+        radii_m = np.array([e["active_diameter_m"] / 2 for e in elements], dtype=float)
+
+        def arr(a, dtype):
+            return wp.array(a, dtype=dtype, device=self.device)
+
+        self.centers = arr(self.centers_m, wp.vec3d)
+        self.normal_array = arr(self.normals, wp.vec3d)
+        self.radii = arr(radii_m, wp.float64)
+        self.node_cos = arr(np.cos((nodes + 1) * np.pi / 2), wp.float64)
+        self.node_weights = arr(weights / 2, wp.float64)
+
+    def evaluate(self, points):
+        """Pressure (discs, N) and gradient (discs, N, 3), complex, as WaterDiscs.evaluate."""
+        x = np.atleast_2d(np.asarray(points, dtype=float))
+        in_front = np.einsum("dk,ndk->nd", self.normals, x[:, None, :] - self.centers_m)
+        if not np.isfinite(x).all() or np.any(in_front <= 0):
+            raise ValueError("Only finite points in front of each piston are admitted")
+        shape = (len(self.centers_m), len(x))
+        pressure = wp.zeros(shape, dtype=wp.vec2d, device=self.device)
+        gradient_real = wp.zeros(shape, dtype=wp.vec3d, device=self.device)
+        gradient_imag = wp.zeros(shape, dtype=wp.vec3d, device=self.device)
+        wp.launch(
+            _warp_discs.fnm_discs,
+            dim=shape,
+            inputs=[
+                wp.array(x, dtype=wp.vec3d, device=self.device),
+                self.centers,
+                self.normal_array,
+                self.radii,
+                self.node_cos,
+                self.node_weights,
+                float(self.discs.k),
+                pressure,
+                gradient_real,
+                gradient_imag,
+            ],
+            device=self.device,
+        )
+        p = pressure.numpy()
+        gradient = gradient_real.numpy() + 1j * gradient_imag.numpy()
+        return p[..., 0] + 1j * p[..., 1], gradient

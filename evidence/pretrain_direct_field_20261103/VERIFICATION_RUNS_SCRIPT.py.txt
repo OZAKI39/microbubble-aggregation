@@ -1,0 +1,74 @@
+"""汇总直接现算的验证运行，写 VERIFICATION_RUNS.json。只读结果目录。"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+ROOT = Path("/home/lzy/projects/new_microbubble_aggregation")
+BASE = ROOT / "results/pretrain_direct_field"
+CACHE_BOX_M = np.array([[-610e-6, 610e-6], [-510e-6, 510e-6], [-90e-6, 90e-6]])
+
+
+def load(path):
+    with h5py.File(path) as h5:
+        return h5["time_s"][()], h5["positions_m"][()]
+
+
+def aspect(x):
+    c = x[:, :2] - x[:, :2].mean(0)
+    w = np.linalg.eigvalsh(np.cov(c.T))
+    return float(np.sqrt(w[-1] / w[0]))
+
+
+def summary(run_dir):
+    s = json.loads((run_dir / "SUMMARY.json").read_text())
+    return dict(status=s["status"], reason=s["reason"], field=s["field"], completed_s=s["completed_s"],
+                wall_s=round(s["wall_s"], 1), wall_s_per_sim_s=round(s["wall_s"] / max(s["completed_s"], 1e-12), 1),
+                constrained_solves=s["constrained_solves"], gate_rejected_steps=s["gate_rejected_steps"],
+                ms_per_solve=round(1e3 * s["wall_s"] / s["constrained_solves"], 2),
+                min_collective_singular_value=s["min_collective_singular_value"],
+                trajectory_sha256=s["trajectory_sha256"])
+
+
+out = {}
+t_old, x_old = load(ROOT / "results/pretrain_stability_2s/offset_A/trajectory.h5")
+t_c, x_c = load(BASE / "offset_A_0p2s_cache/trajectory.h5")
+t_d, x_d = load(BASE / "offset_A_0p2s_direct/trajectory.h5")
+t_s, x_s = load(BASE / "offset_A_0p2s_cache_shift1nm/trajectory.h5")
+n = len(t_c)
+out["cache_path_unchanged"] = dict(
+    compared="offset_A_0p2s_cache vs the first 0.2 s of results/pretrain_stability_2s/offset_A (commit bfa9947)",
+    frames=n, times_equal=bool(np.array_equal(t_old[:n], t_c)),
+    positions_bitwise_equal=bool(np.array_equal(x_old[:n], x_c)))
+rows = []
+for k in range(0, n, 4):
+    rows.append(dict(
+        t_s=round(float(t_c[k]), 4),
+        median_bubble_difference_um=dict(
+            direct_vs_cache=round(float(np.median(np.linalg.norm(x_d[k] - x_c[k], axis=1)) * 1e6), 4),
+            shift1nm_vs_cache=round(float(np.median(np.linalg.norm(x_s[k] - [1e-9, 0, 0] - x_c[k], axis=1)) * 1e6), 4)),
+        aspect_xy=dict(cache=round(aspect(x_c[k]), 3), direct=round(aspect(x_d[k]), 3), shift1nm=round(aspect(x_s[k]), 3))))
+out["offset_A_0p2s"] = dict(
+    note="Same 2 segments of offset_A (seed 20261102). shift1nm = cache field with the whole cluster moved "
+         "+1 nm in x, a sensitivity control. Up to the rearrangement near 0.11 s the direct run stays within "
+         "0.3 nm of the cache run; afterwards both direct and the 1 nm shift diverge to micrometres.",
+    runs={name: summary(BASE / name) for name in
+          ("offset_A_0p2s_cache", "offset_A_0p2s_direct", "offset_A_0p2s_cache_shift1nm")},
+    series=rows)
+wide = BASE / "wide64_A_direct"
+if (wide / "SUMMARY.json").is_file():
+    t_w, x_w = load(wide / "trajectory.h5")
+    outside = np.any((x_w < CACHE_BOX_M[:, 0]) | (x_w > CACHE_BOX_M[:, 1]), axis=2)  # (frame, bubble)
+    first = np.argmax(outside.any(axis=1)) if outside.any() else None
+    old = json.loads((ROOT / "results/pretrain_stability_2s/wide64_A/SUMMARY.json").read_text())
+    out["wide64_A_direct"] = dict(
+        run=summary(wide),
+        previous_cache_run=dict(status=old["status"], completed_s=old["completed_s"], reason=old["reason"]),
+        bubbles_ever_outside_cache_box=int(outside.any(axis=0).sum()),
+        first_frame_outside_cache_box_s=None if first is None else float(t_w[first]),
+        max_abs_position_um=(np.abs(x_w).max(axis=(0, 1)) * 1e6).round(1).tolist())
+print(json.dumps(out, indent=1))
+if len(sys.argv) > 1:
+    Path(sys.argv[1]).write_text(json.dumps(out, indent=1) + "\n")

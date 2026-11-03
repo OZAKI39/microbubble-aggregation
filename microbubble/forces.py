@@ -5,6 +5,8 @@ CPUForces and the collective (N-bubble) closure serve the pretraining tier only.
 
 import numpy as np
 
+from .acoustics import direct_quadrature_order
+
 
 def feedback_weight(d, radius, end=4.0):
     s = np.clip((np.asarray(d) / (2 * radius) - 1) / (end - 1), 0, 1)
@@ -154,13 +156,24 @@ class CPUForces:
 
     coupling="pairwise": the frozen model (pair_reference terms).
     coupling="collective": F1 and the fundamental pair term use collective_fundamental().
+
+    discs=None: pressure and gradient from the stored cubic cache (interior box only).
+    discs=WaterDiscs: the same FNM model evaluated directly at the bubble positions with the
+    registered quadrature order, anywhere in front of the four discs; no interpolation error
+    and no cache box. The source vector u is the same in both modes.
     """
 
-    def __init__(self, basis, response, physics, coupling="pairwise", singular_guard=1e-3):
+    def __init__(
+        self, basis, response, physics, coupling="pairwise", singular_guard=1e-3, discs=None
+    ):
         if coupling not in ("pairwise", "collective"):
             raise ValueError("coupling must be 'pairwise' or 'collective'")
+        if discs is not None and discs.frequency != physics.frequency_Hz:
+            raise ValueError("Direct field frequency differs from the bubble response frequency")
         self.basis, self.response, self.physics = basis, response, physics
         self.coupling, self.singular_guard = coupling, singular_guard
+        self.discs = discs
+        self.direct_order = None if discs is None else direct_quadrature_order(discs.frequency)
         self.chi_zero = response.query(np.array([response.knots[0] + 0j]))[0, 0] / response.knots[0]
         self.u = np.zeros(len(basis.pressures), complex)
         self.calls = 0
@@ -170,12 +183,15 @@ class CPUForces:
         self.u = self.basis.vector(amplitude_Pa, phase_rad)
 
     def __call__(self, x):
-        b = self.basis
-        coord = (x - b.origin) / b.spacing
-        if np.any(coord < 1) or np.any(coord >= np.array(b.shape) - 2):
-            raise ValueError("Outside stored cubic field interior; no clipping")
+        if self.discs is None:
+            b = self.basis
+            coord = (x - b.origin) / b.spacing
+            if np.any(coord < 1) or np.any(coord >= np.array(b.shape) - 2):
+                raise ValueError("Outside stored cubic field interior; no clipping")
+            h, g = b.query_basis(x)
+        else:
+            h, g = self.discs.evaluate(x, self.direct_order)
         self.calls += 1
-        h, g = b.query_basis(x)
         P = self.u @ h
         G = np.einsum("i,inj->nj", self.u, g)
         H = self.response.query(P)

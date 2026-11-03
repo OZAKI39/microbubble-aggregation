@@ -1,0 +1,49 @@
+{
+  "fidelity": "PRETRAIN",
+  "coupling": "collective",
+  "state": "AG32_local",
+  "action": "X_PAIR",
+  "save_interval_s": 0.004166666666666667,
+  "duration_s": 0.2,
+  "control": {
+    "frequency": 2500000,
+    "segments": [
+      {
+        "amplitudes": [
+          0.0,
+          797.9,
+          0.0,
+          0.0
+        ],
+        "phases": [
+          3.0383,
+          3.3732,
+          4.1749,
+          3.1484
+        ],
+        "duration": 0.1
+      },
+      {
+        "amplitudes": [
+          569.5,
+          1755.3,
+          2544.4,
+          0.0
+        ],
+        "phases": [
+          4.2117,
+          5.5961,
+          3.7774,
+          4.9445
+        ],
+        "duration": 0.1
+      }
+    ],
+    "offset_m": [
+      0.0003,
+      0.00015,
+      0.0
+    ]
+  },
+  "field": "cache"
+}

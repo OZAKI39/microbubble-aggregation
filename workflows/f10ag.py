@@ -57,9 +57,14 @@ def run_pretrain(root, config_path, cfg, task, out):
     p = load_pretrain_policy(root)
     if cfg.get("coupling") not in ("pairwise", "collective"):
         raise ValueError("PRETRAIN requires an explicit coupling: 'pairwise' or 'collective'")
+    # "cache" (default, the admitted stored field) or "direct" (same FNM at the bubbles).
+    field = cfg.get("field", "cache")
+    if field not in ("cache", "direct"):
+        raise ValueError("PRETRAIN field must be 'cache' or 'direct'")
     task.update(
         variant="ADAPTIVE",
         coupling=cfg["coupling"],
+        field=field,
         save_interval_s=cfg.get("save_interval_s", p["stepping"]["save_interval_s"]),
     )
     segments = pretrain_segments(task, p["max_source_amplitude_Pa_equivalent"], p["max_segments"])

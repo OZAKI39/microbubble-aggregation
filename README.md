@@ -67,6 +67,8 @@ OPENBLAS_NUM_THREADS=1 python main.py run --config configs/pretrain_collective_e
 
 档位定义见 `configs/pretrain_policy.json`，准入与原型证据见 [预训练档证据](evidence/pretrain_tier_20261102/README.md)。本档声源上限为 3000 Pa-eq；HF/LF 仍为 1500。没有壁面接触模型，泡距通道壁或端面 2R 时停止。结果标记 `PRETRAIN_TIER`、`training_ready=false`，不能作为冻结档证据。
 
+声场有两种取法，由运行配置的 `field` 指定：默认 `"cache"` 读已准入的三次插值缓存，泡离开中央 1.22 × 1.02 × 0.18 mm 盒子即停止；`"direct"` 在泡的实际位置用同一 FNM 圆片模型现算声压和梯度，积分点数按频率登记（≤5 MHz 96 点，≤10 MHz 192 点，整根管道内与 800 点相差 ≤4e-14），没有插值误差，也不受盒子限制，离管壁或端面 2R 的保护照旧。物理模型不变，频率仍只限有 APECSS 响应表的 2.4/2.5/2.6 MHz。GPU 版 `microbubble.gpu.GPUWaterDiscs` 与 CPU 结果相差 ≤2e-13，用于一次计算大量点，尚未接入积分循环。证据见 [直接现算声场证据](evidence/pretrain_direct_field_20261103/README.md)。
+
 每次新实验使用新输出目录。同配置、同输入、同源码且轨迹 SHA 一致的已完成尝试可原样读取；部分写入的目录、不同配置或源码不会被覆盖。失败状态也原样保留，不从失败提议位置继续积分。100 µs HF/LF 的共同点不足原准入要求时，`compare` 明确返回 `INCONCLUSIVE`。
 
 完整历史细缓存未在本地。选择 `FINE` 会明确拒绝，不能自动换成粗缓存。详见 [数据状态](docs/DATA_STATUS.md)。
@@ -123,7 +125,7 @@ LF 保留 F1/F2。只有阻力恰为单位阵且整个 RK 多项式区间满足�
 - **F1/F2**：实际 GPU 算式在 `_warp_forces.py`；`forces.py` 是独立数值参考。改方程意味着新物理研究，必须重做对应数值核查。
 - **阻力/接触**：`hydrodynamics.py` 和 `contact.py`。原容差来自 `configs/frozen/contact_policy.json` 加 `contact_revision.json`；冻结路径没有放宽，预训练档的放宽只写在 `configs/pretrain_policy.json`。
 - **积分**：`high_fidelity.py`、`integration.py`。LF 设置来自原协议 `LF` 节，不能靠忽略拒绝条件获得长轨迹。
-- **预训练档**：容差、步长控制、声源上限和壁面距离都在 `configs/pretrain_policy.json`；运行配置用 `fidelity: "PRETRAIN"`，并写明 `coupling`。`control.segments` 可给出最多 64 段阶跃幅相。改这些设置只影响预训练档，需要在 `evidence/` 中新建对应的准入记录。
+- **预训练档**：容差、步长控制、声源上限和壁面距离都在 `configs/pretrain_policy.json`；运行配置用 `fidelity: "PRETRAIN"`，并写明 `coupling`，可选 `field`（`cache` 默认 / `direct`）。直接现算的积分点数登记在 `acoustics.py` 的 `DIRECT_QUADRATURE_ORDERS`。`control.segments` 可给出最多 64 段阶跃幅相。改这些设置只影响预训练档，需要在 `evidence/` 中新建对应的准入记录。
 - **捕获与形态**：`analysis.py`。保持固定 ID、10/20/30 µm、10 ms hold、重离开和右删失的区别。
 
 ## 环境重建与范围

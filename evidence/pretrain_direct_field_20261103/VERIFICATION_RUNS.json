@@ -1,0 +1,237 @@
+{
+ "cache_path_unchanged": {
+  "compared": "offset_A_0p2s_cache vs the first 0.2 s of results/pretrain_stability_2s/offset_A (commit bfa9947)",
+  "frames": 49,
+  "times_equal": true,
+  "positions_bitwise_equal": true
+ },
+ "offset_A_0p2s": {
+  "note": "Same 2 segments of offset_A (seed 20261102). shift1nm = cache field with the whole cluster moved +1 nm in x, a sensitivity control. Up to the rearrangement near 0.11 s the direct run stays within 0.3 nm of the cache run; afterwards both direct and the 1 nm shift diverge to micrometres.",
+  "runs": {
+   "offset_A_0p2s_cache": {
+    "status": "PASS",
+    "reason": null,
+    "field": "cache",
+    "completed_s": 0.2,
+    "wall_s": 7.9,
+    "wall_s_per_sim_s": 39.6,
+    "constrained_solves": 1252,
+    "gate_rejected_steps": 3,
+    "ms_per_solve": 6.33,
+    "min_collective_singular_value": 0.6236208445524004,
+    "trajectory_sha256": "9757f74ff6bdb5491be25214b44bf246e7966c3705a3ed2c871b37ad17f6578a"
+   },
+   "offset_A_0p2s_direct": {
+    "status": "PASS",
+    "reason": null,
+    "field": "direct",
+    "completed_s": 0.2,
+    "wall_s": 6.2,
+    "wall_s_per_sim_s": 31.1,
+    "constrained_solves": 1329,
+    "gate_rejected_steps": 5,
+    "ms_per_solve": 4.68,
+    "min_collective_singular_value": 0.6236208444178349,
+    "trajectory_sha256": "10ec46e1fab94d3fe1f77acdbada2b2cfcbd8fe2cee7a08ee3893bad6db27a9f"
+   },
+   "offset_A_0p2s_cache_shift1nm": {
+    "status": "PASS",
+    "reason": null,
+    "field": "cache",
+    "completed_s": 0.2,
+    "wall_s": 8.0,
+    "wall_s_per_sim_s": 39.9,
+    "constrained_solves": 1238,
+    "gate_rejected_steps": 1,
+    "ms_per_solve": 6.44,
+    "min_collective_singular_value": 0.6236208445274877,
+    "trajectory_sha256": "0c4f4c4c467ecb1a9b12de0cf4d0a3fb09bf75200421873c8c5409bd4ac8ff05"
+   }
+  },
+  "series": [
+   {
+    "t_s": 0.0,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0,
+     "shift1nm_vs_cache": 0.0
+    },
+    "aspect_xy": {
+     "cache": 1.0,
+     "direct": 1.0,
+     "shift1nm": 1.0
+    }
+   },
+   {
+    "t_s": 0.0167,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0,
+     "shift1nm_vs_cache": 0.0
+    },
+    "aspect_xy": {
+     "cache": 1.001,
+     "direct": 1.001,
+     "shift1nm": 1.001
+    }
+   },
+   {
+    "t_s": 0.0333,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0,
+     "shift1nm_vs_cache": 0.0
+    },
+    "aspect_xy": {
+     "cache": 1.002,
+     "direct": 1.002,
+     "shift1nm": 1.002
+    }
+   },
+   {
+    "t_s": 0.05,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0001,
+     "shift1nm_vs_cache": 0.0
+    },
+    "aspect_xy": {
+     "cache": 1.004,
+     "direct": 1.004,
+     "shift1nm": 1.004
+    }
+   },
+   {
+    "t_s": 0.0667,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0001,
+     "shift1nm_vs_cache": 0.0
+    },
+    "aspect_xy": {
+     "cache": 1.006,
+     "direct": 1.006,
+     "shift1nm": 1.006
+    }
+   },
+   {
+    "t_s": 0.0833,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0001,
+     "shift1nm_vs_cache": 0.0
+    },
+    "aspect_xy": {
+     "cache": 1.01,
+     "direct": 1.01,
+     "shift1nm": 1.01
+    }
+   },
+   {
+    "t_s": 0.1,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0001,
+     "shift1nm_vs_cache": 0.0
+    },
+    "aspect_xy": {
+     "cache": 1.015,
+     "direct": 1.015,
+     "shift1nm": 1.015
+    }
+   },
+   {
+    "t_s": 0.1167,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.0011,
+     "shift1nm_vs_cache": 0.0001
+    },
+    "aspect_xy": {
+     "cache": 1.253,
+     "direct": 1.253,
+     "shift1nm": 1.253
+    }
+   },
+   {
+    "t_s": 0.1333,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.161,
+     "shift1nm_vs_cache": 1.1623
+    },
+    "aspect_xy": {
+     "cache": 1.476,
+     "direct": 1.513,
+     "shift1nm": 1.537
+    }
+   },
+   {
+    "t_s": 0.15,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 0.4846,
+     "shift1nm_vs_cache": 3.0429
+    },
+    "aspect_xy": {
+     "cache": 1.312,
+     "direct": 1.334,
+     "shift1nm": 1.498
+    }
+   },
+   {
+    "t_s": 0.1667,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 1.2846,
+     "shift1nm_vs_cache": 3.4208
+    },
+    "aspect_xy": {
+     "cache": 2.112,
+     "direct": 2.084,
+     "shift1nm": 1.983
+    }
+   },
+   {
+    "t_s": 0.1833,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 2.4143,
+     "shift1nm_vs_cache": 4.7604
+    },
+    "aspect_xy": {
+     "cache": 1.826,
+     "direct": 1.47,
+     "shift1nm": 1.796
+    }
+   },
+   {
+    "t_s": 0.2,
+    "median_bubble_difference_um": {
+     "direct_vs_cache": 4.6931,
+     "shift1nm_vs_cache": 6.5009
+    },
+    "aspect_xy": {
+     "cache": 1.344,
+     "direct": 2.207,
+     "shift1nm": 2.302
+    }
+   }
+  ]
+ },
+ "wide64_A_direct": {
+  "run": {
+   "status": "PASS",
+   "reason": null,
+   "field": "direct",
+   "completed_s": 2.0,
+   "wall_s": 730.3,
+   "wall_s_per_sim_s": 365.2,
+   "constrained_solves": 122603,
+   "gate_rejected_steps": 56950,
+   "ms_per_solve": 5.96,
+   "min_collective_singular_value": 0.6236208601370464,
+   "trajectory_sha256": "af24b6dcbfa23b45679ad24da0d21e2f9d758ef81702f99ec1d68fb11c6df18d"
+  },
+  "previous_cache_run": {
+   "status": "FAIL",
+   "completed_s": 0.3262091284817254,
+   "reason": "ValueError('Outside stored cubic field interior; no clipping')"
+  },
+  "bubbles_ever_outside_cache_box": 2,
+  "first_frame_outside_cache_box_s": 0.329166666667,
+  "max_abs_position_um": [
+   685.9,
+   418.7,
+   27.3
+  ]
+ }
+}

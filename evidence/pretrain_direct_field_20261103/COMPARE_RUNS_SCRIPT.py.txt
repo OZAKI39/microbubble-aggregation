@@ -1,0 +1,63 @@
+"""比较 0.2 s 查表/现算运行，以及查表运行与原 2 s offset_A 前 0.2 s 是否逐位一致。只读。"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+ROOT = Path("/home/lzy/projects/new_microbubble_aggregation")
+R = 1.78e-6
+
+
+def load(path):
+    with h5py.File(path) as h5:
+        return h5["time_s"][()], h5["positions_m"][()]
+
+
+def groups(x, link):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(link)), dtype=int).reshape(-1, 2)
+    n = len(x)
+    return connected_components(coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(n, n)), directed=False)[0]
+
+
+def shape(x):
+    c = x[:, :2] - x[:, :2].mean(0)
+    w = np.linalg.eigvalsh(np.cov(c.T))
+    return np.sqrt(w.sum()), np.sqrt(w[-1] / w[0])
+
+
+t_old, x_old = load(ROOT / "results/pretrain_stability_2s/offset_A/trajectory.h5")
+t_c, x_c = load(ROOT / "results/pretrain_direct_field/offset_A_0p2s_cache/trajectory.h5")
+t_d, x_d = load(ROOT / "results/pretrain_direct_field/offset_A_0p2s_direct/trajectory.h5")
+n = len(t_c)
+out = dict(
+    cache_reproduces_stored_2s_run=dict(
+        frames=n,
+        times_equal=bool(np.array_equal(t_old[:n], t_c)),
+        positions_bitwise_equal=bool(np.array_equal(x_old[:n], x_c)),
+        max_difference_m=float(np.abs(x_old[:n] - x_c).max()),
+    )
+)
+assert np.array_equal(t_c, t_d)
+diff = np.linalg.norm(x_d - x_c, axis=2)  # (frame, bubble)
+rows = []
+for k in range(0, n, 12):
+    rg_c, ar_c = shape(x_c[k]); rg_d, ar_d = shape(x_d[k])
+    rows.append(dict(t_s=round(float(t_c[k]), 4), max_bubble_difference_um=round(float(diff[k].max() * 1e6), 4),
+                     median_bubble_difference_um=round(float(np.median(diff[k]) * 1e6), 4),
+                     com_difference_um=round(float(np.linalg.norm(x_d[k].mean(0) - x_c[k].mean(0)) * 1e6), 4),
+                     rg_xy_um=[round(rg_c * 1e6, 3), round(rg_d * 1e6, 3)], aspect_xy=[round(ar_c, 4), round(ar_d, 4)],
+                     touching_groups=[int(groups(x_c[k], 2.2 * R)), int(groups(x_d[k], 2.2 * R))]))
+out["direct_vs_cache_0p2s"] = rows
+out["direct_vs_cache_summary"] = dict(
+    max_bubble_difference_um=round(float(diff.max() * 1e6), 4),
+    max_com_difference_um=round(float(np.linalg.norm(x_d.mean(1) - x_c.mean(1), axis=1).max() * 1e6), 4),
+    pixel_um=0.6,
+)
+print(json.dumps(out, indent=1))
+if len(sys.argv) > 1:
+    Path(sys.argv[1]).write_text(json.dumps(out, indent=1) + "\n")

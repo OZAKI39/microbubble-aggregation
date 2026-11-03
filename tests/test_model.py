@@ -288,3 +288,24 @@ def test_completed_output_reuse_and_tamper_rejection(tmp_path):
         f.write(b"tamper")
     with pytest.raises(ValueError, match="hash mismatch"):
         run(ROOT, config, out)
+
+
+@pytest.mark.gpu
+def test_gpu_direct_discs_match_cpu():
+    from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+    from microbubble.gpu import GPUWaterDiscs
+
+    c = context(ROOT)
+    rng = np.random.default_rng(5)
+    x = rng.uniform([-16e-3, -0.75e-3, -0.75e-3], [16e-3, 0.75e-3, 0.75e-3], (2000, 3))
+    x = x[np.linalg.norm(x[:, 1:], axis=1) < 0.75e-3]
+    for frequency_Hz in (2.5e6, 10e6):
+        discs = WaterDiscs(c.discs.elements, frequency_Hz)
+        order = direct_quadrature_order(frequency_Hz)
+        p_cpu, g_cpu = discs.evaluate(x, order)
+        p_gpu, g_gpu = GPUWaterDiscs(discs, order).evaluate(x)
+        assert np.abs(p_gpu - p_cpu).max() <= 1e-12 * np.abs(p_cpu).max()
+        g_error = np.linalg.norm(g_gpu - g_cpu, axis=-1).max()
+        assert g_error <= 1e-12 * np.linalg.norm(g_cpu, axis=-1).max()
+    with pytest.raises(ValueError, match="in front"):
+        GPUWaterDiscs(c.discs, 96).evaluate(np.array([[0.0, 0.0045, 0.0]]))

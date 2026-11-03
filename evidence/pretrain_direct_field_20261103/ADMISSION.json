@@ -1,0 +1,359 @@
+{
+  "record": "Pretraining tier: direct FNM field at the bubble positions (field='direct')",
+  "date": "2026-11-03",
+  "status": "ADMITTED_AS_PRETRAIN_FIELD_OPTION",
+  "admitted_use": "Optional field evaluation for PRETRAIN runs. Same homogeneous-water FNM disc model as the admitted cache; removes the cache box and its interpolation error. Does not change any frozen HF/LF path, result, gate or scope, and does not change the default (cache).",
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "PRETRAIN_TIER"
+  ],
+  "training_ready": false,
+  "authorization": {
+    "conversation": "Claude Code session with the user, 2026-11-03",
+    "statements": [
+      {
+        "user": "对于【2. 算每个泡处的声压】，交接文档里存在“GPU直接现算声场”的内容，我现在需要对这个部分进行开发验证。",
+        "scope": "Develop and verify direct (GPU) field computation"
+      },
+      {
+        "user": "阶段1+2 (推荐)",
+        "scope": "CPU direct field in the pretraining tier (config field='direct', default cache) plus a GPU FNM kernel with GPU/CPU agreement and timing; physics unchanged, 2.4/2.5/2.6 MHz only"
+      },
+      {
+        "user": "同意两项 (推荐)",
+        "scope": "Accept that the cache-box stop does not apply in direct mode (2R wall guard kept); run wide64_A 2 s with the direct field and a 0.2 s cluster cache/direct comparison"
+      }
+    ],
+    "not_authorized_here": "Per-channel frequencies and a linear response formula replacing the APECSS tables (stages 3-4): they change the physics model and need their own admission."
+  },
+  "changes": {
+    "microbubble/acoustics.py": "DIRECT_QUADRATURE_ORDERS and direct_quadrature_order(): registered FNM order for direct evaluation (96 up to 5 MHz, 192 up to 10 MHz, error above 10 MHz)",
+    "microbubble/forces.py": "CPUForces(discs=None|WaterDiscs): direct field at the bubbles with the registered order; frequency must match the response; cache path unchanged",
+    "microbubble/integration.py": "integrate_pretrain passes discs when t['field'] == 'direct'; field recorded in SUMMARY.json and trajectory.h5 attributes",
+    "workflows/f10ag.py": "run_pretrain validates field ('cache' default, 'direct')",
+    "microbubble/_warp_discs.py": "New float64 Warp kernel fnm_discs: same integrand and nodes as WaterDiscs.evaluate, one thread per (disc, point)",
+    "microbubble/gpu.py": "New GPUWaterDiscs (device buffers + launch); FieldForces unchanged",
+    "tests": "test_pretrain.py: quadrature convergence over the whole lumen (5 frequencies), cache/direct agreement within the admitted cache limits, direct run outside the cache box; test_model.py: GPU/CPU agreement (gpu marker)",
+    "README.md": "PRETRAIN field option"
+  },
+  "unchanged": "WaterDiscs.evaluate, the stored caches and FIELD_GATE, APECSS tables, F1/F2, collective closure, resistance, contact, gates, stepping, wall guard, Warp FieldForces and all frozen HF/LF code.",
+  "rule_change": "field='direct': the 'Outside stored cubic field interior' stop does not apply. The 2R lumen wall/end guard and the 'in front of each piston' check remain.",
+  "evidence": {
+    "quadrature": {
+      "file": "DIRECT_FIELD_CHECK.json",
+      "reference_order": 800,
+      "whole_lumen_order_48": {
+        "up_to_2p6MHz": 2.579105840593196e-09,
+        "up_to_5MHz": 0.01511172557865949,
+        "up_to_10MHz": 0.1120702566633439
+      },
+      "whole_lumen_registered": {
+        "order_96_up_to_5MHz": 8.931311710998297e-15,
+        "order_192_up_to_10MHz": 4.095122278312903e-14
+      },
+      "cache_box_order_48_up_to_10MHz": 1.2669596085633255e-14,
+      "correction": "The handoff statement that 48 points reach about 1e-14 at 2.5, 5 and 10 MHz holds only inside the central cache box, not along the lumen."
+    },
+    "cache_vs_direct": {
+      "points": 5000,
+      "normalisation": "per channel, by the largest direct value in the sample",
+      "pressure": [
+        1.6049615237838565e-05,
+        1.6136797552193002e-05,
+        1.787407846655497e-05,
+        1.7870254543019207e-05
+      ],
+      "gradient": [
+        0.001651519033721202,
+        0.0016436606521356364,
+        0.001747917332187644,
+        0.0017515013732444108
+      ],
+      "admitted_cache_limits": {
+        "pressure": 0.0001,
+        "gradient": 0.005
+      }
+    },
+    "cpu_force_call_timing": [
+      {
+        "state": "AG32_local at (300,150) um",
+        "N": 32,
+        "coupling": "collective",
+        "cache_ms_per_force_call": 4.194786000880413,
+        "cache_field_only_ms": 3.8180730043677613,
+        "direct_ms_per_force_call": 2.6095425128005445,
+        "direct_field_only_ms": 2.0904604898532853
+      },
+      {
+        "state": "N64_wide_r0",
+        "N": 64,
+        "coupling": "collective",
+        "cache_ms_per_force_call": 5.2920599991921335,
+        "cache_field_only_ms": 4.171132488409057,
+        "direct_ms_per_force_call": 3.895503483363427,
+        "direct_field_only_ms": 2.681387006305158
+      }
+    ],
+    "gpu": {
+      "file": "GPU_CHECK.json",
+      "device": {
+        "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "warp": "1.18.0"
+      },
+      "agreement": [
+        {
+          "frequency_Hz": 2500000.0,
+          "order": 96,
+          "points": 20000,
+          "pressure": 1.4440044686600804e-14,
+          "gradient": 9.622351815080228e-14
+        },
+        {
+          "frequency_Hz": 10000000.0,
+          "order": 192,
+          "points": 20000,
+          "pressure": 3.5325764767272494e-14,
+          "gradient": 1.9992631880803783e-13
+        }
+      ],
+      "timing": [
+        {
+          "order": 96,
+          "points": 32,
+          "gpu_ms_including_transfers": 0.7620579999638721,
+          "cpu_ms": 2.370022004470229,
+          "cpu_over_gpu": 3.11
+        },
+        {
+          "order": 96,
+          "points": 256,
+          "gpu_ms_including_transfers": 1.2035245017614216,
+          "cpu_ms": 6.734499998856336,
+          "cpu_over_gpu": 5.6
+        },
+        {
+          "order": 96,
+          "points": 4096,
+          "gpu_ms_including_transfers": 3.791876501054503,
+          "cpu_ms": 104.02806600905024,
+          "cpu_over_gpu": 27.43
+        },
+        {
+          "order": 96,
+          "points": 32768,
+          "gpu_ms_including_transfers": 22.300026495940983,
+          "cpu_ms": 1245.8237689861562,
+          "cpu_over_gpu": 55.87
+        },
+        {
+          "order": 96,
+          "points": 262144,
+          "gpu_ms_including_transfers": 164.57275550055783,
+          "cpu_ms": null
+        },
+        {
+          "order": 192,
+          "points": 32,
+          "gpu_ms_including_transfers": 1.2653130106627941,
+          "cpu_ms": 4.728100000647828,
+          "cpu_over_gpu": 3.74
+        },
+        {
+          "order": 192,
+          "points": 256,
+          "gpu_ms_including_transfers": 1.775317985448055,
+          "cpu_ms": 13.546831993153319,
+          "cpu_over_gpu": 7.63
+        },
+        {
+          "order": 192,
+          "points": 4096,
+          "gpu_ms_including_transfers": 5.371962004574016,
+          "cpu_ms": 267.06657698377967,
+          "cpu_over_gpu": 49.71
+        },
+        {
+          "order": 192,
+          "points": 32768,
+          "gpu_ms_including_transfers": 35.580859999754466,
+          "cpu_ms": 2698.0538530042395,
+          "cpu_over_gpu": 75.83
+        },
+        {
+          "order": 192,
+          "points": 262144,
+          "gpu_ms_including_transfers": 287.20999498909805,
+          "cpu_ms": null
+        }
+      ]
+    },
+    "verification_runs": {
+      "file": "VERIFICATION_RUNS.json",
+      "cache_path_unchanged": {
+        "compared": "offset_A_0p2s_cache vs the first 0.2 s of results/pretrain_stability_2s/offset_A (commit bfa9947)",
+        "frames": 49,
+        "times_equal": true,
+        "positions_bitwise_equal": true
+      },
+      "offset_A_0p2s": {
+        "offset_A_0p2s_cache": {
+          "status": "PASS",
+          "reason": null,
+          "field": "cache",
+          "completed_s": 0.2,
+          "wall_s": 7.9,
+          "wall_s_per_sim_s": 39.6,
+          "constrained_solves": 1252,
+          "gate_rejected_steps": 3,
+          "ms_per_solve": 6.33,
+          "min_collective_singular_value": 0.6236208445524004,
+          "trajectory_sha256": "9757f74ff6bdb5491be25214b44bf246e7966c3705a3ed2c871b37ad17f6578a"
+        },
+        "offset_A_0p2s_direct": {
+          "status": "PASS",
+          "reason": null,
+          "field": "direct",
+          "completed_s": 0.2,
+          "wall_s": 6.2,
+          "wall_s_per_sim_s": 31.1,
+          "constrained_solves": 1329,
+          "gate_rejected_steps": 5,
+          "ms_per_solve": 4.68,
+          "min_collective_singular_value": 0.6236208444178349,
+          "trajectory_sha256": "10ec46e1fab94d3fe1f77acdbada2b2cfcbd8fe2cee7a08ee3893bad6db27a9f"
+        },
+        "offset_A_0p2s_cache_shift1nm": {
+          "status": "PASS",
+          "reason": null,
+          "field": "cache",
+          "completed_s": 0.2,
+          "wall_s": 8.0,
+          "wall_s_per_sim_s": 39.9,
+          "constrained_solves": 1238,
+          "gate_rejected_steps": 1,
+          "ms_per_solve": 6.44,
+          "min_collective_singular_value": 0.6236208445274877,
+          "trajectory_sha256": "0c4f4c4c467ecb1a9b12de0cf4d0a3fb09bf75200421873c8c5409bd4ac8ff05"
+        }
+      },
+      "wide64_A_direct": {
+        "run": {
+          "status": "PASS",
+          "reason": null,
+          "field": "direct",
+          "completed_s": 2.0,
+          "wall_s": 730.3,
+          "wall_s_per_sim_s": 365.2,
+          "constrained_solves": 122603,
+          "gate_rejected_steps": 56950,
+          "ms_per_solve": 5.96,
+          "min_collective_singular_value": 0.6236208601370464,
+          "trajectory_sha256": "af24b6dcbfa23b45679ad24da0d21e2f9d758ef81702f99ec1d68fb11c6df18d"
+        },
+        "previous_cache_run": {
+          "status": "FAIL",
+          "completed_s": 0.3262091284817254,
+          "reason": "ValueError('Outside stored cubic field interior; no clipping')"
+        },
+        "bubbles_ever_outside_cache_box": 2,
+        "first_frame_outside_cache_box_s": 0.329166666667,
+        "max_abs_position_um": [
+          685.9,
+          418.7,
+          27.3
+        ]
+      }
+    }
+  },
+  "findings": [
+    "After a cluster rearrangement single trajectories are not reproducible under tiny perturbations: a +1 nm shift of the whole cluster (cache field) diverges more than switching cache to direct (median bubble difference at 0.2 s 6.5 um vs 4.7 um; aspect ratio 2.30 and 2.21 vs 1.34). Trajectory-wise equality of the two field modes cannot be tested beyond such events; deformation comparisons (and world-model targets) must be statistical."
+  ],
+  "limitations": [
+    "Same homogeneous-water disc model as the cache: no PDMS, wall or end reflections; field shape and the on-axis Y null are model features, not measured.",
+    "Frequencies remain 2.4/2.5/2.6 MHz (APECSS response tables); 5 and 10 MHz orders are verified for the field only.",
+    "Quadrature verified on random points with |x| < 16 mm and r < 0.75 mm of this geometry; another geometry or points within 0.25 mm of the X discs need a new check.",
+    "CPU timings: one process, OPENBLAS_NUM_THREADS=1, while one other single-core PRETRAIN run was active.",
+    "GPU timings are for an RTX 4060 Laptop GPU in float64 and include host/device copies per call.",
+    "GPUWaterDiscs is not used by integrate_pretrain; there is no batch runner yet."
+  ],
+  "not_implemented": [
+    "Per-channel frequencies with beat averaging between frequency groups",
+    "Linear bubble response formula for arbitrary frequency and radius",
+    "GPU field evaluation inside the integration loop or a multi-trajectory batch runner",
+    "Ensemble comparison of shape statistics between cache and direct runs"
+  ],
+  "identity": {
+    "commit": "bfa994787a3febbd597b6db6821e4d4015016fa2",
+    "git_status": "M README.md\n M microbubble/acoustics.py\n M microbubble/forces.py\n M microbubble/gpu.py\n M microbubble/integration.py\n M tests/test_model.py\n M tests/test_pretrain.py\n M workflows/f10ag.py\n?? AGENTS_CODING.md\n?? HANDOFF_20261102.md\n?? configs/pretrain_direct_field/\n?? configs/pretrain_feasibility_2s.json\n?? configs/pretrain_stability_2s/\n?? evidence/pretrain_direct_field_20261103/\n?? microbubble/_warp_discs.py\n?? results/pretrain_direct_field/\n?? results/pretrain_feasibility_2s/\n?? results/pretrain_stability_2s/\n?? visualization/",
+    "utc": "2026-11-03T11:16:25.602268+00:00",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "/home/lzy/projects/new_microbubble_aggregation/.venv/bin/python",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "warp-lang": "1.18.0",
+      "matplotlib": "3.11.2"
+    },
+    "source_sha256": {
+      "main.py": "e6304cd7edca536419bf040d38e28921eb758ea8070beefcabd4a02fe71df0bf",
+      "microbubble/__init__.py": "d882fce9cad7c5bb94cda8300a2dd3bc6e633d047f713b9fcff3a8b675a9e59e",
+      "microbubble/_warp_discs.py": "440956710c68078dbaa7ac97a3ced310869b705a924af0431239308f63ded469",
+      "microbubble/_warp_forces.py": "bad94891b3823f82b426e66487b7e6bb7a179d0c8495961807845230cbd1643d",
+      "microbubble/_warp_walls.py": "151fc5295aaffb2062fbd4fd24aca3deb720287ce9c0eae5d586b456bdaced2b",
+      "microbubble/acoustics.py": "262be71c63632bfdd6b5b9e50531d1dd1bdf5d1f5f948fafe2eaa395dbe1c9ec",
+      "microbubble/analysis.py": "57127d8767f495d81a985461420b7f01aafb01856cd410c238653e97d3508440",
+      "microbubble/bubble_response.py": "01ca701d9cc1c0c4ae30c780b628694465d57625be4640ca237ec3473d91a642",
+      "microbubble/contact.py": "1511cdbb82c64f57444034612303295eef79b58cbf869481b3b6a39b1f98a9e8",
+      "microbubble/control.py": "932fed41318d347e0d50600874f1d7a08f7fbfead0dd8fb852679a4b4267837b",
+      "microbubble/dynamics.py": "620745969162366dec0614ee12fb460f3df6873479288d82ed74a0207993c28f",
+      "microbubble/forces.py": "5f0af514b3ed23e497f9b3fc366c7b4cfee631c048b293ae981a02162dcda491",
+      "microbubble/geometry.py": "1c165ad8b644a713a88407aa24f1ad465866f15ac180ede33132f6f61a7d046c",
+      "microbubble/gpu.py": "3c1aea4e9a9c08d7a594eb39c0f5b365dc8f64d53d28553d5c6dd9bff95cb3b8",
+      "microbubble/high_fidelity.py": "ac19d775b3a870a88f58566020cec2b159e0cb7928ff3626aaf12378bba42023",
+      "microbubble/hydrodynamics.py": "2fb7a63d0cccb9b3b001bf8f69350c99335689d20db6baa31eb1faadfec6bc54",
+      "microbubble/initial_conditions.py": "e2ab23fe227071836280f4c78917839cf9e83f568eb699d4268feb25a9ba71db",
+      "microbubble/integration.py": "5b9c7a295e8c5e762c6c4ba373a1e40047e890b46570b01a3ef2d5c422d9b13b",
+      "microbubble/io.py": "d3197922cd2553e9668bd05643c27376434bb054c446796695378d3d317a676f",
+      "microbubble/parameters.py": "c481165e6124bdb976a787e067624f80e3d63528ba0d988ea679f4f5751574f2",
+      "workflows/__init__.py": "0a7c39e4b3d15cdd0bbd515cc6f8e76f6c278cf3f2f315e680d05b0bdd50053d",
+      "workflows/analysis.py": "0b0a16a96181fd9396897913db0955bb80d8ab1ec1fbc9d69459563133a701db",
+      "workflows/diagnostics.py": "1733f132c6bfd80ee8c5d0f3a3fd84f7fcfd5a3d81cf7f3eadccb4b0734714c5",
+      "workflows/f10ag.py": "7ad3b20b7ca4cc144c846b683390577b38ad69c5e0eb03b7156a3d847d143484",
+      "workflows/validation.py": "4c23115f4258e31613847eb756b1eb36eb4f000b7f3c8e49dffe43e88e0b72f1",
+      "workflows/visualization.py": "07c6db6adbe69445521e453dd8114a568f811cff9e48c458d9239f9430cf548e"
+    },
+    "input_sha256": {
+      "configs/frozen/f10ag_protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+      "configs/frozen/contact_policy.json": "2083c6fe0f4cfe199abad5c5bcef154f8fa8ad0175a062013abffa44f1d673e5",
+      "configs/frozen/contact_revision.json": "fd41b0dd567557166fe3d49771d5e3eca88f13b6ffe8bbd261bfeab8351ecaf5",
+      "inputs/apparatus_snapshot.json": "22263a9275aaca26158720a55fce02d620d07d4868b9658aca6c16e914f45bcb",
+      "inputs/response/adaptive_2500000.h5": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+      "inputs/response/LOW_PRESSURE_ADMISSION.json": "4afea0ba48f44f08d80bca2a533b699d8a52b87a81454ff79caa80e9cb94c000",
+      "inputs/response/low_pressure_2500000.h5": "aefe1d459c6667c0e459a1b7a070fe04960675d3fdaa4c14e7c11afc5878c6df",
+      "inputs/initial_states.h5": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "inputs/actions.json": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "inputs/source_order.json": "df940909e1f822995497855f3aa5260b1fe1e82aef4e203e279c5346f34c8ab5",
+      "inputs/fields/2400000/coarse.h5": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "inputs/fields/2400000/FIELD_GATE.json": "42a1e5ff5e1c301740ef99de31b3928e9659b327af0a67427a754264bfa3577a",
+      "inputs/response/2400000/response_shell_1.0.h5": "74606fc70639d262bd3b186a56ef1c6dfa48778a4c3d3822cebab6a870a24adc",
+      "inputs/response/2400000/PHYSICS_GATE.json": "ac7d87d73239516b61196e442dfab1e704eb303af653b0d2a92c14148cde256c",
+      "inputs/fields/2500000/coarse.h5": "3a20420af0b4f2e3168cdc5aaee636e62480f2b277d4bc5de0133856aea7251a",
+      "inputs/fields/2500000/FIELD_GATE.json": "5653310b677a7c1b4523b5a7ad767cc7dcad423836b8cbf24660ca4363bcff79",
+      "inputs/fields/2600000/coarse.h5": "06e1ea4f3d832c3f6fc744b8e2e1a143e13f2f9c3f64bb8860dae14ead296328",
+      "inputs/fields/2600000/FIELD_GATE.json": "da3990935c75e9e324a0a9292c7e150bea15ef5578c2f5ac34c8361acbff15a0",
+      "inputs/response/2600000/response_shell_1.0.h5": "6ccc1d8fafc3429063c05d45ce049f1ba935d8074770fd66456296002ddd7747",
+      "inputs/response/2600000/PHYSICS_GATE.json": "bc927860532eb3c024cb7b71b29dbfea438944a0e5844bd14cb1129c0c778c9d"
+    },
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false
+  }
+}

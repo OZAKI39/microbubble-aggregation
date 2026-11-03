@@ -243,6 +243,8 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
     size, never accepted. Steps end exactly at control switches and save times. Only the
     central bore is admitted: the run stops when a bubble comes within wall_guard_over_R x R
     of the lumen wall or end (no wall contact is modelled here).
+    t["field"] = "cache" reads the stored cubic cache and stops when a bubble leaves its
+    interior box; "direct" evaluates the same FNM model at the bubbles (CPUForces discs=).
     """
     import osqp
     from scipy.spatial import cKDTree
@@ -258,7 +260,15 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
     if t.get("offset_m"):
         x = x + np.asarray(t["offset_m"])
     start = x.copy()
-    forces = CPUForces(c.basis, c.response, c.physics, t["coupling"], policy["singular_guard"])
+    field = t.get("field", "cache")
+    forces = CPUForces(
+        c.basis,
+        c.response,
+        c.physics,
+        t["coupling"],
+        policy["singular_guard"],
+        discs=c.discs if field == "direct" else None,
+    )
     T = t["duration"]
     save = t["save_interval_s"]
     pending = [float(v) for v in np.round(np.arange(save, T + 1e-12, save), 12)]
@@ -351,6 +361,7 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
         h5.attrs.update(
             scope="PRETRAIN_TIER",
             coupling=t["coupling"],
+            field=field,
             sampling="Accepted positions at the requested save times; steps end exactly there",
             labels=json.dumps(ident["labels"] + PRETRAIN_LABELS),
             training_ready=False,
@@ -366,6 +377,7 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
         N=len(x),
         scope="PRETRAIN_TIER",
         coupling=t["coupling"],
+        field=field,
         labels=ident["labels"] + PRETRAIN_LABELS,
         training_ready=False,
         trajectory_path=path.name,
