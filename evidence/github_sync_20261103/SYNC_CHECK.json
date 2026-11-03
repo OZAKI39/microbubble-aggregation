@@ -1,0 +1,542 @@
+{
+  "date": "2026-11-03",
+  "request": "请根据【AGENTS.md】的要求，将【/home/lzy/projects/new_microbubble_aggregation】目录下的项目内容同步到【https://github.com/OZAKI39/microbubble-aggregation】",
+  "base": {
+    "local_main": "bfa994787a3febbd597b6db6821e4d4015016fa2",
+    "origin_main": "bfa994787a3febbd597b6db6821e4d4015016fa2"
+  },
+  "note": "Listed before this record and the docs/GITHUB_SYNC.md section were written; those two are also committed.",
+  "files": [
+    {
+      "path": "AGENTS_CODING.md",
+      "state": "new",
+      "bytes": 11447,
+      "sha256": "d576d51608278a9046d17ad3fce2739a9aadffa7ecab40bc5185329be81f17a1"
+    },
+    {
+      "path": "HANDOFF_20261102.md",
+      "state": "new",
+      "bytes": 26277,
+      "sha256": "fee77f82d7008267f0507ec19727b561ef583fb9ee7362cfbeb2032b6db59796"
+    },
+    {
+      "path": "README.md",
+      "state": "modified",
+      "bytes": 13428,
+      "sha256": "1be1508d7d0b701a9392e6c22e4f56c23674c901d1eaf40fce14daa8205b84c6"
+    },
+    {
+      "path": "configs/pretrain_direct_field/offset_A_0p2s_cache.json",
+      "state": "new",
+      "bytes": 805,
+      "sha256": "70f5fa4bc0d47da7178d0027e4f1bb0d79762f5a0383ad66c5b098ba838c39c6"
+    },
+    {
+      "path": "configs/pretrain_direct_field/offset_A_0p2s_cache_shift1nm.json",
+      "state": "new",
+      "bytes": 810,
+      "sha256": "2cc37f72cde6a0c13651d98e5f2b9b1cffedca5944596e44cd79e86d6d859e3d"
+    },
+    {
+      "path": "configs/pretrain_direct_field/offset_A_0p2s_direct.json",
+      "state": "new",
+      "bytes": 806,
+      "sha256": "cd96b296fd5fabc0c04a46280d064a297e99a70caae72cc9a03b8cffee00c483"
+    },
+    {
+      "path": "configs/pretrain_direct_field/wide64_A_direct.json",
+      "state": "new",
+      "bytes": 5125,
+      "sha256": "2f51101022a2675397f2a2f81cfe85d283c9ecc1d6c7b04f1d99ef0d2535f099"
+    },
+    {
+      "path": "configs/pretrain_feasibility_2s.json",
+      "state": "new",
+      "bytes": 5158,
+      "sha256": "b480dc322e3ffe5fac8838059ffec71b5c2366b9bb2d4da964272b51e0dacc47"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/center_B.json",
+      "state": "new",
+      "bytes": 5175,
+      "sha256": "c7a76c7765cae1630cdc684afb0209e14b9037e47f5bd75ea03cd0edb3c93990"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/offset_A.json",
+      "state": "new",
+      "bytes": 5167,
+      "sha256": "8db90f8125cd1734f0eb1022979254e344e6c6fcb3acc2db4a766c351042d14e"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/offset_B.json",
+      "state": "new",
+      "bytes": 5180,
+      "sha256": "f53d69cbcc6c097de020461bfb47e48047a8950cf17e076600c11a0a62e93aff"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/wide64_A.json",
+      "state": "new",
+      "bytes": 5104,
+      "sha256": "44627ca0e872d53668381db6d65a68fe1536662501e430dff99a4a49b2e152fb"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/wide64_B.json",
+      "state": "new",
+      "bytes": 5117,
+      "sha256": "8612bca77c50bb67f93bc8970dadfcee46b5bcb058f62be3a66af00cdf2cd6c6"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/ADMISSION.json",
+      "state": "new",
+      "bytes": 18092,
+      "sha256": "dc7a752a5cba657526e0e9d98ee96e98925e669a92ca8f4c0e2d1e95aaf53da9"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/COMPARE_RUNS_SCRIPT.py.txt",
+      "state": "new",
+      "bytes": 2556,
+      "sha256": "1e96474e4c0ef87f4faf90ae20b3e1d0ec3de45a62966eeaf7bb97e1d0bc0c23"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/DIRECT_FIELD_CHECK.json",
+      "state": "new",
+      "bytes": 13428,
+      "sha256": "1f55b1bcb135875700db3dc167d4f92f3b680dc013026d9eddfaa5953d3645aa"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/DIRECT_FIELD_CHECK_SCRIPT.py.txt",
+      "state": "new",
+      "bytes": 6148,
+      "sha256": "006c879b0c35422885bf4f66d873c16eab5e25424dd58e95a5178c8895cbdd80"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/GPU_CHECK.json",
+      "state": "new",
+      "bytes": 8526,
+      "sha256": "7e1a4ea5da4e01706cc58d8b97bc5c1e80624e1f1e5f24a39b7d4111838cc178"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/README.md",
+      "state": "new",
+      "bytes": 3838,
+      "sha256": "e6f4005ee0d9793bdbd30af039b95dd7fb5dc40e7ad699647663dfeb2801e978"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/TESTS.log",
+      "state": "new",
+      "bytes": 3598,
+      "sha256": "fd47e148e0da25aa20fa8fda0094647439e11637d2bfb73b5efe9ae5dbbc4aa9"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/VERIFICATION_RUNS.json",
+      "state": "new",
+      "bytes": 5484,
+      "sha256": "0b564d713cd1072a763b7e1d57e25da98033f5b840085ded0b876538da07fb2b"
+    },
+    {
+      "path": "evidence/pretrain_direct_field_20261103/VERIFICATION_RUNS_SCRIPT.py.txt",
+      "state": "new",
+      "bytes": 3724,
+      "sha256": "31e204732687a07684cb375a9abb999292444414d6e210754f85f3bcd7aa6b52"
+    },
+    {
+      "path": "microbubble/_warp_discs.py",
+      "state": "new",
+      "bytes": 2084,
+      "sha256": "440956710c68078dbaa7ac97a3ced310869b705a924af0431239308f63ded469"
+    },
+    {
+      "path": "microbubble/acoustics.py",
+      "state": "modified",
+      "bytes": 11515,
+      "sha256": "262be71c63632bfdd6b5b9e50531d1dd1bdf5d1f5f948fafe2eaa395dbe1c9ec"
+    },
+    {
+      "path": "microbubble/forces.py",
+      "state": "modified",
+      "bytes": 9948,
+      "sha256": "5f0af514b3ed23e497f9b3fc366c7b4cfee631c048b293ae981a02162dcda491"
+    },
+    {
+      "path": "microbubble/gpu.py",
+      "state": "modified",
+      "bytes": 8823,
+      "sha256": "3c1aea4e9a9c08d7a594eb39c0f5b365dc8f64d53d28553d5c6dd9bff95cb3b8"
+    },
+    {
+      "path": "microbubble/integration.py",
+      "state": "modified",
+      "bytes": 15838,
+      "sha256": "5b9c7a295e8c5e762c6c4ba373a1e40047e890b46570b01a3ef2d5c422d9b13b"
+    },
+    {
+      "path": "results/pretrain_direct_field/offset_A_0p2s_cache/EXECUTION.json",
+      "state": "new",
+      "bytes": 8428,
+      "sha256": "14bba421db055fe25d7984454b75314bdee397f906825f12f8944c794e483289"
+    },
+    {
+      "path": "results/pretrain_direct_field/offset_A_0p2s_cache/SUMMARY.json",
+      "state": "new",
+      "bytes": 128323,
+      "sha256": "5902aba79030d8c45edf12f0092cadd0f69811262308eb297eb5a32439923467"
+    },
+    {
+      "path": "results/pretrain_direct_field/offset_A_0p2s_cache_shift1nm/EXECUTION.json",
+      "state": "new",
+      "bytes": 8447,
+      "sha256": "270191b43247c4acb9fd1ccf743b7909df1a1dfb2c669545bb0a9d490554e560"
+    },
+    {
+      "path": "results/pretrain_direct_field/offset_A_0p2s_cache_shift1nm/SUMMARY.json",
+      "state": "new",
+      "bytes": 128293,
+      "sha256": "d928054ea092edc87f98b92a12b7be6de89fe6a3c41695312b991dff78168a09"
+    },
+    {
+      "path": "results/pretrain_direct_field/offset_A_0p2s_direct/EXECUTION.json",
+      "state": "new",
+      "bytes": 8431,
+      "sha256": "5c821381fd8f868ae2644d2c3391569c49f4b548800f487149b56e266363e4a8"
+    },
+    {
+      "path": "results/pretrain_direct_field/offset_A_0p2s_direct/SUMMARY.json",
+      "state": "new",
+      "bytes": 128320,
+      "sha256": "88c68c2fc2375b242eb2cade7cfbf7871db32a12c123cee49983df01154b100b"
+    },
+    {
+      "path": "results/pretrain_direct_field/wide64_A_direct.log",
+      "state": "new",
+      "bytes": 134020,
+      "sha256": "8bfe9ace953113bd2cffda48d71b71b4ac4bf5afa971626bb4b1b6dab7a64189"
+    },
+    {
+      "path": "results/pretrain_direct_field/wide64_A_direct/EXECUTION.json",
+      "state": "new",
+      "bytes": 17850,
+      "sha256": "7b1fc006415e17a4e03c1354054f921ddf5b2ffa6620d00dfa1e9e2aaa902421"
+    },
+    {
+      "path": "results/pretrain_direct_field/wide64_A_direct/SUMMARY.json",
+      "state": "new",
+      "bytes": 133965,
+      "sha256": "99eaba3e451393ae7c68db73ee1a203a5f0f5111ad500eaa7c95dfdcbd79e78e"
+    },
+    {
+      "path": "results/pretrain_feasibility_2s/EXECUTION.json",
+      "state": "new",
+      "bytes": 17140,
+      "sha256": "1529c970c220436611f3c70dfa0c4e8bc1070bdc8ace3d1bc5fa5045a9b6d174"
+    },
+    {
+      "path": "results/pretrain_feasibility_2s/SUMMARY.json",
+      "state": "new",
+      "bytes": 132203,
+      "sha256": "9da9d6f20a588d6f63361e3f3b25413e542abc15d429069301e9636427afccad"
+    },
+    {
+      "path": "results/pretrain_stability_2s/center_B/EXECUTION.json",
+      "state": "new",
+      "bytes": 17252,
+      "sha256": "1c328fae7a90872d530564b5867055a49f005bf32dd51e49f197e0ad39bc692c"
+    },
+    {
+      "path": "results/pretrain_stability_2s/center_B/SUMMARY.json",
+      "state": "new",
+      "bytes": 132168,
+      "sha256": "02246aca8ef9fe80e9d73283cf570c2fb679024f6336c072b08b8cd40890ab75"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_A/EXECUTION.json",
+      "state": "new",
+      "bytes": 17236,
+      "sha256": "79bc8d25aebf2e730fabb77f7699991731d74e454ef4b86f063f3eb44742c29c"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_A/SUMMARY.json",
+      "state": "new",
+      "bytes": 132295,
+      "sha256": "1bf8db77ef6b1238b5fc385f69ec393db87ad8d3feb2b2ea5178d0df23d150ac"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_B/EXECUTION.json",
+      "state": "new",
+      "bytes": 17262,
+      "sha256": "e5f49948cf12a8f168c55993e35a1251872323ff929fcc07456830523ba29c36"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_B/SUMMARY.json",
+      "state": "new",
+      "bytes": 132322,
+      "sha256": "3d6af9401b1781525f0b29aef499c464691ee12a2d32b5b4b53c0a4857429377"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_A/EXECUTION.json",
+      "state": "new",
+      "bytes": 17356,
+      "sha256": "59c623b50f944c8224f9d1d531be721720af3ff6a068f30d0d0a9d555792c486"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_A/SUMMARY.json",
+      "state": "new",
+      "bytes": 133815,
+      "sha256": "21c2c5ae06a802c53f138545d43cbf1c29c23c067601c03c3a4f4537d2de0e3b"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_A/exception.txt",
+      "state": "new",
+      "bytes": 422,
+      "sha256": "b14f53e7c14f775b721e8ed09e3e3e035013e935bcb0ba23b3902b4a63eff6cf"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_B/EXECUTION.json",
+      "state": "new",
+      "bytes": 17382,
+      "sha256": "7889b83ec8a4abcb3717dc2ebe018bb3899b0e09779c03b2bfabc517bd16ac56"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_B/SUMMARY.json",
+      "state": "new",
+      "bytes": 133665,
+      "sha256": "9a5294932aafdbc42fd78a06953056154a67fb8fb85ecba97ddf35344655606d"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_B/exception.txt",
+      "state": "new",
+      "bytes": 422,
+      "sha256": "b14f53e7c14f775b721e8ed09e3e3e035013e935bcb0ba23b3902b4a63eff6cf"
+    },
+    {
+      "path": "tests/test_model.py",
+      "state": "modified",
+      "bytes": 11142,
+      "sha256": "53988ed6b2b0d93b40063cd43929a0fdf1acff7bca47c8bbb193641d9f6f62f4"
+    },
+    {
+      "path": "tests/test_pretrain.py",
+      "state": "modified",
+      "bytes": 11724,
+      "sha256": "daab2b53a049775c94c328c1cb8ec1ffcd104b986e072629b7d6ded4a034dfa6"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/FIGURE_MANIFEST.json",
+      "state": "new",
+      "bytes": 7096,
+      "sha256": "c3103ce0bd6819433d80d13a99269d4f82c9c2523a6a8f1f22d250da27489108"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_field_center_A.gif",
+      "state": "new",
+      "bytes": 10739179,
+      "sha256": "fa4501c10adf45f7d77c89cc250bc1ec97e4c21530895883c9d224ec64280951"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_field_offset_A.gif",
+      "state": "new",
+      "bytes": 10463178,
+      "sha256": "99af7375de8913971f3759b72f2750002d971cb37d6069f9e06788fe7424ca68"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_overview_4runs.gif",
+      "state": "new",
+      "bytes": 5078696,
+      "sha256": "aa1e5e29a6c3fcb99448aee475b486e245b29bd079946acb1ff3139723ace4f2"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig1_scene_and_actions.png",
+      "state": "new",
+      "bytes": 265748,
+      "sha256": "d3a05709f885654b5c28069920cc693479378df1de7871aa02cb2adb4d0a087d"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig2_one_time_step.png",
+      "state": "new",
+      "bytes": 325572,
+      "sha256": "922c4d64ccb8089a9796314e4af3e3a6b2a9394433db4cd6261a1ef4144cf2ff"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig3_adaptive_step.png",
+      "state": "new",
+      "bytes": 336291,
+      "sha256": "9ea0d271651dcd3f0c638c0d624c88dc1d6c64aa43c5201d636e49d6b4f928df"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig4_stop_rules.png",
+      "state": "new",
+      "bytes": 321392,
+      "sha256": "04fc3aeba1d8572b40b7b5f944c89b12a76bbd0218272ddc9a18bc9220b09609"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig5_cluster_snapshots.png",
+      "state": "new",
+      "bytes": 515023,
+      "sha256": "83985365b43944c17132cba1a3559ba65466b7e8198056b49ea9bd2173eff03a"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig6_cluster_metrics.png",
+      "state": "new",
+      "bytes": 556525,
+      "sha256": "0c60fe4c713c80d9ba48d2c9631130670388e42179e66d10e202d252729a8710"
+    },
+    {
+      "path": "visualization/pretrain_stability_figures.py",
+      "state": "new",
+      "bytes": 60203,
+      "sha256": "e8244564040fb773f827c3883b2d2a5892bfcae6d26c8cb1430525761895f37b"
+    },
+    {
+      "path": "workflows/f10ag.py",
+      "state": "modified",
+      "bytes": 8750,
+      "sha256": "7ad3b20b7ca4cc144c846b683390577b38ad69c5e0eb03b7156a3d847d143484"
+    }
+  ],
+  "total_bytes": 30500737,
+  "largest": [
+    {
+      "path": "visualization/pretrain_stability_2s/anim_field_center_A.gif",
+      "state": "new",
+      "bytes": 10739179,
+      "sha256": "fa4501c10adf45f7d77c89cc250bc1ec97e4c21530895883c9d224ec64280951"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_field_offset_A.gif",
+      "state": "new",
+      "bytes": 10463178,
+      "sha256": "99af7375de8913971f3759b72f2750002d971cb37d6069f9e06788fe7424ca68"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_overview_4runs.gif",
+      "state": "new",
+      "bytes": 5078696,
+      "sha256": "aa1e5e29a6c3fcb99448aee475b486e245b29bd079946acb1ff3139723ace4f2"
+    }
+  ],
+  "credential_scan": {
+    "pattern": "ghp_|gho_|github_pat_|AKIA[0-9A-Z]{16}|-----BEGIN|sk-[A-Za-z0-9]{20}|xox[abp]-|passw(or)?d|api[_-]?key|secret|bearer |authorization:|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[a-z]{2,}",
+    "scope": "raw bytes of every file above (text and binary)",
+    "hits": [],
+    "limitation": "Common credential formats only; not a guarantee for unknown secret formats."
+  },
+  "kept_local": {
+    "reason": "Existing purpose rules in .gitignore (full trajectories, step records); kept on this machine, not a backup.",
+    "files": [
+      {
+        "path": "results/pretrain_direct_field/offset_A_0p2s_cache/STEP_RECORDS.json",
+        "bytes": 622250,
+        "sha256": "dbd6903f57c669f22790fdb0dfb791398fbd439f0118aef77f849b53a963f874"
+      },
+      {
+        "path": "results/pretrain_direct_field/offset_A_0p2s_cache/trajectory.h5",
+        "bytes": 38846,
+        "sha256": "9757f74ff6bdb5491be25214b44bf246e7966c3705a3ed2c871b37ad17f6578a"
+      },
+      {
+        "path": "results/pretrain_direct_field/offset_A_0p2s_cache_shift1nm/STEP_RECORDS.json",
+        "bytes": 612229,
+        "sha256": "77b6cb30df83b760826d198afcd741ae630d5c41f8e4f929a3a8f2fce4db038a"
+      },
+      {
+        "path": "results/pretrain_direct_field/offset_A_0p2s_cache_shift1nm/trajectory.h5",
+        "bytes": 38521,
+        "sha256": "0c4f4c4c467ecb1a9b12de0cf4d0a3fb09bf75200421873c8c5409bd4ac8ff05"
+      },
+      {
+        "path": "results/pretrain_direct_field/offset_A_0p2s_direct/STEP_RECORDS.json",
+        "bytes": 665394,
+        "sha256": "fe106fd7101795ffbe48127b570fc1c87e03150c3101835374b7fe158166c2b9"
+      },
+      {
+        "path": "results/pretrain_direct_field/offset_A_0p2s_direct/trajectory.h5",
+        "bytes": 38829,
+        "sha256": "10ec46e1fab94d3fe1f77acdbada2b2cfcbd8fe2cee7a08ee3893bad6db27a9f"
+      },
+      {
+        "path": "results/pretrain_direct_field/wide64_A_direct/STEP_RECORDS.json",
+        "bytes": 60012654,
+        "sha256": "9bac746f319deb1be84fe584c877e9108857b74bfadac2422c7db36c28a3d485"
+      },
+      {
+        "path": "results/pretrain_direct_field/wide64_A_direct/trajectory.h5",
+        "bytes": 710093,
+        "sha256": "af24b6dcbfa23b45679ad24da0d21e2f9d758ef81702f99ec1d68fb11c6df18d"
+      },
+      {
+        "path": "results/pretrain_feasibility_2s/STEP_RECORDS.json",
+        "bytes": 10853501,
+        "sha256": "a0acf85827f6358174867f6371f7f18a11aef7731c1f752b67d50d04463d07d5"
+      },
+      {
+        "path": "results/pretrain_feasibility_2s/trajectory.h5",
+        "bytes": 359761,
+        "sha256": "9994b8c633170f14ab7b0d93edc60d0a2cbc2975d8e3b3dc94a7c7539f9199fe"
+      },
+      {
+        "path": "results/pretrain_stability_2s/center_B/STEP_RECORDS.json",
+        "bytes": 14964083,
+        "sha256": "189ed27bb1f37b7ae142cc3f8ea0e4ca539ab91f3448311c71aedf09a4039256"
+      },
+      {
+        "path": "results/pretrain_stability_2s/center_B/trajectory.h5",
+        "bytes": 366614,
+        "sha256": "7d22aa449b77a551cc2047f8935ebdf049fd16252ebf154b394cfe4287a82cb5"
+      },
+      {
+        "path": "results/pretrain_stability_2s/offset_A/STEP_RECORDS.json",
+        "bytes": 10813436,
+        "sha256": "05301d0b81a33b1c1d245160858f0f540168e9befebaa882c3a9a5cdbf5b2659"
+      },
+      {
+        "path": "results/pretrain_stability_2s/offset_A/trajectory.h5",
+        "bytes": 354862,
+        "sha256": "4e1e55811c2a2d682c374b4b9ccef9a22f96a59953d38472133160d41735c193"
+      },
+      {
+        "path": "results/pretrain_stability_2s/offset_B/STEP_RECORDS.json",
+        "bytes": 19131137,
+        "sha256": "160349174859ec434b8048fe2cb27c03df63582d72b9306c22325f84949c7c49"
+      },
+      {
+        "path": "results/pretrain_stability_2s/offset_B/trajectory.h5",
+        "bytes": 360670,
+        "sha256": "5aae6f6ec75adfaaa28f4db6a04830b7472337316a6b58f7165db84bdca93a08"
+      },
+      {
+        "path": "results/pretrain_stability_2s/wide64_A/STEP_RECORDS.json",
+        "bytes": 8944483,
+        "sha256": "de0b16302907a1b134e15f8f9aa1c9a50e1df9b064a6761bdcdca57bedbf7fb7"
+      },
+      {
+        "path": "results/pretrain_stability_2s/wide64_A/trajectory.h5",
+        "bytes": 129184,
+        "sha256": "d67411016479e9e341b4e242a27a16be3572ae6b510d61853a3561ebcaafe4bf"
+      },
+      {
+        "path": "results/pretrain_stability_2s/wide64_B/STEP_RECORDS.json",
+        "bytes": 44298978,
+        "sha256": "4d13a5ca79fc10359452b4aecb355521fb1cde6cd3aca88cdaf1853dfccefd9b"
+      },
+      {
+        "path": "results/pretrain_stability_2s/wide64_B/trajectory.h5",
+        "bytes": 386333,
+        "sha256": "857435b409c2fbbeff1f3c2fd232168981321379a1618c6d955a3128bee46514"
+      }
+    ],
+    "total_bytes": 173701858
+  },
+  "tests": {
+    "command": "OPENBLAS_NUM_THREADS=1 .venv/bin/python -m pytest -q",
+    "result": "38 passed",
+    "includes_gpu": true,
+    "device": "RTX 4060 Laptop GPU, Warp 1.18.0",
+    "versions": {
+      "python": "3.12.3",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "osqp": "1.1.3"
+    }
+  },
+  "not_run": "No new simulations, GPU benchmarks or remote computations were started for this sync."
+}

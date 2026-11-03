@@ -48,3 +48,16 @@
 - **验证**：Python 3.12 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3 下 CPU 测试 27 项通过（原 19 项 + 新 8 项），GPU 测试 3 项未运行（无 CUDA）；仓库实现按原型工况重跑，保存位置与求解次数一致。提交前的文件清单、大小、SHA-256 和凭据格式检查见 `evidence/pretrain_tier_20261102/SYNC_CHECK.json`。没有启动 GPU、远程或长时仿真。
 
 `EXPLORATORY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`
+
+## 2026-11-03 同步：直接现算声场、预训练档长轨迹运行与可视化
+
+根据用户明确同步请求，直接从 `/home/lzy/projects/new_microbubble_aggregation` 当前工作树提交并推送到 `main`（基于 `bfa9947`，本地与 `origin/main` 一致）；没有建立同步目录、日期分支或重写历史，没有 force-push。
+
+- **直接现算声场**：预训练档新增 `field: "direct"`（`microbubble/{acoustics,forces,integration}.py`、`workflows/f10ag.py`），GPU 版 `microbubble/_warp_discs.py` 与 `gpu.GPUWaterDiscs`；测试、README，证据 `evidence/pretrain_direct_field_20261103/`，运行配置与摘要 `configs/`、`results/pretrain_direct_field/`。物理模型、APECSS 表、冻结 HF/LF 路径均未改动。
+- **预训练档长轨迹运行**：`configs/pretrain_feasibility_2s.json`、`configs/pretrain_stability_2s/` 及其 `results/` 摘要、执行身份和失败状态（两条 N64_wide 运行因出缓存盒子停止，失败原样保留）。
+- **可视化**：`visualization/pretrain_stability_figures.py` 及其输出 `visualization/pretrain_stability_2s/`（6 张 PNG、3 个 GIF、`FIGURE_MANIFEST.json`，约 28 MB，其中 GIF 约 26 MB）。
+- **文档**：`AGENTS_CODING.md`（开发规则）；`HANDOFF_20261102.md` 是 2026-11-02 云端会话的交接快照，按原样保留。其中"48 个积分点在 2.5、5、10 MHz 下约 1e-14"只在中央缓存盒子内成立，整根管道内的数字已在 `evidence/pretrain_direct_field_20261103/` 更正。
+- **留在本地**：新运行的 `trajectory.h5` 与 `STEP_RECORDS.json` 共 20 个文件、约 174 MB，按已有 `.gitignore` 用途规则不进 Git；清单、大小和 SHA-256 记在检查记录里。忽略不等于备份。
+- **验证**：Python 3.12.3 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3 / Warp 1.18.0 下全部 38 项测试通过（含 GPU，RTX 4060 Laptop GPU）。提交前的文件清单、大小、SHA-256 和常见凭据格式检查见 [SYNC_CHECK.json](../evidence/github_sync_20261103/SYNC_CHECK.json)，未发现命中；该检查不等于对任意未知格式秘密的完整保证。本次同步没有启动新仿真、远程计算或 GPU 性能测试。
+
+`EXPLORATORY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`
