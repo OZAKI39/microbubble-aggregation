@@ -71,8 +71,13 @@
   2. A/B 真实数据与"每 0.1 s 随机换动作"仿真的对照：`evidence/ab_reference_20261103/`，包括脚本 `AB_REFERENCE_SCRIPT.py.txt`（只作为证据，不被任何代码导入）、`AB_REFERENCE.json`、3 张图和中文结论。
   3. 按实验方式（单路持续开启）跑的仿真与 A/B 的对照：`visualization/ab_protocol_figures.py`（可直接运行），输出在 `visualization/ab_protocol_sim/`（3 张 PNG、1 个 mp4、`COMPARISON.json` 和中文结论）；运行配置在 `configs/pretrain_protocol_ab/`，运行摘要和执行身份在 `results/pretrain_protocol_ab/`。
 - **依赖**：`pyproject.toml` 的 `plot` 可选依赖新增 `imageio-ffmpeg==0.8.1`（自带 ffmpeg，用于写 mp4），`requirements-lock.txt` 同步更新。
-- **留在本地**：4 条按实验方式运行的 `trajectory.h5` 和 `STEP_RECORDS.json`，共 8 个文件、约 98 MB，按已有 `.gitignore` 用途规则不进 Git；清单、大小和 SHA-256 记在检查记录里。忽略不等于备份。
-- **只从 GitHub 不能直接重跑第 3 份脚本**：它要读取上述被忽略的 `trajectory.h5`、4 条随机动作运行（同样被忽略）的 `trajectory.h5`，以及本仓库之外 MB_track 的 A/B 追踪结果。轨迹可以用已提交的配置重新计算得到（每条单核约 3–9 分钟），A/B 结果需要另行获取。
+- **留在本地**：4 条按实验方式运行的 `trajectory.h5` 和 `STEP_RECORDS.json`，共 8 个文件、约 98 MB，按已有 `.gitignore` 用途规则不进 Git；清单、大小和 SHA-256 记在检查记录里。忽略不等于备份。其中约 95 MB 是逐步求解记录 `STEP_RECORDS.json`，检查脚本不读它。
+- **第 3 份脚本读取的轨迹（同日补充，仅在本分支）**：用户要求"临时将这些文件加入分支，不改变规则"，因此在第二个提交里用 `git add -f` 单独加入第 3 份脚本读取的 8 个 `trajectory.h5`，共 4.3 MB：
+  - `results/pretrain_protocol_ab/{center,offset}_{collective,pairwise}/trajectory.h5`；
+  - 随机动作运行的 `results/pretrain_feasibility_2s/trajectory.h5` 和 `results/pretrain_stability_2s/{center_B,offset_A,offset_B}/trajectory.h5`。
+
+  `.gitignore` 没有改动，其他运行的轨迹和全部 `STEP_RECORDS.json` 仍不进 Git。这 8 个文件的 SHA-256 与 `visualization/ab_protocol_sim/COMPARISON.json` 里记录的输入哈希一致。已经被跟踪的文件不再受忽略规则影响，以后改动会出现在 `git status` 中。以后从分支上去掉它们时，要用 `git rm --cached` 保留本地原件；提交历史里的副本仍会保留。分支如果合并进 `main`，这 8 个文件也会一起进入 `main`。
+- **从 GitHub 重跑第 3 份脚本**：轨迹已在本分支上，只需另外拿到本仓库之外 MB_track 的 A/B 追踪结果，用 `--mb` 参数指向它。
 - **验证**：在 Python 3.12.3 / NumPy 2.2.6 / SciPy 1.15.3 / h5py 3.16.0 / OSQP 1.1.3 / Warp 1.18.0 / matplotlib 3.11.2 / imageio-ffmpeg 0.8.1 环境下：
   - 全部 38 项测试通过，包括 GPU 测试（RTX 4060 Laptop GPU）。
   - 第 3 份脚本按当前工作树重跑到临时目录，用时 45 s；3 张图、mp4 和 `COMPARISON.json` 与提交的文件逐字节相同。
