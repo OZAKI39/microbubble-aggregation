@@ -1,0 +1,165 @@
+{
+  "script": "visualization/pretrain_stability_figures.py",
+  "font": "Arial",
+  "inputs": [
+    {
+      "path": "configs/pretrain_feasibility_2s.json",
+      "sha256": "b480dc322e3ffe5fac8838059ffec71b5c2366b9bb2d4da964272b51e0dacc47"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/center_B.json",
+      "sha256": "c7a76c7765cae1630cdc684afb0209e14b9037e47f5bd75ea03cd0edb3c93990"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/offset_A.json",
+      "sha256": "8db90f8125cd1734f0eb1022979254e344e6c6fcb3acc2db4a766c351042d14e"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/offset_B.json",
+      "sha256": "f53d69cbcc6c097de020461bfb47e48047a8950cf17e076600c11a0a62e93aff"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/wide64_A.json",
+      "sha256": "44627ca0e872d53668381db6d65a68fe1536662501e430dff99a4a49b2e152fb"
+    },
+    {
+      "path": "configs/pretrain_stability_2s/wide64_B.json",
+      "sha256": "8612bca77c50bb67f93bc8970dadfcee46b5bcb058f62be3a66af00cdf2cd6c6"
+    },
+    {
+      "path": "results/pretrain_feasibility_2s/STEP_RECORDS.json",
+      "sha256": "a0acf85827f6358174867f6371f7f18a11aef7731c1f752b67d50d04463d07d5"
+    },
+    {
+      "path": "results/pretrain_feasibility_2s/SUMMARY.json",
+      "sha256": "9da9d6f20a588d6f63361e3f3b25413e542abc15d429069301e9636427afccad"
+    },
+    {
+      "path": "results/pretrain_feasibility_2s/trajectory.h5",
+      "sha256": "9994b8c633170f14ab7b0d93edc60d0a2cbc2975d8e3b3dc94a7c7539f9199fe"
+    },
+    {
+      "path": "results/pretrain_stability_2s/center_B/STEP_RECORDS.json",
+      "sha256": "189ed27bb1f37b7ae142cc3f8ea0e4ca539ab91f3448311c71aedf09a4039256"
+    },
+    {
+      "path": "results/pretrain_stability_2s/center_B/SUMMARY.json",
+      "sha256": "02246aca8ef9fe80e9d73283cf570c2fb679024f6336c072b08b8cd40890ab75"
+    },
+    {
+      "path": "results/pretrain_stability_2s/center_B/trajectory.h5",
+      "sha256": "7d22aa449b77a551cc2047f8935ebdf049fd16252ebf154b394cfe4287a82cb5"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_A/STEP_RECORDS.json",
+      "sha256": "05301d0b81a33b1c1d245160858f0f540168e9befebaa882c3a9a5cdbf5b2659"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_A/SUMMARY.json",
+      "sha256": "1bf8db77ef6b1238b5fc385f69ec393db87ad8d3feb2b2ea5178d0df23d150ac"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_A/trajectory.h5",
+      "sha256": "4e1e55811c2a2d682c374b4b9ccef9a22f96a59953d38472133160d41735c193"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_B/STEP_RECORDS.json",
+      "sha256": "160349174859ec434b8048fe2cb27c03df63582d72b9306c22325f84949c7c49"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_B/SUMMARY.json",
+      "sha256": "3d6af9401b1781525f0b29aef499c464691ee12a2d32b5b4b53c0a4857429377"
+    },
+    {
+      "path": "results/pretrain_stability_2s/offset_B/trajectory.h5",
+      "sha256": "5aae6f6ec75adfaaa28f4db6a04830b7472337316a6b58f7165db84bdca93a08"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_A/STEP_RECORDS.json",
+      "sha256": "de0b16302907a1b134e15f8f9aa1c9a50e1df9b064a6761bdcdca57bedbf7fb7"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_A/SUMMARY.json",
+      "sha256": "21c2c5ae06a802c53f138545d43cbf1c29c23c067601c03c3a4f4537d2de0e3b"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_A/exception.txt",
+      "sha256": "b14f53e7c14f775b721e8ed09e3e3e035013e935bcb0ba23b3902b4a63eff6cf"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_A/trajectory.h5",
+      "sha256": "d67411016479e9e341b4e242a27a16be3572ae6b510d61853a3561ebcaafe4bf"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_B/STEP_RECORDS.json",
+      "sha256": "4d13a5ca79fc10359452b4aecb355521fb1cde6cd3aca88cdaf1853dfccefd9b"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_B/SUMMARY.json",
+      "sha256": "9a5294932aafdbc42fd78a06953056154a67fb8fb85ecba97ddf35344655606d"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_B/exception.txt",
+      "sha256": "b14f53e7c14f775b721e8ed09e3e3e035013e935bcb0ba23b3902b4a63eff6cf"
+    },
+    {
+      "path": "results/pretrain_stability_2s/wide64_B/trajectory.h5",
+      "sha256": "857435b409c2fbbeff1f3c2fd232168981321379a1618c6d955a3128bee46514"
+    }
+  ],
+  "field_cache": "inputs/fields/2500000/coarse.h5",
+  "outputs": [
+    {
+      "path": "visualization/pretrain_stability_2s/fig1_scene_and_actions.png",
+      "sha256": "d3a05709f885654b5c28069920cc693479378df1de7871aa02cb2adb4d0a087d",
+      "shows": "start positions, field interior, random actions"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig2_one_time_step.png",
+      "sha256": "922c4d64ccb8089a9796314e4af3e3a6b2a9394433db4cd6261a1ef4144cf2ff",
+      "shows": "what one PRETRAIN step computes and when a run stops"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig3_adaptive_step.png",
+      "sha256": "9ea0d271651dcd3f0c638c0d624c88dc1d6c64aa43c5201d636e49d6b4f928df",
+      "shows": "adaptive step size, accepted/rejected"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig4_stop_rules.png",
+      "sha256": "04fc3aeba1d8572b40b7b5f944c89b12a76bbd0218272ddc9a18bc9220b09609",
+      "shows": "every stop rule and each run's closest approach"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig5_cluster_snapshots.png",
+      "sha256": "83985365b43944c17132cba1a3559ba65466b7e8198056b49ea9bd2173eff03a",
+      "shows": "main-cluster top-view snapshots"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/fig6_cluster_metrics.png",
+      "sha256": "0c60fe4c713c80d9ba48d2c9631130670388e42179e66d10e202d252729a8710",
+      "shows": "cluster drift, groups, size, static segments"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_overview_4runs.gif",
+      "sha256": "aa1e5e29a6c3fcb99448aee475b486e245b29bd079946acb1ff3139723ace4f2",
+      "shows": "four PASS runs, main-cluster close-up"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_field_center_A.gif",
+      "sha256": "fa4501c10adf45f7d77c89cc250bc1ec97e4c21530895883c9d224ec64280951",
+      "shows": "center_A: lone-bubble push map, cluster close-up, PZT amplitudes"
+    },
+    {
+      "path": "visualization/pretrain_stability_2s/anim_field_offset_A.gif",
+      "sha256": "99af7375de8913971f3759b72f2750002d971cb37d6069f9e06788fe7424ca68",
+      "shows": "offset_A: lone-bubble push map, cluster close-up, PZT amplitudes"
+    }
+  ],
+  "conventions": [
+    "Positions are the stored trajectory frames; no smoothing or interpolation.",
+    "Close-ups draw bubbles at their true radius; field-scale markers are graphical.",
+    "Camera rectangle uses the provisional 0.6 µm/px and is drawn centred: the real camera placement relative to the simulation is not known.",
+    "Background drift map: isolated bubble, primary force only, z = 0 plane; not the cluster velocity.",
+    "Main cluster = largest group linked by gaps < 1R; touching = gap < 0.2R."
+  ]
+}
