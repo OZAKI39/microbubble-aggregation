@@ -1,0 +1,59 @@
+$ APECSS_DIR=<APECSS a0ee071 sources> python -m pytest -m 'not gpu' -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/venv312/bin/python
+cachedir: .pytest_cache
+rootdir: /home/claude/ozaki39/microbubble-aggregation
+configfile: pyproject.toml
+testpaths: tests
+collecting ... collected 52 items / 4 deselected / 48 selected
+
+tests/test_admission.py::test_pair_pass_cannot_promote_an_unrefined_long_window PASSED [  2%]
+tests/test_apecss_response.py::test_options_are_exact_and_checked PASSED [  4%]
+tests/test_apecss_response.py::test_grid_file_is_never_overwritten PASSED [  6%]
+tests/test_apecss_response.py::test_reproduces_frozen_point_and_stops_early PASSED [  8%]
+tests/test_apecss_response.py::test_flags_responses_without_a_single_settled_state PASSED [ 10%]
+tests/test_apecss_response.py::test_carried_response_needs_apecss_sources PASSED [ 12%]
+tests/test_apecss_response.py::test_carried_bubbles_settle_like_the_driver PASSED [ 14%]
+tests/test_apecss_response.py::test_carried_bubbles_do_not_depend_on_thread_count PASSED [ 16%]
+tests/test_capture.py::CaptureTests::test_band_hopping_breaks_hold PASSED [ 18%]
+tests/test_capture.py::CaptureTests::test_hold_and_reexit PASSED         [ 20%]
+tests/test_capture.py::CaptureTests::test_initial_capture_is_labeled_zero PASSED [ 22%]
+tests/test_capture.py::CaptureTests::test_right_censor_does_not_extrapolate PASSED [ 25%]
+tests/test_capture.py::CaptureTests::test_short_entry_is_not_capture PASSED [ 27%]
+tests/test_capture.py::SharedTimeTests::test_contact_raw_nodes_recover_nonaligned_dense_samples PASSED [ 29%]
+tests/test_model.py::test_sources_are_independent PASSED                 [ 31%]
+tests/test_model.py::test_response_complex_phase_and_bounds[2400000] PASSED [ 33%]
+tests/test_model.py::test_response_complex_phase_and_bounds[2500000] PASSED [ 35%]
+tests/test_model.py::test_response_complex_phase_and_bounds[2600000] PASSED [ 37%]
+tests/test_model.py::test_event_times_and_source_limits PASSED           [ 39%]
+tests/test_model.py::test_analytic_and_cached_gradients PASSED           [ 41%]
+tests/test_model.py::test_tiny_candidate_cache PASSED                    [ 43%]
+tests/test_model.py::test_true_3d_capture_and_thresholds PASSED          [ 45%]
+tests/test_model.py::test_dense_resistance_and_illegal_geometry PASSED   [ 47%]
+tests/test_model.py::test_historical_window_scope PASSED                 [ 50%]
+tests/test_model.py::test_shape_uses_fixed_ids_and_preserves_translation PASSED [ 52%]
+tests/test_model.py::test_frozen_endpoint_metrics_match_original_science PASSED [ 54%]
+tests/test_pretrain.py::test_sparse_resistance_equals_dense PASSED       [ 56%]
+tests/test_pretrain.py::test_vectorized_pairs_equal_reference PASSED     [ 58%]
+tests/test_pretrain.py::test_collective_closure_reduces_to_two_bubble_closure PASSED [ 60%]
+tests/test_pretrain.py::test_delayed_coupling_tends_to_the_instantaneous_form PASSED [ 62%]
+tests/test_pretrain.py::test_delayed_pair_force_is_the_gradient_of_the_delayed_field PASSED [ 64%]
+tests/test_pretrain.py::test_delayed_collective_reduces_to_the_delayed_two_bubble_closure PASSED [ 66%]
+tests/test_pretrain.py::test_adhesion_is_short_range_attractive_and_off_by_default PASSED [ 68%]
+tests/test_pretrain.py::test_sparse_step_reproduces_frozen_step_and_its_failure PASSED [ 70%]
+tests/test_pretrain.py::test_pretrain_tier_resolves_active_set_cycle PASSED [ 72%]
+tests/test_pretrain.py::test_pretrain_policy_leaves_frozen_policy_unchanged PASSED [ 75%]
+tests/test_pretrain.py::test_pretrain_segments_have_their_own_cap PASSED [ 77%]
+tests/test_pretrain.py::test_pretrain_run_switches_controls_and_is_reused PASSED [ 79%]
+tests/test_pretrain.py::test_contact_terms_follow_the_policy_and_the_run_level PASSED [ 81%]
+tests/test_pretrain.py::test_sliding_resistance_only_acts_between_touching_bubbles PASSED [ 83%]
+tests/test_pretrain.py::test_formed_clusters_are_packed_without_overlap PASSED [ 85%]
+tests/test_pretrain.py::test_direct_quadrature_order_converges_in_the_whole_lumen[2400000.0] PASSED [ 87%]
+tests/test_pretrain.py::test_direct_quadrature_order_converges_in_the_whole_lumen[2500000.0] PASSED [ 89%]
+tests/test_pretrain.py::test_direct_quadrature_order_converges_in_the_whole_lumen[2600000.0] PASSED [ 91%]
+tests/test_pretrain.py::test_direct_quadrature_order_converges_in_the_whole_lumen[5000000.0] PASSED [ 93%]
+tests/test_pretrain.py::test_direct_quadrature_order_converges_in_the_whole_lumen[10000000.0] PASSED [ 95%]
+tests/test_pretrain.py::test_direct_field_matches_cache_inside_the_box PASSED [ 97%]
+tests/test_pretrain.py::test_pretrain_direct_field_runs_outside_the_cache_box PASSED [100%]
+
+====================== 48 passed, 4 deselected in 12.11s =======================

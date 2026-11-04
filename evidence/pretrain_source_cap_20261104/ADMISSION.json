@@ -1,0 +1,36 @@
+{
+  "record": "Pretraining tier: source cap raised from 3000 to 6000 Pa-equivalent",
+  "date": "2026-11-04",
+  "status": "ADMITTED_PRETRAIN_TIER_ONLY",
+  "authorization": {
+    "conversation": "Claude session with the user, 2026-11-04",
+    "proposal": "Raise the pretraining source cap from 3000 to about 6000 Pa-eq (needs a policy change and a new admission check): a 32-bubble cluster reaches the A/B cluster speed at about 5400 Pa-eq; the cap was 3000.",
+    "user": "同意上述三项建议",
+    "scope": "Wall model, raising the pretraining source cap to about 6000 Pa-eq, and step-control efficiency changes"
+  },
+  "change": {
+    "configs/pretrain_policy.json": "max_source_amplitude_Pa_equivalent 3000 -> 6000",
+    "unchanged": "HF/LF cap 1500 (Segment/schedule()), the response tables and their domain check (no clipping, no extrapolation), all gates and tolerances"
+  },
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "PRETRAIN_TIER"
+  ],
+  "training_ready": false,
+  "evidence": {
+    "file": "CAP_CHECK.json",
+    "response_table_domain": "The 2.5 MHz table covers 0.1 Pa (low-pressure extension 1e-3 Pa) to 40 kPa of incident pressure. One channel at 6000 Pa-eq: at most 11.7 kPa anywhere in the central bore (|x| <= 1.5 mm, |y|, |z| <= 0.6 mm); all four channels in phase at 6000 each: at most 39.1 kPa (worst case). Runs: 11.2-11.3 kPa (one channel), 14.2 and 18.4 kPa (random four-channel actions with every amplitude doubled from the 3000 Pa-eq configurations). Outside the table a run still fails at the domain check.",
+    "scaling": "All forces scale with the source level squared (adhesion through k x A_ref^2), so 6000 Pa-eq reproduces 3000 Pa-eq four times faster: X- held, 6000 Pa-eq for 0.375 s against 3000 Pa-eq for 1.5 s: same travel (38.48 um), largest bubble difference 0.086 px, 4418 against 4330 steps. The bubble response at 11 kPa is close enough to linear that the shape path does not change.",
+    "runs_pass": "Protocol X- -> Y- -> X- at 6000 Pa-eq: N32 centre (231 s), N32 offset (247 s), N128 centre (482 s); random 0.1 s actions with doubled amplitudes (cap 6000): N32 centre A (349 s), N32 offset B (692 s). All PASS. N32 offset B rerun with the synced code (final step control, no OSQP trigger): PASS, 1170 s, 5581 OSQP steps, largest incident pressure 18.4 kPa.",
+    "speed": "N32 clusters move at 172 px/s under one channel (A/B clusters off the wall after a switch: 146-188 px/s); N128 at 52 px/s."
+  },
+  "limits": [
+    "The electrical-to-acoustic gain is not calibrated; the cap only allows the range the A/B speeds imply (about 700-5400 Pa-eq per channel, evidence/ab_reference_20261103/).",
+    "Four channels near 6000 Pa-eq in phase come close to the 40 kPa table limit; such runs can fail at the domain check (they are not clipped). response: \"apecss\" has no table limit.",
+    "A 4.5 s run at 6000 Pa-eq needs about four times the steps of one at 3000 Pa-eq (the step control keeps 0.5% R per step).",
+    "Random four-channel runs that often need the OSQP fallback are slow at 6000 Pa-eq (N32 offset B: 1170 s for 2 s)."
+  ]
+}

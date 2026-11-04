@@ -1,0 +1,217 @@
+===== scratch/speed/run_variant.py
+"""Run a config with optional stepping overrides (scratch validation of the step control).
+
+usage (repo root, PYTHONPATH=.): python run_variant.py CONFIG OUT [max_step_s=0.004,rejection_cap_factor=none]
+"""
+import json
+import sys
+from pathlib import Path
+
+import workflows.f10ag as F
+
+over = {}
+for item in (sys.argv[3].split(",") if len(sys.argv) > 3 and sys.argv[3] not in ("", "{}") else []):
+    key, value = item.split("=")
+    over[key] = None if value == "none" else float(value)
+original = F.load_pretrain_policy
+
+
+def patched(root):
+    p = original(root)
+    p["stepping"] = dict(p["stepping"], **over)
+    return p
+
+
+F.load_pretrain_policy = patched
+r = F.run(Path("."), Path(sys.argv[1]), Path(sys.argv[2]))
+print(r["status"], r["completed_s"], round(r["wall_s"]), r["accepted_steps"], r["gate_rejected_steps"])
+===== scratch/speed/compare.py
+"""Compare step-control variants against the reference runs (same config, earlier control).
+
+usage (repo root): PYTHONPATH=.:visualization python compare.py OUT.json NEW_DIR:REF_DIR ...
+Positions are compared at every common save time; shape metrics with
+visualization/ab_protocol_figures.py (0.6 um/px, 0.1 s windows).
+"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from ab_protocol_figures import deformation_stats, frame_shapes, load_run, sim_windows
+from microbubble.parameters import Physics
+
+R = Physics().radius_m
+PX = 0.6e-6
+rows = {}
+for spec in sys.argv[2:]:
+    new, ref = (Path(p) for p in spec.split(":"))
+    out = {}
+    with h5py.File(new / "trajectory.h5") as a, h5py.File(ref / "trajectory.h5") as b:
+        ta, tb = a["time_s"][:], b["time_s"][:]
+        xa, xb = a["positions_m"][:], b["positions_m"][:]
+    common, ia, ib = np.intersect1d(np.round(ta, 9), np.round(tb, 9), return_indices=True)
+    d = np.linalg.norm(xa[ia] - xb[ib], axis=-1)
+    travel = np.linalg.norm(xb[ib] - xb[ib][0], axis=-1).max()
+    out["frames_compared"] = len(common)
+    out["max_bubble_difference_px"] = float(d.max() / PX)
+    out["median_bubble_difference_px"] = float(np.median(d) / PX)
+    out["max_centroid_difference_px"] = float(
+        np.linalg.norm(xa[ia].mean(1) - xb[ib].mean(1), axis=-1).max() / PX
+    )
+    out["max_travel_px"] = float(travel / PX)
+    for tag, path in (("new", new), ("ref", ref)):
+        s = json.loads((path / "SUMMARY.json").read_text())
+        cfg = json.loads((path / "EXECUTION.json").read_text())["config"]
+        (path / "config_used.json").write_text(json.dumps(cfg))
+        run = load_run(path, path / "config_used.json")
+        st = deformation_stats(sim_windows(run, frame_shapes(run, R), R))
+        out[tag] = dict(
+            status=s["status"], wall_s=round(s["wall_s"], 1), accepted=s["accepted_steps"],
+            rejected=s["gate_rejected_steps"], per_px=st["dln_aspect_per_px_first_1s"].get("median"),
+            aspect=st["aspect"].get("median"), split_share=st["split_share"],
+        )
+    out["speedup"] = out["ref"]["wall_s"] / out["new"]["wall_s"]
+    rows[new.name] = out
+    print(new.name, json.dumps(out))
+Path(sys.argv[1]).write_text(json.dumps(rows, indent=1) + "\n")
+===== scratch/speed/rotation.py
+"""Rigid in-plane rotation of each run's cluster relative to its start (degrees), by time."""
+import sys
+import h5py
+import numpy as np
+
+
+def angle(c0, c):
+    H = c0[:, :2].T @ c[:, :2]
+    U, s, Vt = np.linalg.svd(H)
+    Rm = Vt.T @ U.T
+    return np.degrees(np.arctan2(Rm[1, 0], Rm[0, 0]))
+
+
+for path in sys.argv[1:]:
+    with h5py.File(path + "/trajectory.h5") as h:
+        x, t = h["positions_m"][:], h["time_s"][:]
+    c = x - x.mean(1, keepdims=True)
+    out = []
+    for tt in (0.5, 1.0, 1.5, 3.0, 4.5):
+        k = int(np.argmin(abs(t - tt)))
+        out.append(f"{tt}s {angle(c[0], c[k]):+7.2f}")
+    print(path.split("/")[-1][:40].ljust(40), " ".join(out))
+===== scratch/speed/collect.py
+"""Collect the step-control validation runs into one JSON (wall time, steps, rotation, shape).
+
+usage (repo root): PYTHONPATH=.:visualization python collect.py OUT.json NAME=RUN_DIR ...
+Rotation: rigid in-plane rotation of the cluster relative to its start, degrees, by time.
+"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from ab_protocol_figures import deformation_stats, frame_shapes, load_run, sim_windows
+
+from microbubble.parameters import Physics
+
+R = Physics().radius_m
+
+
+def angle(c0, c):
+    U, s, Vt = np.linalg.svd(c0[:, :2].T @ c[:, :2])
+    Rm = Vt.T @ U.T
+    return float(np.degrees(np.arctan2(Rm[1, 0], Rm[0, 0])))
+
+
+rows = {}
+for spec in sys.argv[2:]:
+    name, path = spec.split("=")
+    d = Path(path)
+    s = json.loads((d / "SUMMARY.json").read_text())
+    rec = json.loads((d / "STEP_RECORDS.json").read_text())
+    acc = [r for r in rec if r["accepted"]]
+    with h5py.File(d / "trajectory.h5") as h:
+        t, x = h["time_s"][:], h["positions_m"][:]
+    c = x - x.mean(1, keepdims=True)
+    rot = {f"{tt:g}": angle(c[0], c[int(np.argmin(abs(t - tt)))]) for tt in (0.5, 1.0, 1.5, 3.0, 4.5) if tt <= t[-1] + 1e-9}
+    cfg = json.loads((d / "EXECUTION.json").read_text())["config"]
+    (d / "config_used.json").write_text(json.dumps(cfg))
+    st = deformation_stats(sim_windows(load_run(d, d / "config_used.json"), frame_shapes(load_run(d, d / "config_used.json"), R), R))
+    rows[name] = dict(
+        status=s["status"], wall_s=round(s["wall_s"], 1), simulated_s=s["completed_s"],
+        accepted_steps=s["accepted_steps"], rejected_steps=s["gate_rejected_steps"],
+        osqp_steps=sum(r["solver_status"].startswith("osqp") for r in rec),
+        relinearized_steps=sum(r["qp_iterations"] > 1 for r in acc),
+        step_s_median=float(np.median([r["dt_s"] for r in acc])),
+        max_displacement_over_R_median=float(np.median([r["max_displacement_m"] for r in acc]) / R),
+        stepping=s["task"].get("stepping"), rotation_deg=rot,
+        per_px=st["dln_aspect_per_px_first_1s"].get("median"), aspect=st["aspect"].get("median"),
+        split_share=st["split_share"],
+    )
+    print(name, {k: rows[name][k] for k in ("status", "wall_s", "accepted_steps", "rejected_steps", "osqp_steps", "relinearized_steps")}, rot)
+Path(sys.argv[1]).write_text(json.dumps(rows, indent=1) + "\n")
+===== scratch/rot/uniform_push.py
+"""Does a formed cluster spin under a uniform push (no physical torque)? Rotation vs step size.
+
+Uniform force F0 on every bubble along x plus the default adhesion between bubbles, the
+pretraining resistance and contact step; step size fixed by per-step displacement.
+usage (repo root): PYTHONPATH=. python uniform_push.py
+"""
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.contact import sparse_sequential_step
+from microbubble.forces import adhesion_forces
+from microbubble.hydrodynamics import sparse_resistance
+from microbubble.initial_conditions import load_state
+from workflows.f10ag import load_pretrain_policy
+
+p = load_pretrain_policy(Path("."))
+R = 1.78e-6
+zeta = 6 * np.pi * 1e-3 * R
+x0, _ = load_state(Path("inputs/pretrain_formed_states.h5"), sys.argv[1] if len(sys.argv) > 1 else "FORMED_N32_a1.0_s1")
+F_adh = 1.4e-17 * 3000**2
+F0 = float(sys.argv[2]) if len(sys.argv) > 2 else 2e-13  # per bubble, ~ 26 um/s free speed per bubble
+
+
+def angle(c0, c):
+    U, s, Vt = np.linalg.svd(c0[:, :2].T @ c[:, :2])
+    Rm = Vt.T @ U.T
+    return np.degrees(np.arctan2(Rm[1, 0], Rm[0, 0]))
+
+
+for step_over_R in (0.03, 0.015, 0.0075, 0.00375):
+    x = x0.copy()
+    v = F0 / zeta
+    h = step_over_R * R / v
+    travel = 0.0
+    n = 0
+    while travel < 20e-6:  # 20 um of travel
+        f = np.tile([F0, 0, 0], (len(x), 1)) + adhesion_forces(x, R, F_adh, 2e-7)
+        r = sparse_sequential_step(x, f, R, zeta, h, sparse_resistance(x, R)["A"], p)
+        if not r["converged"]:
+            print("reject", step_over_R, [k for k, ok in r["gates"].items() if not ok])
+            break
+        travel += float(np.linalg.norm(r["positions_m"].mean(0) - x.mean(0)))
+        x = r["positions_m"]
+        n += 1
+    c0, c = x0 - x0.mean(0), x - x.mean(0)
+    print(f"step {step_over_R:.5f} R  steps {n:5d}  rotation after 20 um {angle(c0, c):+.3f} deg  "
+          f"shape change {np.abs(c - c0 @ np.eye(3)).max() / R:.4f} R")
+===== scratch/queue.sh
+#!/bin/bash
+# Run "CONFIG|OUT_DIR|overrides" lines of a job file two at a time (validation runs).
+cd /home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1 PYTHONPATH=.
+PY=/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/venv312/bin/python
+RV=/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/speed/run_variant.py
+job() {
+  IFS="|" read -r cfg out over <<< "$1"
+  $PY $RV "$cfg" "$out" "$over" > "$out.log" 2>&1
+  echo "$(basename $out) $(tail -n 1 $out.log)"
+}
+export -f job; export PY RV
+xargs -P 2 -d '\n' -I{} bash -c 'job "{}"' < "$1"
+echo ALL_DONE

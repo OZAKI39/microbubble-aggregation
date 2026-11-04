@@ -1,0 +1,77 @@
+{
+  "case": "uncoated 3 um air bubble in water (FREE_BUBBLE in tests/test_apecss_response.py); lightly damped",
+  "tolerance": 1e-06,
+  "rows": [
+    {
+      "frequency_Hz": 2000000.0,
+      "pressure_Pa": 150000.0,
+      "max_cycles": 600,
+      "status": "PERIOD_DOUBLING",
+      "cycles": 97,
+      "last_relative_change": 2.987718701093903,
+      "lag2_relative_change": 2.8150874103408987e-07
+    },
+    {
+      "frequency_Hz": 2200000.0,
+      "pressure_Pa": 60000.0,
+      "max_cycles": 600,
+      "status": "NOT_CONVERGED",
+      "cycles": 600,
+      "last_relative_change": 1.2046960810604204,
+      "lag2_relative_change": 0.0015600071807579156
+    },
+    {
+      "frequency_Hz": 2200000.0,
+      "pressure_Pa": 100000.0,
+      "max_cycles": 600,
+      "status": "PERIOD_DOUBLING",
+      "cycles": 124,
+      "last_relative_change": 2.7753676903961497,
+      "lag2_relative_change": 7.779378288739779e-07
+    },
+    {
+      "frequency_Hz": 2200000.0,
+      "pressure_Pa": 150000.0,
+      "max_cycles": 600,
+      "status": "PERIOD_DOUBLING",
+      "cycles": 106,
+      "last_relative_change": 3.209169859678119,
+      "lag2_relative_change": 6.216580419832731e-07
+    },
+    {
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 30000.0,
+      "max_cycles": 400,
+      "status": "CONVERGED",
+      "cycles": 146,
+      "last_relative_change": 1.7310322315832255e-07,
+      "lag2_relative_change": 4.96020231165802e-08,
+      "fixed48_vs_converged_fundamental": 0.005011137700217283
+    },
+    {
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 100000.0,
+      "max_cycles": 400,
+      "status": "CONVERGED",
+      "cycles": 143,
+      "last_relative_change": 1.8961941978099965e-07,
+      "lag2_relative_change": 6.584907867937258e-08,
+      "fixed48_vs_converged_fundamental": 0.008961708145193484
+    },
+    {
+      "frequency_Hz": 1800000.0,
+      "pressure_Pa": 60000.0,
+      "max_cycles": 400,
+      "status": "CONVERGED",
+      "cycles": 104,
+      "last_relative_change": 1.919139870260414e-07,
+      "lag2_relative_change": 2.699051750631477e-07,
+      "fixed48_vs_converged_fundamental": 0.0006384354936732886
+    }
+  ],
+  "build": {
+    "driver_sha256": "9f53fcddb283e983d3cca896d719a61ab3b922c81588fc54eea21e04cba610a1",
+    "apecss_source_sha256": "be87a0c02602beab07081a1f73a2cc8b4670dff5a046ef88de40ebeb6e5bad33",
+    "executable_sha256": "cd26402a09b7b4214cd8da17a6192b22d11b796777b3ed0be9c7405b79c1f957"
+  }
+}

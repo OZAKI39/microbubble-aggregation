@@ -1,0 +1,30 @@
+{
+ "fidelity": "PRETRAIN",
+ "coupling": "collective",
+ "field": "direct",
+ "state": "FORMED_N32_a1.0_s1",
+ "action": "X_PAIR",
+ "save_interval_s": 0.004166666666666667,
+ "duration_s": 0.375,
+ "control": {
+  "frequency": 2500000,
+  "segments": [
+   {
+    "amplitudes": [
+     0,
+     0,
+     6000,
+     0
+    ],
+    "phases": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "duration": 0.375
+   }
+  ]
+ },
+ "state_file": "inputs/pretrain_formed_states.h5"
+}

@@ -1,0 +1,297 @@
+{
+ "note": "Do small objects and large clusters move the same way under the same PZT drive? (read-only on MB_track)\n\nusage: python size_direction.py MB_TRACKING_DIR OUT.json\nFor each PZT window (command video time + 0.3 s to the next command), every object with >= 0.5 s of\ntrusted rows gets a net velocity (px/s) and median area. Small: median area < 300 px^2 (MB_track's\ncluster threshold); cluster: >= 300 px^2. For each cluster, the cosine between its velocity and the\narea-unweighted mean velocity of small objects within 200 px is reported. Pixel scale and the\nacoustic field are unknown (um_per_px null, field uncalibrated).\n",
+ "rows": [
+  {
+   "experiment": "expA",
+   "window": "idle",
+   "t0": 0.3,
+   "t1": 3.0,
+   "n_small": 16,
+   "n_cluster": 5,
+   "mean_velocity_small_px_s": [
+    -0.43,
+    3.24
+   ],
+   "mean_velocity_cluster_px_s": [
+    -0.26,
+    3.39
+   ],
+   "pairs": [
+    {
+     "cluster": "8",
+     "area": 2317.0,
+     "n_small": 3,
+     "cos": 0.8315397936684211,
+     "speed_cluster": 3.8125861901162557,
+     "speed_small": 6.821671264298731
+    },
+    {
+     "cluster": "15",
+     "area": 726.0,
+     "n_small": 5,
+     "cos": 0.9987363716207348,
+     "speed_cluster": 7.261611983662606,
+     "speed_small": 3.0399772881216105
+    }
+   ]
+  },
+  {
+   "experiment": "expA",
+   "window": "PZT1",
+   "t0": 3.3,
+   "t1": 6.0,
+   "n_small": 17,
+   "n_cluster": 4,
+   "mean_velocity_small_px_s": [
+    -2.33,
+    5.7
+   ],
+   "mean_velocity_cluster_px_s": [
+    -47.62,
+    4.75
+   ],
+   "pairs": [
+    {
+     "cluster": "15",
+     "area": 625.0,
+     "n_small": 6,
+     "cos": 0.5905164188071729,
+     "speed_cluster": 7.290614972548407,
+     "speed_small": 3.6798434950350223
+    }
+   ]
+  },
+  {
+   "experiment": "expA",
+   "window": "PZT2",
+   "t0": 6.3,
+   "t1": 9.0,
+   "n_small": 12,
+   "n_cluster": 4,
+   "mean_velocity_small_px_s": [
+    -0.44,
+    4.75
+   ],
+   "mean_velocity_cluster_px_s": [
+    -11.36,
+    -66.78
+   ],
+   "pairs": [
+    {
+     "cluster": "15",
+     "area": 682.5,
+     "n_small": 4,
+     "cos": 0.9848046992461614,
+     "speed_cluster": 136.05211473638346,
+     "speed_small": 2.8835845973148477
+    }
+   ]
+  },
+  {
+   "experiment": "expA",
+   "window": "PZT3",
+   "t0": 9.3,
+   "t1": 12.0,
+   "n_small": 12,
+   "n_cluster": 3,
+   "mean_velocity_small_px_s": [
+    -2.74,
+    9.13
+   ],
+   "mean_velocity_cluster_px_s": [
+    4.12,
+    10.66
+   ],
+   "pairs": [
+    {
+     "cluster": "53",
+     "area": 1357.0,
+     "n_small": 3,
+     "cos": 0.9801954314511124,
+     "speed_cluster": 18.098115257994326,
+     "speed_small": 38.39065812436303
+    }
+   ]
+  },
+  {
+   "experiment": "expA",
+   "window": "PZT4",
+   "t0": 12.35,
+   "t1": 15.0,
+   "n_small": 14,
+   "n_cluster": 4,
+   "mean_velocity_small_px_s": [
+    -9.1,
+    121.01
+   ],
+   "mean_velocity_cluster_px_s": [
+    -17.45,
+    154.86
+   ],
+   "pairs": [
+    {
+     "cluster": "11",
+     "area": 2592.0,
+     "n_small": 4,
+     "cos": 0.9955554668827699,
+     "speed_cluster": 128.87667579205043,
+     "speed_small": 16.44137130004131
+    },
+    {
+     "cluster": "78",
+     "area": 2782.0,
+     "n_small": 4,
+     "cos": 0.9983962889152604,
+     "speed_cluster": 463.1861872716108,
+     "speed_small": 402.4370560561577
+    }
+   ]
+  },
+  {
+   "experiment": "expA",
+   "window": "PZT1+PZT3",
+   "t0": 15.33,
+   "t1": 18.0,
+   "n_small": 14,
+   "n_cluster": 2,
+   "mean_velocity_small_px_s": [
+    -2.02,
+    1.48
+   ],
+   "mean_velocity_cluster_px_s": [
+    -34.65,
+    14.6
+   ],
+   "pairs": [
+    {
+     "cluster": "53",
+     "area": 1375.0,
+     "n_small": 3,
+     "cos": 0.6366584934760843,
+     "speed_cluster": 4.918594071324784,
+     "speed_small": 6.864383134452712
+    }
+   ]
+  },
+  {
+   "experiment": "expA",
+   "window": "idle",
+   "t0": 18.35,
+   "t1": 21.9,
+   "n_small": 11,
+   "n_cluster": 4,
+   "mean_velocity_small_px_s": [
+    0.27,
+    0.68
+   ],
+   "mean_velocity_cluster_px_s": [
+    0.53,
+    0.71
+   ],
+   "pairs": []
+  },
+  {
+   "experiment": "expB",
+   "window": "idle",
+   "t0": 0.3,
+   "t1": 4.0,
+   "n_small": 9,
+   "n_cluster": 2,
+   "mean_velocity_small_px_s": [
+    0.1,
+    0.01
+   ],
+   "mean_velocity_cluster_px_s": [
+    -0.18,
+    -0.08
+   ],
+   "pairs": []
+  },
+  {
+   "experiment": "expB",
+   "window": "PZT1",
+   "t0": 4.3,
+   "t1": 8.0,
+   "n_small": 11,
+   "n_cluster": 2,
+   "mean_velocity_small_px_s": [
+    -8.76,
+    3.24
+   ],
+   "mean_velocity_cluster_px_s": [
+    -3.08,
+    2.17
+   ],
+   "pairs": [
+    {
+     "cluster": "7",
+     "area": 3449.0,
+     "n_small": 5,
+     "cos": 0.9514642925179759,
+     "speed_cluster": 6.645866663434858,
+     "speed_small": 15.74976092061076
+    }
+   ]
+  },
+  {
+   "experiment": "expB",
+   "window": "PZT3",
+   "t0": 8.3,
+   "t1": 12.0,
+   "n_small": 11,
+   "n_cluster": 2,
+   "mean_velocity_small_px_s": [
+    0.5,
+    1.4
+   ],
+   "mean_velocity_cluster_px_s": [
+    3.59,
+    -2.77
+   ],
+   "pairs": [
+    {
+     "cluster": "7",
+     "area": 3531.0,
+     "n_small": 4,
+     "cos": -0.9995951004028445,
+     "speed_cluster": 8.82320598130803,
+     "speed_small": 3.3845981822639764
+    }
+   ]
+  },
+  {
+   "experiment": "expB",
+   "window": "PZT1",
+   "t0": 12.3,
+   "t1": 16.0,
+   "n_small": 10,
+   "n_cluster": 2,
+   "mean_velocity_small_px_s": [
+    -0.26,
+    -0.66
+   ],
+   "mean_velocity_cluster_px_s": [
+    -2.53,
+    4.19
+   ],
+   "pairs": []
+  },
+  {
+   "experiment": "expB",
+   "window": "idle",
+   "t0": 16.3,
+   "t1": 21.9,
+   "n_small": 10,
+   "n_cluster": 2,
+   "mean_velocity_small_px_s": [
+    0.31,
+    -0.0
+   ],
+   "mean_velocity_cluster_px_s": [
+    0.47,
+    0.12
+   ],
+   "pairs": []
+  }
+ ]
+}

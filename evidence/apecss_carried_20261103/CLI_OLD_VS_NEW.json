@@ -1,0 +1,710 @@
+{
+ "points": 37,
+ "same_status_cycles_steps": true,
+ "worst_harmonic_difference": 1.6518631315718694e-13,
+ "rows": [
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 0.001,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    25617,
+    25617
+   ],
+   "max_harmonic_difference_over_fundamental": 4.97116974533415e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 0.001,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    74814,
+    74814
+   ],
+   "max_harmonic_difference_over_fundamental": 5.92523869021198e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 100.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    12,
+    12
+   ],
+   "time_steps": [
+    2887,
+    2887
+   ],
+   "max_harmonic_difference_over_fundamental": 5.168283480176424e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 100.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    11419,
+    11419
+   ],
+   "max_harmonic_difference_over_fundamental": 5.446607955954142e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 3000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    12,
+    12
+   ],
+   "time_steps": [
+    2884,
+    2884
+   ],
+   "max_harmonic_difference_over_fundamental": 5.457631179402532e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 3000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    11418,
+    11418
+   ],
+   "max_harmonic_difference_over_fundamental": 4.763256809178191e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 20000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    12,
+    12
+   ],
+   "time_steps": [
+    2885,
+    2885
+   ],
+   "max_harmonic_difference_over_fundamental": 5.414311876921539e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 20000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    11417,
+    11417
+   ],
+   "max_harmonic_difference_over_fundamental": 6.253374142123258e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 40000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    21,
+    21
+   ],
+   "time_steps": [
+    4535,
+    4535
+   ],
+   "max_harmonic_difference_over_fundamental": 5.137274269050365e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 40000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    10264,
+    10264
+   ],
+   "max_harmonic_difference_over_fundamental": 5.4810900836838456e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 0.001,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    23090,
+    23090
+   ],
+   "max_harmonic_difference_over_fundamental": 5.404717075794089e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 0.001,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    66185,
+    66185
+   ],
+   "max_harmonic_difference_over_fundamental": 6.1695765364439896e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 100.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    3024,
+    3024
+   ],
+   "max_harmonic_difference_over_fundamental": 5.0812559898186645e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 100.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    11039,
+    11039
+   ],
+   "max_harmonic_difference_over_fundamental": 5.085286768421447e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 3000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    3026,
+    3026
+   ],
+   "max_harmonic_difference_over_fundamental": 5.498252431042449e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 3000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    11041,
+    11041
+   ],
+   "max_harmonic_difference_over_fundamental": 5.4214110371403994e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 20000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    3033,
+    3033
+   ],
+   "max_harmonic_difference_over_fundamental": 5.799951366608507e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 20000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    11101,
+    11101
+   ],
+   "max_harmonic_difference_over_fundamental": 5.151411464955393e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 40000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    14,
+    14
+   ],
+   "time_steps": [
+    2957,
+    2957
+   ],
+   "max_harmonic_difference_over_fundamental": 5.369666191522201e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2500000.0,
+   "pressure_Pa": 40000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    10029,
+    10029
+   ],
+   "max_harmonic_difference_over_fundamental": 5.55105816478051e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 0.001,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    21008,
+    21008
+   ],
+   "max_harmonic_difference_over_fundamental": 6.218955456807228e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 0.001,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    58478,
+    58478
+   ],
+   "max_harmonic_difference_over_fundamental": 6.106777822991349e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 100.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    2958,
+    2958
+   ],
+   "max_harmonic_difference_over_fundamental": 4.462728850791217e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 100.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    10851,
+    10851
+   ],
+   "max_harmonic_difference_over_fundamental": 6.240623028804277e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 3000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    2949,
+    2949
+   ],
+   "max_harmonic_difference_over_fundamental": 5.598270463147565e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 3000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    10793,
+    10793
+   ],
+   "max_harmonic_difference_over_fundamental": 5.745048133311977e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 20000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    2957,
+    2957
+   ],
+   "max_harmonic_difference_over_fundamental": 4.484380852830461e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 20000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    10782,
+    10782
+   ],
+   "max_harmonic_difference_over_fundamental": 5.719431435823265e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 40000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    13,
+    13
+   ],
+   "time_steps": [
+    2708,
+    2708
+   ],
+   "max_harmonic_difference_over_fundamental": 5.383944883285345e-15
+  },
+  {
+   "case": "frozen case",
+   "frequency_Hz": 2600000.0,
+   "pressure_Pa": 40000.0,
+   "fixed_cycles": 48,
+   "status": [
+    "FIXED_CYCLES",
+    "FIXED_CYCLES"
+   ],
+   "cycles": [
+    48,
+    48
+   ],
+   "time_steps": [
+    9830,
+    9830
+   ],
+   "max_harmonic_difference_over_fundamental": 5.534543809947322e-15
+  },
+  {
+   "case": "free bubble",
+   "frequency_Hz": 2000000.0,
+   "pressure_Pa": 150000.0,
+   "fixed_cycles": null,
+   "status": [
+    "PERIOD_DOUBLING",
+    "PERIOD_DOUBLING"
+   ],
+   "cycles": [
+    97,
+    97
+   ],
+   "time_steps": [
+    18181,
+    18181
+   ],
+   "max_harmonic_difference_over_fundamental": 6.286525741830105e-14
+  },
+  {
+   "case": "free bubble",
+   "frequency_Hz": 2200000.0,
+   "pressure_Pa": 60000.0,
+   "fixed_cycles": null,
+   "status": [
+    "NOT_CONVERGED",
+    "NOT_CONVERGED"
+   ],
+   "cycles": [
+    600,
+    600
+   ],
+   "time_steps": [
+    73320,
+    73320
+   ],
+   "max_harmonic_difference_over_fundamental": 1.6518631315718694e-13
+  },
+  {
+   "case": "free bubble",
+   "frequency_Hz": 2200000.0,
+   "pressure_Pa": 100000.0,
+   "fixed_cycles": null,
+   "status": [
+    "PERIOD_DOUBLING",
+    "PERIOD_DOUBLING"
+   ],
+   "cycles": [
+    124,
+    124
+   ],
+   "time_steps": [
+    16286,
+    16286
+   ],
+   "max_harmonic_difference_over_fundamental": 5.8838188618725e-14
+  },
+  {
+   "case": "free bubble",
+   "frequency_Hz": 2200000.0,
+   "pressure_Pa": 150000.0,
+   "fixed_cycles": null,
+   "status": [
+    "PERIOD_DOUBLING",
+    "PERIOD_DOUBLING"
+   ],
+   "cycles": [
+    106,
+    106
+   ],
+   "time_steps": [
+    16527,
+    16527
+   ],
+   "max_harmonic_difference_over_fundamental": 6.672890253796226e-14
+  },
+  {
+   "case": "free bubble",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 30000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    146,
+    146
+   ],
+   "time_steps": [
+    16613,
+    16613
+   ],
+   "max_harmonic_difference_over_fundamental": 5.137825285350958e-14
+  },
+  {
+   "case": "free bubble",
+   "frequency_Hz": 2400000.0,
+   "pressure_Pa": 100000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    143,
+    143
+   ],
+   "time_steps": [
+    16725,
+    16725
+   ],
+   "max_harmonic_difference_over_fundamental": 5.150193776989581e-14
+  },
+  {
+   "case": "free bubble",
+   "frequency_Hz": 1800000.0,
+   "pressure_Pa": 60000.0,
+   "fixed_cycles": null,
+   "status": [
+    "CONVERGED",
+    "CONVERGED"
+   ],
+   "cycles": [
+    104,
+    104
+   ],
+   "time_steps": [
+    14490,
+    14490
+   ],
+   "max_harmonic_difference_over_fundamental": 5.156521626208086e-14
+  }
+ ]
+}

@@ -31,6 +31,19 @@ def main():
     r.add_argument("lf")
     r = sub.add_parser("validate", help="Run frozen-old/new numerical regression")
     r.add_argument("--out", required=True)
+    r = sub.add_parser(
+        "response-check", help="Recompute the frozen APECSS responses (needs APECSS sources)"
+    )
+    r.add_argument("--apecss-dir", required=True)
+    r.add_argument("--out", required=True)
+    r.add_argument("--workers", type=int)
+    r = sub.add_parser("formed-states", help="Write formed (aggregated) clusters for PRETRAIN runs")
+    r.add_argument("--out", default=str(ROOT / "inputs/pretrain_formed_states.h5"))
+    r = sub.add_parser("response-grid", help="Settled APECSS responses on a parameter grid")
+    r.add_argument("--apecss-dir", required=True)
+    r.add_argument("--config", default=str(ROOT / "configs/response_grid_example.json"))
+    r.add_argument("--out", required=True)
+    r.add_argument("--workers", type=int)
     args = p.parse_args()
     from microbubble.io import read, clean
 
@@ -85,6 +98,21 @@ def main():
         from workflows.analysis import compare
 
         result = compare(args.hf, args.lf)
+    elif args.command == "response-check":
+        from workflows.validation import response_check
+
+        result = response_check(ROOT, args.apecss_dir, args.out, args.workers)
+        result = {k: v for k, v in result.items() if k != "rows"}
+    elif args.command == "formed-states":
+        from microbubble.initial_conditions import write_formed_states
+        from microbubble.parameters import Physics
+
+        meta = write_formed_states(args.out, Physics().radius_m)
+        result = {k: v for k, v in meta.items() if k != "states"}
+    elif args.command == "response-grid":
+        from workflows.validation import response_grid_run
+
+        result = response_grid_run(ROOT, args.apecss_dir, args.config, args.out, args.workers)
     else:
         from workflows.validation import regression
 

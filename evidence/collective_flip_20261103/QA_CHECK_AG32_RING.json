@@ -1,0 +1,26 @@
+{
+ "setup": "same as QA_CHECK_PAIRS_LOCAL.json (ODE tolerance 1e-10, 60 cycles, M 512)",
+ "source_line": "AG32_ring                                     N= 32 max kd  3.14 | IC vs model: no phase 8.35e-03 phase 5.71e-01 | QA vs model: no phase 1.09e+00 phase 1.20e-03 | isolated IC 7.11e-01 QA 4.16e-01 | change 3.1e-11 6.9e-06 | cpu 4302s",
+ "rows": [
+  {
+   "case": "AG32_ring",
+   "n": 32,
+   "max_kd": 3.141592653589793,
+   "min_d_over_R": 16.519742752173073,
+   "IC": {
+    "model_no_phase": 0.00835,
+    "model_with_phase": 0.571,
+    "isolated": 0.711,
+    "last_cycle_change": 3.1e-11
+   },
+   "QA": {
+    "model_no_phase": 1.09,
+    "model_with_phase": 0.0012,
+    "isolated": 0.416,
+    "last_cycle_change": 6.9e-06,
+    "cpu_s": 4302.0
+   },
+   "note": "Values from the printed summary line of the full run (3 significant digits); that run was stopped before N64_loose_r0, so its JSON was never written."
+  }
+ ]
+}

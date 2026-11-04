@@ -58,20 +58,56 @@ OPENBLAS_NUM_THREADS=1 python main.py validate --out results/my_regression
 
 ## 预训练档（PRETRAIN，仅 CPU）
 
-为世界模型生成预训练数据的独立档位，与冻结 HF/LF 并列，不替代它们的科学结论。它使用同一声场缓存和 APECSS 表，在 CPU 上计算 F1/F2，接触用稀疏求解（候选泡对约束；active-set 循环时用 OSQP 求同一 QP），容差放宽到观测尺度，步长按每步最大实际位移约 3% R 自动调节。泡间耦合必须在配置中写明：`pairwise` 为原成对模型，`collective` 为全体泡基频振动联立求解（Foldy 型单极闭合，N = 2 时与原双泡反馈一致）。
+为世界模型生成预训练数据的独立档位，与冻结 HF/LF 并列，不替代它们的科学结论。它使用同一声场缓存和 APECSS 表，在 CPU 上计算 F1/F2，接触用稀疏求解（候选泡对约束；active-set 循环时用 OSQP 求同一 QP），容差放宽到观测尺度，步长按每步最大实际位移约 0.5% R 自动调节，并记住失败过的步长（2026-11-04 起；之前为 3% R，见 [步长控制证据](evidence/pretrain_step_control_20261104/README.md)）。泡间耦合必须在配置中写明：`pairwise` 为原成对模型，`collective` 为全体泡基频振动联立求解（Foldy 型单极闭合，N = 2 时与原双泡反馈一致）。
 
 ```bash
 python -m pip install -e '.[pretrain]'   # OSQP 1.1.3
 OPENBLAS_NUM_THREADS=1 python main.py run --config configs/pretrain_collective_example.json --out results/my_pretrain
 ```
 
-档位定义见 `configs/pretrain_policy.json`，准入与原型证据见 [预训练档证据](evidence/pretrain_tier_20261102/README.md)。本档声源上限为 3000 Pa-eq；HF/LF 仍为 1500。没有壁面接触模型，泡距通道壁或端面 2R 时停止。结果标记 `PRETRAIN_TIER`、`training_ready=false`，不能作为冻结档证据。
+档位定义见 `configs/pretrain_policy.json`，准入与原型证据见 [预训练档证据](evidence/pretrain_tier_20261102/README.md)。本档声源上限为 6000 Pa-eq（2026-11-04 起，之前 3000，见 [声源上限准入](evidence/pretrain_source_cap_20261104/README.md)）；HF/LF 仍为 1500。没有壁面接触模型，泡距管壁或端面 2R 时停止。结果标记 `PRETRAIN_TIER`、`training_ready=false`，不能作为冻结档证据。
+
+泡与泡之间的耦合（全体耦合的联立方程、两泡反馈和 F2）在预训练档默认计入声波传播延迟：系数乘 e^(−ikd)，梯度另乘 (1 + ikd)。原来的瞬时形式只在 kd ≪ 1 时成立；2.5 MHz 时波长 0.6 mm，泡散开到几百 µm 时，结果可能连方向都反了。补延迟后，与 APECSS 自带的准声学多泡计算对比，散开状态下振动相差 0.07–0.57%（原形式相差 42–109%）；紧密团基本不变。冻结 HF/LF 不变。证据见 [泡团反向漂移核查](evidence/collective_flip_20261103/README.md)。
 
 声场有两种取法，由运行配置的 `field` 指定：默认 `"cache"` 读已准入的三次插值缓存，泡离开中央 1.22 × 1.02 × 0.18 mm 盒子即停止；`"direct"` 在泡的实际位置用同一 FNM 圆片模型现算声压和梯度，积分点数按频率登记（≤5 MHz 96 点，≤10 MHz 192 点，整根管道内与 800 点相差 ≤4e-14），没有插值误差，也不受盒子限制，离管壁或端面 2R 的保护照旧。物理模型不变，频率仍只限有 APECSS 响应表的 2.4/2.5/2.6 MHz。GPU 版 `microbubble.gpu.GPUWaterDiscs` 与 CPU 结果相差 ≤2e-13，用于一次计算大量点，尚未接入积分循环。证据见 [直接现算声场证据](evidence/pretrain_direct_field_20261103/README.md)。
 
 每次新实验使用新输出目录。同配置、同输入、同源码且轨迹 SHA 一致的已完成尝试可原样读取；部分写入的目录、不同配置或源码不会被覆盖。失败状态也原样保留，不从失败提议位置继续积分。100 µs HF/LF 的共同点不足原准入要求时，`compare` 明确返回 `INCONCLUSIVE`。
 
 完整历史细缓存未在本地。选择 `FINE` 会明确拒绝，不能自动换成粗缓存。详见 [数据状态](docs/DATA_STATUS.md)。
+
+## APECSS 稳定响应（新数据，不替换冻结表）
+
+`native/apecss_harmonics.c` 用 APECSS 自己的方程计算单泡体积振动：RPAR（含声辐射阻尼的 Rayleigh–Plesset）、Marmottant 壳、理想气体、RK54，ODE 容差 1e−10，与冻结表相同。它不改 APECSS 源码，只做三件事：
+
+1. 用 APECSS 的用户附加方程边算边累积每个声周期内的傅里叶积分，周期结束即得到平均体积变化和 1–8 次谐波，不再存采样曲线后再分析；
+2. 每次只推进一个声周期，按前后周期变化的衰减速度估计剩余误差，低于 `tolerance`（默认 1e−6）即停止，不再固定 48 周期；
+3. 隔一个周期才重复（半频）时标记 `PERIOD_DOUBLING`，到 `max_cycles` 仍未稳定时标记 `NOT_CONVERGED`，都不给出单一响应。
+
+需要 APECSS 源码目录（含 `src/`、`include/`）和 gcc；冻结表用的是 APECSS `a0ee071`。
+
+```bash
+# 复算冻结表中直接计算的全部点，并与固定 48 周期比较
+python main.py response-check --apecss-dir /path/to/apecss --out results/my_response_check
+# 参数网格（示例：初始壳张力 × 频率 × 声压）
+python main.py response-grid --apecss-dir /path/to/apecss --config configs/response_grid_example.json --out results/my_response_grid
+APECSS_DIR=/path/to/apecss pytest tests/test_apecss_response.py
+```
+
+`RESPONSE_GRID.h5` 每个轴一个数据集（`axes/<名称>`，顺序见 `axis_order`）；`harmonics_m3[..., n-1]` 为第 n 次体积谐波（相对驱动相量，约定见 `metadata_json`），另有平均体积变化、最大/最小 R/R0、所用周期数、剩余误差估计和 `status`。只有 `CONVERGED` 点是单一稳定响应。生成数据写入新的输出目录，不覆盖、不替代 `inputs/response/` 的冻结表；要在仿真中使用需另行准入。验证见 [APECSS 稳定响应证据](evidence/apecss_harmonics_20261103/README.md)。
+
+### 预训练档可选：携带状态的 APECSS 泡（方法 A）
+
+同一源码以 `-DAPECSS_HARMONICS_LIBRARY` 编译成共享库，供预训练档在运行中直接计算响应，替代查表。
+
+- 每个泡有一个自己的 APECSS 泡，模型和参数同冻结表，从静止起步。
+- 泡的半径和泡壁速度在步与步之间保留。
+- 每步在本泡所在处的复数声压下推进整数个声周期，直到相邻周期谐波变化的估计 ≤1e-3，通常 1 个周期。
+- 返回 1–8 次谐波，约定与表相同。
+- 不受表的声压范围限制，也不丢倍频。
+
+运行配置写 `"response": "apecss"`，并用 `"apecss_dir"` 或环境变量 `APECSS_DIR` 指向 APECSS 源码；默认仍是 `"table"`。容差、ODE 容差（1e-8）、重测衰减率的间隔等设置在 `configs/pretrain_policy.json` 的 `apecss_response`；`"apecss_threads"` 只影响速度，结果逐位不变。
+
+与原型逐位一致，各项误差和耗时见 [携带状态响应证据](evidence/apecss_carried_20261103/README.md)：力误差 0.1–0.4%（50 kPa 时最大 2.3%）；2.5 MHz 表为 2.4–5.6%。耗时为查表的 1.0–1.5 倍。
 
 ## 从入口理解计算顺序
 
@@ -99,7 +135,8 @@ LF 保留 F1/F2。只有阻力恰为单位阵且整个 RK 多项式区间满足�
 | `main.py` | 命令入口，没有隐藏批任务 |
 | `workflows/f10ag.py` | 当前输入和对象装配，代替旧 `common.bind()` |
 | `microbubble/acoustics.py` | 圆片 FNM、缓存、Catmull–Rom 压力及梯度；候选缓存生成 |
-| `microbubble/bubble_response.py` | 固定频率 APECSS 表、低压扩展、严格域检查 |
+| `microbubble/bubble_response.py` | 固定频率 APECSS 表、低压扩展、严格域检查；新稳定响应的编译、运行和网格写出；预训练档携带状态响应 `CarriedApecssResponse` |
+| `native/apecss_harmonics.c` | APECSS 稳定响应驱动：附加方程累积谐波、逐周期停止、半频/未收敛标记；同一源码的库版本保留每个泡的状态（预训练档 `response: "apecss"`） |
 | `microbubble/parameters.py` | 当前原始物理参数；历史 PBD 字段不是求解器开关 |
 | `microbubble/forces.py` / `_warp_forces.py` | NumPy 独立核查及预训练档 CPU 声力（含全体耦合） / 实际 GPU 声力内核 |
 | `microbubble/hydrodynamics.py` | 全部有效近邻贡献的集体阻力，不是独立 Stokes 替代；另有同一矩阵的稀疏装配 |
@@ -125,7 +162,15 @@ LF 保留 F1/F2。只有阻力恰为单位阵且整个 RK 多项式区间满足�
 - **F1/F2**：实际 GPU 算式在 `_warp_forces.py`；`forces.py` 是独立数值参考。改方程意味着新物理研究，必须重做对应数值核查。
 - **阻力/接触**：`hydrodynamics.py` 和 `contact.py`。原容差来自 `configs/frozen/contact_policy.json` 加 `contact_revision.json`；冻结路径没有放宽，预训练档的放宽只写在 `configs/pretrain_policy.json`。
 - **积分**：`high_fidelity.py`、`integration.py`。LF 设置来自原协议 `LF` 节，不能靠忽略拒绝条件获得长轨迹。
-- **预训练档**：容差、步长控制、声源上限和壁面距离都在 `configs/pretrain_policy.json`；运行配置用 `fidelity: "PRETRAIN"`，并写明 `coupling`，可选 `field`（`cache` 默认 / `direct`）。直接现算的积分点数登记在 `acoustics.py` 的 `DIRECT_QUADRATURE_ORDERS`。`control.segments` 可给出最多 64 段阶跃幅相。改这些设置只影响预训练档，需要在 `evidence/` 中新建对应的准入记录。
+- **预训练档**：容差、步长控制、声源上限和壁面距离都在 `configs/pretrain_policy.json`；运行配置用 `fidelity: "PRETRAIN"`，并写明 `coupling`，可选 `field`（`cache` 默认 / `direct`）和 `response`（`table` 默认 / `apecss`，设置在 `apecss_response`）。泡间耦合默认带传播延迟（`propagation_delay: true`，见下）；运行配置写 `"propagation_delay": false` 可复现 2026-11-03 之前的运行。2026-11-04 起默认带唯象粘附（`configs/pretrain_policy.json` 的 `adhesion`）：
+- 表面间隙 h 小于作用距离 δ = 0.2 µm 时两泡互相吸引，F = F_adh(1 − h/δ)²。
+- 强度按比值给出：F_adh = k × A_ref²，k 默认 1.4e-17 N/(Pa-eq)²，标定范围 7.5e-18–2.5e-17，生成预训练运行时在此范围内对数均匀随机取值。A_ref 默认取这条运行最大的单路幅值。
+- 配置可写 `adhesion_coefficient_N_per_Pa2`、`adhesion_reference_Pa_eq` 或绝对值 `adhesion_force_N`；写 `"adhesion_force_N": 0` 即复现之前的运行。
+- 结果带 `PHENOMENOLOGICAL_ADHESION` 标签。
+
+步长控制：默认用 2026-11-04 的控制；运行配置写 `"step_control": "2026-11-02"` 可逐位复现之前的运行。
+
+已成形的单层团初态在 `inputs/pretrain_formed_states.h5`，由 `python main.py formed-states` 生成（不覆盖已有文件），说明见同名 `.json`。共 36 个初态：泡数 16 / 32 / 64 / 128，长宽比 1.0 / 1.2 / 1.4，各 3 个随机样本。运行配置写 `"state_file": "inputs/pretrain_formed_states.h5"`、`"state": "FORMED_N32_a1.0_s0"` 即可使用。带粘附的运行应从这些初态出发：从登记的留缝方阵出发，团会被粘成长条（`evidence/adhesion_calibration_20261104/`）。直接现算的积分点数登记在 `acoustics.py` 的 `DIRECT_QUADRATURE_ORDERS`。`control.segments` 可给出最多 64 段阶跃幅相。改这些设置只影响预训练档，需要在 `evidence/` 中新建对应的准入记录。
 - **捕获与形态**：`analysis.py`。保持固定 ID、10/20/30 µm、10 ms hold、重离开和右删失的区别。
 
 ## 环境重建与范围
@@ -138,7 +183,7 @@ python -m pip install -e '.[gpu,plot,test]'
 
 仅 CPU 读取、解析和参考计算可安装 `.[plot,test]`，然后 `pytest -m 'not gpu'`；预训练档另需 `.[pretrain]`（OSQP 1.1.3），未安装时其两项测试跳过。完整逐泡积分和当前 LF 力计算均需要 Warp/CUDA。核心依赖 NumPy 2.2.6、SciPy 1.15.3、h5py 3.16.0；本机 Warp 1.18.0，RTX 4060 Laptop GPU。`requirements-lock.txt` 保存实际环境，包括只在本次旧实现取参考值时用到的额外包；它们不是新工程运行链依赖。
 
-当前只读取预计算 APECSS 响应表，不需要原生 APECSS 或 k-Wave。重新生成响应表需要原始 APECSS 可执行程序、原参数及独立响应验证，本工程未复制原生构建工具。CuPy Cholesky 比较后端保留为可选接口，但本次未安装/验证，不是默认求解路径。
+仿真默认只读取预计算 APECSS 响应表，不需要原生 APECSS 或 k-Wave；预训练档选 `response: "apecss"` 时才需要 APECSS 源码和 gcc。新的稳定响应可用 `response-check` / `response-grid` 从 APECSS 源码计算（见上节），不会替换冻结表；冻结表的原始可执行程序和原 2.5 MHz 自适应表用到的随半径变化的壳参数不在本工程中。CuPy Cholesky 比较后端保留为可选接口，但本次未安装/验证，不是默认求解路径。
 
 ## 验证和科学边界
 

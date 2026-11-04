@@ -1,0 +1,198 @@
+===== scratch/speed/run_variant.py
+"""Run a config with optional stepping overrides (scratch validation of the step control).
+
+usage (repo root, PYTHONPATH=.): python run_variant.py CONFIG OUT [max_step_s=0.004,rejection_cap_factor=none]
+"""
+import json
+import sys
+from pathlib import Path
+
+import workflows.f10ag as F
+
+over = {}
+for item in (sys.argv[3].split(",") if len(sys.argv) > 3 and sys.argv[3] not in ("", "{}") else []):
+    key, value = item.split("=")
+    over[key] = None if value == "none" else float(value)
+original = F.load_pretrain_policy
+
+
+def patched(root):
+    p = original(root)
+    p["stepping"] = dict(p["stepping"], **over)
+    return p
+
+
+F.load_pretrain_policy = patched
+r = F.run(Path("."), Path(sys.argv[1]), Path(sys.argv[2]))
+print(r["status"], r["completed_s"], round(r["wall_s"]), r["accepted_steps"], r["gate_rejected_steps"])
+===== scratch/speed/collect.py
+"""Collect the step-control validation runs into one JSON (wall time, steps, rotation, shape).
+
+usage (repo root): PYTHONPATH=.:visualization python collect.py OUT.json NAME=RUN_DIR ...
+Rotation: rigid in-plane rotation of the cluster relative to its start, degrees, by time.
+"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from ab_protocol_figures import deformation_stats, frame_shapes, load_run, sim_windows
+
+from microbubble.parameters import Physics
+
+R = Physics().radius_m
+
+
+def angle(c0, c):
+    U, s, Vt = np.linalg.svd(c0[:, :2].T @ c[:, :2])
+    Rm = Vt.T @ U.T
+    return float(np.degrees(np.arctan2(Rm[1, 0], Rm[0, 0])))
+
+
+rows = {}
+for spec in sys.argv[2:]:
+    name, path = spec.split("=")
+    d = Path(path)
+    s = json.loads((d / "SUMMARY.json").read_text())
+    rec = json.loads((d / "STEP_RECORDS.json").read_text())
+    acc = [r for r in rec if r["accepted"]]
+    with h5py.File(d / "trajectory.h5") as h:
+        t, x = h["time_s"][:], h["positions_m"][:]
+    c = x - x.mean(1, keepdims=True)
+    rot = {f"{tt:g}": angle(c[0], c[int(np.argmin(abs(t - tt)))]) for tt in (0.5, 1.0, 1.5, 3.0, 4.5) if tt <= t[-1] + 1e-9}
+    cfg = json.loads((d / "EXECUTION.json").read_text())["config"]
+    (d / "config_used.json").write_text(json.dumps(cfg))
+    st = deformation_stats(sim_windows(load_run(d, d / "config_used.json"), frame_shapes(load_run(d, d / "config_used.json"), R), R))
+    rows[name] = dict(
+        status=s["status"], wall_s=round(s["wall_s"], 1), simulated_s=s["completed_s"],
+        accepted_steps=s["accepted_steps"], rejected_steps=s["gate_rejected_steps"],
+        osqp_steps=sum(r["solver_status"].startswith("osqp") for r in rec),
+        relinearized_steps=sum(r["qp_iterations"] > 1 for r in acc),
+        step_s_median=float(np.median([r["dt_s"] for r in acc])),
+        max_displacement_over_R_median=float(np.median([r["max_displacement_m"] for r in acc]) / R),
+        stepping=s["task"].get("stepping"), rotation_deg=rot,
+        per_px=st["dln_aspect_per_px_first_1s"].get("median"), aspect=st["aspect"].get("median"),
+        split_share=st["split_share"],
+    )
+    print(name, {k: rows[name][k] for k in ("status", "wall_s", "accepted_steps", "rejected_steps", "osqp_steps", "relinearized_steps")}, rot)
+Path(sys.argv[1]).write_text(json.dumps(rows, indent=1) + "\n")
+===== scratch/cap/max_pressure.py
+"""Largest incident pressure amplitude at the bubbles of saved runs (response-table domain).
+
+The response table is queried with the incident pressure at each bubble (CPUForces: P = u @ h),
+so this is the quantity its 40 kPa domain bounds. Evaluated with the run's own segments at
+every saved frame of each segment.
+usage (repo root): PYTHONPATH=. python max_pressure.py RUN_DIR ...
+"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from microbubble.io import read
+
+g = read(Path("inputs/apparatus_snapshot.json"))["geometry"]
+discs = WaterDiscs(g["pzt"], 2.5e6)
+order = direct_quadrature_order(2.5e6)
+for d in map(Path, sys.argv[1:]):
+    cfg = json.loads((d / "EXECUTION.json").read_text())["config"]
+    with h5py.File(d / "trajectory.h5") as h:
+        t, x = h["time_s"][:], h["positions_m"][:]
+    edges = np.cumsum([0] + [s["duration"] for s in cfg["control"]["segments"]])
+    peak = 0.0
+    for k, s in enumerate(cfg["control"]["segments"]):
+        sel = np.flatnonzero((t >= edges[k]) & (t <= edges[k + 1]))[::10]
+        if not len(sel):
+            continue
+        u = np.asarray(s["amplitudes"]) * np.exp(1j * np.asarray(s["phases"]))
+        p, _ = discs.evaluate(x[sel].reshape(-1, 3), order)
+        peak = max(peak, float(np.abs(u @ p).max()))
+    print(f"{d.name:32s} largest incident |P| {peak / 1e3:6.2f} kPa (table to 40 kPa)")
+===== scratch/queue.sh
+#!/bin/bash
+# Run "CONFIG|OUT_DIR|overrides" lines of a job file two at a time (validation runs).
+cd /home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1 PYTHONPATH=.
+PY=/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/venv312/bin/python
+RV=/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/speed/run_variant.py
+job() {
+  IFS="|" read -r cfg out over <<< "$1"
+  $PY $RV "$cfg" "$out" "$over" > "$out.log" 2>&1
+  echo "$(basename $out) $(tail -n 1 $out.log)"
+}
+export -f job; export PY RV
+xargs -P 2 -d '\n' -I{} bash -c 'job "{}"' < "$1"
+echo ALL_DONE
+===== scratch/wall/real_reference.py (produces REAL_WALL.json)
+"""A/B cluster windows with the wall-contact flag (read-only from MB_track).
+
+Same windows as visualization/ab_protocol_figures.real_windows (trusted rows, 0.1 s, same action,
+not at the image edge); keeps shape_quality == "wall contact" of the start row. Clusters =
+area >= 300 px2 (the tracker's definition). Prints speed and wall-contact share by time since
+the switch for PZT on, and writes REAL_WALL.json.
+usage (repo root): PYTHONPATH=.:visualization python real_reference.py MB_RESULTS OUT.json
+"""
+import json
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+import numpy as np
+from ab_protocol_figures import WINDOW_FRAMES, quantiles, read_csv
+
+BINS = [0.0, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0]
+
+
+def windows(result_dir):
+    frames = {int(r["frame"]): r for r in read_csv(result_dir / "analysis/pzt_analysis/aligned_frames.csv")}
+    pieces = defaultdict(dict)
+    for r in read_csv(result_dir / "analysis/state.csv"):
+        if r["review_status"] == "trusted":
+            pieces[int(r["segment"])][int(r["frame"])] = r
+    out = []
+    for rows in pieces.values():
+        for f, r0 in rows.items():
+            r1 = rows.get(f + WINDOW_FRAMES)
+            if r1 is None or r0["at_image_edge"] == "1" or r1["at_image_edge"] == "1":
+                continue
+            a0, a1 = frames[f], frames[f + WINDOW_FRAMES]
+            if a0["action_no"] != a1["action_no"] or float(r0["area_px2"]) < 300:
+                continue
+            disp = np.hypot(float(r1["x_px"]) - float(r0["x_px"]), float(r1["y_px"]) - float(r0["y_px"]))
+            out.append(dict(action=a0["active_pzts"], t_since_s=float(a0["t_since_action_s"]),
+                            speed_px_s=float(disp) * 60 / WINDOW_FRAMES,
+                            wall=r0["shape_quality"] == "wall contact",
+                            edge_on_wall=float(r0["edge_on_wall"] or "nan"),
+                            aspect=float(r0["aspect_ratio"])))
+    return out
+
+
+mb, out_path = Path(sys.argv[1]), Path(sys.argv[2])
+ws = [w for e in ("A_offline", "B_offline") for w in windows(mb / e)]
+on = [w for w in ws if w["action"] not in ("none", "")]
+off = [w for w in ws if w["action"] in ("none", "")]
+rows = []
+for lo, hi in zip(BINS[:-1], BINS[1:]):
+    sel = [w for w in on if lo <= w["t_since_s"] < hi]
+    if not sel:
+        continue
+    rows.append(dict(t_from_s=lo, t_to_s=hi, n=len(sel),
+                     speed=quantiles([w["speed_px_s"] for w in sel]),
+                     wall_share=float(np.mean([w["wall"] for w in sel])),
+                     speed_on_wall=quantiles([w["speed_px_s"] for w in sel if w["wall"]]).get("median"),
+                     speed_off_wall=quantiles([w["speed_px_s"] for w in sel if not w["wall"]]).get("median")))
+    r = rows[-1]
+    print(f"{lo:4.2f}-{hi:4.2f}s n {r['n']:4d} speed med {r['speed']['median']:6.1f} p90 {r['speed']['p90']:6.1f}"
+          f"  wall {r['wall_share']:.2f}  on-wall {r['speed_on_wall']}  off-wall {r['speed_off_wall']}")
+summary = dict(note=__doc__, actions=sorted({w["action"] for w in ws}), by_time_pzt_on=rows,
+               off=dict(n=len(off), speed=quantiles([w["speed_px_s"] for w in off]),
+                        wall_share=float(np.mean([w["wall"] for w in off]))),
+               on_wall_aspect=quantiles([w["aspect"] for w in on if w["wall"]]),
+               on_free_aspect=quantiles([w["aspect"] for w in on if not w["wall"]]))
+print("off:", summary["off"]["n"], summary["off"]["speed"].get("median"), summary["off"]["wall_share"])
+print("aspect on wall", summary["on_wall_aspect"].get("median"), "free", summary["on_free_aspect"].get("median"))
+out_path.write_text(json.dumps(summary, indent=1) + "\n")

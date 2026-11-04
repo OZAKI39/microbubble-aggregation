@@ -1,0 +1,289 @@
+{
+ "note": "Checks for raising the pretraining source cap from 3000 to 6000 Pa-eq. Runs with the 2026-11-04 defaults (collective, propagation delay, adhesion k x A_ref^2, step control 0.5% R); configs in configs/.",
+ "response_table_domain_kPa": [
+  0.0001,
+  40.0
+ ],
+ "bore_grid": {
+  "region": "|x| <= 1.5 mm, |y|, |z| <= 0.6 mm, 61 x 25 x 25 points, direct FNM (WaterDiscs.evaluate, order 48)",
+  "largest_pressure_per_Pa_eq_single_channel": [
+   1.412,
+   1.412,
+   1.952,
+   1.952
+  ],
+  "channel_order": [
+   "Y-",
+   "Y+",
+   "X-",
+   "X+"
+  ],
+  "largest_sum_of_four_magnitudes_per_Pa_eq": 6.512,
+  "at_6000_Pa_eq_kPa": {
+   "single_channel": 11.7,
+   "four_in_phase_worst_case": 39.1
+  },
+  "at_3000_Pa_eq_kPa": {
+   "single_channel": 5.9,
+   "four_in_phase_worst_case": 19.5
+  }
+ },
+ "scaling": {
+  "compare": "X- held: 3000 Pa-eq for 1.5 s against 6000 Pa-eq for 0.375 s, frame t at 6000 vs frame 4t at 3000",
+  "travel_um": [
+   38.48,
+   38.48
+  ],
+  "centroid_difference_um": 0.0,
+  "largest_bubble_difference_px": 0.086,
+  "accepted_steps": [
+   4330,
+   4418
+  ]
+ },
+ "runs": {
+  "scale_3000_1p5s": {
+   "status": "PASS",
+   "wall_s": 28.9,
+   "simulated_s": 1.5,
+   "accepted_steps": 4330,
+   "rejected_steps": 0,
+   "osqp_steps": 0,
+   "relinearized_steps": 360,
+   "step_s_median": 0.0003381951232273141,
+   "max_displacement_over_R_median": 0.005000002708757856,
+   "stepping": {
+    "displacement_over_R": 0.005,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.002,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "rejection_cap_factor": 0.8,
+    "rejection_cap_growth": 1.02,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+   },
+   "rotation_deg": {
+    "0.5": 2.0410274250870364,
+    "1": 4.0186270275931975,
+    "1.5": 5.942500536795573
+   },
+   "per_px": 0.0013362685960202252,
+   "aspect": 1.1170874202472656,
+   "split_share": 0.0
+  },
+  "scale_6000_0p375s": {
+   "status": "PASS",
+   "wall_s": 21.2,
+   "simulated_s": 0.375,
+   "accepted_steps": 4418,
+   "rejected_steps": 0,
+   "osqp_steps": 0,
+   "relinearized_steps": 90,
+   "step_s_median": 8.454551704284023e-05,
+   "max_displacement_over_R_median": 0.005000002644527939,
+   "stepping": {
+    "displacement_over_R": 0.005,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.002,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "rejection_cap_factor": 0.8,
+    "rejection_cap_growth": 1.02,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+   },
+   "rotation_deg": {},
+   "per_px": 0.0004603562895169755,
+   "aspect": 1.1184418263542395,
+   "split_share": 0.0,
+   "largest_incident_pressure_kPa": 11.17
+  },
+  "protocol_6000_center_N32": {
+   "status": "PASS",
+   "wall_s": 230.8,
+   "simulated_s": 4.5,
+   "accepted_steps": 41702,
+   "rejected_steps": 490,
+   "osqp_steps": 0,
+   "relinearized_steps": 11694,
+   "step_s_median": 8.371448156969667e-05,
+   "max_displacement_over_R_median": 0.0050000040471386035,
+   "stepping": {
+    "displacement_over_R": 0.005,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.002,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "rejection_cap_factor": 0.8,
+    "rejection_cap_growth": 1.02,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+   },
+   "rotation_deg": {
+    "0.5": 7.453307520724508,
+    "1": 14.36527895380201,
+    "1.5": 21.206485270890155,
+    "3": 48.11123914350305,
+    "4.5": 97.65766116935451
+   },
+   "per_px": 0.00041024280093024325,
+   "aspect": 1.1189458307748514,
+   "split_share": 0.0,
+   "largest_incident_pressure_kPa": 11.3
+  },
+  "protocol_6000_offset_N32": {
+   "status": "PASS",
+   "wall_s": 247.0,
+   "simulated_s": 4.5,
+   "accepted_steps": 45019,
+   "rejected_steps": 270,
+   "osqp_steps": 0,
+   "relinearized_steps": 14045,
+   "step_s_median": 8.39110893323237e-05,
+   "max_displacement_over_R_median": 0.00499999266616036,
+   "stepping": {
+    "displacement_over_R": 0.005,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.002,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "rejection_cap_factor": 0.8,
+    "rejection_cap_growth": 1.02,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+   },
+   "rotation_deg": {
+    "0.5": 9.312054624531987,
+    "1": 18.17804423738656,
+    "1.5": 27.59854484419258,
+    "3": 92.01536993435239,
+    "4.5": 128.81468555159353
+   },
+   "per_px": 0.00040175599951134967,
+   "aspect": 1.118072475062196,
+   "split_share": 0.0,
+   "largest_incident_pressure_kPa": 11.22
+  },
+  "protocol_6000_center_N128": {
+   "status": "PASS",
+   "wall_s": 481.5,
+   "simulated_s": 4.5,
+   "accepted_steps": 12344,
+   "rejected_steps": 135,
+   "osqp_steps": 1,
+   "relinearized_steps": 1463,
+   "step_s_median": 0.0002778421464226939,
+   "max_displacement_over_R_median": 0.005000007334347595,
+   "stepping": {
+    "displacement_over_R": 0.005,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.002,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "rejection_cap_factor": 0.8,
+    "rejection_cap_growth": 1.02,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+   },
+   "rotation_deg": {
+    "0.5": 0.7186717909760727,
+    "1": 1.4778855800463095,
+    "1.5": 2.2799533157170275,
+    "3": 3.921456460251554,
+    "4.5": 7.036190051824769
+   },
+   "per_px": 0.0003528818382210699,
+   "aspect": 1.02608069017811,
+   "split_share": 0.0,
+   "largest_incident_pressure_kPa": 11.2
+  },
+  "random_6000_center_A_N32": {
+   "status": "PASS",
+   "wall_s": 349.2,
+   "simulated_s": 2.0,
+   "accepted_steps": 30013,
+   "rejected_steps": 1948,
+   "osqp_steps": 0,
+   "relinearized_steps": 18583,
+   "step_s_median": 5.480307770632709e-05,
+   "max_displacement_over_R_median": 0.0019362142912174448,
+   "stepping": {
+    "displacement_over_R": 0.005,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.002,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "rejection_cap_factor": 0.8,
+    "rejection_cap_growth": 1.02,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+   },
+   "rotation_deg": {
+    "0.5": 18.852197444781456,
+    "1": 13.817870414574095,
+    "1.5": 165.94828360634756
+   },
+   "per_px": 0.004438029824887793,
+   "aspect": 3.288483432506549,
+   "split_share": 0.0,
+   "largest_incident_pressure_kPa": 14.17
+  },
+  "random_6000_offset_B_N32": {
+   "status": "PASS",
+   "wall_s": 692.2,
+   "simulated_s": 2.0,
+   "accepted_steps": 34786,
+   "rejected_steps": 1047,
+   "osqp_steps": 1505,
+   "relinearized_steps": 25833,
+   "step_s_median": 6.717607632929124e-05,
+   "max_displacement_over_R_median": 0.0028004060576258503,
+   "stepping": {
+    "displacement_over_R": 0.005,
+    "initial_step_s": 1e-06,
+    "max_step_s": 0.002,
+    "min_step_s": 1e-09,
+    "max_growth": 2.0,
+    "min_growth": 0.5,
+    "rejection_cap_factor": 0.8,
+    "rejection_cap_growth": 1.02,
+    "save_interval_s": 0.00025,
+    "budget_s": 3600
+   },
+   "rotation_deg": {
+    "0.5": 0.9999490841571838,
+    "1": 12.070226597270956,
+    "1.5": 0.2113790073145522
+   },
+   "per_px": 0.0022844249053598454,
+   "aspect": 1.2300904643450892,
+   "split_share": 0.0,
+   "largest_incident_pressure_kPa": 18.42
+  }
+ },
+ "speed_px_s": {
+  "protocol_6000_N32": [
+   172.1,
+   8.4,
+   174.7
+  ],
+  "protocol_6000_N32_offset": [
+   172.2,
+   79.6,
+   168.9
+  ],
+  "protocol_6000_N128": [
+   52.3,
+   0.3,
+   52.6
+  ],
+  "ab_reference": "A/B clusters, PZT on, first 0.5 s: median 140 px/s; clusters off the wall 146-188 px/s (REAL_WALL.json in this folder, from MB_track A/B state.csv with the tracker's wall-contact flag)"
+ }
+}

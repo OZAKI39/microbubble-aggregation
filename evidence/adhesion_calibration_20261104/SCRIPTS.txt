@@ -1,0 +1,257 @@
+# ===== analyse_sweep.py =====
+"""Softness metrics of the adhesion sweep, with the same functions as visualization/ab_protocol_figures.py.
+
+usage (repository root): PYTHONPATH=.:visualization python analyse_sweep.py RUNS_DIR MB_RESULTS OUT.json [SEGMENTS]
+SEGMENTS (default 1): how many protocol segments the sweep runs have (1 = X- 1.5 s only).
+References from the branch: the protocol runs without adhesion and without propagation delay
+(collective, pairwise), restricted to the same segments, and the A/B tracking (PZT on).
+"""
+
+import json
+import re
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from ab_protocol_figures import (
+    PROTOCOL_RUNS,
+    deformation_stats,
+    frame_shapes,
+    load_run,
+    merged_from,
+    quantiles,
+    real_cluster_windows,
+    real_windows,
+    sim_windows,
+    speed_px_s,
+)
+from microbubble.parameters import Physics
+
+runs_dir, mb, out = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+segments = int(sys.argv[4]) if len(sys.argv) > 4 else 1
+R = Physics().radius_m
+
+
+def stats(result_dir, config, keep_segments):
+    run = load_run(result_dir, config)
+    shapes = frame_shapes(run, R)
+    windows = [w for w in sim_windows(run, shapes, R) if w["segment"] < keep_segments]
+    d = deformation_stats(windows)
+    return dict(
+        merged_from_s=float(run["times_s"][merged_from(shapes)]),
+        split_share=d["split_share"],
+        dln_aspect_per_px_median=d["dln_aspect_per_px_first_1s"].get("median"),
+        dln_aspect_first_1s_median=d["dln_aspect_first_1s"].get("median"),
+        aspect_median=d["aspect"].get("median"),
+        speed_px_s_first_0p5s_median=quantiles([speed_px_s(w) for w in windows if w["t_since_s"] < 0.5]).get("median"),
+        pieces_end=int(shapes[-1]["pieces"]),
+        windows=d["windows"],
+        wall_s=run["summary"]["wall_s"],
+        status=run["summary"]["status"],
+    )
+
+
+rows = []
+for d in sorted(runs_dir.glob("*_collective_adh*")):
+    if not (d / "SUMMARY.json").is_file():
+        continue
+    m = re.match(r"(center|offset)_collective_adh(.+)$", d.name)
+    cfg = json.loads((d / "EXECUTION.json").read_text())["config"]
+    cfg_path = d / "config_used.json"
+    cfg_path.write_text(json.dumps(cfg))
+    s = stats(d, cfg_path, segments)
+    rows.append(dict(position=m.group(1), adhesion_force_N=float(cfg.get("adhesion_force_N", 0.0)), **s))
+    print(f"{d.name:32s} split {s['split_share']:.2f}  per-px {s['dln_aspect_per_px_median']}  aspect {s['aspect_median']:.2f}  "
+          f"speed {s['speed_px_s_first_0p5s_median']}  pieces {s['pieces_end']}  wall {s['wall_s']:.0f}s", flush=True)
+refs = {}
+for name, (result, config) in PROTOCOL_RUNS.items():
+    refs[name + " (branch, no delay, no adhesion)"] = stats(Path(result), Path(config), segments)
+real = {e: real_windows(mb / d) for e, d in (("A", "A_offline"), ("B", "B_offline"))}
+real_on = [w for w in real_cluster_windows(real) if w["action"] != "none"]
+rd = deformation_stats(real_on)
+refs["real A/B, PZT on"] = dict(dln_aspect_per_px_median=rd["dln_aspect_per_px_first_1s"]["median"],
+                                 dln_aspect_first_1s_median=rd["dln_aspect_first_1s"]["median"],
+                                 aspect_median=rd["aspect"]["median"])
+for k, v in refs.items():
+    print(f"{k:55s} split {v.get('split_share')}  per-px {v['dln_aspect_per_px_median']}  aspect {v['aspect_median']}")
+out.write_text(json.dumps(dict(note=__doc__, segments=segments, rows=rows, references=refs), indent=1, default=float) + "\n")
+
+# ===== analyse_runs.py =====
+"""Softness metrics (functions of visualization/ab_protocol_figures.py) for any set of PRETRAIN runs.
+
+usage (repository root): PYTHONPATH=.:visualization python analyse_runs.py OUT.json RUN_DIR [RUN_DIR ...]
+Each RUN_DIR needs trajectory.h5, SUMMARY.json and EXECUTION.json (its config is used).
+"""
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from ab_protocol_figures import (deformation_stats, frame_shapes, load_run, merged_from, quantiles,
+                                 sim_windows, speed_px_s)
+from microbubble.parameters import Physics
+
+R = Physics().radius_m
+rows = {}
+for d in map(Path, sys.argv[2:]):
+    cfg = json.loads((d / "EXECUTION.json").read_text())["config"]
+    (d / "config_used.json").write_text(json.dumps(cfg))
+    run = load_run(d, d / "config_used.json")
+    shapes = frame_shapes(run, R)
+    w = sim_windows(run, shapes, R)
+    s = deformation_stats(w)
+    t = run["times_s"]
+    rows[d.name] = dict(
+        amplitude_Pa_eq=max(cfg["control"]["segments"][0]["amplitudes"]),
+        adhesion_force_N=cfg.get("adhesion_force_N", 0.0),
+        split_share=s["split_share"],
+        dln_aspect_per_px_first_1s=s["dln_aspect_per_px_first_1s"],
+        dln_aspect_first_1s=s["dln_aspect_first_1s"],
+        aspect=s["aspect"],
+        speed_px_s=quantiles([speed_px_s(x) for x in w]),
+        aspect_over_time=[round(shapes[int(np.searchsorted(t, v))]["aspect"], 3) for v in (0.0, 0.25, 0.5, 1.0, t[-1])],
+        pieces_end=int(shapes[-1]["pieces"]),
+        wall_s=run["summary"]["wall_s"],
+        status=run["summary"]["status"],
+    )
+    r = rows[d.name]
+    print(f"{d.name:42s} split {r['split_share']:.2f}  per-px med {r['dln_aspect_per_px_first_1s'].get('median')}  (n {r['dln_aspect_per_px_first_1s'].get('n')})  "
+          f"dln/0.1s {r['dln_aspect_first_1s'].get('median')}  aspect {r['aspect']['median']:.2f}  speed {r['speed_px_s'].get('median'):.0f} px/s  "
+          f"pieces {r['pieces_end']}  aspect(t) {r['aspect_over_time']}", flush=True)
+Path(sys.argv[1]).write_text(json.dumps(dict(note=__doc__, rows=rows), indent=1, default=float) + "\n")
+
+# ===== run_custom_initial.py =====
+"""Validation only: a PRETRAIN run (same assembly as workflows.f10ag.run_pretrain) that starts
+from given bubble positions instead of a registered initial state.
+
+usage (repository root): PYTHONPATH=. python run_custom_initial.py CONFIG OUT POSITIONS.npy [SOURCE_CAP]
+SOURCE_CAP (validation only) replaces the pretraining source cap of 3000 Pa-eq for this run.
+The positions are shifted so their centroid equals that of the config's registered state.
+"""
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.control import pretrain_segments
+from microbubble.initial_conditions import load_state
+from microbubble.integration import integrate_pretrain
+from microbubble.io import identity, read, sha, write
+from workflows.f10ag import context, load_pretrain_policy
+
+ROOT = Path(".").resolve()
+config, out, positions = sys.argv[1], Path(sys.argv[2]), np.load(sys.argv[3])
+cfg = read(config)
+task = dict(read(ROOT / "inputs/actions.json")[cfg["action"]], id=out.name, state=cfg["state"],
+            action=cfg["action"], duration=cfg["duration_s"], variant="DT1")
+task.update(cfg.get("control", {}))
+p = load_pretrain_policy(ROOT)
+if len(sys.argv) > 4:
+    p["max_source_amplitude_Pa_equivalent"] = float(sys.argv[4])
+adhesion = dict(p["adhesion"], **{k: cfg[k] for k in ("adhesion_force_N", "adhesion_range_m") if k in cfg})
+task.update(variant="ADAPTIVE", coupling=cfg["coupling"], field=cfg.get("field", "cache"), response="table",
+            propagation_delay=cfg.get("propagation_delay", p["propagation_delay"]),
+            adhesion_force_N=float(adhesion["adhesion_force_N"]), adhesion_range_m=float(adhesion["adhesion_range_m"]),
+            save_interval_s=cfg.get("save_interval_s", p["stepping"]["save_interval_s"]))
+segments = pretrain_segments(task, p["max_source_amplitude_Pa_equivalent"], p["max_segments"])
+c = context(ROOT, task.get("frequency", 2500000.0), "coarse", "cpu")
+x_reg, ids = load_state(ROOT / "inputs/initial_states.h5", task["state"])
+x = positions - positions.mean(0) + x_reg.mean(0)
+ident = identity(ROOT)
+ident["run_config_sha256"] = sha(config)
+ident["custom_initial"] = dict(path=str(sys.argv[3]), sha256=sha(sys.argv[3]))
+result = integrate_pretrain(task, c, x, segments, p, out, ident)
+write(out / "EXECUTION.json", dict(identity=ident, task=task, config=cfg, fixed_ids=ids, status=result["status"]))
+print(out.name, result["status"], result.get("completed_s"))
+
+# ===== run_sweep.sh =====
+#!/bin/bash
+# First pass of the adhesion sweep: X- 1.5 s at 2000 Pa-eq, collective coupling with delay.
+cd /home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1 PYTHONPATH=.
+ls <scratchpad>/adh/configs_1p5/*.json | xargs -P 2 -I{} bash -c 'n=$(basename {} .json); <scratchpad>/venv312/bin/python main.py run --config {} --out <scratchpad>/adh/runs_1p5/$n > <scratchpad>/adh/runs_1p5/$n.log 2>&1; echo "$n $(python3 -c "import json;s=json.load(open(\"<scratchpad>/adh/runs_1p5/$n/SUMMARY.json\"));print(s[\"status\"],s[\"completed_s\"],round(s[\"wall_s\"]))" 2>/dev/null || echo FAILED)"'
+echo ALL_DONE
+
+# ===== run_round.sh =====
+#!/bin/bash
+cd /home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1 PYTHONPATH=.
+mkdir -p <scratchpad>/adh/runs_round
+for F in 0e+00 3e-11 1e-10; do echo $F; done | xargs -P 2 -I{} bash -c '<scratchpad>/venv312/bin/python <scratchpad>/adh/run_custom_initial.py <scratchpad>/adh/configs_1p5/center_collective_adh{}.json <scratchpad>/adh/runs_round/round_center_collective_adh{} <scratchpad>/adh/round_initial_center_pairwise_0p25s.npy > <scratchpad>/adh/runs_round/round_center_collective_adh{}.log 2>&1; tail -1 <scratchpad>/adh/runs_round/round_center_collective_adh{}.log'
+echo ALL_DONE
+
+# ===== run_g5000.sh =====
+#!/bin/bash
+# Pre-rounded clusters at 5000 Pa-eq (validation-only cap 5000); adhesion scaled by (5000/2000)^2.
+cd /home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1 PYTHONPATH=.
+mkdir -p <scratchpad>/adh/runs_g5000
+ls <scratchpad>/adh/configs_g5000/*.json | xargs -P 2 -I{} bash -c 'n=$(basename {} .json); pos=${n%%_*}; <scratchpad>/venv312/bin/python <scratchpad>/adh/run_custom_initial.py {} <scratchpad>/adh/runs_g5000/$n <scratchpad>/adh/round_initial_${pos}_pairwise_0p25s.npy 5000 > <scratchpad>/adh/runs_g5000/$n.log 2>&1; tail -1 <scratchpad>/adh/runs_g5000/$n.log'
+echo ALL_DONE
+
+# ===== figure_adhesion.py =====
+"""Figure: softness metrics with and without phenomenological adhesion vs real A/B clusters."""
+import json
+import sys
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+INK, INK2, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1", "#fcfcfb"
+BLUE, ORANGE, AQUA, YELLOW = "#2a78d6", "#eb6834", "#1baf7a", "#eda100"
+plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "axes.edgecolor": MUTED,
+                     "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2})
+sweep = json.load(open(sys.argv[1]))
+g5000 = json.load(open(sys.argv[2]))["rows"]
+refs = sweep["references"]
+by = {(r["position"], r["adhesion_force_N"]): r for r in sweep["rows"]}
+groups = [
+    ("real A/B\n(PZT on)", YELLOW, [refs["real A/B, PZT on"]["dln_aspect_per_px_median"]], [None], [refs["real A/B, PZT on"]["aspect_median"]]),
+    ("pairwise\n2000 Pa-eq", MUTED, [refs[f"{p}_pairwise (branch, no delay, no adhesion)"]["dln_aspect_per_px_median"] for p in ("center", "offset")],
+     [refs[f"{p}_pairwise (branch, no delay, no adhesion)"]["split_share"] for p in ("center", "offset")],
+     [refs[f"{p}_pairwise (branch, no delay, no adhesion)"]["aspect_median"] for p in ("center", "offset")]),
+    ("collective\nno adhesion\n2000 Pa-eq", ORANGE, [by[(p, 0.0)]["dln_aspect_per_px_median"] for p in ("center", "offset")],
+     [by[(p, 0.0)]["split_share"] for p in ("center", "offset")], [by[(p, 0.0)]["aspect_median"] for p in ("center", "offset")]),
+    ("collective\n+ adhesion\ngrid start", AQUA, [by[(p, f)]["dln_aspect_per_px_median"] for p in ("center", "offset") for f in (1e-10,)],
+     [by[(p, f)]["split_share"] for p in ("center", "offset") for f in (3e-11, 1e-10)],
+     [by[(p, f)]["aspect_median"] for p in ("center", "offset") for f in (3e-11, 1e-10)]),
+    ("collective\n+ adhesion\nround start\n5000 Pa-eq", BLUE,
+     [r["dln_aspect_per_px_first_1s"]["median"] for k, r in g5000.items() if r["adhesion_force_N"] > 0],
+     [r["split_share"] for k, r in g5000.items() if r["adhesion_force_N"] > 0],
+     [r["aspect"]["median"] for k, r in g5000.items() if r["adhesion_force_N"] > 0]),
+]
+fig, axes = plt.subplots(1, 3, figsize=(11.6, 4.0))
+fig.patch.set_facecolor(SURF)
+titles = ("a  shape change per pixel moved", "b  windows in which the cluster splits", "c  aspect ratio of the cluster")
+ylabels = ("median |d ln aspect| / displacement (1/px)", "share of 0.1 s windows", "median aspect ratio")
+for k, ax in enumerate(axes):
+    ax.set_facecolor(SURF)
+    for s_ in ("top", "right"):
+        ax.spines[s_].set_visible(False)
+    for gi, g in enumerate(groups):
+        vals = [v for v in g[2 + k] if v is not None]
+        if not vals:
+            ax.text(gi, 0.02 if k == 1 else 0, "n/a", ha="center", color=INK2, fontsize=7.5)
+            continue
+        ax.bar(gi, np.median(vals), 0.62, color=g[1])
+        ax.scatter(np.full(len(vals), gi) + np.linspace(-0.12, 0.12, len(vals)), vals, s=12, color=INK, zorder=3)
+    ax.set_xticks(range(len(groups)))
+    ax.set_xticklabels([g[0] for g in groups], fontsize=7.2)
+    ax.set_title(titles[k], loc="left", color=INK, fontsize=9.5)
+    ax.set_ylabel(ylabels[k])
+    ax.grid(True, axis="y", which="both", color=GRID, lw=0.5)
+    ax.set_axisbelow(True)
+axes[0].set_yscale("log")
+axes[0].axhline(groups[0][2][0], color=YELLOW, lw=1, ls=":")
+axes[2].axhline(groups[0][4][0], color=YELLOW, lw=1, ls=":")
+axes[2].set_ylim(1, 2.4)
+fig.text(0.01, 0.005, "Collective coupling with propagation delay; X- disc held 1.5 s; dots = runs (centre / offset; adhesion 3e-11 and 1e-10 N at 2000 Pa-eq, x (A/2000)^2 at A; grid start in a: 1e-10 only, "
+         "the 3e-11 centre run hardly moved). Pairwise: branch runs without delay. Exploratory, physics uncalibrated, 0.6 um/px provisional.", fontsize=6.8, color=INK2)
+fig.tight_layout(rect=(0, 0.04, 1, 1))
+fig.savefig(sys.argv[3], dpi=200, facecolor=SURF)
+

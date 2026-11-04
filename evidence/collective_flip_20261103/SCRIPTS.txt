@@ -1,0 +1,345 @@
+# ===== flip_map.py =====
+"""Where does the collective closure flip the net primary force on a cluster?
+
+usage: PYTHONPATH=<repo> python flip_map.py OUT.json
+Clusters of N bubbles (2D hexagonal monolayer in the xy plane, or 3D fcc ball) with centre
+spacing s are placed 20 um from the X-pair antinode (x = 0), X pair at 2000 Pa-eq (linear
+regime), 2.5 MHz, direct FNM field, frozen response table. For each cluster:
+  - net x primary force with isolated responses (pairwise model) and with the collective u;
+  - collective resonance estimate: drive frequency where the mean phase of u / P crosses 90 deg,
+    using the exact small-amplitude response of the same bubble (f0 3.0385 MHz, damping 5.98e6 1/s)
+    and the same monopole coupling K = rho omega^2 / (4 pi d).
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.forces import CPUForces, collective_fundamental
+from workflows.f10ag import context, load_pretrain_policy
+
+R = 1.78e-6
+RHO = 1000.0
+F0, DAMP = 3.0385e6, 5.98e6
+
+
+def hex_patch(n, s):
+    pts = [(i + 0.5 * (j % 2), j * np.sqrt(3) / 2, 0.0) for i in range(-12, 13) for j in range(-12, 13)]
+    p = np.array(pts) * s
+    p = p[np.argsort(np.linalg.norm(p, axis=1), kind="stable")][:n]
+    return p - p.mean(0)
+
+
+def fcc_ball(n, s):
+    a = s * np.sqrt(2)
+    base = np.array([[0, 0, 0], [0.5, 0.5, 0], [0.5, 0, 0.5], [0, 0.5, 0.5]])
+    pts = [(np.array([i, j, k]) + b) * a for i in range(-5, 6) for j in range(-5, 6) for k in range(-5, 6) for b in base]
+    p = np.array(pts)
+    p = p[np.argsort(np.linalg.norm(p, axis=1), kind="stable")][:n]
+    return p - p.mean(0)
+
+
+def chi_linear(f):
+    w = 2 * np.pi * f
+    return -4 * np.pi * R / (RHO * ((2 * np.pi * F0) ** 2 - w ** 2 + 1j * w * DAMP))
+
+
+def collective_resonance(x):
+    """Frequency where the mean phase of u/P (uniform drive) falls through 90 deg."""
+    n = len(x)
+    if n == 1:
+        return F0
+    D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+    off = ~np.eye(n, dtype=bool)
+    fs = np.linspace(0.2e6, 4.0e6, 761)
+    phase = []
+    for f in fs:
+        w = 2 * np.pi * f
+        K = np.where(off, RHO * w * w / (4 * np.pi * np.where(off, D, 1)), 0.0)
+        chi = chi_linear(f)
+        u = np.linalg.solve(np.eye(n) + chi * K, chi * np.ones(n))
+        phase.append(np.degrees(np.angle(u.mean())) % 360)
+    phase = np.array(phase)
+    k = np.flatnonzero((phase[:-1] >= 90) & (phase[1:] < 90))
+    return float(fs[k[0]]) if len(k) else None
+
+
+c = context(Path("."), 2.5e6, "coarse", "cpu")
+policy = load_pretrain_policy(Path("."))
+center = np.array([20e-6, 0.0, 0.0])
+rows = []
+for shape_name, builder in (("monolayer", hex_patch), ("ball", fcc_ball)):
+    for n in (1, 2, 4, 8, 16, 32, 64, 128, 200):
+        for s_over_R in (2.05, 2.4, 3.0, 4.0, 6.0, 10.0, 20.0):
+            x = builder(n, s_over_R * R) + center
+            row = dict(shape=shape_name, N=n, spacing_over_R=s_over_R)
+            for coupling in ("pairwise", "collective"):
+                m = CPUForces(c.basis, c.response, c.physics, coupling, 0.0, discs=c.discs)
+                m.control((0, 0, 2000, 2000), (0, 0, 0, 0))
+                f = m(x)
+                row[f"net_primary_x_{coupling}_N"] = float(f["primary_force_N"][:, 0].sum())
+            H = c.response.query(m.u @ c.discs.evaluate(x, m.direct_order)[0])
+            _, smallest = collective_fundamental(x, H, m.u @ c.discs.evaluate(x, m.direct_order)[0], c.physics, m.chi_zero, 0.0)
+            row["smallest_singular_value"] = smallest
+            row["passes_singular_guard"] = bool(smallest >= policy["singular_guard"])
+            row["ratio_collective_over_pairwise"] = row["net_primary_x_collective_N"] / row["net_primary_x_pairwise_N"]
+            row["collective_resonance_MHz"] = None if (fr := collective_resonance(x)) is None else fr / 1e6
+            rows.append(row)
+            print(f"{shape_name:9s} N={n:3d} s/R={s_over_R:5.2f}  ratio {row['ratio_collective_over_pairwise']:+8.3f}  "
+                  f"f_c {row['collective_resonance_MHz']}  smin {smallest:.2e}")
+Path(sys.argv[1]).write_text(json.dumps(dict(
+    setup="X pair 2000 Pa-eq each, 2.5 MHz, cluster centre at x = +20 um from the antinode, direct field, frozen table",
+    sign_note="net_primary_x < 0: towards the antinode (pressure maximum); > 0: away from it",
+    rows=rows), indent=1) + "\n")
+
+# ===== flip_retarded.py =====
+"""Diagnostic: does the collective flip survive when the coupling keeps the propagation phase?
+
+usage: PYTHONPATH=<repo> python flip_retarded.py OUT.json
+The repository closure uses K_ij = rho omega^2 / (4 pi d_ij) (incompressible near field, valid for
+k d << 1; wavelength 0.6 mm at 2.5 MHz). The radiated monopole field of bubble j at distance d is
+rho omega^2 V_j exp(-i k d) / (4 pi d) for exp(+i omega t). This script solves the same linear
+system with and without the factor exp(-i k d) (diagnostic only, repository code unchanged) and
+reports the net x primary force on the cluster. Same setup as flip_map.py.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.acoustics import direct_quadrature_order
+from microbubble.initial_conditions import load_state
+from workflows.f10ag import context
+
+sys.path.insert(0, str(Path(__file__).parent))
+from flip_map import fcc_ball, hex_patch, R  # noqa: E402
+
+c = context(Path("."), 2.5e6, "coarse", "cpu")
+omega = 2 * np.pi * 2.5e6
+k = omega / c.physics.sound_speed_m_s if hasattr(c.physics, "sound_speed_m_s") else omega / 1500.0
+rho = c.physics.density_kg_m3
+order = direct_quadrature_order(2.5e6)
+u_src = c.basis.vector((0, 0, 2000, 2000), (0, 0, 0, 0))
+
+
+def net_force(x):
+    h, g = c.discs.evaluate(x, order)
+    P = u_src @ h
+    G = np.einsum("i,inj->nj", u_src, g)
+    V1 = c.response.query(P)[:, 0]
+    chi = V1 / P
+    n = len(x)
+    D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+    off = ~np.eye(n, dtype=bool)
+    out = dict(isolated=float((-0.5 * np.real(V1[:, None] * np.conj(G)))[:, 0].sum()))
+    for name, phase in (("collective_as_in_code", 0.0), ("collective_with_propagation_phase", 1.0)):
+        K = np.where(off, rho * omega ** 2 * np.exp(-1j * k * D * phase) / (4 * np.pi * np.where(off, D, 1)), 0)
+        u = np.linalg.solve(np.eye(n) + chi[:, None] * K, chi * P)
+        out[name] = float((-0.5 * np.real(u[:, None] * np.conj(G)))[:, 0].sum())
+    out["largest_kd"] = float(k * D.max())
+    return out
+
+
+rows = []
+center = np.array([20e-6, 0.0, 0.0])
+for shape_name, builder in (("monolayer", hex_patch), ("ball", fcc_ball)):
+    for n in (2, 8, 32, 64, 200):
+        for s in (2.05, 2.4, 4.0, 10.0, 20.0):
+            r = net_force(builder(n, s * R) + center)
+            r.update(shape=shape_name, N=n, spacing_over_R=s)
+            rows.append(r)
+for state in ("AG32_local", "N64_compact_reference", "N64_loose_r0", "AG32_ring", "N64_wide_r0", "AG32_random_0", "N200_wide_r0"):
+    x, _ = load_state(Path("inputs/initial_states.h5"), state)
+    if state in ("AG32_local", "N64_compact_reference"):
+        x = x - x.mean(0) + center
+    r = net_force(x)
+    r.update(shape="stored state " + state, N=len(x), spacing_over_R=None)
+    rows.append(r)
+for r in rows:
+    iso = r["isolated"]
+    print(f"{r['shape']:34s} N={r['N']:3d} s/R={r['spacing_over_R']}  max kd {r['largest_kd']:6.2f}  "
+          f"collective/isolated: code {r['collective_as_in_code'] / iso:+7.3f}   with phase {r['collective_with_propagation_phase'] / iso:+7.3f}")
+Path(sys.argv[1]).write_text(json.dumps(dict(
+    setup="X pair 2000 Pa-eq, 2.5 MHz, direct field, frozen table; lattices centred 20 um from the antinode",
+    note="diagnostic only; ratios are net x primary force collective / isolated (negative = flipped)", rows=rows), indent=1) + "\n")
+
+# ===== compare_controls.py =====
+"""Compare pairwise vs collective control runs: cluster centre-of-mass drift and shape.
+
+usage: python compare_controls.py RUNS_DIR OUT.json
+Antinode of the X pair is at x = 0; clusters start centred at +20 um or +75 um.
+"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+R = 1.78e-6
+runs = Path(sys.argv[1])
+out = {}
+for off in (20, 75):
+    for cp in ("pairwise", "collective"):
+        name = f"off{off}_{cp}"
+        with h5py.File(runs / name / "trajectory.h5") as f:
+            x = f["positions_m"][:]
+            t = f["time_s"][:]
+        com = x.mean(1)
+        rel = x - com[:, None]
+        rg = np.sqrt((rel ** 2).sum(-1).mean(-1))
+        D = np.linalg.norm(x[:, :, None] - x[:, None], axis=-1)
+        D[:, np.arange(x.shape[1]), np.arange(x.shape[1])] = np.inf
+        nn = D.min(-1).mean(-1)
+        out[name] = dict(
+            time_ms=(t * 1e3).round(3).tolist(),
+            com_x_um=(com[:, 0] * 1e6).round(3).tolist(),
+            com_yz_um=(com[:, 1:] * 1e6).round(3).tolist(),
+            radius_of_gyration_um=(rg * 1e6).round(3).tolist(),
+            mean_nearest_neighbour_over_R=(nn / R).round(3).tolist(),
+        )
+        s = out[name]
+        print(f"{name:18s} COM x {s['com_x_um'][0]:7.2f} -> {s['com_x_um'][-1]:7.2f} um   "
+              f"Rg {s['radius_of_gyration_um'][0]:6.2f} -> {s['radius_of_gyration_um'][-1]:6.2f} um   "
+              f"nn/R {s['mean_nearest_neighbour_over_R'][0]:5.2f} -> {s['mean_nearest_neighbour_over_R'][-1]:5.2f}")
+        print("   COM x every 2 ms:", s["com_x_um"][::4])
+Path(sys.argv[2]).write_text(json.dumps(dict(
+    setup="AG32_local, X pair 3000 Pa-eq, 2.5 MHz, direct field, frozen table, 20 ms, source cap 3000",
+    sign_note="antinode (pressure maximum) at x = 0; COM moving towards 0 = towards high pressure",
+    runs=out), indent=1) + "\n")
+
+# ===== expcheck/size_direction.py =====
+"""Do small objects and large clusters move the same way under the same PZT drive? (read-only on MB_track)
+
+usage: python size_direction.py MB_TRACKING_DIR OUT.json
+For each PZT window (command video time + 0.3 s to the next command), every object with >= 0.5 s of
+trusted rows gets a net velocity (px/s) and median area. Small: median area < 300 px^2 (MB_track's
+cluster threshold); cluster: >= 300 px^2. For each cluster, the cosine between its velocity and the
+area-unweighted mean velocity of small objects within 200 px is reported. Pixel scale and the
+acoustic field are unknown (um_per_px null, field uncalibrated).
+"""
+import csv
+import json
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+import numpy as np
+
+root = Path(sys.argv[1])
+WINDOWS = {
+    "expA": [("idle", 0.3, 3.0), ("PZT1", 3.3, 6.0), ("PZT2", 6.3, 9.0), ("PZT3", 9.3, 12.0),
+             ("PZT4", 12.35, 15.0), ("PZT1+PZT3", 15.33, 18.0), ("idle", 18.35, 21.9)],
+    "expB": [("idle", 0.3, 4.0), ("PZT1", 4.3, 8.0), ("PZT3", 8.3, 12.0), ("PZT1", 12.3, 16.0), ("idle", 16.3, 21.9)],
+}
+out = []
+for exp, windows in WINDOWS.items():
+    rows = [r for r in csv.DictReader(open(root / "results" / f"{exp[-1]}_offline" / "objects_reviewed.csv"))
+            if r["review_status"] == "trusted"]
+    for label, t0, t1 in windows:
+        tracks = defaultdict(list)
+        for r in rows:
+            t = float(r["t"])
+            if t0 <= t <= t1:
+                tracks[r["object_id"]].append((t, float(r["cx"]), float(r["cy"]), float(r["area"])))
+        objs = []
+        for oid, pts in tracks.items():
+            p = np.array(sorted(pts))
+            if p[-1, 0] - p[0, 0] < 0.5:
+                continue
+            v = np.polyfit(p[:, 0], p[:, 1:3], 1)[0]  # px/s, screen x right, y down
+            objs.append(dict(id=oid, x=p[:, 1].mean(), y=p[:, 2].mean(), vx=v[0], vy=v[1], area=float(np.median(p[:, 3]))))
+        small = [o for o in objs if o["area"] < 300]
+        big = [o for o in objs if o["area"] >= 300]
+        cosines = []
+        for b in big:
+            near = [s for s in small if np.hypot(s["x"] - b["x"], s["y"] - b["y"]) < 200]
+            if len(near) < 3:
+                continue
+            vs = np.mean([[s["vx"], s["vy"]] for s in near], axis=0)
+            vb = np.array([b["vx"], b["vy"]])
+            if np.linalg.norm(vs) < 1 or np.linalg.norm(vb) < 1:
+                continue
+            cosines.append(dict(cluster=b["id"], area=b["area"], n_small=len(near),
+                                cos=float(vs @ vb / np.linalg.norm(vs) / np.linalg.norm(vb)),
+                                speed_cluster=float(np.linalg.norm(vb)), speed_small=float(np.linalg.norm(vs))))
+        def mean_v(group):
+            return None if not group else [round(float(np.mean([o["vx"] for o in group])), 2), round(float(np.mean([o["vy"] for o in group])), 2)]
+        row = dict(experiment=exp, window=label, t0=t0, t1=t1, n_small=len(small), n_cluster=len(big),
+                   mean_velocity_small_px_s=mean_v(small), mean_velocity_cluster_px_s=mean_v(big), pairs=cosines)
+        out.append(row)
+        cs = [c["cos"] for c in cosines]
+        print(f"{exp} {label:10s} small {len(small):3d} clusters {len(big):2d}  mean v small {row['mean_velocity_small_px_s']}  "
+              f"clusters {row['mean_velocity_cluster_px_s']}  cos(cluster, nearby small) {np.round(cs, 2).tolist()}")
+Path(sys.argv[2]).write_text(json.dumps(dict(note=__doc__, rows=out), indent=1) + "\n")
+
+# ===== figure_flip.py =====
+"""Figure for the collective-flip check: control-run drift and the propagation-phase sensitivity."""
+import json
+import sys
+from pathlib import Path
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+S = Path(sys.argv[1])
+INK, INK2, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1", "#fcfcfb"
+BLUE, ORANGE = "#2a78d6", "#eb6834"
+plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "axes.edgecolor": MUTED,
+                     "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2})
+runs = json.loads((S / "COMPARE_CONTROLS.json").read_text())["runs"]
+flip = json.loads((S / "FLIP_RETARDED.json").read_text())["rows"]
+
+fig, (a, b) = plt.subplots(1, 2, figsize=(10.4, 4.5), gridspec_kw=dict(width_ratios=[1, 1.15]))
+fig.patch.set_facecolor(SURF)
+for ax in (a, b):
+    ax.set_facecolor(SURF)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+
+for off, style in ((20, "-"), (75, "--")):
+    for cp, color in (("pairwise", BLUE), ("collective", ORANGE)):
+        r = runs[f"off{off}_{cp}"]
+        x = np.array(r["com_x_um"])
+        a.plot(r["time_ms"], x - x[0], style, color=color, lw=2)
+        a.text(r["time_ms"][-1] + 0.3, x[-1] - x[0], f"{cp}, start {off} µm", color=INK2, fontsize=7.8, va="center")
+a.axhline(0, color=MUTED, lw=0.8)
+a.set_xlim(0, 30)
+a.set_xticks([0, 5, 10, 15, 20])
+a.set_xlabel("time (ms)")
+a.set_ylabel("cluster centre shift along x (µm)\n< 0: towards the pressure maximum at x = 0")
+a.grid(True, color=GRID, lw=0.6)
+a.set_title("a  AG32_local, X pair 3000 Pa-eq, 2.5 MHz", loc="left", color=INK, fontsize=9.5)
+
+names = ["AG32_local", "N64_compact_reference", "N64_loose_r0", "AG32_ring", "N64_wide_r0", "AG32_random_0", "N200_wide_r0"]
+rows = {r["shape"].replace("stored state ", ""): r for r in flip if r["shape"].startswith("stored")}
+y = np.arange(len(names))[::-1]
+lim = 2.0
+for k, (key, color, label) in enumerate((("collective_as_in_code", ORANGE, "collective, as in code (no wave delay)"),
+                                         ("collective_with_propagation_phase", BLUE, "collective, with wave delay"))):
+    vals = np.array([rows[n][key] / rows[n]["isolated"] for n in names])
+    yy = y + (0.19 if k == 0 else -0.19)
+    b.barh(yy, np.clip(vals, -lim, lim), 0.34, color=color, label=label)
+    for v, yv in zip(vals, yy):
+        if abs(v) > lim:
+            b.text(-lim + 0.05, yv, f"{v:.1f} (off scale)", color=SURF, fontsize=7.3, va="center", fontweight="bold")
+b.axvline(0, color=INK2, lw=0.8)
+b.axvline(1, color=MUTED, lw=0.8, ls=":")
+b.set_xlim(-lim, lim)
+b.set_yticks(y)
+b.set_yticklabels([f"{n}\n(max kd {rows[n]['largest_kd']:.1f})" for n in names], fontsize=7.6)
+b.set_xlabel("net primary force, collective / isolated bubbles")
+b.grid(True, axis="x", color=GRID, lw=0.6)
+b.legend(frameon=False, fontsize=7.8, labelcolor=INK2, loc="upper center", bbox_to_anchor=(0.42, -0.15), ncol=2)
+b.text(1.03, len(names) - 0.45, "1 = no collective effect", color=INK2, fontsize=7.3)
+b.text(-1.95, len(names) - 0.45, "< 0: flipped", color=INK2, fontsize=7.3)
+b.set_title("b  stored states, X pair 2000 Pa-eq (linear)", loc="left", color=INK, fontsize=9.5)
+fig.tight_layout()
+fig.savefig(sys.argv[2], dpi=200, facecolor=SURF)
+

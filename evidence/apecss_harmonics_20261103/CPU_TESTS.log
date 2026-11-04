@@ -1,0 +1,51 @@
+$ APECSS_DIR=<APECSS a0ee071 sources> python -m pytest -m 'not gpu' -v
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/venv312/bin/python
+cachedir: .pytest_cache
+rootdir: /home/claude/ozaki39/microbubble-aggregation
+configfile: pyproject.toml
+testpaths: tests
+collecting ... collected 34 items / 3 deselected / 31 selected
+
+tests/test_admission.py::test_pair_pass_cannot_promote_an_unrefined_long_window PASSED [  3%]
+tests/test_apecss_response.py::test_options_are_exact_and_checked PASSED [  6%]
+tests/test_apecss_response.py::test_grid_file_is_never_overwritten PASSED [  9%]
+tests/test_apecss_response.py::test_reproduces_frozen_point_and_stops_early PASSED [ 12%]
+tests/test_apecss_response.py::test_flags_responses_without_a_single_settled_state PASSED [ 16%]
+tests/test_capture.py::CaptureTests::test_band_hopping_breaks_hold PASSED [ 19%]
+tests/test_capture.py::CaptureTests::test_hold_and_reexit PASSED         [ 22%]
+tests/test_capture.py::CaptureTests::test_initial_capture_is_labeled_zero PASSED [ 25%]
+tests/test_capture.py::CaptureTests::test_right_censor_does_not_extrapolate PASSED [ 29%]
+tests/test_capture.py::CaptureTests::test_short_entry_is_not_capture PASSED [ 32%]
+tests/test_capture.py::SharedTimeTests::test_contact_raw_nodes_recover_nonaligned_dense_samples PASSED [ 35%]
+tests/test_model.py::test_sources_are_independent PASSED                 [ 38%]
+tests/test_model.py::test_response_complex_phase_and_bounds[2400000] PASSED [ 41%]
+tests/test_model.py::test_response_complex_phase_and_bounds[2500000] PASSED [ 45%]
+tests/test_model.py::test_response_complex_phase_and_bounds[2600000] PASSED [ 48%]
+tests/test_model.py::test_event_times_and_source_limits PASSED           [ 51%]
+tests/test_model.py::test_analytic_and_cached_gradients PASSED           [ 54%]
+tests/test_model.py::test_tiny_candidate_cache PASSED                    [ 58%]
+tests/test_model.py::test_true_3d_capture_and_thresholds PASSED          [ 61%]
+tests/test_model.py::test_dense_resistance_and_illegal_geometry PASSED   [ 64%]
+tests/test_model.py::test_historical_window_scope PASSED                 [ 67%]
+tests/test_model.py::test_shape_uses_fixed_ids_and_preserves_translation PASSED [ 70%]
+tests/test_model.py::test_frozen_endpoint_metrics_match_original_science PASSED [ 74%]
+tests/test_pretrain.py::test_sparse_resistance_equals_dense PASSED       [ 77%]
+tests/test_pretrain.py::test_vectorized_pairs_equal_reference PASSED     [ 80%]
+tests/test_pretrain.py::test_collective_closure_reduces_to_two_bubble_closure PASSED [ 83%]
+tests/test_pretrain.py::test_sparse_step_reproduces_frozen_step_and_its_failure PASSED [ 87%]
+tests/test_pretrain.py::test_pretrain_tier_resolves_active_set_cycle PASSED [ 90%]
+tests/test_pretrain.py::test_pretrain_policy_leaves_frozen_policy_unchanged PASSED [ 93%]
+tests/test_pretrain.py::test_pretrain_segments_have_their_own_cap PASSED [ 96%]
+tests/test_pretrain.py::test_pretrain_run_switches_controls_and_is_reused PASSED [100%]
+
+======================= 31 passed, 3 deselected in 6.51s =======================
+
+$ python -m pytest tests/test_apecss_response.py -v   (APECSS_DIR unset)
+collecting ... collected 4 items
+
+tests/test_apecss_response.py::test_options_are_exact_and_checked PASSED [ 25%]
+tests/test_apecss_response.py::test_grid_file_is_never_overwritten PASSED [ 50%]
+tests/test_apecss_response.py::test_reproduces_frozen_point_and_stops_early SKIPPED [ 75%]
+tests/test_apecss_response.py::test_flags_responses_without_a_single_settled_state SKIPPED [100%]
+
+========================= 2 passed, 2 skipped in 0.14s =========================

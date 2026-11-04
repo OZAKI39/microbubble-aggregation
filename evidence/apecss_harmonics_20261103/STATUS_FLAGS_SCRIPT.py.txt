@@ -1,0 +1,31 @@
+"""Status flags and the 48-cycle question on a lightly damped (uncoated 3 um) bubble.
+
+usage: python status_flags.py REPO_ROOT APECSS_DIR OUT_DIR
+"""
+import json
+import sys
+from pathlib import Path
+
+root, apecss, out = (Path(a) for a in sys.argv[1:4])
+sys.path.insert(0, str(root))
+from microbubble.bubble_response import apecss_harmonics, build_apecss_harmonics  # noqa: E402
+from tests.test_apecss_response import FREE_BUBBLE  # noqa: E402
+
+out.mkdir(parents=True, exist_ok=True)
+build = build_apecss_harmonics(apecss, out / "build")
+opt = out / "free_bubble.apecss"
+opt.write_text(FREE_BUBBLE)
+rows = []
+for f, p, maxc in [(2.0e6, 150e3, 600), (2.2e6, 60e3, 600), (2.2e6, 100e3, 600), (2.2e6, 150e3, 600),
+                   (2.4e6, 30e3, 400), (2.4e6, 100e3, 400), (1.8e6, 60e3, 400)]:
+    r = apecss_harmonics(build["executable"], opt, f, p, max_cycles=maxc)
+    row = dict(frequency_Hz=f, pressure_Pa=p, max_cycles=maxc, status=r["status"], cycles=r["cycles"],
+               last_relative_change=r.get("last_relative_change"), lag2_relative_change=r.get("lag2_relative_change"))
+    if r["status"] == "CONVERGED":
+        x = apecss_harmonics(build["executable"], opt, f, p, cycles=48)
+        row["fixed48_vs_converged_fundamental"] = float(abs(x["harmonics_m3"][0] - r["harmonics_m3"][0]) / abs(r["harmonics_m3"][0]))
+    rows.append(row)
+    print(row)
+(out / "STATUS_FLAGS.json").write_text(json.dumps(dict(
+    case="uncoated 3 um air bubble in water (FREE_BUBBLE in tests/test_apecss_response.py); lightly damped",
+    tolerance=1e-6, rows=rows, build={k: build[k] for k in ("driver_sha256", "apecss_source_sha256", "executable_sha256")}), indent=2) + "\n")

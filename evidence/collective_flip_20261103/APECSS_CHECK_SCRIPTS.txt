@@ -1,0 +1,428 @@
+# ===== qa_check.c =====
+// Validation tool (not project code): N interacting APECSS bubbles at fixed positions, each
+// driven by its own complex amplitude p0 + Re[P_i exp(i w t)], with APECSS's own interaction
+// models: none (NI), instantaneous incompressible (IC) or quasi-acoustic (QA, emissions travel
+// at the speed of sound). The coupled system is advanced in interaction intervals of T/M (as in
+// APECSS's cluster examples); dp_neighbor is held over each interval and its slope is taken from
+// the last two updates. Every cycle, Fourier tallies (APECSS user ODEs, scaled by 2^-200) give
+// each bubble's volume harmonics relative to exp(i n w t). Runs a fixed number of cycles and
+// prints the last cycle and the change from the cycle before.
+//
+// usage: qa_check -options FILE -freq F -mode NI|IC|QA -bubbles FILE [-cycles 60] [-m 512]
+// bubbles file: one line per bubble "x y z p_re p_im" [m, Pa].
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "apecss.h"
+
+#define NH 8
+#define NT (2 * NH + 1)
+#define TALLY_EXP 200
+
+struct Bub
+{
+  double omega, R0, p_re, p_im;
+  int first;
+  double cache_t, cache_R, cache_w, cache_c[NH + 1], cache_s[NH + 1];
+  int cache_valid;
+};
+
+static void tally_cache(struct Bub *b, APECSS_FLOAT *Sol, APECSS_FLOAT t)
+{
+  if (b->cache_valid && t == b->cache_t && Sol[1] == b->cache_R) return;
+  double x = (Sol[1] - b->R0) / b->R0;
+  b->cache_w = ldexp(x * (3.0 + x * (3.0 + x)), -TALLY_EXP);
+  double th = b->omega * t, c1 = cos(th), s1 = sin(th);
+  b->cache_c[0] = 1.0;
+  b->cache_s[0] = 0.0;
+  for (int n = 1; n <= NH; n++)
+  {
+    b->cache_c[n] = b->cache_c[n - 1] * c1 - b->cache_s[n - 1] * s1;
+    b->cache_s[n] = b->cache_s[n - 1] * c1 + b->cache_c[n - 1] * s1;
+  }
+  b->cache_t = t;
+  b->cache_R = Sol[1];
+  b->cache_valid = 1;
+}
+
+#define TALLY(name, arr, n)                                                             \
+  static APECSS_FLOAT name(APECSS_FLOAT *Sol, APECSS_FLOAT t, struct APECSS_Bubble *B) \
+  {                                                                                     \
+    struct Bub *b = (struct Bub *) B->user_data;                                        \
+    tally_cache(b, Sol, t);                                                             \
+    return (b->cache_w * b->arr[n]);                                                    \
+  }
+TALLY(c0, cache_c, 0)
+TALLY(c1, cache_c, 1)
+TALLY(s1, cache_s, 1)
+TALLY(c2, cache_c, 2)
+TALLY(s2, cache_s, 2)
+TALLY(c3, cache_c, 3)
+TALLY(s3, cache_s, 3)
+TALLY(c4, cache_c, 4)
+TALLY(s4, cache_s, 4)
+TALLY(c5, cache_c, 5)
+TALLY(s5, cache_s, 5)
+TALLY(c6, cache_c, 6)
+TALLY(s6, cache_s, 6)
+TALLY(c7, cache_c, 7)
+TALLY(s7, cache_s, 7)
+TALLY(c8, cache_c, 8)
+TALLY(s8, cache_s, 8)
+static APECSS_FLOAT (*const TALLIES[NT])(APECSS_FLOAT *, APECSS_FLOAT, struct APECSS_Bubble *) = {c0, c1, s1, c2, s2, c3, s3, c4, s4,
+                                                                                                    c5, s5, c6, s6, c7, s7, c8, s8};
+
+static APECSS_FLOAT pinf(APECSS_FLOAT t, struct APECSS_Bubble *B)
+{
+  struct Bub *b = (struct Bub *) B->user_data;
+  double th = b->omega * t;
+  return (B->p0 + b->p_re * cos(th) - b->p_im * sin(th) + B->Interaction->dp_neighbor);
+}
+
+static APECSS_FLOAT dpinf(APECSS_FLOAT t, struct APECSS_Bubble *B)
+{
+  struct Bub *b = (struct Bub *) B->user_data;
+  double th = b->omega * t;
+  double d = -b->omega * (b->p_re * sin(th) + b->p_im * cos(th));
+  double dt = B->Interaction->last_t_1 - B->Interaction->last_t_2;
+  if (dt > B->dt) d += (B->Interaction->last_p_1 - B->Interaction->last_p_2) / dt;
+  return (d);
+}
+
+static int progress_none() { return (0); }
+static int progress_update(int *p, APECSS_FLOAT t, APECSS_FLOAT tt) { return (0); }
+
+int main(int argc, char **args)
+{
+  char options[APECSS_STRINGLENGTH], bubbles_file[APECSS_STRINGLENGTH], mode[8] = "NI";
+  double fa = 0.0;
+  int cycles = 60, M = 512;
+  options[0] = bubbles_file[0] = '\0';
+  for (int i = 1; i < argc; i++)
+  {
+    if (strcmp(args[i], "-options") == 0 && i + 1 < argc)
+      snprintf(options, APECSS_STRINGLENGTH, "%s", args[++i]);
+    else if (strcmp(args[i], "-bubbles") == 0 && i + 1 < argc)
+      snprintf(bubbles_file, APECSS_STRINGLENGTH, "%s", args[++i]);
+    else if (strcmp(args[i], "-freq") == 0 && i + 1 < argc)
+      sscanf(args[++i], "%le", &fa);
+    else if (strcmp(args[i], "-mode") == 0 && i + 1 < argc)
+      snprintf(mode, sizeof(mode), "%s", args[++i]);
+    else if (strcmp(args[i], "-cycles") == 0 && i + 1 < argc)
+      sscanf(args[++i], "%d", &cycles);
+    else if (strcmp(args[i], "-m") == 0 && i + 1 < argc)
+      sscanf(args[++i], "%d", &M);
+    else
+    {
+      fprintf(stderr, "unknown option %s\n", args[i]);
+      return (2);
+    }
+  }
+  int qa = strcmp(mode, "QA") == 0, ic = strcmp(mode, "IC") == 0;
+  FILE *fb = fopen(bubbles_file, "r");
+  if (!fb || !(fa > 0))
+  {
+    fprintf(stderr, "need -bubbles FILE and -freq\n");
+    return (2);
+  }
+  double xyz[4096][3], pre[4096], pim[4096];
+  int n = 0;
+  while (n < 4096 && fscanf(fb, "%le %le %le %le %le", &xyz[n][0], &xyz[n][1], &xyz[n][2], &pre[n], &pim[n]) == 5) n++;
+  fclose(fb);
+
+  struct APECSS_Gas *Gas = malloc(sizeof(struct APECSS_Gas));
+  struct APECSS_Liquid *Liquid = malloc(sizeof(struct APECSS_Liquid));
+  struct APECSS_Interface *Interface = malloc(sizeof(struct APECSS_Interface));
+  struct APECSS_NumericsODE *Num = malloc(sizeof(struct APECSS_NumericsODE));
+  apecss_gas_setdefaultoptions(Gas);
+  apecss_liquid_setdefaultoptions(Liquid);
+  apecss_interface_setdefaultoptions(Interface);
+  apecss_odesolver_setdefaultoptions(Num);
+  apecss_gas_readoptions(Gas, options);
+  apecss_liquid_readoptions(Liquid, options);
+  apecss_interface_readoptions(Interface, options);
+  apecss_odesolver_readoptions(Num, options);
+  apecss_gas_processoptions(Gas);
+  apecss_liquid_processoptions(Liquid);
+  apecss_interface_processoptions(Interface);
+  apecss_odesolver_processoptions(Num);
+
+  struct APECSS_Excitation *Ex = malloc(sizeof(struct APECSS_Excitation));
+  Ex->type = APECSS_EXCITATION_SIN;
+  Ex->f = fa;
+  Ex->dp = 0.0;
+  double T = 1.0 / fa, dt_int = T / M;
+  struct APECSS_Bubble **B = malloc(n * sizeof(struct APECSS_Bubble *));
+  struct Bub *U = calloc(n, sizeof(struct Bub));
+  for (int i = 0; i < n; i++)
+  {
+    B[i] = malloc(sizeof(struct APECSS_Bubble));
+    apecss_bubble_initializestruct(B[i]);
+    apecss_bubble_setdefaultoptions(B[i]);
+    apecss_bubble_readoptions(B[i], options);
+    B[i]->Gas = Gas;
+    B[i]->Liquid = Liquid;
+    B[i]->Interface = Interface;
+    B[i]->NumericsODE = Num;
+    B[i]->Excitation = Ex;
+    B[i]->tStart = 0.0;
+    B[i]->tEnd = cycles * T;
+    B[i]->dt = fmin(1.0e-11, dt_int);
+    B[i]->nUserODEs = NT;
+    B[i]->nODEs += NT;
+    apecss_bubble_processoptions(B[i]);
+    B[i]->get_pressure_infinity = pinf;
+    B[i]->get_pressurederivative_infinity = dpinf;
+    B[i]->progress_initial = progress_none;
+    B[i]->progress_update = progress_update;
+    B[i]->progress_final = progress_none;
+    B[i]->user_data = &U[i];
+    B[i]->Interaction = calloc(1, sizeof(struct APECSS_Interaction));
+    B[i]->Interaction->nBubbles = n;
+    for (int k = 0; k < 3; k++) B[i]->Interaction->location[k] = xyz[i][k];
+    U[i].omega = 2.0 * APECSS_PI * fa;
+    U[i].p_re = pre[i];
+    U[i].p_im = pim[i];
+    apecss_bubble_initialize(B[i]);
+    U[i].first = B[i]->nODEs;
+    for (int j = 0; j < NT; j++)
+    {
+      B[i]->ode[U[i].first + j] = TALLIES[j];
+      B[i]->ODEsSol[U[i].first + j] = 0.0;
+    }
+    B[i]->nODEs += NT;
+    U[i].R0 = B[i]->R0;
+  }
+  if (qa) apecss_interactions_cutoffdistance(B);
+  for (int i = 0; i < n; i++) apecss_bubble_solver_initialize(B[i]);
+
+  double (*H)[NT] = calloc(n, sizeof(*H)), (*Hprev)[NT] = calloc(n, sizeof(*Hprev));
+  double change = INFINITY;
+  clock_t start = clock();
+  for (int c = 1; c <= cycles; c++)
+  {
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < NT; j++) B[i]->ODEsSol[U[i].first + j] = 0.0;
+    for (int s = 1; s <= M; s++)
+    {
+      double tSim = ((c - 1) * M + s) * dt_int;
+      for (int i = 0; i < n; i++)
+      {
+        U[i].cache_valid = 0;
+        apecss_bubble_solver_run(tSim, B[i]);
+      }
+      if (qa)
+        apecss_interactions_quasi_acoustic(B);
+      else if (ic)
+        apecss_interactions_instantaneous(B);
+      for (int i = 0; i < n; i++)
+      {
+        B[i]->Interaction->last_t_2 = B[i]->Interaction->last_t_1;
+        B[i]->Interaction->last_p_2 = B[i]->Interaction->last_p_1;
+        B[i]->Interaction->last_t_1 = tSim;
+        B[i]->Interaction->last_p_1 = B[i]->Interaction->dp_neighbor;
+      }
+    }
+    memcpy(Hprev, H, n * sizeof(*H));
+    double ref = 0.0, m = 0.0;
+    for (int i = 0; i < n; i++)
+    {
+      for (int j = 0; j < NT; j++)
+      {
+        double v = ldexp(B[i]->ODEsSol[U[i].first + j], TALLY_EXP) / T;
+        H[i][j] = j == 0 ? v : 2.0 * v;
+      }
+      ref = fmax(ref, hypot(H[i][1], H[i][2]));
+    }
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < NT; j++) m = fmax(m, fabs(H[i][j] - Hprev[i][j]));
+    change = m / ref;
+    for (int i = 0; i < n; i++)
+      if (!isfinite(B[i]->R) || !(B[i]->R > 0))
+      {
+        printf("QA_CHECK_JSON {\"status\": \"SOLVER_FAILED\", \"cycle\": %d}\n", c);
+        return (3);
+      }
+  }
+  double V0 = 4.0 / 3.0 * APECSS_PI * pow(U[0].R0, 3);
+  printf("QA_CHECK_JSON {\"status\": \"DONE\", \"mode\": \"%s\", \"n\": %d, \"cycles\": %d, \"m\": %d, \"last_cycle_change\": %.6e, \"cpu_s\": %.3f, ", mode, n,
+         cycles, M, change, (double) (clock() - start) / CLOCKS_PER_SEC);
+  printf("\"V1_re\": [");
+  for (int i = 0; i < n; i++) printf("%.17g%s", H[i][1] * V0, i < n - 1 ? ", " : "], \"V1_im\": [");
+  for (int i = 0; i < n; i++) printf("%.17g%s", -H[i][2] * V0, i < n - 1 ? ", " : "], \"V2_abs\": [");
+  for (int i = 0; i < n; i++) printf("%.6g%s", hypot(H[i][3], H[i][4]) * V0, i < n - 1 ? ", " : "]}\n");
+  return (0);
+}
+
+# ===== run_qa_check_v2.py =====
+"""Compare our linear coupling (with / without propagation phase) against APECSS's own interacting
+bubbles (IC: instantaneous incompressible; QA: quasi-acoustic, finite sound speed).
+
+usage (from the repository): PYTHONPATH=. python run_qa_check.py QA_CHECK_EXE OUT.json [--quick]
+Same bubble (frozen 2.4 MHz case, RPAR + Marmottant, ODE tol 1e-10), 2.5 MHz, uniform drive
+1000 Pa (linear regime), fixed positions. Model: u = (I + chi K)^-1 chi P with chi = V1/P of the
+isolated bubble from the NI run, K_ij = rho w^2 exp(-i k d s) / (4 pi d), s = 0 (as in the code)
+or 1 (propagation phase). Error: max_i |V1_i - u_i| / max_i |V1_i|.
+"""
+
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import apecss_options
+from microbubble.initial_conditions import load_state
+
+exe, out = sys.argv[1], Path(sys.argv[2])
+quick = "--quick" in sys.argv
+only = [a.split("=", 1)[1] for a in sys.argv if a.startswith("--only=")]
+ODE_TOL = float(next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--ode-tol=")), 1e-10))
+CYCLES = int(next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--cycles=")), 60))
+F, P, RHO, C = 2.5e6, 1000.0, 1000.0, 1500.0
+W = 2 * np.pi * F
+K_WAVE = W / C
+case = json.loads(Path("inputs/response/2400000/PHYSICS_GATE.json").read_text())["response"]["case"]
+R = case["radius_m"]
+work = Path(tempfile.mkdtemp(prefix="qa_check_", dir=str(out.parent)))
+base = apecss_options(case, ODE_TOL)
+(work / "plain.apecss").write_text(base)
+(work / "qa.apecss").write_text(base.replace("RPModel RPAR\n", "RPModel RPAR\nEmissions QA 1.0e-3\n"))
+
+
+def run(x, mode, cycles=None, m=512):
+    cycles = cycles or CYCLES
+    path = work / f"bubbles_{len(x)}_{abs(hash(x.tobytes()))}.txt"
+    np.savetxt(path, np.column_stack([x, np.full(len(x), P), np.zeros(len(x))]))
+    opt = work / ("qa.apecss" if mode == "QA" else "plain.apecss")
+    args = [exe, "-options", str(opt), "-freq", repr(F), "-mode", mode, "-bubbles", str(path)]
+    args += ["-cycles", str(cycles), "-m", str(m)]
+    r = subprocess.run(args, capture_output=True, text=True, timeout=7200)
+    line = [s for s in r.stdout.splitlines() if s.startswith("QA_CHECK_JSON ")]
+    if not line:
+        raise RuntimeError(r.stdout[-2000:] + r.stderr[-2000:])
+    d = json.loads(line[0][len("QA_CHECK_JSON "):])
+    d["V1"] = np.array(d.pop("V1_re")) + 1j * np.array(d.pop("V1_im"))
+    return d
+
+
+def model(x, chi, phase):
+    D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+    off = ~np.eye(len(x), dtype=bool)
+    K = np.where(off, RHO * W * W * np.exp(-1j * K_WAVE * D * phase) / (4 * np.pi * np.where(off, D, 1)), 0)
+    return np.linalg.solve(np.eye(len(x)) + chi * K, chi * np.full(len(x), P))
+
+
+single = run(np.zeros((1, 3)), "NI")
+chi = single["V1"][0] / P
+rows = []
+cases = [("pair", kd) for kd in (0.05, 0.1, 0.5, 1.0, 2.0, 3.0)]
+if not quick:
+    cases += [("state", s) for s in ("AG32_local", "AG32_ring", "N64_loose_r0", "ring16_r150um", "N64_loose_r0_16of64")]
+if only:
+    cases = [c for c in cases if str(c[1]) in only]
+for kind, value in cases:
+    if kind == "pair":
+        d = value / K_WAVE
+        x = np.array([[0.0, 0, 0], [d, 0, 0]])
+        name = f"pair kd={value} (d={d * 1e6:.1f} um, d/R={d / R:.2f})"
+    elif value == "ring16_r150um":
+        a = np.arange(16) * 2 * np.pi / 16
+        x = np.column_stack([150e-6 * np.cos(a), 150e-6 * np.sin(a), np.zeros(16)])
+        name = value
+    elif value == "N64_loose_r0_16of64":
+        x, _ = load_state(Path("inputs/initial_states.h5"), "N64_loose_r0")
+        x = x[np.random.default_rng(0).choice(len(x), 16, replace=False)]
+        x = x - x.mean(0)
+        name = value
+    else:
+        x, _ = load_state(Path("inputs/initial_states.h5"), value)
+        x = x - x.mean(0)
+        name = value
+    D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+    row = dict(case=name, n=len(x), max_kd=float(K_WAVE * D.max()), min_d_over_R=float(D[D > 0].min() / R))
+    ref = None
+    for mode in ("IC", "QA"):
+        r = run(x, mode)
+        ref = np.max(np.abs(r["V1"]))
+        row[mode] = dict(last_cycle_change=r["last_cycle_change"], cpu_s=r["cpu_s"])
+        for phase, label in ((0.0, "model_no_phase"), (1.0, "model_with_phase")):
+            u = model(x, chi, phase)
+            row[mode][label] = float(np.max(np.abs(r["V1"] - u)) / ref)
+        row[mode]["isolated"] = float(np.max(np.abs(r["V1"] - chi * P)) / ref)
+        row[mode]["V1_over_isolated_mean"] = complex(np.mean(r["V1"]) / (chi * P))
+        row[mode]["V1_over_isolated_mean"] = [row[mode]["V1_over_isolated_mean"].real, row[mode]["V1_over_isolated_mean"].imag]
+    rows.append(row)
+    print(f"{name:45s} N={len(x):3d} max kd {row['max_kd']:5.2f} | IC vs model: no phase {row['IC']['model_no_phase']:.2e} "
+          f"phase {row['IC']['model_with_phase']:.2e} | QA vs model: no phase {row['QA']['model_no_phase']:.2e} "
+          f"phase {row['QA']['model_with_phase']:.2e} | isolated IC {row['IC']['isolated']:.2e} QA {row['QA']['isolated']:.2e}"
+          f" | change {row['IC']['last_cycle_change']:.1e} {row['QA']['last_cycle_change']:.1e} | cpu {row['QA']['cpu_s']:.0f}s", flush=True)
+out.write_text(json.dumps(dict(
+    setup=__doc__, ode_tolerance=ODE_TOL, cycles=CYCLES, frequency_Hz=F, pressure_Pa=P, chi_isolated=[chi.real, chi.imag],
+    single_last_cycle_change=single["last_cycle_change"], rows=rows), indent=1) + "\n")
+
+# ===== figure_qa.py =====
+"""Figure: our coupling formula with / without propagation phase against APECSS IC / QA."""
+import json
+import sys
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+INK, INK2, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1", "#fcfcfb"
+BLUE, ORANGE = "#2a78d6", "#eb6834"
+plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "axes.edgecolor": MUTED,
+                     "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2})
+rows = [r for f in sys.argv[1:-1] for r in json.load(open(f))["rows"]]
+pairs = sorted([r for r in rows if r["n"] == 2], key=lambda r: r["max_kd"])
+states = [r for r in rows if r["n"] > 2]
+
+fig, (a, b) = plt.subplots(1, 2, figsize=(10.4, 4.3), gridspec_kw=dict(width_ratios=[1.1, 1]))
+fig.patch.set_facecolor(SURF)
+for ax in (a, b):
+    ax.set_facecolor(SURF)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+
+kd = [r["max_kd"] for r in pairs]
+lines = (("QA", "model_with_phase", BLUE, "-", "o", "APECSS QA vs formula with delay"),
+         ("QA", "model_no_phase", ORANGE, "-", "o", "APECSS QA vs formula as in code"),
+         ("IC", "model_no_phase", ORANGE, "--", "s", "APECSS IC vs formula as in code"))
+for mode, key, color, style, marker, label in lines:
+    a.loglog(kd, [r[mode][key] * 100 for r in pairs], style, color=color, marker=marker, ms=5, lw=1.8, label=label)
+a.set_xlabel("k d (phase delay between the two bubbles, rad)")
+a.set_ylabel("max |V1 difference| / |V1|  (%)")
+a.grid(True, which="both", color=GRID, lw=0.6)
+a.legend(frameon=False, fontsize=7.8, labelcolor=INK2, loc="upper right", bbox_to_anchor=(1.0, 0.71))
+a.set_title("a  two bubbles, 1000 Pa, 2.5 MHz", loc="left", color=INK, fontsize=9.5)
+a.axvspan(0.03, 0.2, color=GRID, alpha=0.6, lw=0)
+a.text(0.034, 0.0012, "QA less accurate\nat close range", color=INK2, fontsize=7.3)
+a.set_xlim(0.03, 4)
+
+y = np.arange(len(states))[::-1]
+for k_, (mode, key, color, label) in enumerate((("QA", "model_no_phase", ORANGE, "formula as in code"),
+                                               ("QA", "model_with_phase", BLUE, "formula with delay"))):
+    vals = np.array([r[mode][key] * 100 for r in states])
+    yy = y + (0.18 if k_ == 0 else -0.18)
+    b.barh(yy, vals, 0.32, color=color, label=label)
+    for v, yv in zip(vals, yy):
+        b.text(v * 1.15, yv, (f"{v:.0f} %" if v >= 10 else f"{v:.2g} %"), va="center", fontsize=7.3, color=INK2)
+b.set_xscale("log")
+b.set_axisbelow(True)
+a.set_axisbelow(True)
+b.set_yticks(y)
+b.set_yticklabels([f"{r['case']}\n(N {r['n']}, max kd {r['max_kd']:.1f})" for r in states], fontsize=7.6)
+b.set_xlabel("max |V1 difference| / max |V1| against APECSS QA (%)")
+b.grid(True, axis="x", which="both", color=GRID, lw=0.6)
+b.legend(frameon=False, fontsize=7.8, labelcolor=INK2, loc="upper center", bbox_to_anchor=(0.45, -0.17), ncol=2)
+b.set_title("b  many bubbles, uniform 1000 Pa", loc="left", color=INK, fontsize=9.5)
+fig.tight_layout()
+fig.savefig(sys.argv[-1], dpi=200, facecolor=SURF)
+

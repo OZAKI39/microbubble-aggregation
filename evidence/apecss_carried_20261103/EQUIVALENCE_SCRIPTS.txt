@@ -1,0 +1,130 @@
+# ===== compare_bitwise.py =====
+"""Bit-for-bit comparison of prototype and integrated carried-response trajectories.
+
+usage: python compare_bitwise.py OUT.json NAME PROTOTYPE_DIR INTEGRATED_DIR [NAME P I ...]
+"""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+rows = {}
+args = sys.argv[2:]
+for name, a, b in zip(args[0::3], args[1::3], args[2::3]):
+    with h5py.File(Path(a) / "trajectory.h5") as fa, h5py.File(Path(b) / "trajectory.h5") as fb:
+        xa, xb = fa["positions_m"][:], fb["positions_m"][:]
+        ta, tb = fa["time_s"][:], fb["time_s"][:]
+    sa = json.loads((Path(a) / "SUMMARY.json").read_text())
+    sb = json.loads((Path(b) / "SUMMARY.json").read_text())
+    same_shape = xa.shape == xb.shape
+    rows[name] = dict(
+        prototype=a, integrated=b, frames=[len(ta), len(tb)],
+        times_identical=bool(np.array_equal(ta, tb)),
+        positions_bitwise_identical=bool(same_shape and np.array_equal(xa, xb)),
+        max_abs_difference_m=float(np.abs(xa - xb).max()) if same_shape else None,
+        status=[sa.get("status"), sb.get("status")],
+        constrained_solves=[sa.get("constrained_solves", sa.get("solves")), sb.get("constrained_solves", sb.get("solves"))],
+    )
+    print(name, rows[name])
+Path(sys.argv[1]).write_text(json.dumps(rows, indent=1) + "\n")
+
+# ===== run_integrated_capped.py =====
+"""Validation only: the integrated carried response (workflows.f10ag.carried_apecss_response) in a
+pretraining run with a replaced source cap, mirroring run_methodA.py so trajectories compare
+bit for bit with the prototype.
+
+usage (from the repository): PYTHONPATH=. python run_integrated_capped.py CONFIG OUT SOURCE_CAP APECSS_DIR THREADS
+"""
+import json
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+from microbubble.control import pretrain_segments
+from microbubble.initial_conditions import load_state
+from microbubble.integration import integrate_pretrain
+from microbubble.io import identity, read, write
+from workflows.f10ag import carried_apecss_response, context, load_pretrain_policy
+
+ROOT = Path(".").resolve()
+config, out, cap, apecss_dir, threads = sys.argv[1:6]
+cfg = read(config)
+task = dict(read(ROOT / "inputs/actions.json")[cfg["action"]], id=Path(out).name, state=cfg["state"],
+            action=cfg["action"], duration=cfg["duration_s"])
+task.update(cfg.get("control", {}))
+p = load_pretrain_policy(ROOT)
+p["max_source_amplitude_Pa_equivalent"] = float(cap)
+task.update(variant="ADAPTIVE", coupling=cfg["coupling"], field=cfg.get("field", "cache"),
+            save_interval_s=cfg.get("save_interval_s", p["stepping"]["save_interval_s"]))
+segments = pretrain_segments(task, p["max_source_amplitude_Pa_equivalent"], p["max_segments"])
+frequency = task.get("frequency", 2500000.0)
+c = context(ROOT, frequency, "coarse", "cpu")
+x, ids = load_state(ROOT / "inputs/initial_states.h5", task["state"])
+with tempfile.TemporaryDirectory() as build_dir:
+    c.response, record = carried_apecss_response(
+        ROOT, dict(apecss_dir=apecss_dir, apecss_threads=int(threads)), p, frequency, len(x), build_dir)
+    begin = time.perf_counter()
+    result = integrate_pretrain(task, c, x, segments, p, out, identity(ROOT))
+    wall = time.perf_counter() - begin
+    record["stats"] = c.response.stats()
+    c.response.close()
+info = dict(status=result["status"], reason=result.get("reason"), completed_s=result.get("completed_s"), wall_s=wall,
+            source_cap=float(cap), apecss_response=record)
+write(Path(out) / "INTEGRATED.json", info)
+print(json.dumps({k: v for k, v in info.items() if k != "apecss_response"}, indent=1))
+
+# ===== run_equivalence.sh =====
+#!/bin/bash
+# Prototype vs integrated carried response: same runs, compared bit for bit afterwards.
+S=/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad
+cd /home/claude/ozaki39/microbubble-aggregation
+export OPENBLAS_NUM_THREADS=1
+PY=$S/venv312/bin/python
+PYTHONPATH=.:$S/methodA $PY $S/methodA/run_methodA.py /home/claude/ozaki39/microbubble-aggregation/configs/pretrain_direct_field/offset_A_0p2s_direct.json $S/integ/runs/linear_prototype warm --tol 1e-3 --ode-tol 1e-8 --q-refresh 10 --threads 2 > $S/integ/runs/linear_prototype.log 2>&1
+PYTHONPATH=. $PY main.py run --config $S/integ/configs/offset_A_0p2s_direct_apecss.json --out $S/integ/runs/linear_integrated > $S/integ/runs/linear_integrated.log 2>&1
+PYTHONPATH=. $PY $S/integ/run_integrated_capped.py $S/methodA/configs_nl/E3_NL3_around_switch.json $S/integ/runs/E3_integrated 20000 $S/apecss_a0ee071 2 > $S/integ/runs/E3_integrated.log 2>&1
+echo ALL_DONE >> $S/integ/runs/linear_integrated.log
+
+# ===== cli_old_vs_new.py =====
+"""Command-line driver before and after the merge: same statuses, cycles, steps and harmonics.
+
+usage (from the repository): PYTHONPATH=. python cli_old_vs_new.py OLD_EXE NEW_EXE OUT.json
+"""
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import apecss_harmonics, apecss_options
+
+sys.path.insert(0, "tests")
+from test_apecss_response import FREE_BUBBLE  # noqa: E402
+
+old, new, out = sys.argv[1:4]
+case = json.loads(Path("inputs/response/2400000/PHYSICS_GATE.json").read_text())["response"]["case"]
+flags = json.loads(Path("evidence/apecss_harmonics_20261103/STATUS_FLAGS.json").read_text())["rows"]
+rows = []
+with tempfile.TemporaryDirectory() as d:
+    shell, free = Path(d) / "case.apecss", Path(d) / "free.apecss"
+    shell.write_text(apecss_options(case))
+    free.write_text(FREE_BUBBLE)
+    work = [("frozen case", shell, f, p, kw) for f in (2.4e6, 2.5e6, 2.6e6)
+            for p in (0.001, 100.0, 3000.0, 20000.0, 40000.0) for kw in ({}, {"cycles": 48})]
+    work += [("free bubble", free, r["frequency_Hz"], r["pressure_Pa"], {"max_cycles": r["max_cycles"]}) for r in flags]
+    for name, opt, f, p, kw in work:
+        a, b = apecss_harmonics(old, opt, f, p, **kw), apecss_harmonics(new, opt, f, p, **kw)
+        rows.append(dict(case=name, frequency_Hz=f, pressure_Pa=p, fixed_cycles=kw.get("cycles"),
+                         status=[a["status"], b["status"]], cycles=[a["cycles"], b["cycles"]],
+                         time_steps=[a["time_steps"], b["time_steps"]],
+                         max_harmonic_difference_over_fundamental=float(
+                             np.abs(a["harmonics_m3"] - b["harmonics_m3"]).max() / abs(a["harmonics_m3"][0]))))
+same = all(r["status"][0] == r["status"][1] and r["cycles"][0] == r["cycles"][1] and r["time_steps"][0] == r["time_steps"][1] for r in rows)
+worst = max(r["max_harmonic_difference_over_fundamental"] for r in rows)
+Path(out).write_text(json.dumps(dict(points=len(rows), same_status_cycles_steps=same, worst_harmonic_difference=worst, rows=rows), indent=1) + "\n")
+print(len(rows), same, worst)
+

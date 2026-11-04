@@ -10,15 +10,16 @@ from microbubble.control import pretrain_segments, schedule
 from microbubble.contact import sequential_step, sparse_sequential_step
 from microbubble.forces import (
     CPUForces,
+    adhesion_forces,
     collective_fundamental,
     coupled_fundamental,
     pair_forces,
     pair_reference,
 )
 from microbubble.hydrodynamics import resistance, sparse_resistance
-from microbubble.initial_conditions import load_state
-from microbubble.io import read
-from workflows.f10ag import context, load_policy, load_pretrain_policy, run
+from microbubble.initial_conditions import formed_cluster, load_state, write_formed_states
+from microbubble.io import read, sha
+from workflows.f10ag import context, contact_terms, load_policy, load_pretrain_policy, run
 
 ROOT = Path(__file__).resolve().parents[1]
 CYCLE_STATE = ROOT / "evidence/pretrain_tier_20261102/ACTIVE_SET_CYCLE_STATE.npy"
@@ -77,6 +78,106 @@ def test_collective_closure_reduces_to_two_bubble_closure(cpu):
     assert 0 < smallest
     with pytest.raises(ValueError, match="Near-singular"):
         collective_fundamental(x, H, P, c.physics, f.chi_zero, singular_guard=10.0)
+
+
+def test_delayed_coupling_tends_to_the_instantaneous_form(cpu):
+    # k -> 0 (k d ~ 1e-11): the delayed path (separate code) must reproduce the frozen
+    # instantaneous one, including the two-bubble feedback and the collective variant.
+    c, _, _ = cpu
+    f = CPUForces(c.basis, c.response, c.physics, "pairwise")
+    f.control([0, 0, 3000, 3000], [0, 0, 0, 0.4])
+    x = compressed_cluster()
+    h, _ = c.basis.query_basis(x)
+    P = f.u @ h
+    H = c.response.query(P)
+    old = pair_forces(x, H, P, c.physics, f.chi_zero)
+    new = pair_forces(x, H, P, c.physics, f.chi_zero, wavenumber_rad_m=1e-6)
+    assert np.abs(new - old).max() <= 1e-9 * np.abs(old).max()
+    u0, _ = collective_fundamental(x, H, P, c.physics, f.chi_zero)
+    u1, _ = collective_fundamental(x, H, P, c.physics, f.chi_zero, wavenumber_rad_m=1e-6)
+    assert np.abs(u1 - u0).max() <= 1e-9 * np.abs(u0).max()
+    old = pair_forces(x, H, P, c.physics, f.chi_zero, u0)
+    new = pair_forces(x, H, P, c.physics, f.chi_zero, u1, 1e-6)
+    assert np.abs(new - old).max() <= 1e-9 * np.abs(old).max()
+
+
+def test_delayed_pair_force_is_the_gradient_of_the_delayed_field(cpu):
+    # Force on bubble i: -1/2 Re[V_i conj(grad p_j)] summed over harmonics, with the radiated
+    # field p_j(r) = -rho (n w)^2 V_j exp(-i n k r) / (4 pi r) differentiated numerically.
+    c, R, _ = cpu
+    phys = c.physics
+    k = c.discs.k
+    rng = np.random.default_rng(1)
+    V = (rng.normal(size=(2, 8)) + 1j * rng.normal(size=(2, 8))) * 1e-19 / np.arange(1, 9) ** 2
+    x = np.array([[0.0, 0, 0], [70e-6, 90e-6, -20e-6]])  # k d ~ 1.2; no soft core, no feedback
+    w = 2 * np.pi * phys.frequency_Hz
+
+    def field(r, j, n):
+        d = np.linalg.norm(r - x[j])
+        amplitude = -phys.density_kg_m3 * (n * w) ** 2 * V[j, n - 1]
+        return amplitude * np.exp(-1j * n * k * d) / (4 * np.pi * d)
+
+    expected = np.zeros((2, 3))
+    for i, j in ((0, 1), (1, 0)):
+        for n in range(1, 9):
+            step = 1e-9
+            grad = np.array(
+                [
+                    (field(x[i] + e * step, j, n) - field(x[i] - e * step, j, n)) / (2 * step)
+                    for e in np.eye(3)
+                ]
+            )
+            expected[i] += -0.5 * np.real(V[i, n - 1] * np.conj(grad))
+    got = pair_forces(x, V, np.ones(2), phys, 0j, wavenumber_rad_m=k)
+    np.testing.assert_allclose(got, expected, rtol=1e-6, atol=1e-9 * np.abs(expected).max())
+    assert not np.allclose(got[0], -got[1], rtol=1e-3, atol=0)  # radiation carries momentum
+    # Without the delay the same pair gives a clearly different force at k d ~ 1.2.
+    old = pair_forces(x, V, np.ones(2), phys, 0j)
+    assert np.abs(old - got).max() > 0.1 * np.abs(got).max()
+
+
+def test_delayed_collective_reduces_to_the_delayed_two_bubble_closure(cpu):
+    c, R, _ = cpu
+    k = c.discs.k
+    f = CPUForces(c.basis, c.response, c.physics, "collective", wavenumber_rad_m=k)
+    f.control([0, 0, 1000, 1000], [0, 0, 0, 0])
+    x = np.array([[20e-6, 0, 0], [20e-6 + 2.3 * R, 0.4 * R, 0]])
+    h, _ = c.basis.query_basis(x)
+    P = f.u @ h
+    H = c.response.query(P)
+    u, _ = collective_fundamental(x, H, P, c.physics, f.chi_zero, wavenumber_rad_m=k)
+    d = np.linalg.norm(x[1] - x[0])
+    kk = c.physics.density_kg_m3 * (2 * np.pi * c.physics.frequency_Hz) ** 2 / (4 * np.pi * d)
+    a, b = (kk * np.exp(-1j * k * d) * H[m, 0] / P[m] for m in (0, 1))
+    expected = [(H[0, 0] - a * H[1, 0]) / (1 - a * b), (H[1, 0] - b * H[0, 0]) / (1 - a * b)]
+    np.testing.assert_allclose(u, expected, rtol=1e-10)
+    assert f.wavenumber_rad_m == pytest.approx(2 * np.pi * 2.5e6 / 1500.0)
+
+
+def test_adhesion_is_short_range_attractive_and_off_by_default(cpu):
+    c, R, _ = cpu
+    r, F = 0.2e-6, 1e-11
+    for gap, expected in ((-1e-9, F), (0.0, F), (0.5 * r, F / 4), (r, 0.0), (2 * r, 0.0)):
+        x = np.array([[0.0, 0, 0], [2 * R + gap, 0, 0]])
+        f = adhesion_forces(x, R, F, r)
+        np.testing.assert_allclose(f[0], [expected, 0, 0], rtol=1e-12, atol=1e-30)
+        np.testing.assert_allclose(f[1], -f[0], rtol=0, atol=0)
+    x = compressed_cluster()
+    np.testing.assert_array_equal(adhesion_forces(x, R, 0.0, r), 0.0)
+    off = CPUForces(c.basis, c.response, c.physics, "collective")
+    on = CPUForces(
+        c.basis, c.response, c.physics, "collective", adhesion_force_N=F, adhesion_range_m=r
+    )
+    for f in (off, on):
+        f.control([0, 0, 1000, 1000], [0, 0, 0, 0])
+    a, b = off(x), on(x)
+    assert "adhesion_force_N" not in a
+    np.testing.assert_array_equal(b["primary_force_N"] + b["secondary_force_N"], a["total_force_N"])
+    expected = adhesion_forces(x, R, F, r)
+    np.testing.assert_allclose(b["total_force_N"] - a["total_force_N"], expected, atol=1e-9 * F)
+    np.testing.assert_allclose(b["adhesion_force_N"].sum(0), 0.0, atol=1e-25)
+    with pytest.raises(ValueError, match="Adhesion"):
+        CPUForces(c.basis, c.response, c.physics, adhesion_force_N=F)
 
 
 def test_sparse_step_reproduces_frozen_step_and_its_failure(cpu):
@@ -180,10 +281,149 @@ def test_pretrain_run_switches_controls_and_is_reused(tmp_path):
     switch = [row for row in rec if row["accepted"] and row["segment"] == 1]
     assert switch and switch[0]["time_s"] == pytest.approx(2.5e-4, abs=1e-15)
     assert 0 < r["min_collective_singular_value"]
+    assert r["task"]["propagation_delay"] is True  # policy default
     assert run(ROOT, path, tmp_path / "out") == r
     path.write_text(json.dumps(dict(cfg, coupling=None)))
     with pytest.raises(ValueError, match="explicit coupling"):
         run(ROOT, path, tmp_path / "other")
+    path.write_text(json.dumps(dict(cfg, propagation_delay="yes")))
+    with pytest.raises(ValueError, match="propagation_delay"):
+        run(ROOT, path, tmp_path / "other")
+    # Adhesion is on by default, scaled with the run's largest single-channel level (3000).
+    k = load_pretrain_policy(ROOT)["adhesion"]["coefficient_N_per_Pa2"]
+    assert r["task"]["adhesion_force_N"] == pytest.approx(k * 3000.0**2)
+    assert "PHENOMENOLOGICAL_ADHESION" in r["labels"]
+    for bad in (dict(adhesion_force_N=-1e-12), dict(adhesion_coefficient_N_per_Pa2=True)):
+        path.write_text(json.dumps(dict(cfg, **bad)))
+        with pytest.raises(ValueError, match="must be a finite number"):
+            run(ROOT, path, tmp_path / "other")
+    path.write_text(json.dumps(dict(cfg, state_file="configs/pretrain_policy.json")))
+    with pytest.raises(ValueError, match="state_file"):
+        run(ROOT, path, tmp_path / "other")
+
+
+def test_contact_terms_follow_the_policy_and_the_run_level():
+    p = load_pretrain_policy(ROOT)
+    k, r = p["adhesion"]["coefficient_N_per_Pa2"], p["adhesion"]["range_m"]
+    segments = [
+        dict(amplitude_Pa_equivalent=(0, 0, 2500.0, 0)),
+        dict(amplitude_Pa_equivalent=(800.0, 0, 0, 0)),
+    ]
+    t = contact_terms({}, p, segments)
+    assert t["adhesion_force_N"] == pytest.approx(k * 2500.0**2) and t["adhesion_range_m"] == r
+    assert contact_terms(dict(adhesion_reference_Pa_eq=1000.0), p, segments)[
+        "adhesion_force_N"
+    ] == pytest.approx(k * 1e6)
+    assert contact_terms(dict(adhesion_force_N=0.0), p, segments)["adhesion_force_N"] == 0.0
+    assert (
+        contact_terms(dict(adhesion_coefficient_N_per_Pa2=0.0), p, segments)["adhesion_force_N"]
+        == 0.0
+    )
+    for bad in (
+        dict(adhesion_force_N=-1e-12),
+        dict(adhesion_coefficient_N_per_Pa2=True),
+        dict(adhesion_force_N=float("inf")),
+    ):
+        with pytest.raises(ValueError, match="must be a finite number"):
+            contact_terms(bad, p, segments)
+    with pytest.raises(ValueError, match="adhesion_range_m > 0"):
+        contact_terms(dict(adhesion_range_m=0.0), p, segments)
+    assert contact_terms(dict(adhesion_range_m=0.0, adhesion_force_N=0.0), p, segments)[
+        "adhesion_force_N"
+    ] == 0.0
+
+
+def test_rejection_memory_caps_the_next_steps(tmp_path):
+    pytest.importorskip("osqp", reason="pretraining tier needs the optional pretrain extra")
+    p = load_pretrain_policy(ROOT)
+    assert p["stepping"]["rejection_cap_factor"] == 0.8
+    assert p["stepping_earlier"]["2026-11-02"]["rejection_cap_factor"] is None
+    cfg = dict(
+        fidelity="PRETRAIN",
+        coupling="collective",
+        state="FORMED_N16_a1.0_s0",
+        state_file="inputs/pretrain_formed_states.h5",
+        action="X_PAIR",
+        duration_s=3e-3,
+        save_interval_s=1e-3,
+        control=dict(segments=[dict(amplitudes=[0, 0, 3000, 0], phases=[0] * 4, duration=3e-3)]),
+    )
+    path = tmp_path / "cfg.json"
+    path.write_text(json.dumps(cfg))
+    r = run(ROOT, path, tmp_path / "current")
+    assert r["status"] == "PASS" and r["task"]["stepping"]["max_step_s"] == 0.002
+    path.write_text(json.dumps(dict(cfg, step_control="2026-11-02")))
+    r = run(ROOT, path, tmp_path / "earlier")
+    assert r["status"] == "PASS" and r["task"]["stepping"]["max_step_s"] == 0.0005
+    assert r["step_s"]["max"] <= 0.0005
+    path.write_text(json.dumps(dict(cfg, step_control="2026-11-05")))
+    with pytest.raises(ValueError, match="step_control"):
+        run(ROOT, path, tmp_path / "other")
+
+
+def test_rejection_memory_does_not_shrink_steps_without_end(tmp_path, monkeypatch):
+    # Only failed steps cap the step size: an OSQP fallback at every step (a contact network
+    # that cycles at any step size) must not shrink the steps.
+    pytest.importorskip("osqp", reason="pretraining tier needs the optional pretrain extra")
+    import microbubble.integration as integration
+
+    cfg = dict(
+        fidelity="PRETRAIN",
+        coupling="collective",
+        state="FORMED_N16_a1.0_s0",
+        state_file="inputs/pretrain_formed_states.h5",
+        action="X_PAIR",
+        duration_s=3e-3,
+        save_interval_s=1e-3,
+        control=dict(segments=[dict(amplitudes=[0, 0, 3000, 0], phases=[0] * 4, duration=3e-3)]),
+    )
+    path = tmp_path / "cfg.json"
+    path.write_text(json.dumps(cfg))
+    plain = run(ROOT, path, tmp_path / "plain")
+    original = integration.sparse_sequential_step
+    monkeypatch.setattr(
+        integration,
+        "sparse_sequential_step",
+        lambda *a: dict(original(*a), solver_status="osqp_polished", osqp_used=True),
+    )
+    forced = run(ROOT, path, tmp_path / "forced")
+    steps = [
+        [row["dt_s"] for row in json.loads((tmp_path / d / "STEP_RECORDS.json").read_text())]
+        for d in ("plain", "forced")
+    ]
+    assert plain["status"] == forced["status"] == "PASS" and steps[0] == steps[1]
+
+
+def test_quadrature_nodes_are_cached_copies():
+    from numpy.polynomial.legendre import leggauss
+
+    from microbubble.acoustics import gauss_legendre
+
+    nodes, weights = gauss_legendre(48)
+    nodes[:] = 0
+    np.testing.assert_array_equal(gauss_legendre(48)[0], leggauss(48)[0])
+    np.testing.assert_array_equal(gauss_legendre(48)[1], weights)
+    with pytest.raises(ValueError):
+        gauss_legendre(48.5)
+
+
+def test_formed_clusters_are_packed_without_overlap(tmp_path):
+    R = 1.78e-6
+    for n, aspect in ((16, 1.0), (64, 1.4)):
+        x = formed_cluster(n, R, aspect, seed=1)
+        d = np.linalg.norm(x[:, None] - x[None], axis=-1) + np.eye(n)
+        assert d.min() - 2 * R >= 1e-8 * (1 - 1e-6) and np.all(x[:, 2] == 0)
+        np.testing.assert_allclose(x.mean(0), 0, atol=1e-18)
+        np.testing.assert_array_equal(x, formed_cluster(n, R, aspect, seed=1))
+    small, large = np.linalg.eigvalsh(np.cov(formed_cluster(128, R, 1.4, 0)[:, :2].T))
+    assert 1.3 < np.sqrt(large / small) < 1.5
+    meta = read(ROOT / "inputs/pretrain_formed_states.json")
+    assert meta["h5_sha256"] == sha(ROOT / "inputs/pretrain_formed_states.h5")
+    x, _ = load_state(ROOT / "inputs/pretrain_formed_states.h5", "FORMED_N32_a1.0_s0")
+    np.testing.assert_array_equal(x, formed_cluster(32, R, 1.0, 0))
+    (tmp_path / "f.h5").write_bytes(b"")
+    with pytest.raises(FileExistsError):
+        write_formed_states(tmp_path / "f.h5", R)
 
 
 def lumen_points(n, seed=0):

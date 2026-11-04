@@ -43,14 +43,89 @@ def load_pretrain_policy(root):
         "max_source_amplitude_Pa_equivalent",
         "max_segments",
         "stepping",
+        "stepping_earlier",
         "wall_guard_over_R",
+        "apecss_response",
+        "propagation_delay",
+        "adhesion",
     ):
         p[key] = tier[key]
     return p
 
 
+def carried_apecss_response(root, cfg, policy, frequency_Hz, n_bubbles, build_dir):
+    """Build native/apecss_harmonics.c as a library and return CarriedApecssResponse, record.
+
+    APECSS sources: config "apecss_dir" or the APECSS_DIR environment variable. Case and settling
+    settings: configs/pretrain_policy.json "apecss_response"; config "apecss_threads" only sets
+    the thread count (results do not depend on it).
+    """
+    import os
+
+    from microbubble.bubble_response import (
+        CarriedApecssResponse,
+        apecss_options,
+        build_apecss_harmonics,
+    )
+
+    s = policy["apecss_response"]
+    apecss_dir = cfg.get("apecss_dir") or os.environ.get("APECSS_DIR")
+    if not apecss_dir:
+        raise ValueError("response 'apecss' needs config 'apecss_dir' or environment APECSS_DIR")
+    gate = read(Path(root) / s["case"])
+    if not gate["PASS"]:
+        raise ValueError(f"{s['case']} is not an admitted APECSS case")
+    build = build_apecss_harmonics(apecss_dir, build_dir, library=True)
+    options_text = apecss_options(gate["response"]["case"], s["ode_tolerance"])
+    options = Path(build_dir) / "case.apecss"
+    options.write_text(options_text)
+    keys = ("tolerance", "min_cycles_warm", "min_cycles_cold", "max_cycles", "q_refresh")
+    response = CarriedApecssResponse(
+        build["library"],
+        options,
+        frequency_Hz,
+        n_bubbles,
+        threads=int(cfg.get("apecss_threads", s["threads"])),
+        **{k: s[k] for k in keys},
+    )
+    record = dict(case=s["case"], ode_tolerance=s["ode_tolerance"], options=options_text)
+    record.update(build=build)
+    return response, record
+
+
+def contact_terms(cfg, policy, segments):
+    """Phenomenological adhesion of a pretraining run (configs/pretrain_policy.json "adhesion").
+
+    Adhesion force = coefficient x reference^2 (the acoustic forces scale with the source level
+    squared, so the calibrated quantity is this ratio). reference: config
+    "adhesion_reference_Pa_eq", else the largest single-channel amplitude of the run (the level
+    of a full command). A config may instead give an absolute "adhesion_force_N"; 0 turns it
+    off. Every value must be a finite number >= 0; adhesion needs a positive range.
+    """
+    a = policy["adhesion"]
+    reference = cfg.get(
+        "adhesion_reference_Pa_eq", max(max(g["amplitude_Pa_equivalent"]) for g in segments)
+    )
+    coefficient = cfg.get("adhesion_coefficient_N_per_Pa2", a["coefficient_N_per_Pa2"])
+    values = dict(
+        adhesion_reference_Pa_eq=reference,
+        adhesion_coefficient_N_per_Pa2=coefficient,
+        adhesion_force_N=cfg.get("adhesion_force_N", coefficient * reference**2),
+        adhesion_range_m=cfg.get("adhesion_range_m", a["range_m"]),
+    )
+    for k, v in values.items():
+        if not isinstance(v, (int, float)) or isinstance(v, bool) or not 0 <= v < np.inf:
+            raise ValueError(f"PRETRAIN {k} must be a finite number >= 0")
+    values = {k: float(v) for k, v in values.items()}
+    if values["adhesion_force_N"] > 0 and values["adhesion_range_m"] <= 0:
+        raise ValueError("PRETRAIN adhesion needs adhesion_range_m > 0")
+    return values
+
+
 def run_pretrain(root, config_path, cfg, task, out):
     """CPU pretraining-tier trajectory; see configs/pretrain_policy.json and its admission."""
+    import tempfile
+
     from microbubble.control import pretrain_segments
     from microbubble.integration import integrate_pretrain
 
@@ -61,18 +136,54 @@ def run_pretrain(root, config_path, cfg, task, out):
     field = cfg.get("field", "cache")
     if field not in ("cache", "direct"):
         raise ValueError("PRETRAIN field must be 'cache' or 'direct'")
+    # "table" (default, the frozen response tables) or "apecss" (carried APECSS bubbles).
+    response = cfg.get("response", "table")
+    if response not in ("table", "apecss"):
+        raise ValueError("PRETRAIN response must be 'table' or 'apecss'")
+    # Propagation delay of the bubble-bubble coupling (policy default; a run may set it).
+    delay = cfg.get("propagation_delay", p["propagation_delay"])
+    if not isinstance(delay, bool):
+        raise ValueError("PRETRAIN propagation_delay must be true or false")
+    # Step control: the current one, or an earlier one named in the policy (to reproduce runs).
+    step_control = cfg.get("step_control", "current")
+    if step_control != "current":
+        if step_control not in p["stepping_earlier"]:
+            known = ", ".join(sorted(p["stepping_earlier"]))
+            raise ValueError(f"PRETRAIN step_control must be 'current' or one of: {known}")
+        p["stepping"] = dict(p["stepping"], **p["stepping_earlier"][step_control])
+    task.update(step_control=step_control, stepping=dict(p["stepping"]))
     task.update(
         variant="ADAPTIVE",
         coupling=cfg["coupling"],
         field=field,
+        response=response,
+        propagation_delay=delay,
         save_interval_s=cfg.get("save_interval_s", p["stepping"]["save_interval_s"]),
     )
     segments = pretrain_segments(task, p["max_source_amplitude_Pa_equivalent"], p["max_segments"])
+    task.update(contact_terms(cfg, p, segments))
     c = context(root, task.get("frequency", 2500000.0), "coarse", "cpu")
-    x, ids = load_state(root / "inputs/initial_states.h5", task["state"])
+    # Registered states (default) or another state file under inputs/ (e.g. formed clusters).
+    state_file = cfg.get("state_file", "inputs/initial_states.h5")
+    if not str(state_file).startswith("inputs/") or ".." in Path(state_file).parts:
+        raise ValueError("PRETRAIN state_file must be a file under inputs/")
+    x, ids = load_state(root / state_file, task["state"])
     ident = identity(root)
     ident["run_config_sha256"] = sha(config_path)
-    result = integrate_pretrain(task, c, x, segments, p, out, ident)
+    ident["state_file"] = dict(path=str(state_file), sha256=sha(root / state_file))
+    record = None
+    with tempfile.TemporaryDirectory(prefix="apecss_carried_") as build_dir:
+        if response == "apecss":
+            c.response, record = carried_apecss_response(
+                root, cfg, p, task.get("frequency", 2500000.0), len(x), build_dir
+            )
+            ident["apecss_response"] = record
+        try:
+            result = integrate_pretrain(task, c, x, segments, p, out, ident)
+        finally:
+            if record is not None:
+                record["stats"] = c.response.stats()
+                c.response.close()
     write(
         out / "EXECUTION.json",
         dict(identity=ident, task=task, config=cfg, fixed_ids=ids, status=result["status"]),

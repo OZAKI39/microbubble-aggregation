@@ -1,0 +1,3063 @@
+{
+  "status": "FAIL",
+  "gates": {
+    "early_stop_converged": true,
+    "early_vs_fixed48_fundamental": true,
+    "fixed48_vs_stored_fundamental": false,
+    "fixed48_vs_stored_harmonics_over_fundamental": false,
+    "fixed48_vs_stored_radius_extrema": false
+  },
+  "limits": {
+    "early_vs_fixed48_fundamental": 1e-05,
+    "fixed48_vs_stored_fundamental": 0.0001,
+    "fixed48_vs_stored_harmonics_over_fundamental": 0.0001,
+    "fixed48_vs_stored_radius_extrema": 0.0001
+  },
+  "worst": {
+    "early_vs_fixed48_fundamental": 1.2572327277654732e-06,
+    "fixed48_vs_stored_fundamental": 0.006418158900832398,
+    "fixed48_vs_stored_harmonics_over_fundamental": 0.0003614259541097748,
+    "fixed48_vs_stored_radius_extrema": 0.000373440775790046
+  },
+  "stored_points": 106,
+  "computed_points": 78,
+  "early_cycles": {
+    "min": 12,
+    "median": 13.0,
+    "max": 48
+  },
+  "cpu_s": {
+    "early": 1.026166,
+    "fixed48": 2.408509
+  },
+  "rows": [
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 0.001,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.819049104847957e-07,
+      "early_cpu_s": 0.102855,
+      "fixed48_cpu_s": 0.218494,
+      "stored_fundamental_m3": {
+        "real": -1.14023970284724e-25,
+        "imag": 7.496223501941768e-26
+      },
+      "early_fundamental_m3": {
+        "real": -1.1402391923981527e-25,
+        "imag": 7.496226562601393e-26
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1402402960927236e-25,
+        "imag": 7.496223432695797e-26
+      },
+      "early_vs_fixed48_fundamental": 8.407093600719978e-07,
+      "early_vs_stored_fundamental": 4.36160487679582e-07,
+      "fixed48_vs_stored_fundamental": 4.3477526369195096e-07,
+      "fixed48_vs_stored_harmonics_over_fundamental": 2.396661537904859e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 0.01,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.589877215754859e-07,
+      "early_cpu_s": 0.024513,
+      "fixed48_cpu_s": 0.053646,
+      "stored_fundamental_m3": {
+        "real": -1.140240301578642e-24,
+        "imag": 7.496222538270423e-25
+      },
+      "early_fundamental_m3": {
+        "real": -1.1402404002701168e-24,
+        "imag": 7.496215548166739e-25
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1402402873512747e-24,
+        "imag": 7.4962227590169165e-25
+      },
+      "early_vs_fixed48_fundamental": 5.348694895545104e-07,
+      "early_vs_stored_fundamental": 5.173331279388977e-07,
+      "fixed48_vs_stored_fundamental": 1.9245683210371032e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.5545305245084416e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 0.1,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.581585935135333e-07,
+      "early_cpu_s": 0.011585,
+      "fixed48_cpu_s": 0.029448,
+      "stored_fundamental_m3": {
+        "real": -1.1402403284863134e-23,
+        "imag": 7.496222933756598e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.1402404058411005e-23,
+        "imag": 7.496215467426028e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1402402863191699e-23,
+        "imag": 7.496222665466587e-24
+      },
+      "early_vs_fixed48_fundamental": 5.347133917222868e-07,
+      "early_vs_stored_fundamental": 5.50080551092046e-07,
+      "fixed48_vs_stored_fundamental": 3.662561954698439e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 3.200523785888796e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 1.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.588989133814499e-07,
+      "early_cpu_s": 0.006602,
+      "fixed48_cpu_s": 0.024264,
+      "stored_fundamental_m3": {
+        "real": -1.1402403515518034e-22,
+        "imag": 7.496223239281462e-23
+      },
+      "early_fundamental_m3": {
+        "real": -1.1402404053471264e-22,
+        "imag": 7.496215429023198e-23
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1402402882499482e-22,
+        "imag": 7.496222659981725e-23
+      },
+      "early_vs_fixed48_fundamental": 5.368063499407681e-07,
+      "early_vs_stored_fundamental": 5.737117877813722e-07,
+      "fixed48_vs_stored_fundamental": 6.28822733206364e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 6.108438445487317e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 10.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.588682808364976e-07,
+      "early_cpu_s": 0.006208,
+      "fixed48_cpu_s": 0.031887,
+      "stored_fundamental_m3": {
+        "real": -1.1402403471454344e-21,
+        "imag": 7.496223161763087e-22
+      },
+      "early_fundamental_m3": {
+        "real": -1.1402404047155582e-21,
+        "imag": 7.496215427829765e-22
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1402402876691628e-21,
+        "imag": 7.4962226585841155e-22
+      },
+      "early_vs_fixed48_fundamental": 5.367856320480769e-07,
+      "early_vs_stored_fundamental": 5.68330505596479e-07,
+      "fixed48_vs_stored_fundamental": 5.7091384107782204e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.467900893757596e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 50.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.588431781630386e-07,
+      "early_cpu_s": 0.008482,
+      "fixed48_cpu_s": 0.034464,
+      "stored_fundamental_m3": {
+        "real": -5.7012016494182966e-21,
+        "imag": 3.7481115536568734e-21
+      },
+      "early_fundamental_m3": {
+        "real": -5.701201933745928e-21,
+        "imag": 3.7481076815750445e-21
+      },
+      "fixed48_fundamental_m3": {
+        "real": -5.701201348312808e-21,
+        "imag": 3.748111297069009e-21
+      },
+      "early_vs_fixed48_fundamental": 5.368072480432741e-07,
+      "early_vs_stored_fundamental": 5.690401056151547e-07,
+      "fixed48_vs_stored_fundamental": 5.798162375744692e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.712899602353133e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 100.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.588039591028449e-07,
+      "early_cpu_s": 0.008424,
+      "fixed48_cpu_s": 0.034103,
+      "stored_fundamental_m3": {
+        "real": -1.1402402539290399e-20,
+        "imag": 7.496222865937183e-21
+      },
+      "early_fundamental_m3": {
+        "real": -1.1402403305502256e-20,
+        "imag": 7.49621516130933e-21
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.140240213455949e-20,
+        "imag": 7.49622239230811e-21
+      },
+      "early_vs_fixed48_fundamental": 5.36808952293172e-07,
+      "early_vs_stored_fundamental": 5.674000385627122e-07,
+      "fixed48_vs_stored_fundamental": 4.565519197226745e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 4.5741713813390795e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 250.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.586895654857958e-07,
+      "early_cpu_s": 0.008059,
+      "fixed48_cpu_s": 0.034685,
+      "stored_fundamental_m3": {
+        "real": -2.850599782217417e-20,
+        "imag": 1.8740553763538567e-20
+      },
+      "early_fundamental_m3": {
+        "real": -2.850599842835606e-20,
+        "imag": 1.8740534370563642e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.85059955004628e-20,
+        "imag": 1.8740552448068125e-20
+      },
+      "early_vs_fixed48_fundamental": 5.368118434967182e-07,
+      "early_vs_stored_fundamental": 5.68744578595919e-07,
+      "fixed48_vs_stored_fundamental": 7.822135881857351e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.538166920637488e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 500.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.584988257625417e-07,
+      "early_cpu_s": 0.005984,
+      "fixed48_cpu_s": 0.024171,
+      "stored_fundamental_m3": {
+        "real": -5.701192480806141e-20,
+        "imag": 3.7481082114821387e-20
+      },
+      "early_fundamental_m3": {
+        "real": -5.701192660030285e-20,
+        "imag": 3.74810435078494e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -5.701192074272387e-20,
+        "imag": 3.748107966248782e-20
+      },
+      "early_vs_fixed48_fundamental": 5.368112543664425e-07,
+      "early_vs_stored_fundamental": 5.664537396953338e-07,
+      "fixed48_vs_stored_fundamental": 6.958521259680732e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 9.836680538537306e-08
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 750.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.583103607348336e-07,
+      "early_cpu_s": 0.005937,
+      "fixed48_cpu_s": 0.023798,
+      "stored_fundamental_m3": {
+        "real": -8.551770920165852e-20,
+        "imag": 5.622155839984777e-20
+      },
+      "early_fundamental_m3": {
+        "real": -8.55177142583871e-20,
+        "imag": 5.622150217874985e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -8.551770547139314e-20,
+        "imag": 5.62215564099478e-20
+      },
+      "early_vs_fixed48_fundamental": 5.368058560904094e-07,
+      "early_vs_stored_fundamental": 5.515561241168271e-07,
+      "fixed48_vs_stored_fundamental": 4.1310334353089533e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.4679993900251472e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 1000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.581193775253176e-07,
+      "early_cpu_s": 0.009001,
+      "fixed48_cpu_s": 0.031167,
+      "stored_fundamental_m3": {
+        "real": -1.1402328231004525e-19,
+        "imag": 7.496196122217424e-20
+      },
+      "early_fundamental_m3": {
+        "real": -1.1402329114525542e-19,
+        "imag": 7.496188515260744e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1402327942901855e-19,
+        "imag": 7.496195745888267e-20
+      },
+      "early_vs_fixed48_fundamental": 5.367930892302816e-07,
+      "early_vs_stored_fundamental": 5.612079159633454e-07,
+      "fixed48_vs_stored_fundamental": 3.473232691699782e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.56223597248996e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 1500.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.577405546340058e-07,
+      "early_cpu_s": 0.00587,
+      "fixed48_cpu_s": 0.023839,
+      "stored_fundamental_m3": {
+        "real": -1.710335145994786e-19,
+        "imag": 1.124424387858915e-19
+      },
+      "early_fundamental_m3": {
+        "real": -1.7103353158411235e-19,
+        "imag": 1.1244232309112347e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.7103351401594278e-19,
+        "imag": 1.1244243154339459e-19
+      },
+      "early_vs_fixed48_fundamental": 5.367576199651739e-07,
+      "early_vs_stored_fundamental": 5.71292953967241e-07,
+      "fixed48_vs_stored_fundamental": 3.549836532786783e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.2502826034030257e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 2000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.57357294812817e-07,
+      "early_cpu_s": 0.008109,
+      "fixed48_cpu_s": 0.032264,
+      "stored_fundamental_m3": {
+        "real": -2.280420644321536e-19,
+        "imag": 1.499223018404346e-19
+      },
+      "early_fundamental_m3": {
+        "real": -2.280420858993488e-19,
+        "imag": 1.4992215552291535e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.2804206249534554e-19,
+        "imag": 1.4992230010944408e-19
+      },
+      "early_vs_fixed48_fundamental": 5.366914233826186e-07,
+      "early_vs_stored_fundamental": 5.418779779416967e-07,
+      "fixed48_vs_stored_fundamental": 9.51817513309332e-09,
+      "fixed48_vs_stored_harmonics_over_fundamental": 2.124493659923895e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 3000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.565888066030346e-07,
+      "early_cpu_s": 0.006099,
+      "fixed48_cpu_s": 0.024073,
+      "stored_fundamental_m3": {
+        "real": -3.4205184901543373e-19,
+        "imag": 2.248794062252575e-19
+      },
+      "early_fundamental_m3": {
+        "real": -3.4205188833754985e-19,
+        "imag": 2.248791969678577e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4205185334249397e-19,
+        "imag": 2.248794137779168e-19
+      },
+      "early_vs_fixed48_fundamental": 5.364952274488557e-07,
+      "early_vs_stored_fundamental": 5.201371352610411e-07,
+      "fixed48_vs_stored_fundamental": 2.1263712346720127e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.7193008924064056e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 4500.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.554246378929771e-07,
+      "early_cpu_s": 0.006184,
+      "fixed48_cpu_s": 0.024293,
+      "stored_fundamental_m3": {
+        "real": -5.130398275347574e-19,
+        "imag": 3.3730548916324276e-19
+      },
+      "early_fundamental_m3": {
+        "real": -5.130398992127118e-19,
+        "imag": 3.3730517722497765e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -5.130398471671275e-19,
+        "imag": 3.3730550219910836e-19
+      },
+      "early_vs_fixed48_fundamental": 5.360264229222191e-07,
+      "early_vs_stored_fundamental": 5.212902917120556e-07,
+      "fixed48_vs_stored_fundamental": 3.838193009264273e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.715608527013687e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 6000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.542303546272104e-07,
+      "early_cpu_s": 0.008177,
+      "fixed48_cpu_s": 0.038012,
+      "stored_fundamental_m3": {
+        "real": -6.839823415668052e-19,
+        "imag": 4.497152658015273e-19
+      },
+      "early_fundamental_m3": {
+        "real": -6.839824009049844e-19,
+        "imag": 4.497148290679918e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -6.839823324200234e-19,
+        "imag": 4.497152619030719e-19
+      },
+      "early_vs_fixed48_fundamental": 5.3534019951114e-07,
+      "early_vs_stored_fundamental": 5.384267647428173e-07,
+      "fixed48_vs_stored_fundamental": 1.2146518972121289e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 2.0582086398994316e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 9000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.517259364685214e-07,
+      "early_cpu_s": 0.006113,
+      "fixed48_cpu_s": 0.023995,
+      "stored_fundamental_m3": {
+        "real": -1.0256702085028121e-18,
+        "imag": 6.744641667456434e-19
+      },
+      "early_fundamental_m3": {
+        "real": -1.0256702853979799e-18,
+        "imag": 6.744634850732421e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.0256701868079181e-18,
+        "imag": 6.744641322889505e-19
+      },
+      "early_vs_fixed48_fundamental": 5.333199568441146e-07,
+      "early_vs_stored_fundamental": 5.588290892064055e-07,
+      "fixed48_vs_stored_fundamental": 3.316965617555416e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.6624290215758225e-07
+    },
+    {
+      "table": "2400000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2400000.0,
+      "pressure_Pa": 12000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 12,
+      "early_estimated_relative_error": 8.489688857472807e-07,
+      "early_cpu_s": 0.003851,
+      "fixed48_cpu_s": 0.019183,
+      "stored_fundamental_m3": {
+        "real": -1.3669943490973766e-18,
+        "imag": 8.990828636810534e-19
+      },
+      "early_fundamental_m3": {
+        "real": -1.3669945368099625e-18,
+        "imag": 8.990820602244466e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.3669944133729394e-18,
+        "imag": 8.990829192401242e-19
+      },
+      "early_vs_fixed48_fundamental": 5.30411675028867e-07,
+      "early_vs_stored_fundamental": 5.042859066346033e-07,
+      "fixed48_vs_stored_fundamental": 5.192626752435317e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 4.953404447977983e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 0.001,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.892768263074876e-07,
+      "early_cpu_s": 0.074374,
+      "fixed48_cpu_s": 0.116165,
+      "stored_fundamental_m3": {
+        "real": -1.1464726706981198e-25,
+        "imag": 1.14717477766561e-25
+      },
+      "early_fundamental_m3": {
+        "real": -1.1464736343819764e-25,
+        "imag": 1.147174379155404e-25
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1464724072234067e-25,
+        "imag": 1.1471748584391948e-25
+      },
+      "early_vs_fixed48_fundamental": 8.123011357232516e-07,
+      "early_vs_stored_fundamental": 6.429872170285023e-07,
+      "fixed48_vs_stored_fundamental": 1.6991551473796283e-07,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.4792881708659435e-07
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 0.01,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.329637043678925e-07,
+      "early_cpu_s": 0.039047,
+      "fixed48_cpu_s": 0.074236,
+      "stored_fundamental_m3": {
+        "real": -1.1464734752012516e-24,
+        "imag": 1.1471750522258331e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.1464735029264832e-24,
+        "imag": 1.1471741322114473e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1464734792386203e-24,
+        "imag": 1.1471750359595992e-24
+      },
+      "early_vs_fixed48_fundamental": 5.574227153419943e-07,
+      "early_vs_stored_fundamental": 5.675182626490933e-07,
+      "fixed48_vs_stored_fundamental": 1.0333722553522282e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 3.095336633508385e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 0.1,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.277092625856546e-07,
+      "early_cpu_s": 0.015883,
+      "fixed48_cpu_s": 0.043343,
+      "stored_fundamental_m3": {
+        "real": -1.146473498349407e-23,
+        "imag": 1.1471749943746624e-23
+      },
+      "early_fundamental_m3": {
+        "real": -1.1464735026419791e-23,
+        "imag": 1.1471741632189941e-23
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1464734841113262e-23,
+        "imag": 1.14717505741429e-23
+      },
+      "early_vs_fixed48_fundamental": 5.514596259639565e-07,
+      "early_vs_stored_fundamental": 5.124792414099247e-07,
+      "fixed48_vs_stored_fundamental": 3.984792135783682e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 6.72409203098708e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 1.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.284935391875945e-07,
+      "early_cpu_s": 0.005286,
+      "fixed48_cpu_s": 0.015563,
+      "stored_fundamental_m3": {
+        "real": -1.1464735472254238e-22,
+        "imag": 1.1471749983307816e-22
+      },
+      "early_fundamental_m3": {
+        "real": -1.1464735024932167e-22,
+        "imag": 1.1471741626977348e-22
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.146473482742985e-22,
+        "imag": 1.1471750564929328e-22
+      },
+      "early_vs_fixed48_fundamental": 5.512290873423928e-07,
+      "early_vs_stored_fundamental": 5.159707360572047e-07,
+      "fixed48_vs_stored_fundamental": 5.3542348190657715e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 6.271145375497198e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 10.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.287999143977041e-07,
+      "early_cpu_s": 0.003958,
+      "fixed48_cpu_s": 0.014212,
+      "stored_fundamental_m3": {
+        "real": -1.146473544105148e-21,
+        "imag": 1.147175012992751e-21
+      },
+      "early_fundamental_m3": {
+        "real": -1.1464735016019825e-21,
+        "imag": 1.147174161426976e-21
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1464734819115894e-21,
+        "imag": 1.1471750554551635e-21
+      },
+      "early_vs_fixed48_fundamental": 5.513718954068989e-07,
+      "early_vs_stored_fundamental": 5.257104178820049e-07,
+      "fixed48_vs_stored_fundamental": 4.643244709953097e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.424319710211378e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 50.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.287605549691203e-07,
+      "early_cpu_s": 0.008634,
+      "fixed48_cpu_s": 0.031177,
+      "stored_fundamental_m3": {
+        "real": -5.732367703852195e-21,
+        "imag": 5.735874875580591e-21
+      },
+      "early_fundamental_m3": {
+        "real": -5.732367412115194e-21,
+        "imag": 5.7358706821678534e-21
+      },
+      "fixed48_fundamental_m3": {
+        "real": -5.732367313568329e-21,
+        "imag": 5.735875152255427e-21
+      },
+      "early_vs_fixed48_fundamental": 5.513655847206763e-07,
+      "early_vs_stored_fundamental": 5.183632214722109e-07,
+      "fixed48_vs_stored_fundamental": 5.8994697512218994e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 6.909720969657732e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 100.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.287842385059588e-07,
+      "early_cpu_s": 0.004176,
+      "fixed48_cpu_s": 0.014002,
+      "stored_fundamental_m3": {
+        "real": -1.1464734614629158e-20,
+        "imag": 1.1471749042596296e-20
+      },
+      "early_fundamental_m3": {
+        "real": -1.146473422428698e-20,
+        "imag": 1.1471740583149586e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1464734027526658e-20,
+        "imag": 1.1471749523132681e-20
+      },
+      "early_vs_fixed48_fundamental": 5.51353326612002e-07,
+      "early_vs_stored_fundamental": 5.221459898842964e-07,
+      "fixed48_vs_stored_fundamental": 4.6778926774597966e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.515544318943403e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 250.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.287787558596244e-07,
+      "early_cpu_s": 0.003899,
+      "fixed48_cpu_s": 0.014195,
+      "stored_fundamental_m3": {
+        "real": -2.866182641207719e-20,
+        "imag": 2.867935950356233e-20
+      },
+      "early_fundamental_m3": {
+        "real": -2.866182506591303e-20,
+        "imag": 2.8679337786027605e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.8661824575866745e-20,
+        "imag": 2.867936013494861e-20
+      },
+      "early_vs_fixed48_fundamental": 5.513269914600234e-07,
+      "early_vs_stored_fundamental": 5.366505098370871e-07,
+      "fixed48_vs_stored_fundamental": 4.788916499803238e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.111558670501546e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 500.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.287412925261001e-07,
+      "early_cpu_s": 0.00866,
+      "fixed48_cpu_s": 0.014501,
+      "stored_fundamental_m3": {
+        "real": -5.732357745826135e-20,
+        "imag": 5.735862007780124e-20
+      },
+      "early_fundamental_m3": {
+        "real": -5.732357517458711e-20,
+        "imag": 5.735857791248556e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -5.73235742019207e-20,
+        "imag": 5.73586226061415e-20
+      },
+      "early_vs_fixed48_fundamental": 5.51274212751804e-07,
+      "early_vs_stored_fundamental": 5.207273092485914e-07,
+      "fixed48_vs_stored_fundamental": 5.0838840863157554e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.967682471217826e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 750.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.286364816867796e-07,
+      "early_cpu_s": 0.009099,
+      "fixed48_cpu_s": 0.032187,
+      "stored_fundamental_m3": {
+        "real": -8.59851780558161e-20,
+        "imag": 8.603768525294374e-20
+      },
+      "early_fundamental_m3": {
+        "real": -8.598517537458794e-20,
+        "imag": 8.603762271978316e-20
+      },
+      "fixed48_fundamental_m3": {
+        "real": -8.598517392883335e-20,
+        "imag": 8.60376897527444e-20
+      },
+      "early_vs_fixed48_fundamental": 5.512114072516122e-07,
+      "early_vs_stored_fundamental": 5.145623761003176e-07,
+      "fixed48_vs_stored_fundamental": 5.019585763061769e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.958105784535244e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 1000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.284791663779973e-07,
+      "early_cpu_s": 0.003895,
+      "fixed48_cpu_s": 0.01515,
+      "stored_fundamental_m3": {
+        "real": -1.146465553518951e-19,
+        "imag": 1.147164580206369e-19
+      },
+      "early_fundamental_m3": {
+        "real": -1.1464655071561475e-19,
+        "imag": 1.147163745528291e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.146465488083243e-19,
+        "imag": 1.1471646391870117e-19
+      },
+      "early_vs_fixed48_fundamental": 5.511403141394068e-07,
+      "early_vs_stored_fundamental": 5.154416853437502e-07,
+      "fixed48_vs_stored_fundamental": 5.431725194217305e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 6.431303814245164e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 1500.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.279752338003538e-07,
+      "early_cpu_s": 0.003997,
+      "fixed48_cpu_s": 0.014291,
+      "stored_fundamental_m3": {
+        "real": -1.7196833092854505e-19,
+        "imag": 1.7207273474769704e-19
+      },
+      "early_fundamental_m3": {
+        "real": -1.7196832702698575e-19,
+        "imag": 1.720726087221591e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.7196832423716216e-19,
+        "imag": 1.7207274272835637e-19
+      },
+      "early_vs_fixed48_fundamental": 5.50964566725342e-07,
+      "early_vs_stored_fundamental": 5.182881432937593e-07,
+      "fixed48_vs_stored_fundamental": 4.2810525783820926e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.083563518474304e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 2000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.272263500258127e-07,
+      "early_cpu_s": 0.008313,
+      "fixed48_cpu_s": 0.031822,
+      "stored_fundamental_m3": {
+        "real": -2.292883069191972e-19,
+        "imag": 2.294266765330537e-19
+      },
+      "early_fundamental_m3": {
+        "real": -2.292883045384939e-19,
+        "imag": 2.294264993911651e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.292883009346003e-19,
+        "imag": 2.2942667799664355e-19
+      },
+      "early_vs_fixed48_fundamental": 5.507509130525962e-07,
+      "early_vs_stored_fundamental": 5.461759092482169e-07,
+      "fixed48_vs_stored_fundamental": 1.899419211657254e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.555418192455041e-07
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 3000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.250014477195939e-07,
+      "early_cpu_s": 0.003876,
+      "fixed48_cpu_s": 0.014279,
+      "stored_fundamental_m3": {
+        "real": -3.4392044506261233e-19,
+        "imag": 3.4412440761026674e-19
+      },
+      "early_fundamental_m3": {
+        "real": -3.4392046512241926e-19,
+        "imag": 3.4412412746852886e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4392046015865665e-19,
+        "imag": 3.441243951084945e-19
+      },
+      "early_vs_fixed48_fundamental": 5.502041623620791e-07,
+      "early_vs_stored_fundamental": 5.7728012395836e-07,
+      "fixed48_vs_stored_fundamental": 4.028731771615615e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.0861492426454358e-07
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 4500.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.198816609239103e-07,
+      "early_cpu_s": 0.003885,
+      "fixed48_cpu_s": 0.030522,
+      "stored_fundamental_m3": {
+        "real": -5.15840198974216e-19,
+        "imag": 5.161339160537848e-19
+      },
+      "early_fundamental_m3": {
+        "real": -5.158402289993157e-19,
+        "imag": 5.161334867732992e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -5.158402228871577e-19,
+        "imag": 5.1613388741019155e-19
+      },
+      "early_vs_fixed48_fundamental": 5.490952053851516e-07,
+      "early_vs_stored_fundamental": 5.897215762376409e-07,
+      "fixed48_vs_stored_fundamental": 5.113404228300624e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.845702115453835e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 6000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 8.126533143287225e-07,
+      "early_cpu_s": 0.003786,
+      "fixed48_cpu_s": 0.014581,
+      "stored_fundamental_m3": {
+        "real": -6.877114214834557e-19,
+        "imag": 6.880802132962058e-19
+      },
+      "early_fundamental_m3": {
+        "real": -6.877114402657432e-19,
+        "imag": 6.880796583710169e-19
+      },
+      "fixed48_fundamental_m3": {
+        "real": -6.877114344493868e-19,
+        "imag": 6.880801910917474e-19
+      },
+      "early_vs_fixed48_fundamental": 5.476307195816169e-07,
+      "early_vs_stored_fundamental": 5.707492835106423e-07,
+      "fixed48_vs_stored_fundamental": 2.643098911069835e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.1864699926824673e-07
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 9000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 7.921539178180021e-07,
+      "early_cpu_s": 0.003832,
+      "fixed48_cpu_s": 0.016704,
+      "stored_fundamental_m3": {
+        "real": -1.0312436170146846e-18,
+        "imag": 1.0316994103268078e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.0312435465698794e-18,
+        "imag": 1.031698654226142e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.0312435473036733e-18,
+        "imag": 1.031699447249441e-18
+      },
+      "early_vs_fixed48_fundamental": 5.436431159993403e-07,
+      "early_vs_stored_fundamental": 5.205760216841287e-07,
+      "fixed48_vs_stored_fundamental": 5.4078466977848066e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.9470894003956983e-08
+    },
+    {
+      "table": "2600000/response_shell_1.0.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2600000.0,
+      "pressure_Pa": 12000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 7.642131370296249e-07,
+      "early_cpu_s": 0.008609,
+      "fixed48_cpu_s": 0.031521,
+      "stored_fundamental_m3": {
+        "real": -1.3743875691419806e-18,
+        "imag": 1.3748156159355126e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.3743876260754168e-18,
+        "imag": 1.3748144883821142e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.3743876439420218e-18,
+        "imag": 1.3748155345644593e-18
+      },
+      "early_vs_fixed48_fundamental": 5.382435879971881e-07,
+      "early_vs_stored_fundamental": 5.807619995124439e-07,
+      "fixed48_vs_stored_fundamental": 5.685620921008385e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 6.827299895207856e-08
+    },
+    {
+      "table": "low_pressure_2500000.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2500000.0,
+      "pressure_Pa": 0.001,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 6.616511190141093e-07,
+      "early_cpu_s": 0.115797,
+      "fixed48_cpu_s": 0.152602,
+      "stored_fundamental_m3": {
+        "real": -1.1624280421660213e-25,
+        "imag": 9.269674118718072e-26
+      },
+      "early_fundamental_m3": {
+        "real": -1.1624268954224154e-25,
+        "imag": 9.269670116500371e-26
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1624270424001946e-25,
+        "imag": 9.269669325168452e-26
+      },
+      "early_vs_fixed48_fundamental": 1.1227425287809958e-07,
+      "early_vs_stored_fundamental": 8.169194023656868e-07,
+      "fixed48_vs_stored_fundamental": 7.457361863544331e-07,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.9187773920863456e-07
+    },
+    {
+      "table": "low_pressure_2500000.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2500000.0,
+      "pressure_Pa": 0.01,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.514523565873575e-07,
+      "early_cpu_s": 0.015453,
+      "fixed48_cpu_s": 0.039322,
+      "stored_fundamental_m3": {
+        "real": -1.1624276239660776e-24,
+        "imag": 9.269667349228135e-25
+      },
+      "early_fundamental_m3": {
+        "real": -1.1624278444139203e-24,
+        "imag": 9.269670752421402e-25
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1624276333192033e-24,
+        "imag": 9.269667154991276e-25
+      },
+      "early_vs_fixed48_fundamental": 2.8054265924045366e-07,
+      "early_vs_stored_fundamental": 2.727245733045022e-07,
+      "fixed48_vs_stored_fundamental": 1.4500027971543711e-08,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.4747719853009639e-08
+    },
+    {
+      "table": "low_pressure_2500000.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2500000.0,
+      "pressure_Pa": 0.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.5330816207048323e-07,
+      "early_cpu_s": 0.009419,
+      "fixed48_cpu_s": 0.021066,
+      "stored_fundamental_m3": {
+        "real": -5.812138291292338e-24,
+        "imag": 4.634833630164006e-24
+      },
+      "early_fundamental_m3": {
+        "real": -5.8121392436028956e-24,
+        "imag": 4.634835363740434e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -5.812138310859829e-24,
+        "imag": 4.634833641688727e-24
+      },
+      "early_vs_fixed48_fundamental": 2.634472072345315e-07,
+      "early_vs_stored_fundamental": 2.660686883136927e-07,
+      "fixed48_vs_stored_fundamental": 3.0548173437737218e-09,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.0262040320304647e-09
+    },
+    {
+      "table": "low_pressure_2500000.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2500000.0,
+      "pressure_Pa": 0.099987,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.5163632459056354e-07,
+      "early_cpu_s": 0.019128,
+      "fixed48_cpu_s": 0.044987,
+      "stored_fundamental_m3": {
+        "real": -1.1622765445572125e-23,
+        "imag": 9.268462194342648e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.162276731773519e-23,
+        "imag": 9.268465645685051e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.162276544166277e-23,
+        "imag": 9.26846221808186e-24
+      },
+      "early_vs_fixed48_fundamental": 2.628471869928596e-07,
+      "early_vs_stored_fundamental": 2.6412360423301666e-07,
+      "fixed48_vs_stored_fundamental": 1.6184056774281147e-09,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.533406896724222e-09
+    },
+    {
+      "table": "low_pressure_2500000.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2500000.0,
+      "pressure_Pa": 0.1,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.510087104014981e-07,
+      "early_cpu_s": 0.021608,
+      "fixed48_cpu_s": 0.039547,
+      "stored_fundamental_m3": {
+        "real": -1.162427658510819e-23,
+        "imag": 9.269667251564083e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.1624278454849677e-23,
+        "imag": 9.269670709291442e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1624276581638827e-23,
+        "imag": 9.269667259693398e-24
+      },
+      "early_vs_fixed48_fundamental": 2.6401976817003324e-07,
+      "early_vs_stored_fundamental": 2.643893253467234e-07,
+      "fixed48_vs_stored_fundamental": 5.944858916211344e-10,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.6979595835948868e-09
+    },
+    {
+      "table": "low_pressure_2500000.h5",
+      "radius_m": 1.78e-06,
+      "frequency_Hz": 2500000.0,
+      "pressure_Pa": 1.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.5273900960064035e-07,
+      "early_cpu_s": 0.011727,
+      "fixed48_cpu_s": 0.034623,
+      "stored_fundamental_m3": {
+        "real": -1.1624276608244753e-22,
+        "imag": 9.269667277276878e-23
+      },
+      "early_fundamental_m3": {
+        "real": -1.1624278470567462e-22,
+        "imag": 9.26967070963792e-23
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1624276602808064e-22,
+        "imag": 9.269667264643867e-23
+      },
+      "early_vs_fixed48_fundamental": 2.6357272351664785e-07,
+      "early_vs_stored_fundamental": 2.626514799651039e-07,
+      "fixed48_vs_stored_fundamental": 9.250346927405216e-10,
+      "fixed48_vs_stored_harmonics_over_fundamental": 9.003505720068764e-10
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 0.1,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.1606997085322015e-07,
+      "early_cpu_s": 0.007504,
+      "fixed48_cpu_s": 0.020294,
+      "stored_fundamental_m3": {
+        "real": -1.1611569457028107e-23,
+        "imag": 9.2236196159736e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.159186866228486e-23,
+        "imag": 9.194298273669349e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1591866521905172e-23,
+        "imag": 9.194295255762486e-24
+      },
+      "early_vs_fixed48_fundamental": 2.5006700481366535e-07,
+      "early_vs_stored_fundamental": 0.002382138904735791,
+      "fixed48_vs_stored_fundamental": 0.0023823883243561826,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.4286892319225654e-08,
+      "fixed48_vs_stored_radius_extrema": 4.747169324303968e-10
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.349140310758454e-07,
+      "early_cpu_s": 0.005216,
+      "fixed48_cpu_s": 0.017154,
+      "stored_fundamental_m3": {
+        "real": -2.315746232298029e-18,
+        "imag": 1.8402282666016834e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.311839115034573e-18,
+        "imag": 1.834417319127287e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.3118386405250916e-18,
+        "imag": 1.834416807488458e-18
+      },
+      "early_vs_fixed48_fundamental": 2.364469259796569e-07,
+      "early_vs_stored_fundamental": 0.0023673397680009627,
+      "fixed48_vs_stored_fundamental": 0.002367572823402275,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.911563654379416e-05,
+      "fixed48_vs_stored_radius_extrema": 9.621165185758063e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 0.1,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.176705007382827e-07,
+      "early_cpu_s": 0.00744,
+      "fixed48_cpu_s": 0.018191,
+      "stored_fundamental_m3": {
+        "real": -1.161308768543466e-23,
+        "imag": 9.263187872675137e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.1593427469932806e-23,
+        "imag": 9.233687618163984e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1593425542430425e-23,
+        "imag": 9.233684323303081e-24
+      },
+      "early_vs_fixed48_fundamental": 2.575528824217078e-07,
+      "early_vs_stored_fundamental": 0.0023864871792179058,
+      "fixed48_vs_stored_fundamental": 0.002386743706737226,
+      "fixed48_vs_stored_harmonics_over_fundamental": 1.863418105980046e-08,
+      "fixed48_vs_stored_radius_extrema": 4.769400430149062e-10
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.097565802341474e-07,
+      "early_cpu_s": 0.005477,
+      "fixed48_cpu_s": 0.018277,
+      "stored_fundamental_m3": {
+        "real": -2.3160425441603714e-18,
+        "imag": 1.848082082057806e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.312143509222824e-18,
+        "imag": 1.842235795613235e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.3121430690868785e-18,
+        "imag": 1.842235227398388e-18
+      },
+      "early_vs_fixed48_fundamental": 2.4311984507384443e-07,
+      "early_vs_stored_fundamental": 0.0023716379736699786,
+      "fixed48_vs_stored_fundamental": 0.0023718799353276946,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.921423702324238e-05,
+      "fixed48_vs_stored_radius_extrema": 9.641530204784754e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 0.1,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.888325241885733e-07,
+      "early_cpu_s": 0.007875,
+      "fixed48_cpu_s": 0.018352,
+      "stored_fundamental_m3": {
+        "real": -1.1635458522494334e-23,
+        "imag": 9.276153271378077e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.1655184231736e-23,
+        "imag": 9.305778088679128e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.165518241342346e-23,
+        "imag": 9.305774533838929e-24
+      },
+      "early_vs_fixed48_fundamental": 2.67719443830123e-07,
+      "early_vs_stored_fundamental": 0.002391792418325055,
+      "fixed48_vs_stored_fundamental": 0.0023915258503153986,
+      "fixed48_vs_stored_harmonics_over_fundamental": 2.720856944069865e-08,
+      "fixed48_vs_stored_radius_extrema": 4.779713291824805e-10
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.0225560390015223e-07,
+      "early_cpu_s": 0.004055,
+      "fixed48_cpu_s": 0.026265,
+      "stored_fundamental_m3": {
+        "real": -2.3205219388744623e-18,
+        "imag": 1.8506928603842347e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.3244338648113934e-18,
+        "imag": 1.856563220805845e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.324433446567143e-18,
+        "imag": 1.8565625903214556e-18
+      },
+      "early_vs_fixed48_fundamental": 2.5432990551775265e-07,
+      "early_vs_stored_fundamental": 0.0023766968182850476,
+      "fixed48_vs_stored_fundamental": 0.0023764419132344347,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.915830345758728e-05,
+      "fixed48_vs_stored_radius_extrema": 9.751032799565351e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 0.1,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 4.261026373250516e-07,
+      "early_cpu_s": 0.016218,
+      "fixed48_cpu_s": 0.041335,
+      "stored_fundamental_m3": {
+        "real": -1.1636845603975113e-23,
+        "imag": 9.31595690196855e-24
+      },
+      "early_fundamental_m3": {
+        "real": -1.1656529011548596e-23,
+        "imag": 9.345763421529816e-24
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.1656527462531671e-23,
+        "imag": 9.345759582155449e-24
+      },
+      "early_vs_fixed48_fundamental": 2.7710483143765866e-07,
+      "early_vs_stored_fundamental": 0.0023962228413256658,
+      "fixed48_vs_stored_fundamental": 0.002395950649756067,
+      "fixed48_vs_stored_harmonics_over_fundamental": 3.021935480093435e-08,
+      "fixed48_vs_stored_radius_extrema": 4.796067987200558e-10
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 0 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.708902801512371e-07,
+      "early_cpu_s": 0.004171,
+      "fixed48_cpu_s": 0.021192,
+      "stored_fundamental_m3": {
+        "real": -2.320792170344513e-18,
+        "imag": 1.8585932381063785e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.3246958506441945e-18,
+        "imag": 1.864499265403861e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.3246954746431616e-18,
+        "imag": 1.8644985807907058e-18
+      },
+      "early_vs_fixed48_fundamental": 2.621019511854867e-07,
+      "early_vs_stored_fundamental": 0.0023810468331019134,
+      "fixed48_vs_stored_fundamental": 0.0023807850156648065,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.9327136232471664e-05,
+      "fixed48_vs_stored_radius_extrema": 9.756183896569848e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.349140310758454e-07,
+      "early_cpu_s": 0.005216,
+      "fixed48_cpu_s": 0.017154,
+      "stored_fundamental_m3": {
+        "real": -2.315746232298029e-18,
+        "imag": 1.8402282666016834e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.311839115034573e-18,
+        "imag": 1.834417319127287e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.3118386405250916e-18,
+        "imag": 1.834416807488458e-18
+      },
+      "early_vs_fixed48_fundamental": 2.364469259796569e-07,
+      "early_vs_stored_fundamental": 0.0023673397680009627,
+      "fixed48_vs_stored_fundamental": 0.002367572823402275,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.911563654379416e-05,
+      "fixed48_vs_stored_radius_extrema": 9.621165185758063e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.4132877602928e-07,
+      "early_cpu_s": 0.004132,
+      "fixed48_cpu_s": 0.015842,
+      "stored_fundamental_m3": {
+        "real": -2.890076793482366e-18,
+        "imag": 2.29715720170064e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.8852162940010797e-18,
+        "imag": 2.2899303708517272e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.8852156846088612e-18,
+        "imag": 2.289929773543094e-18
+      },
+      "early_vs_fixed48_fundamental": 2.3165651023090408e-07,
+      "early_vs_stored_fundamental": 0.0023590798135289036,
+      "fixed48_vs_stored_fundamental": 0.002359306187722367,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.370796163336168e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012034732724530706
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.097565802341474e-07,
+      "early_cpu_s": 0.005477,
+      "fixed48_cpu_s": 0.018277,
+      "stored_fundamental_m3": {
+        "real": -2.3160425441603714e-18,
+        "imag": 1.848082082057806e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.312143509222824e-18,
+        "imag": 1.842235795613235e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.3121430690868785e-18,
+        "imag": 1.842235227398388e-18
+      },
+      "early_vs_fixed48_fundamental": 2.4311984507384443e-07,
+      "early_vs_stored_fundamental": 0.0023716379736699786,
+      "fixed48_vs_stored_fundamental": 0.0023718799353276946,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.921423702324238e-05,
+      "fixed48_vs_stored_radius_extrema": 9.641530204784754e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.159989139955674e-07,
+      "early_cpu_s": 0.00407,
+      "fixed48_cpu_s": 0.015157,
+      "stored_fundamental_m3": {
+        "real": -2.890442174959728e-18,
+        "imag": 2.3069325998890406e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.8855916408882055e-18,
+        "imag": 2.299662248943598e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.8855910754261312e-18,
+        "imag": 2.2996615736523902e-18
+      },
+      "early_vs_fixed48_fundamental": 2.3870150928576807e-07,
+      "early_vs_stored_fundamental": 0.002363289948148981,
+      "fixed48_vs_stored_fundamental": 0.0023635267051320473,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.364687791653066e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012081669131303041
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.0225560390015223e-07,
+      "early_cpu_s": 0.004055,
+      "fixed48_cpu_s": 0.026265,
+      "stored_fundamental_m3": {
+        "real": -2.3205219388744623e-18,
+        "imag": 1.8506928603842347e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.3244338648113934e-18,
+        "imag": 1.856563220805845e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.324433446567143e-18,
+        "imag": 1.8565625903214556e-18
+      },
+      "early_vs_fixed48_fundamental": 2.5432990551775265e-07,
+      "early_vs_stored_fundamental": 0.0023766968182850476,
+      "fixed48_vs_stored_fundamental": 0.0023764419132344347,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.915830345758728e-05,
+      "fixed48_vs_stored_radius_extrema": 9.751032799565351e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 2.9595584997235765e-07,
+      "early_cpu_s": 0.00928,
+      "fixed48_cpu_s": 0.034257,
+      "stored_fundamental_m3": {
+        "real": -2.8960448852702746e-18,
+        "imag": 2.310208235464412e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.900911940867998e-18,
+        "imag": 2.317508689561395e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.9009114085281975e-18,
+        "imag": 2.3175079226605935e-18
+      },
+      "early_vs_fixed48_fundamental": 2.5143059214243e-07,
+      "early_vs_stored_fundamental": 0.0023684276550645254,
+      "fixed48_vs_stored_fundamental": 0.002368175701671491,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.402456397249283e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012193288323880669
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 20000.05,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.708902801512371e-07,
+      "early_cpu_s": 0.004171,
+      "fixed48_cpu_s": 0.021192,
+      "stored_fundamental_m3": {
+        "real": -2.320792170344513e-18,
+        "imag": 1.8585932381063785e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.3246958506441945e-18,
+        "imag": 1.864499265403861e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.3246954746431616e-18,
+        "imag": 1.8644985807907058e-18
+      },
+      "early_vs_fixed48_fundamental": 2.621019511854867e-07,
+      "early_vs_stored_fundamental": 0.0023810468331019134,
+      "fixed48_vs_stored_fundamental": 0.0023807850156648065,
+      "fixed48_vs_stored_harmonics_over_fundamental": 5.9327136232471664e-05,
+      "fixed48_vs_stored_radius_extrema": 9.756183896569848e-05
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 1 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.711953921200566e-07,
+      "early_cpu_s": 0.004549,
+      "fixed48_cpu_s": 0.015181,
+      "stored_fundamental_m3": {
+        "real": -2.8963781590882243e-18,
+        "imag": 2.320041591364728e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.901234546421718e-18,
+        "imag": 2.3273864099658297e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.9012340710880533e-18,
+        "imag": 2.327385566196219e-18
+      },
+      "early_vs_fixed48_fundamental": 2.6037766861462623e-07,
+      "early_vs_stored_fundamental": 0.0023727124261859736,
+      "fixed48_vs_stored_fundamental": 0.002372452121221764,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.405488539168388e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012222218621671388
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 8.651088023267004e-07,
+      "early_cpu_s": 0.009184,
+      "fixed48_cpu_s": 0.0193,
+      "stored_fundamental_m3": {
+        "real": -1.9220775182355604e-18,
+        "imag": 7.780908859983505e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.935971019366901e-18,
+        "imag": 7.761461726363878e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.935964040362417e-18,
+        "imag": 7.761467073336797e-18
+      },
+      "early_vs_fixed48_fundamental": 1.0990814534814808e-06,
+      "early_vs_stored_fundamental": 0.0029820126145185394,
+      "fixed48_vs_stored_fundamental": 0.0029809636078966056,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00020267765563685707,
+      "fixed48_vs_stored_radius_extrema": 0.00021973364273086826
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 40000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 14,
+      "early_estimated_relative_error": 5.627080419844095e-07,
+      "early_cpu_s": 0.004823,
+      "fixed48_cpu_s": 0.016914,
+      "stored_fundamental_m3": {
+        "real": -3.8673260688124864e-19,
+        "imag": 9.433793104432752e-18
+      },
+      "early_fundamental_m3": {
+        "real": -4.0247494476974963e-19,
+        "imag": 9.419414636173592e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -4.0247393817014113e-19,
+        "imag": 9.419412131100955e-18
+      },
+      "early_vs_fixed48_fundamental": 2.863539118760371e-07,
+      "early_vs_stored_fundamental": 0.0022581115062533567,
+      "fixed48_vs_stored_fundamental": 0.0022582117343125934,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00017275764534238074,
+      "fixed48_vs_stored_radius_extrema": 0.00019322510507702173
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 7.636313953096923e-07,
+      "early_cpu_s": 0.016767,
+      "fixed48_cpu_s": 0.024843,
+      "stored_fundamental_m3": {
+        "real": -1.887227806726065e-18,
+        "imag": 7.79265509209272e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.9011786554511505e-18,
+        "imag": 7.773379099257399e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.9011724920249555e-18,
+        "imag": 7.773383710554533e-18
+      },
+      "early_vs_fixed48_fundamental": 9.61890388025047e-07,
+      "early_vs_stored_fundamental": 0.002967694576712237,
+      "fixed48_vs_stored_fundamental": 0.002966777994129121,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00020143212448043234,
+      "fixed48_vs_stored_radius_extrema": 0.00021907709800350617
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 40000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 14,
+      "early_estimated_relative_error": 3.5823777849244833e-07,
+      "early_cpu_s": 0.004795,
+      "fixed48_cpu_s": 0.026517,
+      "stored_fundamental_m3": {
+        "real": -3.5396067159606286e-19,
+        "imag": 9.429477517530161e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.697205060452022e-19,
+        "imag": 9.415221008407029e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.697217515176523e-19,
+        "imag": 9.41521825818004e-18
+      },
+      "early_vs_fixed48_fundamental": 3.204145056916681e-07,
+      "early_vs_stored_fundamental": 0.002252129715045511,
+      "fixed48_vs_stored_fundamental": 0.002252423125947345,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0001719019385305773,
+      "fixed48_vs_stored_radius_extrema": 0.00019167860377078405
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 6.406260884473402e-07,
+      "early_cpu_s": 0.009051,
+      "fixed48_cpu_s": 0.016232,
+      "stored_fundamental_m3": {
+        "real": -1.8720454626978634e-18,
+        "imag": 7.818696004219015e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.8580041199329216e-18,
+        "imag": 7.83786205236825e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.8579987968385888e-18,
+        "imag": 7.837865950592178e-18
+      },
+      "early_vs_fixed48_fundamental": 8.190905445411441e-07,
+      "early_vs_stored_fundamental": 0.0029552320264371493,
+      "fixed48_vs_stored_fundamental": 0.0029560144681756995,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00020058363260697318,
+      "fixed48_vs_stored_radius_extrema": 0.00021850656688382486
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 40000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 14,
+      "early_estimated_relative_error": 1.3771521480190994e-07,
+      "early_cpu_s": 0.004683,
+      "fixed48_cpu_s": 0.016366,
+      "stored_fundamental_m3": {
+        "real": -3.373192635613276e-19,
+        "imag": 9.450451605148358e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.2147711800918754e-19,
+        "imag": 9.464656384933107e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.214812912463549e-19,
+        "imag": 9.464653239539792e-18
+      },
+      "early_vs_fixed48_fundamental": 5.518245891326279e-07,
+      "early_vs_stored_fundamental": 0.0022500899410546056,
+      "fixed48_vs_stored_fundamental": 0.0022495393202566077,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0001715784520607301,
+      "fixed48_vs_stored_radius_extrema": 0.00019485720997280964
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 6.00254956367748e-07,
+      "early_cpu_s": 0.018292,
+      "fixed48_cpu_s": 0.035775,
+      "stored_fundamental_m3": {
+        "real": -1.8373012513514227e-18,
+        "imag": 7.82977023119735e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.823204071055296e-18,
+        "imag": 7.848768537323541e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.823199410498236e-18,
+        "imag": 7.848771905989345e-18
+      },
+      "early_vs_fixed48_fundamental": 7.136659514305685e-07,
+      "early_vs_stored_fundamental": 0.0029415499231554773,
+      "fixed48_vs_stored_fundamental": 0.0029422316196638376,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00019931902911877626,
+      "fixed48_vs_stored_radius_extrema": 0.00021761138540588032
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 2 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 40000.0,
+      "early_status": "CONVERGED",
+      "early_cycles": 14,
+      "early_estimated_relative_error": 1.2940467008894686e-07,
+      "early_cpu_s": 0.004709,
+      "fixed48_cpu_s": 0.018182,
+      "stored_fundamental_m3": {
+        "real": -3.0474322803289113e-19,
+        "imag": 9.445758795702517e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.888812306421344e-19,
+        "imag": 9.459842509398274e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.8888701288077696e-19,
+        "imag": 9.459839337760434e-18
+      },
+      "early_vs_fixed48_fundamental": 6.968292227351967e-07,
+      "early_vs_stored_fundamental": 0.0022445086366484866,
+      "fixed48_vs_stored_fundamental": 0.0022438283052619665,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00017071184939317826,
+      "fixed48_vs_stored_radius_extrema": 0.00019200166330057833
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.4132877602928e-07,
+      "early_cpu_s": 0.004132,
+      "fixed48_cpu_s": 0.015842,
+      "stored_fundamental_m3": {
+        "real": -2.890076793482366e-18,
+        "imag": 2.29715720170064e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.8852162940010797e-18,
+        "imag": 2.2899303708517272e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.8852156846088612e-18,
+        "imag": 2.289929773543094e-18
+      },
+      "early_vs_fixed48_fundamental": 2.3165651023090408e-07,
+      "early_vs_stored_fundamental": 0.0023590798135289036,
+      "fixed48_vs_stored_fundamental": 0.002359306187722367,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.370796163336168e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012034732724530706
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.2896846717795353e-07,
+      "early_cpu_s": 0.004818,
+      "fixed48_cpu_s": 0.018017,
+      "stored_fundamental_m3": {
+        "real": -3.2031137459929323e-18,
+        "imag": 2.66090688560125e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.1970918376794833e-18,
+        "imag": 2.648100642459003e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.1970934168947526e-18,
+        "imag": 2.6481037833872978e-18
+      },
+      "early_vs_fixed48_fundamental": 8.468501340656676e-07,
+      "early_vs_stored_fundamental": 0.0033983767874719993,
+      "fixed48_vs_stored_fundamental": 0.0033975328345312505,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0001583950066278602,
+      "fixed48_vs_stored_radius_extrema": 0.00018141948644478934
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.159989139955674e-07,
+      "early_cpu_s": 0.00407,
+      "fixed48_cpu_s": 0.015157,
+      "stored_fundamental_m3": {
+        "real": -2.890442174959728e-18,
+        "imag": 2.3069325998890406e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.8855916408882055e-18,
+        "imag": 2.299662248943598e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.8855910754261312e-18,
+        "imag": 2.2996615736523902e-18
+      },
+      "early_vs_fixed48_fundamental": 2.3870150928576807e-07,
+      "early_vs_stored_fundamental": 0.002363289948148981,
+      "fixed48_vs_stored_fundamental": 0.0023635267051320473,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.364687791653066e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012081669131303041
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 6.466258305467575e-07,
+      "early_cpu_s": 0.004909,
+      "fixed48_cpu_s": 0.018636,
+      "stored_fundamental_m3": {
+        "real": -3.2047342739571293e-18,
+        "imag": 2.6819006237274054e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.1987307926575446e-18,
+        "imag": 2.6687803825359237e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.198729766261485e-18,
+        "imag": 2.6687820667727372e-18
+      },
+      "early_vs_fixed48_fundamental": 4.734559546495629e-07,
+      "early_vs_stored_fundamental": 0.0034527392787808892,
+      "fixed48_vs_stored_fundamental": 0.0034524750058083494,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00016131095505735954,
+      "fixed48_vs_stored_radius_extrema": 0.00018415653821790556
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 2.9595584997235765e-07,
+      "early_cpu_s": 0.00928,
+      "fixed48_cpu_s": 0.034257,
+      "stored_fundamental_m3": {
+        "real": -2.8960448852702746e-18,
+        "imag": 2.310208235464412e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.900911940867998e-18,
+        "imag": 2.317508689561395e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.9009114085281975e-18,
+        "imag": 2.3175079226605935e-18
+      },
+      "early_vs_fixed48_fundamental": 2.5143059214243e-07,
+      "early_vs_stored_fundamental": 0.0023684276550645254,
+      "fixed48_vs_stored_fundamental": 0.002368175701671491,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.402456397249283e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012193288323880669
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 14,
+      "early_estimated_relative_error": 6.501330424993478e-07,
+      "early_cpu_s": 0.006588,
+      "fixed48_cpu_s": 0.031283,
+      "stored_fundamental_m3": {
+        "real": -3.212276921086431e-18,
+        "imag": 2.693010222274944e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.218313199833203e-18,
+        "imag": 2.7064896849846266e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.2183108807729796e-18,
+        "imag": 2.706488380168507e-18
+      },
+      "early_vs_fixed48_fundamental": 6.327927131399021e-07,
+      "early_vs_stored_fundamental": 0.0035233978917287704,
+      "fixed48_vs_stored_fundamental": 0.0035228877059166755,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00016509093859798198,
+      "fixed48_vs_stored_radius_extrema": 0.00018812341112039999
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 25000.0375,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.711953921200566e-07,
+      "early_cpu_s": 0.004549,
+      "fixed48_cpu_s": 0.015181,
+      "stored_fundamental_m3": {
+        "real": -2.8963781590882243e-18,
+        "imag": 2.320041591364728e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.901234546421718e-18,
+        "imag": 2.3273864099658297e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.9012340710880533e-18,
+        "imag": 2.327385566196219e-18
+      },
+      "early_vs_fixed48_fundamental": 2.6037766861462623e-07,
+      "early_vs_stored_fundamental": 0.0023727124261859736,
+      "fixed48_vs_stored_fundamental": 0.002372452121221764,
+      "fixed48_vs_stored_harmonics_over_fundamental": 7.405488539168388e-05,
+      "fixed48_vs_stored_radius_extrema": 0.00012222218621671388
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 3 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 15,
+      "early_estimated_relative_error": 4.301888034815867e-07,
+      "early_cpu_s": 0.005622,
+      "fixed48_cpu_s": 0.017577,
+      "stored_fundamental_m3": {
+        "real": -3.2138368092775687e-18,
+        "imag": 2.714950651230776e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.219849018634382e-18,
+        "imag": 2.7287728983432674e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.2198472891334575e-18,
+        "imag": 2.7287713712637205e-18
+      },
+      "early_vs_fixed48_fundamental": 5.466485457017698e-07,
+      "early_vs_stored_fundamental": 0.00358279768858357,
+      "fixed48_vs_stored_fundamental": 0.003582300872622783,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00016827943712369674,
+      "fixed48_vs_stored_radius_extrema": 0.0001909129070016835
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 48,
+      "early_estimated_relative_error": 7.253267154187417e-07,
+      "early_cpu_s": 0.017449,
+      "fixed48_cpu_s": 0.019554,
+      "stored_fundamental_m3": {
+        "real": -3.4450053300820205e-18,
+        "imag": 4.36386206540587e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4474081421488765e-18,
+        "imag": 4.3282593887054104e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4474081421488765e-18,
+        "imag": 4.3282593887054104e-18
+      },
+      "early_vs_fixed48_fundamental": 0.0,
+      "early_vs_stored_fundamental": 0.006418158900832398,
+      "fixed48_vs_stored_fundamental": 0.006418158900832398,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0003614259541097748,
+      "fixed48_vs_stored_radius_extrema": 0.000373440775790046
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 32,
+      "early_estimated_relative_error": 9.837974417829345e-07,
+      "early_cpu_s": 0.011147,
+      "fixed48_cpu_s": 0.017872,
+      "stored_fundamental_m3": {
+        "real": -2.7612924371918387e-18,
+        "imag": 6.488616822749855e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.773132545712292e-18,
+        "imag": 6.463417054065562e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.773127769821008e-18,
+        "imag": 6.463423562672299e-18
+      },
+      "early_vs_fixed48_fundamental": 1.147819946377357e-06,
+      "early_vs_stored_fundamental": 0.003948352178376498,
+      "fixed48_vs_stored_fundamental": 0.003947228810305194,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002475989436892883,
+      "fixed48_vs_stored_radius_extrema": 0.0002630311958548015
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 47,
+      "early_estimated_relative_error": 9.224070115385764e-07,
+      "early_cpu_s": 0.017783,
+      "fixed48_cpu_s": 0.022774,
+      "stored_fundamental_m3": {
+        "real": -3.4264690491367903e-18,
+        "imag": 4.42359865932948e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.429433781041484e-18,
+        "imag": 4.3880617420108254e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4294335701123e-18,
+        "imag": 4.3880629806408805e-18
+      },
+      "early_vs_fixed48_fundamental": 2.2560853049255258e-07,
+      "early_vs_stored_fundamental": 0.006373116512527313,
+      "fixed48_vs_stored_fundamental": 0.006372892780575582,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0003588352097918762,
+      "fixed48_vs_stored_radius_extrema": 0.00037052228210199267
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 32,
+      "early_estimated_relative_error": 7.924510271412472e-07,
+      "early_cpu_s": 0.013026,
+      "fixed48_cpu_s": 0.016395,
+      "stored_fundamental_m3": {
+        "real": -2.72718158011478e-18,
+        "imag": 6.516765514227057e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.7391423075815722e-18,
+        "imag": 6.491837735894482e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.739138154227954e-18,
+        "imag": 6.491843271522618e-18
+      },
+      "early_vs_fixed48_fundamental": 9.82182753292544e-07,
+      "early_vs_stored_fundamental": 0.00391381352871536,
+      "fixed48_vs_stored_fundamental": 0.003912852718796244,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00024513910596047207,
+      "fixed48_vs_stored_radius_extrema": 0.00025920456163963657
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 47,
+      "early_estimated_relative_error": 9.449940503623979e-07,
+      "early_cpu_s": 0.026331,
+      "fixed48_cpu_s": 0.025784,
+      "stored_fundamental_m3": {
+        "real": -3.4240710952593424e-18,
+        "imag": 4.4679624806033835e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4205108843631287e-18,
+        "imag": 4.503603014493405e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4205106514003037e-18,
+        "imag": 4.503604371465214e-18
+      },
+      "early_vs_fixed48_fundamental": 2.4345755409837494e-07,
+      "early_vs_stored_fundamental": 0.00636297217875909,
+      "fixed48_vs_stored_fundamental": 0.006363216161610857,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0003584290939276615,
+      "fixed48_vs_stored_radius_extrema": 0.00036954145518097725
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 31,
+      "early_estimated_relative_error": 9.540276404870806e-07,
+      "early_cpu_s": 0.025161,
+      "fixed48_cpu_s": 0.036911,
+      "stored_fundamental_m3": {
+        "real": -2.7139037219395027e-18,
+        "imag": 6.54939018060404e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.701793498972926e-18,
+        "imag": 6.5741124893167314e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.7017881060494336e-18,
+        "imag": 6.57411961448128e-18
+      },
+      "early_vs_fixed48_fundamental": 1.2572327277654732e-06,
+      "early_vs_stored_fundamental": 0.0038831246111478627,
+      "fixed48_vs_stored_fundamental": 0.0038843618282315483,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002434027959600606,
+      "fixed48_vs_stored_radius_extrema": 0.00025886131262831125
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 47,
+      "early_estimated_relative_error": 9.368127575148385e-07,
+      "early_cpu_s": 0.016961,
+      "fixed48_cpu_s": 0.016994,
+      "stored_fundamental_m3": {
+        "real": -3.403872036012661e-18,
+        "imag": 4.526773054577472e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.3997819668558775e-18,
+        "imag": 4.5622362337058175e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.3997817036045054e-18,
+        "imag": 4.5622375166655006e-18
+      },
+      "early_vs_fixed48_fundamental": 2.3018662084165306e-07,
+      "early_vs_stored_fundamental": 0.006302941446954064,
+      "fixed48_vs_stored_fundamental": 0.0063031718020747415,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00035500028797920364,
+      "fixed48_vs_stored_radius_extrema": 0.0003659652654601775
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 4 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 31,
+      "early_estimated_relative_error": 8.385833990456742e-07,
+      "early_cpu_s": 0.010719,
+      "fixed48_cpu_s": 0.016504,
+      "stored_fundamental_m3": {
+        "real": -2.679702677885927e-18,
+        "imag": 6.5763969617481014e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.66747850534913e-18,
+        "imag": 6.60085695662383e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.6674738442962907e-18,
+        "imag": 6.600862799184993e-18
+      },
+      "early_vs_fixed48_fundamental": 1.0498001586718691e-06,
+      "early_vs_stored_fundamental": 0.0038505819197473213,
+      "fixed48_vs_stored_fundamental": 0.003851611292150909,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00024108030897324002,
+      "fixed48_vs_stored_radius_extrema": 0.0002568019102145991
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 32,
+      "early_estimated_relative_error": 9.837974417829345e-07,
+      "early_cpu_s": 0.011147,
+      "fixed48_cpu_s": 0.017872,
+      "stored_fundamental_m3": {
+        "real": -2.7612924371918387e-18,
+        "imag": 6.488616822749855e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.773132545712292e-18,
+        "imag": 6.463417054065562e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.773127769821008e-18,
+        "imag": 6.463423562672299e-18
+      },
+      "early_vs_fixed48_fundamental": 1.147819946377357e-06,
+      "early_vs_stored_fundamental": 0.003948352178376498,
+      "fixed48_vs_stored_fundamental": 0.003947228810305194,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002475989436892883,
+      "fixed48_vs_stored_radius_extrema": 0.0002630311958548015
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 8.651088023267004e-07,
+      "early_cpu_s": 0.009184,
+      "fixed48_cpu_s": 0.0193,
+      "stored_fundamental_m3": {
+        "real": -1.9220775182355604e-18,
+        "imag": 7.780908859983505e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.935971019366901e-18,
+        "imag": 7.761461726363878e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.935964040362417e-18,
+        "imag": 7.761467073336797e-18
+      },
+      "early_vs_fixed48_fundamental": 1.0990814534814808e-06,
+      "early_vs_stored_fundamental": 0.0029820126145185394,
+      "fixed48_vs_stored_fundamental": 0.0029809636078966056,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00020267765563685707,
+      "fixed48_vs_stored_radius_extrema": 0.00021973364273086826
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 32,
+      "early_estimated_relative_error": 7.924510271412472e-07,
+      "early_cpu_s": 0.013026,
+      "fixed48_cpu_s": 0.016395,
+      "stored_fundamental_m3": {
+        "real": -2.72718158011478e-18,
+        "imag": 6.516765514227057e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.7391423075815722e-18,
+        "imag": 6.491837735894482e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.739138154227954e-18,
+        "imag": 6.491843271522618e-18
+      },
+      "early_vs_fixed48_fundamental": 9.82182753292544e-07,
+      "early_vs_stored_fundamental": 0.00391381352871536,
+      "fixed48_vs_stored_fundamental": 0.003912852718796244,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00024513910596047207,
+      "fixed48_vs_stored_radius_extrema": 0.00025920456163963657
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 7.636313953096923e-07,
+      "early_cpu_s": 0.016767,
+      "fixed48_cpu_s": 0.024843,
+      "stored_fundamental_m3": {
+        "real": -1.887227806726065e-18,
+        "imag": 7.79265509209272e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.9011786554511505e-18,
+        "imag": 7.773379099257399e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.9011724920249555e-18,
+        "imag": 7.773383710554533e-18
+      },
+      "early_vs_fixed48_fundamental": 9.61890388025047e-07,
+      "early_vs_stored_fundamental": 0.002967694576712237,
+      "fixed48_vs_stored_fundamental": 0.002966777994129121,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00020143212448043234,
+      "fixed48_vs_stored_radius_extrema": 0.00021907709800350617
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 31,
+      "early_estimated_relative_error": 9.540276404870806e-07,
+      "early_cpu_s": 0.025161,
+      "fixed48_cpu_s": 0.036911,
+      "stored_fundamental_m3": {
+        "real": -2.7139037219395027e-18,
+        "imag": 6.54939018060404e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.701793498972926e-18,
+        "imag": 6.5741124893167314e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.7017881060494336e-18,
+        "imag": 6.57411961448128e-18
+      },
+      "early_vs_fixed48_fundamental": 1.2572327277654732e-06,
+      "early_vs_stored_fundamental": 0.0038831246111478627,
+      "fixed48_vs_stored_fundamental": 0.0038843618282315483,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002434027959600606,
+      "fixed48_vs_stored_radius_extrema": 0.00025886131262831125
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 6.406260884473402e-07,
+      "early_cpu_s": 0.009051,
+      "fixed48_cpu_s": 0.016232,
+      "stored_fundamental_m3": {
+        "real": -1.8720454626978634e-18,
+        "imag": 7.818696004219015e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.8580041199329216e-18,
+        "imag": 7.83786205236825e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.8579987968385888e-18,
+        "imag": 7.837865950592178e-18
+      },
+      "early_vs_fixed48_fundamental": 8.190905445411441e-07,
+      "early_vs_stored_fundamental": 0.0029552320264371493,
+      "fixed48_vs_stored_fundamental": 0.0029560144681756995,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00020058363260697318,
+      "fixed48_vs_stored_radius_extrema": 0.00021850656688382486
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 32500.01875,
+      "early_status": "CONVERGED",
+      "early_cycles": 31,
+      "early_estimated_relative_error": 8.385833990456742e-07,
+      "early_cpu_s": 0.010719,
+      "fixed48_cpu_s": 0.016504,
+      "stored_fundamental_m3": {
+        "real": -2.679702677885927e-18,
+        "imag": 6.5763969617481014e-18
+      },
+      "early_fundamental_m3": {
+        "real": -2.66747850534913e-18,
+        "imag": 6.60085695662383e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -2.6674738442962907e-18,
+        "imag": 6.600862799184993e-18
+      },
+      "early_vs_fixed48_fundamental": 1.0498001586718691e-06,
+      "early_vs_stored_fundamental": 0.0038505819197473213,
+      "fixed48_vs_stored_fundamental": 0.003851611292150909,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00024108030897324002,
+      "fixed48_vs_stored_radius_extrema": 0.0002568019102145991
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 5 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 35000.0125,
+      "early_status": "CONVERGED",
+      "early_cycles": 23,
+      "early_estimated_relative_error": 6.00254956367748e-07,
+      "early_cpu_s": 0.018292,
+      "fixed48_cpu_s": 0.035775,
+      "stored_fundamental_m3": {
+        "real": -1.8373012513514227e-18,
+        "imag": 7.82977023119735e-18
+      },
+      "early_fundamental_m3": {
+        "real": -1.823204071055296e-18,
+        "imag": 7.848768537323541e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -1.823199410498236e-18,
+        "imag": 7.848771905989345e-18
+      },
+      "early_vs_fixed48_fundamental": 7.136659514305685e-07,
+      "early_vs_stored_fundamental": 0.0029415499231554773,
+      "fixed48_vs_stored_fundamental": 0.0029422316196638376,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00019931902911877626,
+      "fixed48_vs_stored_radius_extrema": 0.00021761138540588032
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 3.2896846717795353e-07,
+      "early_cpu_s": 0.004818,
+      "fixed48_cpu_s": 0.018017,
+      "stored_fundamental_m3": {
+        "real": -3.2031137459929323e-18,
+        "imag": 2.66090688560125e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.1970918376794833e-18,
+        "imag": 2.648100642459003e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.1970934168947526e-18,
+        "imag": 2.6481037833872978e-18
+      },
+      "early_vs_fixed48_fundamental": 8.468501340656676e-07,
+      "early_vs_stored_fundamental": 0.0033983767874719993,
+      "fixed48_vs_stored_fundamental": 0.0033975328345312505,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0001583950066278602,
+      "fixed48_vs_stored_radius_extrema": 0.00018141948644478934
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 27,
+      "early_estimated_relative_error": 8.356635741174608e-07,
+      "early_cpu_s": 0.010394,
+      "fixed48_cpu_s": 0.019169,
+      "stored_fundamental_m3": {
+        "real": -3.3966748573493423e-18,
+        "imag": 3.2242711146688625e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.3911456828447623e-18,
+        "imag": 3.200964706627796e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.3911448191547268e-18,
+        "imag": 3.2009607287297963e-18
+      },
+      "early_vs_fixed48_fundamental": 8.729042841127381e-07,
+      "early_vs_stored_fundamental": 0.0051146163811163796,
+      "fixed48_vs_stored_fundamental": 0.005115485391107434,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002661215596718491,
+      "fixed48_vs_stored_radius_extrema": 0.00028195741565750776
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 13,
+      "early_estimated_relative_error": 6.466258305467575e-07,
+      "early_cpu_s": 0.004909,
+      "fixed48_cpu_s": 0.018636,
+      "stored_fundamental_m3": {
+        "real": -3.2047342739571293e-18,
+        "imag": 2.6819006237274054e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.1987307926575446e-18,
+        "imag": 2.6687803825359237e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.198729766261485e-18,
+        "imag": 2.6687820667727372e-18
+      },
+      "early_vs_fixed48_fundamental": 4.734559546495629e-07,
+      "early_vs_stored_fundamental": 0.0034527392787808892,
+      "fixed48_vs_stored_fundamental": 0.0034524750058083494,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00016131095505735954,
+      "fixed48_vs_stored_radius_extrema": 0.00018415653821790556
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 27,
+      "early_estimated_relative_error": 9.785873954914715e-07,
+      "early_cpu_s": 0.011338,
+      "fixed48_cpu_s": 0.02092,
+      "stored_fundamental_m3": {
+        "real": -3.3958229131021037e-18,
+        "imag": 3.2658149629117985e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.3905160693368966e-18,
+        "imag": 3.241798636498775e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.3905151372809056e-18,
+        "imag": 3.2417940835506638e-18
+      },
+      "early_vs_fixed48_fundamental": 9.907144398545468e-07,
+      "early_vs_stored_fundamental": 0.005220472120766714,
+      "fixed48_vs_stored_fundamental": 0.005221458414373989,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002721433972343388,
+      "fixed48_vs_stored_radius_extrema": 0.00028832772480213986
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 14,
+      "early_estimated_relative_error": 6.501330424993478e-07,
+      "early_cpu_s": 0.006588,
+      "fixed48_cpu_s": 0.031283,
+      "stored_fundamental_m3": {
+        "real": -3.212276921086431e-18,
+        "imag": 2.693010222274944e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.218313199833203e-18,
+        "imag": 2.7064896849846266e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.2183108807729796e-18,
+        "imag": 2.706488380168507e-18
+      },
+      "early_vs_fixed48_fundamental": 6.327927131399021e-07,
+      "early_vs_stored_fundamental": 0.0035233978917287704,
+      "fixed48_vs_stored_fundamental": 0.0035228877059166755,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00016509093859798198,
+      "fixed48_vs_stored_radius_extrema": 0.00018812341112039999
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 28,
+      "early_estimated_relative_error": 7.441831135664516e-07,
+      "early_cpu_s": 0.022378,
+      "fixed48_cpu_s": 0.039621,
+      "stored_fundamental_m3": {
+        "real": -3.4033855639246105e-18,
+        "imag": 3.2922808614580945e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4085037657974682e-18,
+        "imag": 3.3172005047285013e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4085031699469565e-18,
+        "imag": 3.317197052685899e-18
+      },
+      "early_vs_fixed48_fundamental": 7.365270592005643e-07,
+      "early_vs_stored_fundamental": 0.005372488535930326,
+      "fixed48_vs_stored_fundamental": 0.005371749109298705,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002806658031209791,
+      "fixed48_vs_stored_radius_extrema": 0.0002962231064966847
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 27500.03125,
+      "early_status": "CONVERGED",
+      "early_cycles": 15,
+      "early_estimated_relative_error": 4.301888034815867e-07,
+      "early_cpu_s": 0.005622,
+      "fixed48_cpu_s": 0.017577,
+      "stored_fundamental_m3": {
+        "real": -3.2138368092775687e-18,
+        "imag": 2.714950651230776e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.219849018634382e-18,
+        "imag": 2.7287728983432674e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.2198472891334575e-18,
+        "imag": 2.7287713712637205e-18
+      },
+      "early_vs_fixed48_fundamental": 5.466485457017698e-07,
+      "early_vs_stored_fundamental": 0.00358279768858357,
+      "fixed48_vs_stored_fundamental": 0.003582300872622783,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00016827943712369674,
+      "fixed48_vs_stored_radius_extrema": 0.0001909129070016835
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 6 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 27,
+      "early_estimated_relative_error": 8.178720896952105e-07,
+      "early_cpu_s": 0.020857,
+      "fixed48_cpu_s": 0.038488,
+      "stored_fundamental_m3": {
+        "real": -3.401730545945389e-18,
+        "imag": 3.335954244383246e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4065732114178828e-18,
+        "imag": 3.3616089514055494e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4065726185596488e-18,
+        "imag": 3.3616049970817048e-18
+      },
+      "early_vs_fixed48_fundamental": 8.354738870610141e-07,
+      "early_vs_stored_fundamental": 0.0054796562033143335,
+      "fixed48_vs_stored_fundamental": 0.005478817567776493,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00028668922010587614,
+      "fixed48_vs_stored_radius_extrema": 0.000301531048386372
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 0",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 27,
+      "early_estimated_relative_error": 8.356635741174608e-07,
+      "early_cpu_s": 0.010394,
+      "fixed48_cpu_s": 0.019169,
+      "stored_fundamental_m3": {
+        "real": -3.3966748573493423e-18,
+        "imag": 3.2242711146688625e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.3911456828447623e-18,
+        "imag": 3.200964706627796e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.3911448191547268e-18,
+        "imag": 3.2009607287297963e-18
+      },
+      "early_vs_fixed48_fundamental": 8.729042841127381e-07,
+      "early_vs_stored_fundamental": 0.0051146163811163796,
+      "fixed48_vs_stored_fundamental": 0.005115485391107434,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002661215596718491,
+      "fixed48_vs_stored_radius_extrema": 0.00028195741565750776
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 1",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 48,
+      "early_estimated_relative_error": 7.253267154187417e-07,
+      "early_cpu_s": 0.017449,
+      "fixed48_cpu_s": 0.019554,
+      "stored_fundamental_m3": {
+        "real": -3.4450053300820205e-18,
+        "imag": 4.36386206540587e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4474081421488765e-18,
+        "imag": 4.3282593887054104e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4474081421488765e-18,
+        "imag": 4.3282593887054104e-18
+      },
+      "early_vs_fixed48_fundamental": 0.0,
+      "early_vs_stored_fundamental": 0.006418158900832398,
+      "fixed48_vs_stored_fundamental": 0.006418158900832398,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0003614259541097748,
+      "fixed48_vs_stored_radius_extrema": 0.000373440775790046
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 2",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 27,
+      "early_estimated_relative_error": 9.785873954914715e-07,
+      "early_cpu_s": 0.011338,
+      "fixed48_cpu_s": 0.02092,
+      "stored_fundamental_m3": {
+        "real": -3.3958229131021037e-18,
+        "imag": 3.2658149629117985e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.3905160693368966e-18,
+        "imag": 3.241798636498775e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.3905151372809056e-18,
+        "imag": 3.2417940835506638e-18
+      },
+      "early_vs_fixed48_fundamental": 9.907144398545468e-07,
+      "early_vs_stored_fundamental": 0.005220472120766714,
+      "fixed48_vs_stored_fundamental": 0.005221458414373989,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002721433972343388,
+      "fixed48_vs_stored_radius_extrema": 0.00028832772480213986
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 3",
+      "radius_m": 1.779e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 47,
+      "early_estimated_relative_error": 9.224070115385764e-07,
+      "early_cpu_s": 0.017783,
+      "fixed48_cpu_s": 0.022774,
+      "stored_fundamental_m3": {
+        "real": -3.4264690491367903e-18,
+        "imag": 4.42359865932948e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.429433781041484e-18,
+        "imag": 4.3880617420108254e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4294335701123e-18,
+        "imag": 4.3880629806408805e-18
+      },
+      "early_vs_fixed48_fundamental": 2.2560853049255258e-07,
+      "early_vs_stored_fundamental": 0.006373116512527313,
+      "fixed48_vs_stored_fundamental": 0.006372892780575582,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0003588352097918762,
+      "fixed48_vs_stored_radius_extrema": 0.00037052228210199267
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 4",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 28,
+      "early_estimated_relative_error": 7.441831135664516e-07,
+      "early_cpu_s": 0.022378,
+      "fixed48_cpu_s": 0.039621,
+      "stored_fundamental_m3": {
+        "real": -3.4033855639246105e-18,
+        "imag": 3.2922808614580945e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4085037657974682e-18,
+        "imag": 3.3172005047285013e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4085031699469565e-18,
+        "imag": 3.317197052685899e-18
+      },
+      "early_vs_fixed48_fundamental": 7.365270592005643e-07,
+      "early_vs_stored_fundamental": 0.005372488535930326,
+      "fixed48_vs_stored_fundamental": 0.005371749109298705,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0002806658031209791,
+      "fixed48_vs_stored_radius_extrema": 0.0002962231064966847
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 5",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2499000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 47,
+      "early_estimated_relative_error": 9.449940503623979e-07,
+      "early_cpu_s": 0.026331,
+      "fixed48_cpu_s": 0.025784,
+      "stored_fundamental_m3": {
+        "real": -3.4240710952593424e-18,
+        "imag": 4.4679624806033835e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4205108843631287e-18,
+        "imag": 4.503603014493405e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4205106514003037e-18,
+        "imag": 4.503604371465214e-18
+      },
+      "early_vs_fixed48_fundamental": 2.4345755409837494e-07,
+      "early_vs_stored_fundamental": 0.00636297217875909,
+      "fixed48_vs_stored_fundamental": 0.006363216161610857,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.0003584290939276615,
+      "fixed48_vs_stored_radius_extrema": 0.00036954145518097725
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 6",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 28750.028125,
+      "early_status": "CONVERGED",
+      "early_cycles": 27,
+      "early_estimated_relative_error": 8.178720896952105e-07,
+      "early_cpu_s": 0.020857,
+      "fixed48_cpu_s": 0.038488,
+      "stored_fundamental_m3": {
+        "real": -3.401730545945389e-18,
+        "imag": 3.335954244383246e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.4065732114178828e-18,
+        "imag": 3.3616089514055494e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.4065726185596488e-18,
+        "imag": 3.3616049970817048e-18
+      },
+      "early_vs_fixed48_fundamental": 8.354738870610141e-07,
+      "early_vs_stored_fundamental": 0.0054796562033143335,
+      "fixed48_vs_stored_fundamental": 0.005478817567776493,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00028668922010587614,
+      "fixed48_vs_stored_radius_extrema": 0.000301531048386372
+    },
+    {
+      "table": "adaptive_2500000.h5 leaf 7 corner 7",
+      "radius_m": 1.781e-06,
+      "frequency_Hz": 2501000.0,
+      "pressure_Pa": 30000.025,
+      "early_status": "CONVERGED",
+      "early_cycles": 47,
+      "early_estimated_relative_error": 9.368127575148385e-07,
+      "early_cpu_s": 0.016961,
+      "fixed48_cpu_s": 0.016994,
+      "stored_fundamental_m3": {
+        "real": -3.403872036012661e-18,
+        "imag": 4.526773054577472e-18
+      },
+      "early_fundamental_m3": {
+        "real": -3.3997819668558775e-18,
+        "imag": 4.5622362337058175e-18
+      },
+      "fixed48_fundamental_m3": {
+        "real": -3.3997817036045054e-18,
+        "imag": 4.5622375166655006e-18
+      },
+      "early_vs_fixed48_fundamental": 2.3018662084165306e-07,
+      "early_vs_stored_fundamental": 0.006302941446954064,
+      "fixed48_vs_stored_fundamental": 0.0063031718020747415,
+      "fixed48_vs_stored_harmonics_over_fundamental": 0.00035500028797920364,
+      "fixed48_vs_stored_radius_extrema": 0.0003659652654601775
+    }
+  ],
+  "build": {
+    "executable": "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/check_run1/build/apecss_harmonics",
+    "executable_sha256": "cd26402a09b7b4214cd8da17a6192b22d11b796777b3ed0be9c7405b79c1f957",
+    "driver_sha256": "b53c818d48050e890bfe51cb12afa27eb714a525058a3cccf97212f0e61269ce",
+    "apecss_dir": "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071",
+    "apecss_commit": null,
+    "apecss_source_changes": null,
+    "apecss_source_sha256": "be87a0c02602beab07081a1f73a2cc8b4670dff5a046ef88de40ebeb6e5bad33",
+    "command": [
+      "gcc",
+      "-O3",
+      "-I",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/include",
+      "/home/claude/ozaki39/microbubble-aggregation/native/apecss_harmonics.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/bubble.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/emissions.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/gas.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/interactions.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/interface.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/liquid.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/misc.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/odesolver.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/rayleighplesset.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/results.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/viscoelasticity.c",
+      "-lm",
+      "-o",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/check_run1/build/apecss_harmonics"
+    ]
+  },
+  "wall_s": 4.360849164000001,
+  "identity": {
+    "commit": "bfa994787a3febbd597b6db6821e4d4015016fa2",
+    "git_status": "M main.py\n M microbubble/bubble_response.py\n M workflows/validation.py\n?? configs/response_grid_example.json\n?? native/",
+    "utc": "2026-11-03T13:21:32.396576+00:00",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/venv312/bin/python",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "warp-lang": "NOT_INSTALLED",
+      "matplotlib": "NOT_INSTALLED"
+    },
+    "source_sha256": {
+      "main.py": "2b4c20dc9741515820ffb6fb80510c89bba446bde357bc3bc27b75f45a0696ba",
+      "microbubble/__init__.py": "d882fce9cad7c5bb94cda8300a2dd3bc6e633d047f713b9fcff3a8b675a9e59e",
+      "microbubble/_warp_forces.py": "bad94891b3823f82b426e66487b7e6bb7a179d0c8495961807845230cbd1643d",
+      "microbubble/_warp_walls.py": "151fc5295aaffb2062fbd4fd24aca3deb720287ce9c0eae5d586b456bdaced2b",
+      "microbubble/acoustics.py": "c601b00fc50f37bb64cf7fdbd0a96276ba74020ca1a656ec4c6865873b902572",
+      "microbubble/analysis.py": "57127d8767f495d81a985461420b7f01aafb01856cd410c238653e97d3508440",
+      "microbubble/bubble_response.py": "df534ffbfb1da4baedd427f32c665f13f861b84538ac8d13445a96f0ded89604",
+      "microbubble/contact.py": "1511cdbb82c64f57444034612303295eef79b58cbf869481b3b6a39b1f98a9e8",
+      "microbubble/control.py": "932fed41318d347e0d50600874f1d7a08f7fbfead0dd8fb852679a4b4267837b",
+      "microbubble/dynamics.py": "620745969162366dec0614ee12fb460f3df6873479288d82ed74a0207993c28f",
+      "microbubble/forces.py": "726c3c9238d8238b3f04a9ee43f76162a99900413ed02658bc0127c5c4f42307",
+      "microbubble/geometry.py": "1c165ad8b644a713a88407aa24f1ad465866f15ac180ede33132f6f61a7d046c",
+      "microbubble/gpu.py": "dad21c5322a44f95f9ae8cb805e06dafa68e807eb340180c7c1a47830f58a884",
+      "microbubble/high_fidelity.py": "ac19d775b3a870a88f58566020cec2b159e0cb7928ff3626aaf12378bba42023",
+      "microbubble/hydrodynamics.py": "2fb7a63d0cccb9b3b001bf8f69350c99335689d20db6baa31eb1faadfec6bc54",
+      "microbubble/initial_conditions.py": "e2ab23fe227071836280f4c78917839cf9e83f568eb699d4268feb25a9ba71db",
+      "microbubble/integration.py": "e25e88826180a4cc7f1323e84657c9b9ace373a0547f307ad3d21c2533888b32",
+      "microbubble/io.py": "d3197922cd2553e9668bd05643c27376434bb054c446796695378d3d317a676f",
+      "microbubble/parameters.py": "c481165e6124bdb976a787e067624f80e3d63528ba0d988ea679f4f5751574f2",
+      "workflows/__init__.py": "0a7c39e4b3d15cdd0bbd515cc6f8e76f6c278cf3f2f315e680d05b0bdd50053d",
+      "workflows/analysis.py": "0b0a16a96181fd9396897913db0955bb80d8ab1ec1fbc9d69459563133a701db",
+      "workflows/diagnostics.py": "1733f132c6bfd80ee8c5d0f3a3fd84f7fcfd5a3d81cf7f3eadccb4b0734714c5",
+      "workflows/f10ag.py": "8be93099e0a09434b11e3809329a8c3a7dc3458330d0feb26493c822d2672798",
+      "workflows/validation.py": "95ca5ac21b56b671314f4c1dc6aac85e4fda0a63ad19df140c6b54588b1e0233",
+      "workflows/visualization.py": "07c6db6adbe69445521e453dd8114a568f811cff9e48c458d9239f9430cf548e"
+    },
+    "input_sha256": {
+      "configs/frozen/f10ag_protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+      "configs/frozen/contact_policy.json": "2083c6fe0f4cfe199abad5c5bcef154f8fa8ad0175a062013abffa44f1d673e5",
+      "configs/frozen/contact_revision.json": "fd41b0dd567557166fe3d49771d5e3eca88f13b6ffe8bbd261bfeab8351ecaf5",
+      "inputs/apparatus_snapshot.json": "22263a9275aaca26158720a55fce02d620d07d4868b9658aca6c16e914f45bcb",
+      "inputs/response/adaptive_2500000.h5": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+      "inputs/response/LOW_PRESSURE_ADMISSION.json": "4afea0ba48f44f08d80bca2a533b699d8a52b87a81454ff79caa80e9cb94c000",
+      "inputs/response/low_pressure_2500000.h5": "aefe1d459c6667c0e459a1b7a070fe04960675d3fdaa4c14e7c11afc5878c6df",
+      "inputs/initial_states.h5": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "inputs/actions.json": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "inputs/source_order.json": "df940909e1f822995497855f3aa5260b1fe1e82aef4e203e279c5346f34c8ab5",
+      "inputs/fields/2400000/coarse.h5": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "inputs/fields/2400000/FIELD_GATE.json": "42a1e5ff5e1c301740ef99de31b3928e9659b327af0a67427a754264bfa3577a",
+      "inputs/response/2400000/response_shell_1.0.h5": "74606fc70639d262bd3b186a56ef1c6dfa48778a4c3d3822cebab6a870a24adc",
+      "inputs/response/2400000/PHYSICS_GATE.json": "ac7d87d73239516b61196e442dfab1e704eb303af653b0d2a92c14148cde256c",
+      "inputs/fields/2500000/coarse.h5": "3a20420af0b4f2e3168cdc5aaee636e62480f2b277d4bc5de0133856aea7251a",
+      "inputs/fields/2500000/FIELD_GATE.json": "5653310b677a7c1b4523b5a7ad767cc7dcad423836b8cbf24660ca4363bcff79",
+      "inputs/fields/2600000/coarse.h5": "06e1ea4f3d832c3f6fc744b8e2e1a143e13f2f9c3f64bb8860dae14ead296328",
+      "inputs/fields/2600000/FIELD_GATE.json": "da3990935c75e9e324a0a9292c7e150bea15ef5578c2f5ac34c8361acbff15a0",
+      "inputs/response/2600000/response_shell_1.0.h5": "6ccc1d8fafc3429063c05d45ce049f1ba935d8074770fd66456296002ddd7747",
+      "inputs/response/2600000/PHYSICS_GATE.json": "bc927860532eb3c024cb7b71b29dbfea438944a0e5844bd14cb1129c0c778c9d"
+    },
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false
+  },
+  "scope": "Reproduces stored APECSS responses (model RPAR + Marmottant, ODE tolerance 1e-10). Numerical agreement only; shell parameters remain uncalibrated."
+}

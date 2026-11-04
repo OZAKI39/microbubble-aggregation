@@ -79,6 +79,7 @@ def identity(root):
         root / "main.py",
         *sorted((root / "microbubble").glob("*.py")),
         *sorted((root / "workflows").glob("*.py")),
+        *sorted((root / "native").glob("*.c")),
     ]
 
     def git(*args):

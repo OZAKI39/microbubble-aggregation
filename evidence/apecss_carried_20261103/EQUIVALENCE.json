@@ -1,0 +1,40 @@
+{
+ "linear_offsetA_0p2s": {
+  "prototype": "runs/linear_prototype",
+  "integrated": "runs/linear_integrated",
+  "frames": [
+   49,
+   49
+  ],
+  "times_identical": true,
+  "positions_bitwise_identical": true,
+  "max_abs_difference_m": 0.0,
+  "status": [
+   "PASS",
+   "PASS"
+  ],
+  "constrained_solves": [
+   1207,
+   1207
+  ]
+ },
+ "E3_nonlinear_switch_1ms": {
+  "prototype": "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/methodA/runs_early/E3_NL3_around_switch__warmP",
+  "integrated": "runs/E3_integrated",
+  "frames": [
+   101,
+   101
+  ],
+  "times_identical": true,
+  "positions_bitwise_identical": true,
+  "max_abs_difference_m": 0.0,
+  "status": [
+   "PASS",
+   "PASS"
+  ],
+  "constrained_solves": [
+   212,
+   212
+  ]
+ }
+}

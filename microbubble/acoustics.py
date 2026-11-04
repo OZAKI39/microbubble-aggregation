@@ -8,12 +8,26 @@ interpolator: dynamics uses cubic_query / the identical Warp cubic derivative.
 """
 
 import json
+from functools import lru_cache
 from pathlib import Path
 from dataclasses import dataclass
 import numpy as np
 import h5py
 from numpy.polynomial.legendre import leggauss
 from scipy.interpolate import RegularGridInterpolator
+
+
+@lru_cache(maxsize=8)
+def _gauss_legendre(order):
+    return leggauss(order)
+
+
+def gauss_legendre(order):
+    """leggauss(order), computed once per order; returns copies (identical numbers)."""
+    if isinstance(order, bool) or int(order) != order or order < 1:
+        raise ValueError("Quadrature order must be a positive integer")
+    nodes, weights = _gauss_legendre(int(order))
+    return nodes.copy(), weights.copy()
 
 
 def build_cache(path, model, bounds_m, step_m, execution_identity):
@@ -103,7 +117,7 @@ class WaterDiscs:
     def evaluate(self, points, order=48):
         """Pressure and analytic derivative of the SAME converged integral."""
         x = np.atleast_2d(points)
-        nodes, weights = leggauss(order)
+        nodes, weights = gauss_legendre(order)
         cs = np.cos((nodes + 1) * np.pi / 2)
         weights = weights / 2
         pressures, gradients = [], []

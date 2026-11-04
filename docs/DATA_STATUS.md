@@ -27,7 +27,13 @@
 
 ## 响应表
 
-运行只读表，无原生 APECSS 依赖。重新生成响应数据需原 APECSS 编译程序、冻结介质和壳参数、采样方案及独立响应准入。此原生重建工具链未迁入，状态为 `NOT_RUN`。2.4/2.5/2.6 MHz 之间不插值，更不外推到1–7 MHz。
+运行只读表，无原生 APECSS 依赖。2.4/2.5/2.6 MHz 之间不插值，更不外推到1–7 MHz。
+
+2026-11-03 起，`native/apecss_harmonics.c`（`python main.py response-check` / `response-grid`）可从 APECSS 源码重新计算稳定响应。它复现了 2.4/2.6 MHz 表和 2.5 MHz 低压表的全部点（固定 48 周期，基频相对差 ≤7.5e−7），见 `evidence/apecss_harmonics_20261103/`。原 2.5 MHz 自适应表 1.779/1.781 µm 角点所用的随半径变化的壳参数不在本工程，因此只能比较半径对的平均（即仿真在 1.78 µm 处实际使用的值）。新计算的数据写入新目录，不覆盖冻结表；用于仿真前需另行准入。
+
+`inputs/pretrain_formed_states.h5`（2026-11-04 新增，不在冻结输入清单里）：预训练档用的已成形单层团初态，由 `microbubble.initial_conditions.formed_cluster` 确定性生成。SHA-256 与生成参数见同名 `.json`，运行时文件 SHA 记入 `identity.state_file`。
+
+预训练档可另选 `response: "apecss"`：运行中由同一驱动的库版本逐泡计算响应（携带状态，见 `evidence/apecss_carried_20261103/`）。它不读写 `inputs/response/`，需要本机 APECSS 源码（`a0ee071`）和 gcc；默认仍读表。
 
 ## 来源与完整性
 

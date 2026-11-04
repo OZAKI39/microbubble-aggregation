@@ -1,0 +1,312 @@
+{
+ "response_check": {
+  "evaluations_recorded": 1288,
+  "distinct_evaluations": 1283,
+  "bubbles": 32,
+  "largest_step_change_index": 224,
+  "largest_step_change": 8.87267154105315,
+  "median_step_change": 0.0003762963243372999,
+  "p99_step_change": 0.0006773501372679118,
+  "pressure_abs_Pa": {
+   "min": 591.0234545223714,
+   "max": 5001.03819052492
+  },
+  "sampled_evaluations": 62,
+  "truth": {
+   "tolerance": 1e-08,
+   "ode_tolerance": 1e-10,
+   "wall_s": 7.267872001000001
+  },
+  "threads": 2,
+  "rows": [
+   {
+    "ode_tolerance": 1e-10,
+    "tolerance": 0.001,
+    "fundamental_rel_error_max": 0.00038541502271628573,
+    "after_switch_fundamental_rel_error_max": 0.0005357352683663241,
+    "harmonics_over_fundamental_max": 0.00022462883804823594,
+    "cycles_per_bubble_later_mean": 1.0046801872074882,
+    "cycles_at_switch_max": 7,
+    "ms_per_evaluation": 7.356215979734983
+   },
+   {
+    "ode_tolerance": 1e-10,
+    "tolerance": 0.0001,
+    "fundamental_rel_error_max": 0.000150354590344538,
+    "after_switch_fundamental_rel_error_max": 0.00014404310993362828,
+    "harmonics_over_fundamental_max": 6.815277990740558e-05,
+    "cycles_per_bubble_later_mean": 1.3591799921996879,
+    "cycles_at_switch_max": 9,
+    "ms_per_evaluation": 10.322430990646922
+   },
+   {
+    "ode_tolerance": 1e-08,
+    "tolerance": 0.001,
+    "fundamental_rel_error_max": 0.0003854203840110255,
+    "after_switch_fundamental_rel_error_max": 0.0005357352393159594,
+    "harmonics_over_fundamental_max": 0.00022462822760693885,
+    "cycles_per_bubble_later_mean": 1.0046801872074882,
+    "cycles_at_switch_max": 7,
+    "ms_per_evaluation": 3.2950433569758353
+   },
+   {
+    "ode_tolerance": 1e-08,
+    "tolerance": 0.0001,
+    "fundamental_rel_error_max": 0.00015035061674148833,
+    "after_switch_fundamental_rel_error_max": 0.00014404029142972547,
+    "harmonics_over_fundamental_max": 6.815217157902308e-05,
+    "cycles_per_bubble_later_mean": 1.3591799921996879,
+    "cycles_at_switch_max": 9,
+    "ms_per_evaluation": 4.410552578332045
+   }
+  ]
+ },
+ "force_check": {
+  "2.5_MHz": {
+   "table": {
+    "total_max": 0.05615093987674195,
+    "total_median_of_medians": 0.014769886952689656,
+    "primary_max": 0.005193029034666577
+   },
+   "warm": {
+    "total_max": 0.0015626542831394896,
+    "total_median_of_medians": 6.846303098667159e-05,
+    "primary_max": 0.0011836883038255947
+   }
+  },
+  "2.4_MHz": {
+   "table": {
+    "total_max": 3.7243832644727474e-05,
+    "total_median_of_medians": 3.989911960736729e-06,
+    "primary_max": 4.138837012710383e-06
+   },
+   "warm": {
+    "total_max": 0.0008893633230034496,
+    "total_median_of_medians": 7.74780290853756e-05,
+    "primary_max": 0.00156989211274886
+   }
+  }
+ },
+ "pre_switch_difference": {
+  "2.4 A vs table": {
+   "max_nm_before_0p1s": 0.02517278923135624,
+   "median_nm_at_0p1s": 0.015113422182077903,
+   "bubble_travel_um_median_by_0p1s": 0.437610799315024
+  },
+  "2.4 shift": {
+   "max_nm_before_0p1s": 1.0069526484325888,
+   "median_nm_at_0p1s": 0.9994083536572654,
+   "bubble_travel_um_median_by_0p1s": 0.437610799315024
+  },
+  "2.5 A vs strict A": {
+   "max_nm_before_0p1s": 0.025668968913053047,
+   "median_nm_at_0p1s": 0.005987475214736159,
+   "bubble_travel_um_median_by_0p1s": 0.5024018789252657
+  },
+  "2.5 table vs strict A": {
+   "max_nm_before_0p1s": 101.18013546048222,
+   "median_nm_at_0p1s": 60.125476966476604,
+   "bubble_travel_um_median_by_0p1s": 0.5024018789252657
+  },
+  "2.5 shift": {
+   "max_nm_before_0p1s": 1.0036347677635054,
+   "median_nm_at_0p1s": 0.9996392930925688,
+   "bubble_travel_um_median_by_0p1s": 0.49025383541311485
+  }
+ },
+ "trajectory_compare": {
+  "2.4 MHz: method A vs table (table exact here)": {
+   "runs": [
+    "table_2p4",
+    "warm_2p4_tol1e-3_ode1e-8"
+   ],
+   "first_time_max_difference_over_10nm_s": 0.116666666667,
+   "first_time_max_difference_over_0p6um_s": 0.120833333333,
+   "median_difference_at_end_um": 7.3015,
+   "max_com_difference_um": 0.525
+  },
+  "2.4 MHz: table shifted 1 nm vs table (sensitivity)": {
+   "runs": [
+    "table_2p4",
+    "table_2p4_shift1nm"
+   ],
+   "first_time_max_difference_over_10nm_s": 0.120833333333,
+   "first_time_max_difference_over_0p6um_s": 0.125,
+   "median_difference_at_end_um": 7.4821,
+   "max_com_difference_um": 0.7315
+  },
+  "2.5 MHz: method A vs strict method A": {
+   "runs": [
+    "warm_2p5_tol1e-5_ode1e-10",
+    "warm_tol1e-3_ode1e-8_t1"
+   ],
+   "first_time_max_difference_over_10nm_s": 0.116666666667,
+   "first_time_max_difference_over_0p6um_s": 0.120833333333,
+   "median_difference_at_end_um": 6.3183,
+   "max_com_difference_um": 0.5423
+  },
+  "2.5 MHz: table vs strict method A": {
+   "runs": [
+    "warm_2p5_tol1e-5_ode1e-10",
+    "table_2p5"
+   ],
+   "first_time_max_difference_over_10nm_s": 0.0125,
+   "first_time_max_difference_over_0p6um_s": 0.1125,
+   "median_difference_at_end_um": 7.5829,
+   "max_com_difference_um": 0.2983
+  },
+  "2.5 MHz: table shifted 1 nm vs table (sensitivity)": {
+   "runs": [
+    "table_2p5",
+    "table_2p5_shift1nm"
+   ],
+   "first_time_max_difference_over_10nm_s": 0.125,
+   "first_time_max_difference_over_0p6um_s": 0.129166666667,
+   "median_difference_at_end_um": 7.269,
+   "max_com_difference_um": 0.2044
+  }
+ },
+ "runs": {
+  "table_2p4": {
+   "mode": "table",
+   "frequency_Hz": 2400000.0,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 31.01,
+   "solves": 2654,
+   "tol": null,
+   "ode_tol": null,
+   "threads": null,
+   "shift_nm": 0.0,
+   "apecss_s": null,
+   "cycles_per_bubble_call": null
+  },
+  "table_2p4_shift1nm": {
+   "mode": "table",
+   "frequency_Hz": 2400000.0,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 38.69,
+   "solves": 3023,
+   "tol": null,
+   "ode_tol": null,
+   "threads": null,
+   "shift_nm": 1.0,
+   "apecss_s": null,
+   "cycles_per_bubble_call": null
+  },
+  "table_2p5": {
+   "mode": "table",
+   "frequency_Hz": 2500000,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 14.41,
+   "solves": 1288,
+   "tol": null,
+   "ode_tol": null,
+   "threads": null,
+   "shift_nm": 0.0,
+   "apecss_s": null,
+   "cycles_per_bubble_call": null
+  },
+  "table_2p5_shift1nm": {
+   "mode": "table",
+   "frequency_Hz": 2500000,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 15.55,
+   "solves": 1267,
+   "tol": null,
+   "ode_tol": null,
+   "threads": null,
+   "shift_nm": 1.0,
+   "apecss_s": null,
+   "cycles_per_bubble_call": null
+  },
+  "timing_table": {
+   "mode": "table",
+   "frequency_Hz": 2500000,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 14.83,
+   "solves": 1288,
+   "tol": null,
+   "ode_tol": null,
+   "threads": null,
+   "shift_nm": 0.0,
+   "apecss_s": null,
+   "cycles_per_bubble_call": null
+  },
+  "timing_warm_t1": {
+   "mode": "warm",
+   "frequency_Hz": 2500000,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 25.76,
+   "solves": 1486,
+   "tol": 0.001,
+   "ode_tol": 1e-08,
+   "threads": 1,
+   "shift_nm": 0.0,
+   "apecss_s": 8.165181411002777,
+   "cycles_per_bubble_call": 1.0081632653061225
+  },
+  "timing_warm_t2": {
+   "mode": "warm",
+   "frequency_Hz": 2500000,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 22.86,
+   "solves": 1486,
+   "tol": 0.001,
+   "ode_tol": 1e-08,
+   "threads": 2,
+   "shift_nm": 0.0,
+   "apecss_s": 4.936589895002953,
+   "cycles_per_bubble_call": 1.0081632653061225
+  },
+  "warm_2p4_tol1e-3_ode1e-8": {
+   "mode": "warm",
+   "frequency_Hz": 2400000.0,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 48.43,
+   "solves": 2951,
+   "tol": 0.001,
+   "ode_tol": 1e-08,
+   "threads": 1,
+   "shift_nm": 0.0,
+   "apecss_s": 13.551237526998761,
+   "cycles_per_bubble_call": 1.0047581284694687
+  },
+  "warm_2p5_tol1e-5_ode1e-10": {
+   "mode": "warm",
+   "frequency_Hz": 2500000,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 58.7,
+   "solves": 1134,
+   "tol": 1e-05,
+   "ode_tol": 1e-10,
+   "threads": 1,
+   "shift_nm": 0.0,
+   "apecss_s": 45.14545284799976,
+   "cycles_per_bubble_call": 3.209051724137931
+  },
+  "warm_tol1e-3_ode1e-8_t1": {
+   "mode": "warm",
+   "frequency_Hz": 2500000,
+   "status": "PASS",
+   "completed_s": 0.2,
+   "wall_s": 26.83,
+   "solves": 1486,
+   "tol": 0.001,
+   "ode_tol": 1e-08,
+   "threads": 1,
+   "shift_nm": 0.0,
+   "apecss_s": 8.736578695001185,
+   "cycles_per_bubble_call": 1.0081632653061225
+  }
+ },
+ "scope": "Prototype in scratchpad; repository source unchanged. 0.2 s offset_A (AG32_local + offset, direct field, collective coupling). 2-core cloud machine; concurrent runs except timing_*."
+}

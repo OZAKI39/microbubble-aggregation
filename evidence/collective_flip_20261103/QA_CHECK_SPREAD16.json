@@ -1,0 +1,70 @@
+{
+ "setup": "Compare our linear coupling (with / without propagation phase) against APECSS's own interacting\nbubbles (IC: instantaneous incompressible; QA: quasi-acoustic, finite sound speed).\n\nusage (from the repository): PYTHONPATH=. python run_qa_check.py QA_CHECK_EXE OUT.json [--quick]\nSame bubble (frozen 2.4 MHz case, RPAR + Marmottant, ODE tol 1e-10), 2.5 MHz, uniform drive\n1000 Pa (linear regime), fixed positions. Model: u = (I + chi K)^-1 chi P with chi = V1/P of the\nisolated bubble from the NI run, K_ij = rho w^2 exp(-i k d s) / (4 pi d), s = 0 (as in the code)\nor 1 (propagation phase). Error: max_i |V1_i - u_i| / max_i |V1_i|.\n",
+ "ode_tolerance": 1e-10,
+ "cycles": 60,
+ "frequency_Hz": 2500000.0,
+ "pressure_Pa": 1000.0,
+ "chi_isolated": [
+  -1.1624194158400419e-22,
+  9.269609926864489e-23
+ ],
+ "single_last_cycle_change": 1.192144e-13,
+ "rows": [
+  {
+   "case": "ring16_r150um",
+   "n": 16,
+   "max_kd": 3.141592653589793,
+   "min_d_over_R": 32.880391351032806,
+   "IC": {
+    "last_cycle_change": 8.23045e-12,
+    "cpu_s": 21.824,
+    "model_no_phase": 0.002511579700783563,
+    "model_with_phase": 0.2973798818467112,
+    "isolated": 0.28716521405129386,
+    "V1_over_isolated_mean": [
+     1.2217754362919635,
+     -0.2838972776977908
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 3.230431e-06,
+    "cpu_s": 468.291,
+    "model_no_phase": 0.4171747478374903,
+    "model_with_phase": 0.0006941119677931109,
+    "isolated": 0.17939296518505943,
+    "V1_over_isolated_mean": [
+     0.8891284126818602,
+     -0.11655791960926651
+    ]
+   }
+  },
+  {
+   "case": "N64_loose_r0_16of64",
+   "n": 16,
+   "max_kd": 2.288718655545955,
+   "min_d_over_R": 8.455352499643546,
+   "IC": {
+    "last_cycle_change": 1.555066e-09,
+    "cpu_s": 22.155,
+    "model_no_phase": 0.00912634566628719,
+    "model_with_phase": 0.38296614336747387,
+    "isolated": 0.8613699527768031,
+    "V1_over_isolated_mean": [
+     1.0408559578293424,
+     -1.1120910987470725
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 2.803859e-05,
+    "cpu_s": 280.779,
+    "model_no_phase": 0.6199851355591668,
+    "model_with_phase": 0.0056561680150415215,
+    "isolated": 0.8430066230836344,
+    "V1_over_isolated_mean": [
+     0.7363180655784162,
+     -0.5783131877168264
+    ]
+   }
+  }
+ ]
+}

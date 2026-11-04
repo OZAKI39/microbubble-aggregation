@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "counts": {
+    "CONVERGED": 378
+  },
+  "points": 378,
+  "max_estimated_relative_error_converged": 9.994779607856135e-07,
+  "cycles": {
+    "min": 10,
+    "median": 13.0,
+    "max": 47
+  },
+  "cpu_s": 1.829628,
+  "wall_s": 3.8597630160002154,
+  "not_converged_points": [],
+  "output": "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/grid_final/RESPONSE_GRID.h5",
+  "output_sha256": "7d7cce58b4e3f0cfd53bafc7ab5be95a7ab1c4d787fd6248d27b1018593f5f87",
+  "build": {
+    "executable": "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/grid_final/build/apecss_harmonics",
+    "executable_sha256": "cd26402a09b7b4214cd8da17a6192b22d11b796777b3ed0be9c7405b79c1f957",
+    "driver_sha256": "9f53fcddb283e983d3cca896d719a61ab3b922c81588fc54eea21e04cba610a1",
+    "apecss_dir": "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071",
+    "apecss_commit": null,
+    "apecss_source_changes": null,
+    "apecss_source_sha256": "be87a0c02602beab07081a1f73a2cc8b4670dff5a046ef88de40ebeb6e5bad33",
+    "command": [
+      "gcc",
+      "-O3",
+      "-I",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/include",
+      "/home/claude/ozaki39/microbubble-aggregation/native/apecss_harmonics.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/bubble.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/emissions.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/gas.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/interactions.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/interface.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/liquid.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/misc.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/odesolver.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/rayleighplesset.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/results.c",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/apecss_a0ee071/src/viscoelasticity.c",
+      "-lm",
+      "-o",
+      "/tmp/claude-0/-home-claude/dbb26339-d419-50c3-a57a-d90eb362c798/scratchpad/grid_final/build/apecss_harmonics"
+    ]
+  }
+}

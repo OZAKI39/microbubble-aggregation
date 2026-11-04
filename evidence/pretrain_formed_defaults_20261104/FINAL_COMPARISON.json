@@ -1,0 +1,168 @@
+{
+ "note": "Final A/B comparison of the new pretraining defaults (adhesion by ratio, delay, formed clusters).\n\nusage (repository root): PYTHONPATH=.:visualization python analyse_final.py RUNS_DIR MB_RESULTS OUT.json FIG.png\nUses the functions of visualization/ab_protocol_figures.py (same windows, rasterization, metrics).\nReferences: the branch's protocol and random-action runs (old defaults, AG32_local) and A/B.\n",
+ "groups": {
+  "new protocol N128": {
+   "windows": 255,
+   "split_share": 0.0,
+   "per_px": 0.0013334045301101889,
+   "dln_first_1s": 0.0013029256389806578,
+   "aspect": 1.0260511267944668,
+   "aspect_p90": 1.0291970435589253,
+   "speed_first_0p5s": 13.053965731695659,
+   "speed_after_1s": 13.06410564282487
+  },
+  "new protocol N32": {
+   "windows": 510,
+   "split_share": 0.0,
+   "per_px": 0.0013092464032069954,
+   "dln_first_1s": 0.0039077469602451,
+   "aspect": 1.1183704858503978,
+   "aspect_p90": 1.125724869274012,
+   "speed_first_0p5s": 42.75859015171909,
+   "speed_after_1s": 42.85992265200754
+  },
+  "new random actions N32": {
+   "windows": 80,
+   "split_share": 0.0,
+   "per_px": 0.008965632632701769,
+   "dln_first_1s": 0.012522093275809948,
+   "aspect": 1.147839494279562,
+   "aspect_p90": 1.449568572161101,
+   "speed_first_0p5s": 12.86105242170138,
+   "speed_after_1s": null
+  },
+  "old protocol collective": {
+   "windows": 508,
+   "split_share": 0.4409448818897638,
+   "per_px": 0.07612110643344094,
+   "dln_first_1s": 0.0966767821938395,
+   "aspect": 1.8087795137006522,
+   "aspect_p90": 2.1577784977131538,
+   "speed_first_0p5s": 15.713236169221325,
+   "speed_after_1s": 16.93465598060808
+  },
+  "old protocol pairwise": {
+   "windows": 508,
+   "split_share": 0.0,
+   "per_px": 0.00042978016886884983,
+   "dln_first_1s": 0.010992371771038035,
+   "aspect": 1.1234481502885563,
+   "aspect_p90": 1.1644167600450217,
+   "speed_first_0p5s": 317.3081251941707,
+   "speed_after_1s": 329.62005667720126
+  },
+  "old random actions (collective)": {
+   "windows": 74,
+   "split_share": 0.3918918918918919,
+   "per_px": 0.05589668968359625,
+   "dln_first_1s": 0.15297860573304273,
+   "aspect": 1.6410121908803843,
+   "aspect_p90": 2.260909501628458,
+   "speed_first_0p5s": 20.41465460280643,
+   "speed_after_1s": null
+  },
+  "real A/B (PZT on)": {
+   "windows": 570,
+   "split_share": null,
+   "per_px": 0.001781057711115841,
+   "dln_first_1s": 0.025582136980966917,
+   "aspect": 1.1225,
+   "aspect_p90": 1.3011,
+   "speed_first_0p5s": 139.95832701200743,
+   "speed_after_1s": 15.766968050607666
+  }
+ },
+ "runs": {
+  "protocol_center_formed128": {
+   "windows": 255,
+   "split_share": 0.0,
+   "per_px": 0.0013334045301101889,
+   "dln_first_1s": 0.0013029256389806578,
+   "aspect": 1.0260511267944668,
+   "aspect_p90": 1.0291970435589253,
+   "speed_first_0p5s": 13.053965731695659,
+   "speed_after_1s": 13.06410564282487,
+   "status": "PASS",
+   "wall_s": 462.22770302000004,
+   "adhesion_force_N": 1.26e-10
+  },
+  "protocol_center_formed32": {
+   "windows": 255,
+   "split_share": 0.0,
+   "per_px": 0.001207463354408943,
+   "dln_first_1s": 0.0031681613228358675,
+   "aspect": 1.1170331100634407,
+   "aspect_p90": 1.1231803618121947,
+   "speed_first_0p5s": 42.707982484872694,
+   "speed_after_1s": 42.82054885069983,
+   "status": "PASS",
+   "wall_s": 99.84412393299999,
+   "adhesion_force_N": 1.26e-10
+  },
+  "protocol_offset_formed32": {
+   "windows": 255,
+   "split_share": 0.0,
+   "per_px": 0.001584716904450692,
+   "dln_first_1s": 0.004733331579671303,
+   "aspect": 1.1195712040150703,
+   "aspect_p90": 1.1280197353023853,
+   "speed_first_0p5s": 42.79242098328754,
+   "speed_after_1s": 42.885500919795255,
+   "status": "PASS",
+   "wall_s": 105.30717392700001,
+   "adhesion_force_N": 1.26e-10
+  },
+  "random_center_A_formed32": {
+   "windows": 20,
+   "split_share": 0.0,
+   "per_px": 0.003714539306309739,
+   "dln_first_1s": 0.008352575089981433,
+   "aspect": 1.105602018576699,
+   "aspect_p90": 1.1192034021247816,
+   "speed_first_0p5s": 10.75463448680815,
+   "speed_after_1s": null,
+   "status": "PASS",
+   "wall_s": 543.1618977600001,
+   "adhesion_force_N": 1.2504421944e-10
+  },
+  "random_center_B_formed32": {
+   "windows": 20,
+   "split_share": 0.0,
+   "per_px": 0.004538642914372006,
+   "dln_first_1s": 0.01113141302167628,
+   "aspect": 1.3147132058197366,
+   "aspect_p90": 1.4733023579884068,
+   "speed_first_0p5s": 10.393989684332993,
+   "speed_after_1s": null,
+   "status": "PASS",
+   "wall_s": 2080.198414235,
+   "adhesion_force_N": 1.2306054656e-10
+  },
+  "random_offset_A_formed32": {
+   "windows": 20,
+   "split_share": 0.0,
+   "per_px": 0.009189249146012813,
+   "dln_first_1s": 0.016745443474594224,
+   "aspect": 1.1295143425137155,
+   "aspect_p90": 1.5167297912063444,
+   "speed_first_0p5s": 16.608540331001016,
+   "speed_after_1s": null,
+   "status": "PASS",
+   "wall_s": 607.9968221050001,
+   "adhesion_force_N": 1.2504421944e-10
+  },
+  "random_offset_B_formed32": {
+   "windows": 20,
+   "split_share": 0.0,
+   "per_px": 0.012787216701680993,
+   "dln_first_1s": 0.02706170411085867,
+   "aspect": 1.1640378286858972,
+   "aspect_p90": 1.3440304036487853,
+   "speed_first_0p5s": 13.344436302624986,
+   "speed_after_1s": null,
+   "status": "PASS",
+   "wall_s": 317.2070453829999,
+   "adhesion_force_N": 1.2306054656e-10
+  }
+ }
+}

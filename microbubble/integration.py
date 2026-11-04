@@ -261,6 +261,8 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
         x = x + np.asarray(t["offset_m"])
     start = x.copy()
     field = t.get("field", "cache")
+    # Propagation delay of the bubble-bubble coupling: wavenumber of the same water model as
+    # the field (WaterDiscs); off unless the task asks for it (run_pretrain sets it).
     forces = CPUForces(
         c.basis,
         c.response,
@@ -268,7 +270,13 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
         t["coupling"],
         policy["singular_guard"],
         discs=c.discs if field == "direct" else None,
+        wavenumber_rad_m=c.discs.k if t.get("propagation_delay") else 0.0,
+        adhesion_force_N=t.get("adhesion_force_N", 0.0),
+        adhesion_range_m=t.get("adhesion_range_m", 0.0),
     )
+    labels = ident["labels"] + PRETRAIN_LABELS
+    if t.get("adhesion_force_N", 0.0) > 0:
+        labels = labels + ["PHENOMENOLOGICAL_ADHESION"]
     T = t["duration"]
     save = t["save_interval_s"]
     pending = [float(v) for v in np.round(np.arange(save, T + 1e-12, save), 12)]
@@ -277,6 +285,16 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
     boundaries = [s["start_s"] + s["duration_s"] for s in segments]
     delta = cfg["displacement_over_R"] * R
     h = cfg["initial_step_s"]
+    # Rejection memory: after a step fails a gate, later steps stay below cap_factor x that size,
+    # a cap that rises by cap_growth per accepted step, instead of doubling straight back. Only
+    # the step sizes change; every accepted step passes the same gates; a failure at a size below
+    # min_step_s still stops the run. cap_factor None: the earlier control (halve, then grow).
+    # Evidence: evidence/pretrain_step_control_20261104/.
+    cap_factor = cfg.get("rejection_cap_factor")
+    cap_growth = cfg.get("rejection_cap_growth")
+    if cap_factor is not None and not (0 < cap_factor < 1 and cap_growth and cap_growth > 1):
+        raise ValueError("rejection_cap_factor must be in (0, 1) and rejection_cap_growth > 1")
+    ceiling = np.inf
     clock = 0.0
     times, states = [0.0], [x.copy()]
     records, sizes = [], []
@@ -324,6 +342,8 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
             if not r["converged"]:
                 rejected += 1
                 records.append(dict(row, accepted=False))
+                if cap_factor is not None:
+                    ceiling = hh
                 h = hh / 2
                 if h < cfg["min_step_s"]:
                     raise RuntimeError(
@@ -344,7 +364,11 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
                 times.append(clock)
                 states.append(x.copy())
             grow = min(cfg["max_growth"], max(cfg["min_growth"], delta / max(moved, 1e-30)))
-            h = min(cfg["max_step_s"], (max(h, hh) if hh < h else hh) * grow)
+            intended = max(h, hh)  # hh < h only where the step was cut short at a save or switch
+            h = min(cfg["max_step_s"], intended * grow)
+            if np.isfinite(ceiling):
+                ceiling *= cap_growth
+                h = max(min(h, cap_factor * ceiling), cfg["min_step_s"])
     except Exception as ex:
         reason = repr(ex)
         (out / "exception.txt").write_text(traceback.format_exc())
@@ -362,8 +386,11 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
             scope="PRETRAIN_TIER",
             coupling=t["coupling"],
             field=field,
+            propagation_delay=bool(t.get("propagation_delay")),
             sampling="Accepted positions at the requested save times; steps end exactly there",
-            labels=json.dumps(ident["labels"] + PRETRAIN_LABELS),
+            labels=json.dumps(labels),
+            adhesion_force_N=float(t.get("adhesion_force_N", 0.0)),
+            adhesion_range_m=float(t.get("adhesion_range_m", 0.0)),
             training_ready=False,
         )
     ident = dict(ident, versions=dict(ident["versions"], osqp=osqp.__version__))
@@ -378,7 +405,7 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
         scope="PRETRAIN_TIER",
         coupling=t["coupling"],
         field=field,
-        labels=ident["labels"] + PRETRAIN_LABELS,
+        labels=labels,
         training_ready=False,
         trajectory_path=path.name,
         trajectory_sha256=sha(path),

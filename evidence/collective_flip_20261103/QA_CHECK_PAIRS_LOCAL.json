@@ -1,0 +1,210 @@
+{
+ "setup": "Compare our linear coupling (with / without propagation phase) against APECSS's own interacting\nbubbles (IC: instantaneous incompressible; QA: quasi-acoustic, finite sound speed).\n\nusage (from the repository): PYTHONPATH=. python run_qa_check.py QA_CHECK_EXE OUT.json [--quick]\nSame bubble (frozen 2.4 MHz case, RPAR + Marmottant, ODE tol 1e-10), 2.5 MHz, uniform drive\n1000 Pa (linear regime), fixed positions. Model: u = (I + chi K)^-1 chi P with chi = V1/P of the\nisolated bubble from the NI run, K_ij = rho w^2 exp(-i k d s) / (4 pi d), s = 0 (as in the code)\nor 1 (propagation phase). Error: max_i |V1_i - u_i| / max_i |V1_i|.\n",
+ "ode_tolerance": 1e-10,
+ "cycles": 60,
+ "frequency_Hz": 2500000.0,
+ "pressure_Pa": 1000.0,
+ "chi_isolated": [
+  -1.1624194158400419e-22,
+  9.269609926864489e-23
+ ],
+ "single_last_cycle_change": 1.192144e-13,
+ "rows": [
+  {
+   "case": "pair kd=0.05 (d=4.8 um, d/R=2.68)",
+   "n": 2,
+   "max_kd": 0.05,
+   "min_d_over_R": 2.6823866813240786,
+   "IC": {
+    "last_cycle_change": 2.064444e-12,
+    "cpu_s": 2.399,
+    "model_no_phase": 0.006432209885144965,
+    "model_with_phase": 0.040212820219077246,
+    "isolated": 0.6113947017303449,
+    "V1_over_isolated_mean": [
+     1.2411001703815514,
+     -0.9092288585659744
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 0.0005474559,
+    "cpu_s": 2.709,
+    "model_no_phase": 0.17208726630092883,
+    "model_with_phase": 0.15905802640924496,
+    "isolated": 0.7188530522929774,
+    "V1_over_isolated_mean": [
+     1.0585028104171026,
+     -1.0913363615427125
+    ]
+   }
+  },
+  {
+   "case": "pair kd=0.1 (d=9.5 um, d/R=5.36)",
+   "n": 2,
+   "max_kd": 0.1,
+   "min_d_over_R": 5.364773362648157,
+   "IC": {
+    "last_cycle_change": 8.933292e-13,
+    "cpu_s": 2.42,
+    "model_no_phase": 0.0026537007948289615,
+    "model_with_phase": 0.03566059655397514,
+    "isolated": 0.30569811346473824,
+    "V1_over_isolated_mean": [
+     1.2337091352018186,
+     -0.3108869359841184
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 1.804822e-05,
+    "cpu_s": 2.922,
+    "model_no_phase": 0.040580307889569595,
+    "model_with_phase": 0.013707156877226095,
+    "isolated": 0.31673525375052486,
+    "V1_over_isolated_mean": [
+     1.1972238679389131,
+     -0.3414594786430856
+    ]
+   }
+  },
+  {
+   "case": "pair kd=0.5 (d=47.7 um, d/R=26.82)",
+   "n": 2,
+   "max_kd": 0.5,
+   "min_d_over_R": 26.823866813240784,
+   "IC": {
+    "last_cycle_change": 1.267872e-10,
+    "cpu_s": 1.971,
+    "model_no_phase": 0.0004081801100897531,
+    "model_with_phase": 0.030574225073125877,
+    "isolated": 0.06113987309778573,
+    "V1_over_isolated_mean": [
+     1.0482368813569638,
+     -0.04227652519060774
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 1.133528e-06,
+    "cpu_s": 2.751,
+    "model_no_phase": 0.031572310206643854,
+    "model_with_phase": 0.0003738857646365464,
+    "isolated": 0.061414736925529,
+    "V1_over_isolated_mean": [
+     1.0211695617603522,
+     -0.05914556378599295
+    ]
+   }
+  },
+  {
+   "case": "pair kd=1.0 (d=95.5 um, d/R=53.65)",
+   "n": 2,
+   "max_kd": 1.0,
+   "min_d_over_R": 53.64773362648157,
+   "IC": {
+    "last_cycle_change": 2.450716e-10,
+    "cpu_s": 2.015,
+    "model_no_phase": 0.0001965738766632842,
+    "model_with_phase": 0.029045376620661156,
+    "isolated": 0.030569958328987606,
+    "V1_over_isolated_mean": [
+     1.0239659612502683,
+     -0.020146113670485796
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 2.96728e-07,
+    "cpu_s": 2.966,
+    "model_no_phase": 0.029967985291866943,
+    "model_with_phase": 7.11758612232604e-05,
+    "isolated": 0.03058378122909577,
+    "V1_over_isolated_mean": [
+     0.9960366172555485,
+     -0.030217769960519884
+    ]
+   }
+  },
+  {
+   "case": "pair kd=2.0 (d=191.0 um, d/R=107.30)",
+   "n": 2,
+   "max_kd": 2.0,
+   "min_d_over_R": 107.29546725296314,
+   "IC": {
+    "last_cycle_change": 7.67973e-10,
+    "cpu_s": 1.303,
+    "model_no_phase": 9.675091126039072e-05,
+    "model_with_phase": 0.025327050964215225,
+    "isolated": 0.015284986273184952,
+    "V1_over_isolated_mean": [
+     1.0119386853143155,
+     -0.009835301583468785
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 6.749852e-07,
+    "cpu_s": 3.692,
+    "model_no_phase": 0.026024410805943005,
+    "model_with_phase": 2.5981026122204447e-05,
+    "isolated": 0.015290473581644995,
+    "V1_over_isolated_mean": [
+     0.986505469988488,
+     -0.006740878065354983
+    ]
+   }
+  },
+  {
+   "case": "pair kd=3.0 (d=286.5 um, d/R=160.94)",
+   "n": 2,
+   "max_kd": 3.0,
+   "min_d_over_R": 160.94320087944473,
+   "IC": {
+    "last_cycle_change": 9.241905e-11,
+    "cpu_s": 1.315,
+    "model_no_phase": 6.44051707685196e-05,
+    "model_with_phase": 0.02014727764821959,
+    "isolated": 0.010189993331789193,
+    "V1_over_isolated_mean": [
+     1.0079485925465135,
+     -0.006505193505626364
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 4.747876e-07,
+    "cpu_s": 4.18,
+    "model_no_phase": 0.020490681402516326,
+    "model_with_phase": 1.7871928271066397e-05,
+    "isolated": 0.010190043777750972,
+    "V1_over_isolated_mean": [
+     0.9912578248132864,
+     0.005060280382228283
+    ]
+   }
+  },
+  {
+   "case": "AG32_local",
+   "n": 32,
+   "max_kd": 0.19500092095845198,
+   "min_d_over_R": 2.4,
+   "IC": {
+    "last_cycle_change": 6.217113e-05,
+    "cpu_s": 49.457,
+    "model_no_phase": 0.0818108833742465,
+    "model_with_phase": 0.14028115245026915,
+    "isolated": 4.504374832759675,
+    "V1_over_isolated_mean": [
+     -0.05495654588360537,
+     -0.06645047874770602
+    ]
+   },
+   "QA": {
+    "last_cycle_change": 0.0003688363,
+    "cpu_s": 84.917,
+    "model_no_phase": 0.09914890624861507,
+    "model_with_phase": 0.1353108060608745,
+    "isolated": 4.517250599712184,
+    "V1_over_isolated_mean": [
+     -0.04404751608443016,
+     -0.07163424330689254
+    ]
+   }
+  }
+ ]
+}

@@ -1,6 +1,16 @@
-"""Read frozen APECSS tables; table generation is an external, separately validated task."""
+"""Read frozen APECSS tables; compute new settled APECSS responses with native/apecss_harmonics.c.
+
+Generated responses are new data next to the frozen tables, never replacements; admitting them
+into a simulation is a separate, explicit validation step. CarriedApecssResponse computes the
+response during a pretraining-tier run instead of reading a table (opt-in per run).
+"""
 
 import json, itertools
+import hashlib
+import os
+import subprocess
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from dataclasses import asdict
 import numpy as np
@@ -8,6 +18,417 @@ import h5py
 from .io import sha
 
 CORNERS = np.array(list(itertools.product([0.0, 1.0], repeat=3)))
+DRIVER_SOURCE = Path(__file__).resolve().parents[1] / "native" / "apecss_harmonics.c"
+DRIVER_MARKER = "APECSS_HARMONICS_JSON "
+# Physical parameters of one APECSS case, named as in inputs/response/*/PHYSICS_GATE.json "case".
+CASE_KEYS = (
+    "radius_m",
+    "ambient_pressure_Pa",
+    "polytropic_exponent",
+    "density_kg_m3",
+    "sound_speed_m_s",
+    "viscosity_Pa_s",
+    "sigma_water_N_m",
+    "sigma_initial_N_m",
+    "elasticity_N_m",
+    "shell_viscosity_kg_s",
+)
+
+
+def apecss_options(case, ode_tolerance=1e-10):
+    """APECSS options text: Rayleigh-Plesset with acoustic radiation, ideal gas, Marmottant shell.
+
+    This is the model and the ODE tolerance of the frozen tables (their stored responses are
+    reproduced by response_check). Floats are written with repr, so they round-trip exactly.
+    """
+    missing = [k for k in CASE_KEYS if k not in case]
+    if missing:
+        raise ValueError(f"APECSS case is missing {missing}")
+    v = {k: float(case[k]) for k in CASE_KEYS}
+    if not all(np.isfinite(x) for x in v.values()) or v["sigma_initial_N_m"] < 0:
+        raise ValueError("APECSS case values must be finite; initial surface tension >= 0")
+    if min(x for k, x in v.items() if k != "sigma_initial_N_m") <= 0 or not ode_tolerance > 0:
+        raise ValueError("APECSS case values and ODE tolerance must be positive")
+    if v["sigma_initial_N_m"] > v["sigma_water_N_m"]:
+        raise ValueError("Marmottant initial surface tension cannot exceed that of water")
+    return (
+        "BUBBLE\n"
+        f"InitialRadius {v['radius_m']!r}\n"
+        "RPModel RPAR\n"
+        f"PressureAmbient {v['ambient_pressure_Pa']!r}\n"
+        "END\n\n"
+        "GAS\n"
+        "EoS IG\n"
+        f"PolytropicExponent {v['polytropic_exponent']!r}\n"
+        "END\n\n"
+        "LIQUID\n"
+        f"ReferenceDensity {v['density_kg_m3']!r}\n"
+        f"ReferenceSoundSpeed {v['sound_speed_m_s']!r}\n"
+        f"Viscosity {v['viscosity_Pa_s']!r}\n"
+        "END\n\n"
+        "INTERFACE\n"
+        f"SurfaceTensionCoeff {v['sigma_water_N_m']!r}\n"
+        "LipidCoatingModel Marmottant\n"
+        f"SigmaInit {v['sigma_initial_N_m']!r}\n"
+        f"Elasticity {v['elasticity_N_m']!r}\n"
+        f"DilatationalViscosity {v['shell_viscosity_kg_s']!r}\n"
+        "END\n\n"
+        "ODESOLVER\n"
+        f"Tolerance {float(ode_tolerance)!r}\n"
+        "END\n"
+    )
+
+
+def build_apecss_harmonics(apecss_dir, out_dir, compiler="gcc", library=False):
+    """Compile native/apecss_harmonics.c together with the APECSS sources in apecss_dir.
+
+    library=False: the command-line driver (key "executable"); library=True: the shared library
+    of carried bubbles used by CarriedApecssResponse (key "library", OpenMP).
+    """
+    apecss_dir = Path(apecss_dir).expanduser().resolve()
+    sources = sorted((apecss_dir / "src").glob("*.c"))
+    header = apecss_dir / "include" / "apecss.h"
+    if not sources or not header.is_file():
+        raise FileNotFoundError(f"No APECSS sources (src/*.c, include/apecss.h) in {apecss_dir}")
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if library:
+        target = out_dir / "libapecss_harmonics.so"
+        cmd = [compiler, "-O3", "-fPIC", "-shared", "-fopenmp", "-DAPECSS_HARMONICS_LIBRARY"]
+    else:
+        target = out_dir / "apecss_harmonics"
+        cmd = [compiler, "-O3"]
+    cmd += ["-I", str(header.parent), str(DRIVER_SOURCE), *map(str, sources)]
+    cmd += ["-lm", "-o", str(target)]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError("APECSS driver build failed:\n" + r.stderr[-4000:])
+    digest = hashlib.sha256()
+    for p in [header, *sources]:
+        digest.update(p.relative_to(apecss_dir).as_posix().encode() + b"\0" + sha(p).encode())
+
+    def git(*args):
+        g = subprocess.run(["git", "-C", str(apecss_dir), *args], capture_output=True, text=True)
+        return g.stdout.strip() if g.returncode == 0 else None
+
+    kind = "library" if library else "executable"
+    return {
+        kind: str(target),
+        f"{kind}_sha256": sha(target),
+        "driver_sha256": sha(DRIVER_SOURCE),
+        "apecss_dir": str(apecss_dir),
+        "apecss_commit": git("rev-parse", "HEAD"),
+        "apecss_source_changes": git("status", "--porcelain", "--", "src", "include"),
+        "apecss_source_sha256": digest.hexdigest(),
+        "command": cmd,
+    }
+
+
+def apecss_harmonics(
+    executable,
+    options_path,
+    frequency_Hz,
+    pressure_Pa,
+    *,
+    tolerance=1e-6,
+    min_cycles=4,
+    max_cycles=400,
+    cycles=None,
+    history=False,
+    timeout_s=600,
+):
+    """Settled volume harmonics of one bubble at one drive (see native/apecss_harmonics.c).
+
+    status CONVERGED: harmonics no longer change (estimated remaining relative error <= tolerance);
+    PERIOD_DOUBLING / NOT_CONVERGED / SOLVER_FAILED: no single settled response, not usable as one.
+    cycles=N runs exactly N cycles instead (status FIXED_CYCLES), as the frozen tables did with 48.
+    """
+    args = [str(executable), "-options", str(options_path)]
+    args += ["-freq", repr(float(frequency_Hz)), "-amp", repr(float(pressure_Pa))]
+    args += ["-tol", repr(float(tolerance)), "-mincycles", str(int(min_cycles))]
+    args += ["-maxcycles", str(int(max_cycles))]
+    if cycles is not None:
+        args += ["-cycles", str(int(cycles))]
+    if history:
+        args.append("-history")
+    r = subprocess.run(args, capture_output=True, text=True, timeout=timeout_s)
+    lines = [s for s in r.stdout.splitlines() if s.startswith(DRIVER_MARKER)]
+    if r.returncode not in (0, 3) or len(lines) != 1:
+        raise RuntimeError(
+            f"APECSS driver exit {r.returncode}:\n{r.stdout[-3000:]}\n{r.stderr[-3000:]}"
+        )
+    out = json.loads(lines[0][len(DRIVER_MARKER) :])
+    if out["status"] != "SOLVER_FAILED":
+        out["harmonics_m3"] = np.array(out.pop("harmonics_re_m3")) + 1j * np.array(
+            out.pop("harmonics_im_m3")
+        )
+        if out["estimated_relative_error"] < 0:
+            out["estimated_relative_error"] = float("inf")
+    return out
+
+
+def response_grid(
+    executable,
+    base_case,
+    axes,
+    work_dir,
+    *,
+    tolerance=1e-6,
+    min_cycles=4,
+    max_cycles=400,
+    ode_tolerance=1e-10,
+    workers=None,
+):
+    """Run every combination of the axes; frequency_Hz and pressure_Pa are required axes.
+
+    Other axes override base_case entries (CASE_KEYS). Returns arrays shaped like the axes.
+    """
+    names = list(axes)
+    if "frequency_Hz" not in names or "pressure_Pa" not in names:
+        raise ValueError("Grid needs frequency_Hz and pressure_Pa axes")
+    unknown = [k for k in names if k not in CASE_KEYS + ("frequency_Hz", "pressure_Pa")]
+    if unknown:
+        raise ValueError(f"Unknown grid axes {unknown}")
+    values = {k: np.asarray(axes[k], float).ravel() for k in names}
+    if any(len(v) == 0 or not np.all(np.isfinite(v)) for v in values.values()):
+        raise ValueError("Grid axes must be finite and non-empty")
+    if np.any(values["pressure_Pa"] <= 0) or np.any(values["frequency_Hz"] <= 0):
+        raise ValueError("Zero drive is the exact quiescent state; grid pressures must be > 0")
+    shape = tuple(len(values[k]) for k in names)
+    work_dir = Path(work_dir)
+    work_dir.mkdir(parents=True, exist_ok=True)
+    case_names = [k for k in names if k in CASE_KEYS]
+    options, jobs = {}, []
+    for index in np.ndindex(shape):
+        point = {k: float(values[k][i]) for k, i in zip(names, index)}
+        key = tuple(point[k] for k in case_names)
+        if key not in options:
+            case = {**base_case, **{k: point[k] for k in case_names}}
+            path = work_dir / f"case_{len(options):04d}.apecss"
+            path.write_text(apecss_options(case, ode_tolerance))
+            options[key] = path
+        jobs.append((index, options[key], point["frequency_Hz"], point["pressure_Pa"]))
+
+    def one(job):
+        index, path, f, p = job
+        return index, apecss_harmonics(
+            executable,
+            path,
+            f,
+            p,
+            tolerance=tolerance,
+            min_cycles=min_cycles,
+            max_cycles=max_cycles,
+        )
+
+    out = dict(
+        status=np.full(shape, "", dtype=object),
+        cycles=np.zeros(shape, np.int32),
+        harmonics_m3=np.zeros(shape + (8,), complex),
+        mean_volume_change_m3=np.zeros(shape),
+        max_R_over_R0=np.full(shape, np.nan),
+        min_R_over_R0=np.full(shape, np.nan),
+        estimated_relative_error=np.full(shape, np.inf),
+        cpu_s=np.zeros(shape),
+    )
+    with ThreadPoolExecutor(max_workers=workers or os.cpu_count()) as pool:
+        for index, r in pool.map(one, jobs):
+            out["status"][index] = r["status"]
+            out["cycles"][index] = r["cycles"]
+            out["cpu_s"][index] = r["cpu_s"]
+            if r["status"] == "SOLVER_FAILED":
+                continue
+            out["harmonics_m3"][index] = r["harmonics_m3"]
+            out["mean_volume_change_m3"][index] = r["mean_volume_change_m3"]
+            out["max_R_over_R0"][index] = r["max_R_over_R0"]
+            out["min_R_over_R0"][index] = r["min_R_over_R0"]
+            out["estimated_relative_error"][index] = r["estimated_relative_error"]
+    out["axes"] = {k: values[k] for k in names}
+    out["options"] = {str(p.name): p.read_text() for p in options.values()}
+    return out
+
+
+def write_response_grid(path, grid, metadata):
+    """HDF5 with one dataset per result array; never overwrites an existing file."""
+    path = Path(path)
+    if path.exists():
+        raise FileExistsError(f"{path} exists; generated responses are never overwritten")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with h5py.File(path, "x") as h:
+        h.attrs["schema"] = "apecss_response_grid_v1"
+        h.attrs["metadata_json"] = json.dumps(metadata)
+        h.attrs["axis_order"] = json.dumps(list(grid["axes"]))
+        for k, v in grid["axes"].items():
+            h[f"axes/{k}"] = v
+        for k in (
+            "cycles",
+            "harmonics_m3",
+            "mean_volume_change_m3",
+            "max_R_over_R0",
+            "min_R_over_R0",
+            "estimated_relative_error",
+            "cpu_s",
+        ):
+            h[k] = grid[k]
+        h["status"] = grid["status"].astype("S16")
+        for name, text in grid["options"].items():
+            h[f"options/{name}"] = text
+
+
+CARRIED_STATUS = (
+    "CONVERGED",
+    "NOT_CONVERGED",
+    "PERIOD_DOUBLING",
+    "SOLVER_FAILED",
+    "ZERO_DRIVE",
+    "FIXED_CYCLES",
+)
+CARRIED_TALLIES = 17  # mean, then cos/sin of harmonics 1..8 (native/apecss_harmonics.c)
+
+
+class CarriedApecssResponse:
+    """Settled APECSS response of every bubble, carried from step to step (pretraining tier).
+
+    Replaces a response table for forces.CPUForces (same `knots` and `query(P)` interface).
+    query(P) with one complex local pressure per bubble (bubble order fixed for the run)
+    continues every bubble from its previous APECSS radial state at its new drive
+    p0 + Re[P exp(i w t)] and advances whole acoustic cycles until the estimated remaining
+    relative change of its harmonics is <= tolerance (usually one cycle; a bubble's first call
+    starts from rest and needs min_cycles_cold). It returns the last cycle's volume harmonics
+    1..8 [m^3] relative to exp(i n w t), the convention of the response tables. The same P
+    again (a rejected step retried at the same positions) returns the stored result without
+    advancing. Any other shape is evaluated on fresh bubbles from rest, without shared state.
+
+    knots: CPUForces takes chi_zero = query([knots[0]]) / knots[0], the linear susceptibility
+    used only where a bubble sees exactly zero pressure; probed at 1 Pa from rest. There is no
+    upper table bound. A bubble that does not settle raises ValueError("APECSS_CARRIED_...").
+    """
+
+    def __init__(
+        self,
+        library,
+        options_path,
+        frequency_Hz,
+        n_bubbles,
+        *,
+        tolerance=1e-3,
+        min_cycles_warm=1,
+        min_cycles_cold=4,
+        max_cycles=400,
+        q_refresh=10,
+        threads=1,
+    ):
+        import ctypes
+
+        lib = ctypes.CDLL(str(library))
+        lib.carried_create.restype = ctypes.c_void_p
+        lib.carried_create.argtypes = [ctypes.c_char_p, ctypes.c_double]
+        lib.carried_rest_volume.restype = ctypes.c_double
+        lib.carried_rest_volume.argtypes = [ctypes.c_void_p]
+        dp = np.ctypeslib.ndpointer(np.float64, flags="C_CONTIGUOUS")
+        ip = np.ctypeslib.ndpointer(np.int32, flags="C_CONTIGUOUS")
+        lib.carried_advance.restype = ctypes.c_int
+        lib.carried_advance.argtypes = [ctypes.POINTER(ctypes.c_void_p), ctypes.c_int, dp, dp]
+        lib.carried_advance.argtypes += [ctypes.c_double] + [ctypes.c_int] * 5
+        lib.carried_advance.argtypes += [dp, ip, ip, dp, dp]
+        lib.carried_stats.argtypes = [ctypes.c_void_p] + [ctypes.POINTER(ctypes.c_long)] * 2
+        lib.carried_free.argtypes = [ctypes.c_void_p]
+        self._ctypes, self.lib, self.n = ctypes, lib, int(n_bubbles)
+        self.options = str(options_path).encode()
+        self.frequency_Hz = float(frequency_Hz)
+        self.settings = dict(
+            tolerance=float(tolerance),
+            min_cycles_warm=int(min_cycles_warm),
+            min_cycles_cold=int(min_cycles_cold),
+            max_cycles=int(max_cycles),
+            q_refresh=int(q_refresh),
+            threads=int(threads),
+        )
+        self.handles = self._create(self.n)
+        self.rest_volume_m3 = lib.carried_rest_volume(self.handles[0])
+        self.knots = np.array([1.0, np.inf])
+        self.last_P = self.last_H = None
+        self.calls = self.cache_hits = 0
+        self.seconds = 0.0
+        self.cycles_per_call = []
+
+    def _create(self, n):
+        h = [self.lib.carried_create(self.options, self.frequency_Hz) for _ in range(n)]
+        return (self._ctypes.c_void_p * n)(*h)
+
+    def _advance(self, handles, P):
+        n = len(P)
+        H = np.zeros((n, CARRIED_TALLIES))
+        cycles, status = np.zeros(n, np.int32), np.zeros(n, np.int32)
+        estimate, extrema = np.zeros(n), np.zeros((n, 2))
+        s = self.settings
+        failures = self.lib.carried_advance(
+            handles,
+            n,
+            np.ascontiguousarray(P.real),
+            np.ascontiguousarray(P.imag),
+            s["tolerance"],
+            s["min_cycles_warm"],
+            s["min_cycles_cold"],
+            s["max_cycles"],
+            s["q_refresh"],
+            s["threads"],
+            H,
+            cycles,
+            status,
+            estimate,
+            extrema,
+        )
+        if failures:
+            bad = sorted({CARRIED_STATUS[v] for v in status if v not in (0, 4)})
+            raise ValueError("APECSS_CARRIED_" + "_".join(bad))
+        harmonics = self.rest_volume_m3 * (H[:, 1::2] - 1j * H[:, 2::2])
+        return harmonics, cycles
+
+    def query(self, P):
+        P = np.asarray(P, complex)
+        if P.shape != (self.n,):
+            probe = self._create(P.size)
+            try:
+                return self._advance(probe, P.ravel())[0].reshape(P.shape + (8,))
+            finally:
+                for h in probe:
+                    self.lib.carried_free(h)
+        if self.last_P is not None and np.array_equal(P, self.last_P):
+            self.cache_hits += 1
+            return self.last_H.copy()
+        begin = time.perf_counter()
+        harmonics, cycles = self._advance(self.handles, P)
+        self.seconds += time.perf_counter() - begin
+        self.calls += 1
+        self.cycles_per_call.append(cycles)
+        self.last_P, self.last_H = P.copy(), harmonics
+        return harmonics.copy()
+
+    def stats(self):
+        """Settings and cycle counts of the carried bubbles (written next to a run)."""
+        c = np.array(self.cycles_per_call) if self.cycles_per_call else np.zeros((0, self.n))
+        later = c[1:]
+        return dict(
+            settings=self.settings,
+            frequency_Hz=self.frequency_Hz,
+            calls=self.calls,
+            cache_hits=self.cache_hits,
+            seconds_in_apecss=self.seconds,
+            cycles_total=int(c.sum()),
+            cycles_per_bubble_call_mean=float(c.mean()) if c.size else None,
+            cycles_first_call_max=int(c[0].max()) if len(c) else None,
+            cycles_later_calls_max=int(later.max()) if later.size else None,
+            cycles_later_calls_histogram={
+                int(k): int(v) for k, v in zip(*np.unique(later, return_counts=True))
+            },
+        )
+
+    def close(self):
+        if self.handles is not None:
+            for h in self.handles:
+                self.lib.carried_free(h)
+            self.handles = None
 
 
 class ResponseTableBoundsError(ValueError):
