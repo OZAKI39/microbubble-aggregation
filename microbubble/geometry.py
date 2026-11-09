@@ -30,9 +30,6 @@ class CylindricalLumen:
             axis=-1,
         )
 
-    def contains(self, x, radius=0.0):
-        return np.isfinite(x).all(axis=-1) & (self.gaps(x, radius) >= 0).all(axis=-1)
-
     @classmethod
     def from_config(cls, g):
         if any(k in g for k in ("wall_thickness_m", "outer_diameter_m")):
@@ -88,6 +85,17 @@ class PDMSCavity:
         if not self.R < self.ceiling < self.H or self.a >= self.R:
             raise ValueError("This exposed-patch oracle requires a<R and an interior ceiling")
 
+    def clearance(self, points, radii):
+        """Smallest gap between a bubble surface and the bore wall or an end plane [m] (the run's
+        wall guard; top holes ignored)."""
+        q = self.lumen.local(points)
+        return float(
+            min(
+                (self.R - np.linalg.norm(q[:, 1:], axis=1) - radii).min(),
+                (self.L - abs(q[:, 0]) - radii).min(),
+            )
+        )
+
     def implicit(self, points):
         """Positive in geometric void; includes closed end-plane location only."""
         q = self.lumen.local(points)
@@ -99,33 +107,6 @@ class PDMSCavity:
             )
             v = np.maximum(v, hole)
         return np.minimum(v, self.L - abs(q[..., 0]))
-
-    def labels(self, points):
-        """Geometric regions: 0 exterior, 1 PDMS, 2 main, 3/4 port-exclusive void.
-
-        Labels 3/4 do NOT mean water. Mechanical interfaces are stored separately.
-        """
-        q = self.lumen.local(points)
-        block = (abs(q) <= np.array(self.g["block_dimensions_m"]) / 2 + 1e-14).all(-1)
-        main = (np.hypot(q[..., 1], q[..., 2]) <= self.R + 1e-14) & block
-        result = np.where(block, 1, 0).astype(np.uint8)
-        for i, c in enumerate(self.ports):
-            port = (np.hypot(q[..., 0] - c, q[..., 1]) <= self.a + 1e-14) & (q[..., 2] >= 0) & block
-            result = np.where(port, 3 + i, result)
-        return np.where(main, 2, result).astype(np.uint8)
-
-    def boundary_labels(self, points, tolerance=1e-12):
-        q = self.lumen.local(points)
-        result = np.zeros(q.shape[:-1], np.uint8)
-        main = np.hypot(q[..., 1], q[..., 2]) <= self.R + tolerance
-        for i, sign in enumerate([-1, 1]):
-            result = np.where((abs(q[..., 0] - sign * self.L) <= tolerance) & main, i + 1, result)
-        for i, c in enumerate(self.ports):
-            top = (np.hypot(q[..., 0] - c, q[..., 1]) <= self.a + tolerance) & (
-                abs(q[..., 2] - self.H) <= tolerance
-            )
-            result = np.where(top, i + 3, result)
-        return result.astype(np.uint8)
 
     def curve(self, theta, c):
         y = self.a * np.sin(theta)
@@ -218,21 +199,6 @@ class PDMSCavity:
             free_surface="UNCONFIRMED_NOT_A_RIGID_WALL",
         )
 
-    def project(self, point, radius, budget_fraction=0.1):
-        initial = np.asarray(point, float)
-        q = initial.copy()
-        for _ in range(8):
-            row = self.query(q, radius)
-            if not row["interior_scope"]:
-                return initial.copy(), "UNCONFIRMED_FREE_SURFACE_SCOPE", 0.0
-            if row["finite_radius_gap_m"] >= -1e-12:
-                correction = float(np.linalg.norm(q - initial))
-                if correction > budget_fraction * radius:
-                    return initial.copy(), "WALL_BUDGET_REJECTED", correction
-                return q, "PASS", correction
-            q += (-row["finite_radius_gap_m"] + 2e-13) * row["inward_normal"]
-        return initial.copy(), "WALL_PROJECTION_UNRESOLVED", float(np.linalg.norm(q - initial))
-
 
 def apparatus(g):
     cavity = PDMSCavity(g)
@@ -266,3 +232,98 @@ def apparatus(g):
             )
         )
     return cavity, elements
+
+
+@dataclass
+class YChannel:
+    """Y-shaped channel of square cross-section (the Y-channel chip, 2026-11-09), in the chip frame:
+    origin at the block centre = channel mid-plane, x along the trunk axis, z up (world = chip frame).
+
+    Each of the three segments is a box from its port centre to the branch point, extended past
+    the branch point by half its width so the union has no gap at the junction. A point's gap to
+    the walls is its largest gap over the boxes (exact inside one box, slightly conservative where
+    boxes overlap at the junction). Port ends are closed planes and the top holes are ignored, as
+    for the old lumen's wall guard.
+    """
+
+    segments: list  # dicts: id, port (xy m), axis (unit, port -> branch point), length_m, width_m, depth_m
+    center: np.ndarray  # pattern-action reference point (the block centre, on the trunk)
+
+    def world(self, x):
+        return np.asarray(x)
+
+    def box_gaps(self, x, radius=0.0):
+        """(N, segments): smallest gap of each point (sphere of the given radius) to each box's walls."""
+        x = np.atleast_2d(x)
+        radius = np.broadcast_to(radius, len(x))[:, None]
+        gaps = []
+        for s in self.segments:
+            rel = x[:, :2] - s["port"]
+            along = rel @ s["axis"]
+            across = rel @ np.array([-s["axis"][1], s["axis"][0]])
+            gaps.append(
+                np.min(
+                    [
+                        along,
+                        s["length_m"] - along,
+                        s["width_m"] / 2 - abs(across),
+                        s["depth_m"] / 2 - abs(x[:, 2]),
+                    ],
+                    axis=0,
+                )
+            )
+        return np.stack(gaps, axis=-1) - radius
+
+    def gaps(self, x, radius=0.0):
+        """Gap of each point (sphere) to the channel walls [m]; negative outside."""
+        return self.box_gaps(x, radius).max(axis=-1)
+
+    def random_centre(self, rng, offsets, radii, margin_m, tries=100000):
+        """Centre for a cluster (offsets from its centre, radii) uniform over the admissible part of
+        the channel: every bubble surface at least margin_m from the walls and the port ends.
+        Candidates are uniform over the box union by volume (segment by its box volume, then
+        uniform in the box), kept when admissible; raises when none of `tries` fits."""
+        volumes = np.array([s["length_m"] * s["width_m"] * s["depth_m"] for s in self.segments])
+        for _ in range(tries):
+            s = self.segments[rng.choice(len(self.segments), p=volumes / volumes.sum())]
+            along = rng.uniform(0, s["length_m"])
+            across = rng.uniform(-s["width_m"] / 2, s["width_m"] / 2)
+            height = rng.uniform(-s["depth_m"] / 2, s["depth_m"] / 2)
+            normal = np.array([-s["axis"][1], s["axis"][0]])
+            centre = np.array([*(s["port"] + along * s["axis"] + across * normal), height])
+            if np.all(self.gaps(centre + offsets, radii) >= margin_m):
+                return centre
+        raise ValueError("Cluster does not fit in the channel with this wall margin")
+
+    @classmethod
+    def from_config(cls, g):
+        y = g["y_channel"]
+        branch = np.asarray(y["branch_point_m"], float)
+        segments = []
+        for s in y["segments"]:
+            port = np.asarray(s["port_m"], float)
+            span = np.linalg.norm(branch - port)
+            segments.append(
+                dict(
+                    id=s["id"],
+                    port=port,
+                    axis=(branch - port) / span,
+                    length_m=span + s["width_m"] / 2,
+                    width_m=float(s["width_m"]),
+                    depth_m=float(s["depth_m"]),
+                )
+            )
+        return cls(segments, np.asarray(y["reference_point_m"], float))
+
+
+class YChannelCavity:
+    """The Y-channel chip's cavity for the pretraining tier: the channel (lumen) and the wall
+    guard's clearance, with the same interface as PDMSCavity (lumen, clearance)."""
+
+    def __init__(self, g):
+        self.g = g
+        self.lumen = YChannel.from_config(g)
+
+    def clearance(self, points, radii):
+        """Smallest gap between a bubble surface and the channel walls or port ends [m]."""
+        return float(self.lumen.gaps(points, radii).min())

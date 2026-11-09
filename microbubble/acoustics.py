@@ -1,20 +1,16 @@
-"""Finite circular water sources and Catmull–Rom pressure/consistent gradients (SI).
+"""Finite circular water sources: pressure and gradient of the four PZT discs (SI).
 
 FNM single integral: Kelly & McGough (2006), Eq. 9, PMC2117898.
 The source amplitude is rho*c*v_n (Pa-equivalent), not measured face pressure.
 Re[P exp(+i omega t)]; no PDMS reflection, elastic waves or mutual source scattering.
-The ComplexAcousticField container's trilinear helpers are not the trajectory
-interpolator: dynamics uses cubic_query / the identical Warp cubic derivative.
+The field is evaluated directly at the bubbles (WaterDiscs; gpu.GPUWaterDiscs on the GPU).
+The stored cubic field cache and its interpolation were removed with the frozen HF/LF path on
+2026-11-06 (user decision); the cache files stay in inputs/fields/ as data.
 """
 
-import json
 from functools import lru_cache
-from pathlib import Path
-from dataclasses import dataclass
 import numpy as np
-import h5py
 from numpy.polynomial.legendre import leggauss
-from scipy.interpolate import RegularGridInterpolator
 
 
 @lru_cache(maxsize=8)
@@ -30,89 +26,15 @@ def gauss_legendre(order):
     return nodes.copy(), weights.copy()
 
 
-def build_cache(path, model, bounds_m, step_m, execution_identity):
-    """Rebuild a candidate cache with the original order-48/chunk-2048 algorithm.
-
-    This writes a new candidate, not a replacement for an admitted input. Its
-    pressure/gradient gate must be independently checked before trajectory use.
-    """
-    lo, hi = np.asarray(bounds_m, float)
-    if not np.isfinite([*lo, *hi, step_m]).all() or step_m <= 0 or np.any(hi <= lo):
-        raise ValueError("Finite increasing bounds and a positive spacing required")
-    axes = [np.linspace(l, h, round((h - l) / step_m) + 1) for l, h in zip(lo, hi)]
-    if min(map(len, axes)) < 4:
-        raise ValueError("Cubic interpolation needs at least four nodes per axis")
-    shape = tuple(map(len, axes))
-    pressure = np.empty((4,) + shape, complex)
-    flat = pressure.reshape(4, -1)
-    for begin in range(0, int(np.prod(shape)), 2048):
-        ii = np.arange(begin, min(begin + 2048, np.prod(shape)))
-        ix = np.unravel_index(ii, shape)
-        x = np.column_stack([axes[j][ix[j]] for j in range(3)])
-        flat[:, begin : begin + len(ii)] = model.evaluate(x, 48)[0]
-    metadata = dict(
-        model="HOMOGENEOUS_WATER_CONTROL_PROXY",
-        frequency_Hz=model.frequency,
-        sound_speed_m_s=2 * np.pi * model.frequency / model.k,
-        elements=model.elements,
-        quadrature_order=48,
-        harmonic_convention="Re[P exp(+i omega t)]",
-        identity=execution_identity,
-        admission="CANDIDATE_REQUIRES_FIELD_GATE",
-    )
-    with h5py.File(path, "x") as h:
-        for s, a in zip("xyz", axes):
-            h["axes/" + s + "_m"] = a
-        h.create_dataset("pressure_basis", data=pressure, compression="gzip")
-        h.attrs["metadata_json"] = json.dumps(metadata)
-
-
-@dataclass
-class ComplexAcousticField:
-    axes_m: tuple[np.ndarray, ...]
-    pressure_Pa: np.ndarray
-    gradient_Pa_m: np.ndarray
-    frequency_Hz: float
-
-    def __post_init__(self):
-        self._p = RegularGridInterpolator(self.axes_m, self.pressure_Pa, bounds_error=True)
-        self._g = RegularGridInterpolator(self.axes_m, self.gradient_Pa_m, bounds_error=True)
-
-    def interpolate_complex_pressure(self, position_m: np.ndarray) -> np.ndarray:
-        return self._p(position_m)
-
-    def interpolate_complex_gradient(self, position_m: np.ndarray) -> np.ndarray:
-        return self._g(position_m)
-
-    def save(self, path: Path):
-        """Store the exact field used by a run, including grid-refinement overrides."""
-        with h5py.File(path, "x") as f:
-            f.attrs["frequency_Hz"] = self.frequency_Hz
-            for axis, values in zip("xyz", self.axes_m, strict=True):
-                f.create_dataset(f"axes/{axis}_m", data=values)
-            f.create_dataset(
-                "pressure_Pa", data=self.pressure_Pa, compression="gzip", compression_opts=1
-            )
-            f.create_dataset(
-                "gradient_Pa_m", data=self.gradient_Pa_m, compression="gzip", compression_opts=1
-            )
-
-    @classmethod
-    def load(cls, path: Path):
-        with h5py.File(path) as f:
-            return cls(
-                tuple(f[f"axes/{a}_m"][:] for a in "xyz"),
-                f["pressure_Pa"][:],
-                f["gradient_Pa_m"][:],
-                float(f.attrs["frequency_Hz"]),
-            )
-
-
 class WaterDiscs:
     def __init__(self, elements, frequency_Hz=2.5e6, sound_speed_m_s=1500.0):
         self.elements = elements
         self.frequency = float(frequency_Hz)
         self.k = 2 * np.pi * self.frequency / sound_speed_m_s
+
+    def quadrature_order(self, frequency_Hz):
+        """Registered FNM order of the discs at this frequency (DIRECT_QUADRATURE_ORDERS)."""
+        return direct_quadrature_order(frequency_Hz)
 
     def evaluate(self, points, order=48):
         """Pressure and analytic derivative of the SAME converged integral."""
@@ -179,6 +101,113 @@ class WaterDiscs:
         return np.asarray(pp), np.asarray(gg)
 
 
+class WaterSquares:
+    """Finite square water sources (the PZT plates of the Y-channel chip, 2026-11-09): pressure
+    and gradient (SI), same amplitude (rho*c*v_n, Pa-equivalent), time convention and interface as
+    WaterDiscs (elements, frequency, k, evaluate(points, order)).
+
+    FNM for a planar polygonal piston (McGough 2004, rectangular pistons, JASA 115:1934): the
+    Rayleigh integral ik/(2 pi) * integral of exp(-ikR)/R dS, written in polar coordinates about
+    the projection q of the field point onto the face, integrates exactly along each ray; what
+    remains is one integral along each edge,
+        p = 1/(2 pi) * sum over edges of integral_0^L (exp(-ikz) - exp(-ikR(u))) * l / s(u)^2 du,
+    with z the height above the face, s(u) the in-plane distance from q to the point u along the
+    edge, R = sqrt(z^2 + s^2), and l the signed distance from q to the edge line (positive on the
+    inner side; edges counter-clockwise). l / s^2 du is the angle the edge element subtends at q,
+    so the sum is right with q inside or outside the face, and (exp(-ikz) - exp(-ikR)) / s^2 stays
+    finite as s -> 0. The gradient differentiates the same integrand (Gauss-Legendre on each edge).
+
+    Element keys: center_local_m, normal_local (into the water), side_m, edge_axis_local (one
+    in-plane edge direction).
+    """
+
+    def __init__(self, elements, frequency_Hz=2.5e6, sound_speed_m_s=1500.0):
+        self.elements = elements
+        self.frequency = float(frequency_Hz)
+        self.k = 2 * np.pi * self.frequency / sound_speed_m_s
+
+    def quadrature_order(self, frequency_Hz):
+        """Registered FNM order per edge of the plates at this frequency (SQUARE_QUADRATURE_ORDERS)."""
+        return square_quadrature_order(frequency_Hz)
+
+    def evaluate(self, points, order=48):
+        """Pressure (sources, N) and analytic gradient (sources, N, 3) of the SAME integral."""
+        x = np.atleast_2d(points)
+        nodes, weights = gauss_legendre(order)
+        t, w = (nodes + 1) / 2, weights / 2  # on [0, 1]
+        k = self.k
+        pressures, gradients = [], []
+        for e in self.elements:
+            n, e1, e2, corners = square_frame(e)
+            delta = x - e["center_local_m"]
+            z = delta @ n
+            if np.any(z <= 0) or not np.isfinite(x).all():
+                raise ValueError("Only finite points in front of each piston are admitted")
+            q = np.stack([delta @ e1, delta @ e2], axis=-1)  # projection, in-plane coordinates
+            zz = z[:, None]
+            E0 = np.exp(-1j * k * zz)
+            p = np.zeros(len(x), complex)
+            pz = np.zeros(len(x), complex)
+            pq = np.zeros((len(x), 2), complex)
+            for a, b in zip(corners, np.roll(corners, -1, axis=0)):
+                length = np.linalg.norm(b - a)
+                tangent = (b - a) / length
+                outward = np.array([tangent[1], -tangent[0]])
+                l = ((a - q) @ outward)[:, None]  # signed distance of q from the edge line
+                d = a + (length * t)[:, None] * tangent - q[:, None, :]  # q -> edge nodes (N, M, 2)
+                s2 = (d**2).sum(-1)
+                R = np.sqrt(zz**2 + s2)
+                E = np.exp(-1j * k * R)
+                diff = E0 - E
+                ww = w * length
+                p += (diff * l / s2 * ww).sum(1)
+                pz += ((-1j * k * E0 + 1j * k * E * zz / R) * l / s2 * ww).sum(1)
+                inner = (
+                    -1j * k * E * l / (R * s2) + 2 * diff * l / s2**2
+                )[..., None] * d - (diff / s2)[..., None] * outward
+                pq += (inner * ww[None, :, None]).sum(1)
+            pressures.append(p / (2 * np.pi))
+            gradients.append(
+                (pz[:, None] * n + pq[:, :1] * e1 + pq[:, 1:] * e2) / (2 * np.pi)
+            )
+        return np.asarray(pressures), np.asarray(gradients)
+
+    def rayleigh_reference(self, points, order=256):
+        """Independent area quadrature of the Rayleigh integral over each square (order x order
+        Gauss-Legendre points) and its derivative; for checks, not for runs."""
+        x = np.atleast_2d(points)
+        t, w = leggauss(order)
+        pp, gg = [], []
+        for e in self.elements:
+            _, e1, e2, _ = square_frame(e)
+            half = e["side_m"] / 2
+            u, v = np.meshgrid(t * half, t * half, indexing="ij")
+            src = np.asarray(e["center_local_m"]) + u.reshape(-1, 1) * e1 + v.reshape(-1, 1) * e2
+            weights = np.outer(w, w).ravel() * half * half
+            dvec = x[:, None, :] - src
+            d = np.linalg.norm(dvec, axis=-1)
+            wave = np.exp(-1j * self.k * d)
+            pp.append(1j * self.k / (2 * np.pi) * np.sum(wave / d * weights, axis=1))
+            gg.append(
+                1j
+                * self.k
+                / (2 * np.pi)
+                * np.sum((wave * (-1j * self.k * d - 1) / d**3 * weights)[..., None] * dvec, axis=1)
+            )
+        return np.asarray(pp), np.asarray(gg)
+
+
+def square_frame(element):
+    """Unit normal (into the water), in-plane axes e1 (edge_axis_local), e2 = normal x e1, and the
+    four corners in (e1, e2) coordinates, counter-clockwise."""
+    n = np.asarray(element["normal_local"], float)
+    e1 = np.asarray(element["edge_axis_local"], float)
+    e2 = np.cross(n, e1)
+    h = element["side_m"] / 2
+    corners = np.array([[-h, -h], [h, -h], [h, h], [-h, h]])
+    return n, e1, e2, corners
+
+
 # FNM quadrature order for direct evaluation at arbitrary points in the lumen (no cache).
 # Order 48 is exact only near the centre: against order 800 over the whole lumen
 # (|x| < 16 mm, r < 0.75 mm) it errs by 6e-10 at 2.5 MHz, 1.5e-2 at 5 MHz and 1e-1 at
@@ -198,86 +227,16 @@ def direct_quadrature_order(frequency_Hz):
     raise ValueError("No checked direct-field quadrature order above 10 MHz")
 
 
-def cubic_weights(t):
-    w = np.stack(
-        [
-            -0.5 * t + t * t - 0.5 * t**3,
-            1 - 2.5 * t * t + 1.5 * t**3,
-            0.5 * t + 2 * t * t - 1.5 * t**3,
-            -0.5 * t * t + 0.5 * t**3,
-        ],
-        axis=-1,
-    )
-    d = np.stack(
-        [
-            -0.5 + 2 * t - 1.5 * t * t,
-            -5 * t + 4.5 * t * t,
-            0.5 + 4 * t - 4.5 * t * t,
-            -t + 1.5 * t * t,
-        ],
-        axis=-1,
-    )
-    return w, d
+# FNM order per edge of the square plates of the Y-channel chip (2026-11-09). Against order 768 at 3000
+# points filling the whole Y channel: 48 points stay at 3.4e-13 (relative, pressure and gradient) up to
+# 7.5 MHz but err 3e-7 at 10 MHz, 64 points stay at 5.3e-13 up to 10 MHz; 80 is taken up to 10 MHz for a
+# margin. See evidence/y_channel_chip_20261109/ (ORDER_SCAN.json).
+SQUARE_QUADRATURE_ORDERS = ((5e6, 48), (10e6, 80))
 
 
-def cubic_query(pressure, origin, spacing, points):
-    """C1 Catmull-Rom interpolant and exact polynomial gradient, no extrapolation."""
-    x = np.atleast_2d(points)
-    q = (x - origin) / spacing
-    shape = np.array(pressure.shape)
-    if not np.isfinite(q).all() or np.any(q < 1) or np.any(q >= shape - 2):
-        raise ValueError("Outside cubic cache interior; no extrapolation")
-    cell = np.floor(q).astype(int)
-    w, d = cubic_weights(q - cell)
-    p = np.zeros(len(x), complex)
-    g = np.zeros((len(x), 3), complex)
-    for a in range(4):
-        for b in range(4):
-            for c in range(4):
-                v = pressure[tuple((cell + np.array([a, b, c]) - 1).T)]
-                p += w[:, 0, a] * w[:, 1, b] * w[:, 2, c] * v
-                g[:, 0] += d[:, 0, a] * w[:, 1, b] * w[:, 2, c] * v / spacing[0]
-                g[:, 1] += w[:, 0, a] * d[:, 1, b] * w[:, 2, c] * v / spacing[1]
-                g[:, 2] += w[:, 0, a] * w[:, 1, b] * d[:, 2, c] * v / spacing[2]
-    return p, g
-
-
-class CachedWaterBasis:
-    def __init__(self, path):
-        with h5py.File(path) as h:
-            self.axes = tuple(h[f"axes/{s}_m"][:] for s in "xyz")
-            self.pressures = h["pressure_basis"][:]
-            self.metadata = json.loads(h.attrs["metadata_json"])
-        self.origin = np.array([a[0] for a in self.axes])
-        self.spacing = np.array([a[1] - a[0] for a in self.axes])
-        self.shape = tuple(len(a) for a in self.axes)
-        self.combine_count = 0
-
-    def vector(self, amplitude_Pa, phase_rad, enabled=None):
-        a, p = np.asarray(amplitude_Pa, float), np.asarray(phase_rad, float)
-        enabled = np.ones(4, bool) if enabled is None else np.asarray(enabled, bool)
-        if (
-            a.shape != (4,)
-            or p.shape != (4,)
-            or enabled.shape != (4,)
-            or not np.isfinite(a).all()
-            or not np.isfinite(p).all()
-            or np.any(a < 0)
-        ):
-            raise ValueError("Four finite independent amplitudes/phases/enables required")
-        return a * enabled * np.exp(1j * p)
-
-    def combine(self, amplitude_Pa, phase_rad, enabled=None):
-        u = self.vector(amplitude_Pa, phase_rad, enabled)
-        p = np.einsum("i,ixyz->xyz", u, self.pressures)
-        # Nodal gradients are informational only. GPU forces use the derivative
-        # of the SAME cubic pressure, never interpolation of these gradients.
-        g = np.stack(np.gradient(p, *self.spacing, edge_order=2), axis=-1)
-        field = ComplexAcousticField(self.axes, p, g, self.metadata["frequency_Hz"])
-        packed = np.concatenate([p[..., None], g], axis=-1)
-        self.combine_count += 1
-        return field, np.ascontiguousarray(np.stack([packed.real, packed.imag], axis=-1)), u
-
-    def query_basis(self, x):
-        rows = [cubic_query(p, self.origin, self.spacing, x) for p in self.pressures]
-        return np.array([r[0] for r in rows]), np.array([r[1] for r in rows])
+def square_quadrature_order(frequency_Hz):
+    """Registered FNM order per edge for the square plates; raises above 10 MHz (not checked there)."""
+    for limit_Hz, order in SQUARE_QUADRATURE_ORDERS:
+        if frequency_Hz <= limit_Hz:
+            return order
+    raise ValueError("No checked square-plate quadrature order above 10 MHz")

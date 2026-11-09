@@ -1,4 +1,7 @@
-"""Start here: explicit inputs -> physical workflow -> stored evidence -> analysis."""
+"""
+Start here: explicit inputs -> pretraining-tier trajectory -> stored run.
+Commands: check (imports and inputs), run (a PRETRAIN config).
+"""
 
 from pathlib import Path
 import argparse
@@ -12,112 +15,28 @@ def main():
         description="Independent microbubble simulation (exploratory, uncalibrated)"
     )
     sub = p.add_subparsers(dest="command", required=True)
-    sub.add_parser("check", help="Verify inputs, environment, states and discrete frequencies")
-    sub.add_parser("history", help="Read frozen scientific admission, without rerunning it")
-    r = sub.add_parser("single", help="Separate F1-only RK45 diagnostic, not a full-physics cloud")
+    sub.add_parser("check", help="Verify imports and inputs")
+    r = sub.add_parser("run", help="Run a configured PRETRAIN trajectory")
+    r.add_argument("--config", required=True)
     r.add_argument("--out", required=True)
-    r = sub.add_parser("run", help="Run a configured HF, guarded LF or CPU PRETRAIN trajectory")
-    r.add_argument("--config", default=str(ROOT / "configs/minimal_hf.json"))
-    r.add_argument("--out", required=True)
-    r = sub.add_parser("analyze", help="Analyze actual stored fixed-ID positions")
-    r.add_argument("trajectory")
-    r.add_argument("--out", required=True)
-    r.add_argument("--frequency", type=int, default=2500000)
-    r.add_argument("--phase-deg", type=int, default=0)
-    r = sub.add_parser("plot", help="PNG/PDF from an analysis directory")
-    r.add_argument("directory")
-    r = sub.add_parser("compare", help="Compare exact shared HF/LF times")
-    r.add_argument("hf")
-    r.add_argument("lf")
-    r = sub.add_parser("validate", help="Run frozen-old/new numerical regression")
-    r.add_argument("--out", required=True)
-    r = sub.add_parser(
-        "response-check", help="Recompute the frozen APECSS responses (needs APECSS sources)"
-    )
-    r.add_argument("--apecss-dir", required=True)
-    r.add_argument("--out", required=True)
-    r.add_argument("--workers", type=int)
-    r = sub.add_parser("formed-states", help="Write formed (aggregated) clusters for PRETRAIN runs")
-    r.add_argument("--out", default=str(ROOT / "inputs/pretrain_formed_states.h5"))
-    r = sub.add_parser("response-grid", help="Settled APECSS responses on a parameter grid")
-    r.add_argument("--apecss-dir", required=True)
-    r.add_argument("--config", default=str(ROOT / "configs/response_grid_example.json"))
-    r.add_argument("--out", required=True)
-    r.add_argument("--workers", type=int)
     args = p.parse_args()
-    from microbubble.io import read, clean
+    from microbubble.io import clean
 
     if args.command == "check":
+        # 导入一遍各个物理模块，看有没有坏的
         from workflows.validation import check
 
         result = check(ROOT)
-    elif args.command == "single":
-        from workflows.f10ag import context
-        from workflows.diagnostics import single_bubble
-        from microbubble.io import identity
-        from microbubble.initial_conditions import load_state
-
-        c = context(ROOT)
-        x, _ = load_state(ROOT / "inputs/initial_states.h5", "AG32_random_0")
-        row = next(
-            r
-            for r in read(ROOT / "evidence/f10ag/STATIC_RESULTS.json")["rows"]
-            if r["frequency_Hz"] == 2500000 and r["phase_deg"] == 0
-        )
-        result = single_bubble(
-            c, x, [r["position_m"][0] for r in row["roots"]], args.out, identity(ROOT)
-        )
-    elif args.command == "run":
+    else:
+        # 整条调用链（准备阶段 → 时间循环 → 写结果）
         from workflows.f10ag import run
 
         result = run(ROOT, args.config, args.out)
-    elif args.command == "history":
-        from workflows.analysis import historical
 
-        result = historical(ROOT)
-    elif args.command == "analyze":
-        from workflows.analysis import analyze
-
-        rows = read(ROOT / "evidence/f10ag/STATIC_RESULTS.json")["rows"]
-        row = next(
-            r
-            for r in rows
-            if r["frequency_Hz"] == args.frequency and r["phase_deg"] == args.phase_deg
-        )
-        result = analyze(
-            args.trajectory,
-            args.out,
-            [r["position_m"][0] for r in row["roots"]],
-            read(ROOT / "configs/frozen/f10ag_protocol.json"),
-        )
-    elif args.command == "plot":
-        from workflows.visualization import plot
-
-        result = plot(args.directory)
-    elif args.command == "compare":
-        from workflows.analysis import compare
-
-        result = compare(args.hf, args.lf)
-    elif args.command == "response-check":
-        from workflows.validation import response_check
-
-        result = response_check(ROOT, args.apecss_dir, args.out, args.workers)
-        result = {k: v for k, v in result.items() if k != "rows"}
-    elif args.command == "formed-states":
-        from microbubble.initial_conditions import write_formed_states
-        from microbubble.parameters import Physics
-
-        meta = write_formed_states(args.out, Physics().radius_m)
-        result = {k: v for k, v in meta.items() if k != "states"}
-    elif args.command == "response-grid":
-        from workflows.validation import response_grid_run
-
-        result = response_grid_run(ROOT, args.apecss_dir, args.config, args.out, args.workers)
-    else:
-        from workflows.validation import regression
-
-        result = regression(ROOT, args.out)
+    # 把结果打印到屏幕
     print(json.dumps(clean(result), indent=2, ensure_ascii=False))
+    
+    # 设定退出码：运行失败（status 是 FAIL）时，让程序以 1 退出
     if isinstance(result, dict) and (result.get("status") == "FAIL" or result.get("PASS") is False):
         raise SystemExit(1)
 

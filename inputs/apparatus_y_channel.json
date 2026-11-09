@@ -1,0 +1,39 @@
+{
+ "geometry": {
+  "status": "USER_CONFIRMED_GEOMETRY_2026-11-09_Y_CHANNEL",
+  "sources": [
+   "User 2026-11-09: PDMS block 18.6 x 14.4 x 9.75 mm; Y total 9.55 mm and trunk 5.65 mm along the trunk axis to the port centres; Y axis along the block length; Y centred in length and width and at half the block height; channel depth = width; the three Y ends are ports drilled from the top; square PZTs 5.4 mm at the centres of the four side faces; PZT1-PZT4 on the same faces as before; the right end (X+, PZT4) is the trunk end.",
+   "Widths and branch angles measured from a 1280 x 1024 camera frame of the junction at 0.6355 um/px (new_microbubble_experiment customer_workspace/validation/y_channel_geometry_20261109): trunk 179.0 um, branches 120.5 um (+y) and 113.3 um (-y), 24.25 and 24.57 deg from the trunk axis.",
+   "Branch ports placed by running the branches straight at the measured angles for 3.90 mm along the axis (assumption). Port diameter 0.56 mm as drawn in the layout figure (user 2026-11-09)."
+  ],
+  "frame": "origin at the block centre = channel mid-plane; x along the block length and the trunk axis (trunk port at +x, PZT4 / X+), y along the width (+y: PZT3 / Y+), z up",
+  "block_dimensions_m": [0.0186, 0.0144, 0.00975],
+  "center_m": [0, 0, 0],
+  "y_channel": {
+   "plane_z_m": 0.0,
+   "branch_point_m": [-0.000875, 0.0],
+   "reference_point_m": [0.0, 0.0, 0.0],
+   "reference_point_use": "block centre, on the trunk 0.875 mm before the branch point; the pattern-action reference (as the old lumen centre)",
+   "cross_section": "square: depth = width",
+   "segments": [
+    {"id": "trunk", "port_m": [0.004775, 0.0], "width_m": 0.000179, "depth_m": 0.000179},
+    {"id": "branch_plus_y", "port_m": [-0.004775, 0.0017566], "width_m": 0.0001205, "depth_m": 0.0001205},
+    {"id": "branch_minus_y", "port_m": [-0.004775, -0.0017832], "width_m": 0.0001133, "depth_m": 0.0001133}
+   ]
+  },
+  "top_ports": [
+   {"id": "port_trunk", "center_xy_m": [0.004775, 0.0], "diameter_m": 0.00056, "z_span_m": [0, 0.004875]},
+   {"id": "port_branch_plus_y", "center_xy_m": [-0.004775, 0.0017566], "diameter_m": 0.00056, "z_span_m": [0, 0.004875]},
+   {"id": "port_branch_minus_y", "center_xy_m": [-0.004775, -0.0017832], "diameter_m": 0.00056, "z_span_m": [0, 0.004875]}
+  ],
+  "pzt_model": "square plate, 5.4 mm side",
+  "pzt": [
+   {"id": "side_y_minus", "label": "PZT1", "center_local_m": [0, -0.0072, 0], "normal_local": [0, 1, 0], "side_m": 0.0054, "edge_axis_local": [0, 0, 1]},
+   {"id": "side_y_plus", "label": "PZT3", "center_local_m": [0, 0.0072, 0], "normal_local": [0, -1, 0], "side_m": 0.0054, "edge_axis_local": [0, 0, 1]},
+   {"id": "end_x_minus", "label": "PZT2", "center_local_m": [-0.0093, 0, 0], "normal_local": [1, 0, 0], "side_m": 0.0054, "edge_axis_local": [0, 0, 1]},
+   {"id": "end_x_plus", "label": "PZT4", "center_local_m": [0.0093, 0, 0], "normal_local": [-1, 0, 0], "side_m": 0.0054, "edge_axis_local": [0, 0, 1]}
+  ],
+  "pzt_order_note": "Same order and ids as inputs/apparatus_snapshot.json (Y-, Y+, X-, X+), so the four action channels keep their meaning",
+  "acoustic_model": "Free-field water sources, as for the discs: Rayleigh integral of each plate (acoustics.WaterSquares), no PDMS, walls or reflections"
+ }
+}

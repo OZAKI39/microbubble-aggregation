@@ -1,230 +1,14 @@
-"""Guarded RK45 with unchanged full-physics fallback and separately labeled dense samples.
-
-integrate_pretrain() is the separate CPU pretraining tier; integrate_lf() is unchanged.
+"""
+Time integration of the pretraining tier (integrate_pretrain).
 """
 
 import time, traceback, resource, json
 from pathlib import Path
 import numpy as np, h5py
-from scipy.integrate import RK45
-from scipy.spatial.distance import pdist
-from .dynamics import Dynamics
-from .control import schedule
 from .analysis import endpoint
 from .contact import sparse_sequential_step
 from .hydrodynamics import sparse_resistance
-from .io import read, write, sha, clean
-
-
-class NeedFullPhysics(Exception):
-    pass
-
-
-def safe_gap(x):
-    return float(pdist(x).min() - 2 * 1.78e-6)
-
-
-def integrate_lf(t, c, initial, protocol, policy, out, ident):
-    begin = time.perf_counter()
-    out = Path(out)
-    out.mkdir(parents=True, exist_ok=False)
-    cfg = protocol["LF"]
-    basis = c.basis
-    x = np.asarray(initial).copy()
-    R = c.physics.radius_m
-    if t.get("offset_m"):
-        x = x + np.asarray(t["offset_m"])
-    sim = Dynamics(x, c.physics, c.response, basis, c.cavity, policy=policy, device=c.device)
-    s = schedule(t)
-    assert len(s.segments) == 1, "LF currently admits a fixed action only"
-    sim.control(s.segments[0].event())
-    T = t["duration"]
-    clock = 0.0
-    mode = False
-    mandatory_hf = False
-    records = []
-    times = [0.0]
-    states = [x.copy()]
-    dense = []
-    nfev = 0
-    fallback = 0
-    transitions = []
-    reason = None
-    low_steps = 0
-    start = x.copy()
-    bound_min = np.inf
-    maxstep = t.get("max_step_s", cfg["max_step_s"])
-    rtol = t.get("rtol", cfg["rtol"])
-    atol = t.get("atol_m", cfg["atol_m"])
-
-    def clearance(z):
-        # This restricted cache lies in the central bore, far from top holes.
-        q = c.cavity.lumen.local(z)
-        return float(
-            min(
-                (c.cavity.R - np.linalg.norm(q[:, 1:], axis=1) - R).min(),
-                (c.cavity.L - abs(q[:, 0]) - R).min(),
-            )
-        )
-
-    def rhs(tt, y):
-        nonlocal nfev
-        z = y.reshape(x.shape)
-        nfev += 1
-        if safe_gap(z) <= 0.1 * R:
-            raise NeedFullPhysics("Lubrication activation reached by RK stage")
-        if clearance(z) <= R:
-            raise NeedFullPhysics("Wall safety buffer reached")
-        fields = sim.fields(z)
-        # Original resistance() is exactly identity beyond gap/R >= .1.
-        return (fields["total_force_N"] / sim.zeta).ravel()
-
-    rk = None
-    try:
-        while clock < T - 1e-14:
-            if time.perf_counter() - begin > protocol["budget"]["per_HF_wall_s"]:
-                raise RuntimeError("LF_WALL_BUDGET")
-            gap = safe_gap(x)
-            if gap <= cfg["contact_guard_gap_R"] * R or clearance(x) <= 2 * R:
-                mode = True
-                rk = None
-            if mode and not mandatory_hf and gap > cfg["resume_gap_R"] * R and clearance(x) > 4 * R:
-                mode = False
-            if mode:
-                if not transitions or transitions[-1]["mode"] != "HF":
-                    transitions.append(dict(time_s=clock, mode="HF", minimum_gap_m=gap))
-                sim.x = x.copy()
-                h = min(cfg["HF_dt_s"], T - clock)
-                step = sim.step(h)
-                fallback += 1
-                mandatory_hf = False
-                if not step["accepted"]:
-                    raise RuntimeError("ORIGINAL_HF_FALLBACK_REJECTED:" + ",".join(step["reasons"]))
-                x = sim.x.copy()
-                clock += h
-                times.append(clock)
-                states.append(x.copy())
-                dense.append(None)
-                records.append(
-                    dict(
-                        time_s=clock,
-                        mode="HF",
-                        dt_s=h,
-                        min_gap_m=safe_gap(x),
-                        wall_correction_m=step["wall_correction_m"],
-                        gates=step["gates"],
-                    )
-                )
-                continue
-            if not transitions or transitions[-1]["mode"] != "RK45":
-                transitions.append(dict(time_s=clock, mode="RK45", minimum_gap_m=gap))
-            try:
-                if rk is None:
-                    rk = RK45(rhs, clock, x.ravel(), T, rtol=rtol, atol=atol, max_step=maxstep)
-                previous = x.copy()
-                t0 = clock
-                msg = rk.step()
-                if rk.status == "failed":
-                    raise RuntimeError(msg)
-                poly = rk.dense_output()
-                Q = poly.Q.reshape(len(x), 3, -1)
-                travel = abs(poly.h) * np.linalg.norm(Q, axis=1).sum(1)
-                bound = float(travel.max())
-                origin_margin = np.minimum(
-                    previous - basis.origin - basis.spacing,
-                    (basis.origin + (np.array(basis.shape) - 2) * basis.spacing) - previous,
-                ).min()
-                certified = min(
-                    safe_gap(previous) - 2 * bound,
-                    clearance(previous) - bound,
-                    origin_margin - bound,
-                )
-                if certified <= 0.1 * R:
-                    raise NeedFullPhysics("Conservative whole-interval geometric bound")
-                x = rk.y.reshape(x.shape).copy()
-                clock = rk.t
-                assert safe_gap(x) > 0
-                wall = sim.wall_check(x)
-                if wall["error_bits"] or wall["correction_m"] != 0:
-                    raise RuntimeError("Original wall guard rejected RK endpoint")
-                bound_min = min(bound_min, certified)
-                times.append(clock)
-                states.append(x.copy())
-                dense.append(poly)
-                low_steps += 1
-                records.append(
-                    dict(
-                        time_s=clock,
-                        mode="RK45",
-                        dt_s=clock - t0,
-                        min_gap_m=safe_gap(x),
-                        whole_interval_margin_m=certified,
-                        max_dense_travel_bound_m=bound,
-                    )
-                )
-            except NeedFullPhysics as ex:
-                transitions.append(dict(time_s=clock, mode="GUARD_TO_HF", reason=str(ex)))
-                mode = True
-                mandatory_hf = True
-                rk = None
-    except Exception as ex:
-        reason = repr(ex)
-        (out / "exception.txt").write_text(traceback.format_exc())
-    complete = reason is None and abs(clock - T) < 1e-13
-    # Dense output is recorded as an integrator approximation, never as raw accepted nodes.
-    sample_times = np.unique(
-        np.r_[np.linspace(0, clock, min(401, max(2, int(clock / 5e-6) + 1))), clock]
-    )
-    sampled = []
-    for tm in sample_times:
-        j = min(max(np.searchsorted(times, tm, side="right") - 1, 0), len(times) - 2)
-        if len(times) == 1:
-            sampled.append(states[0])
-            continue
-        if dense[j] is not None:
-            sampled.append(dense[j](tm).reshape(x.shape))
-        else:
-            a = (tm - times[j]) / (times[j + 1] - times[j])
-            sampled.append((1 - a) * states[j] + a * states[j + 1])
-    path = out / "trajectory.h5"
-    with h5py.File(path, "w") as h:
-        h["time_s"] = times
-        h.create_dataset("positions_m", data=states, compression="gzip")
-        h["particle_id"] = np.arange(len(x))
-        h["sample_time_s"] = sample_times
-        h.create_dataset("sample_positions_m", data=sampled, compression="gzip")
-        h.attrs.update(
-            scope="LOW_FIDELITY_PREDICTION",
-            sampling="Accepted nodes plus separately labeled SciPy RK45 dense output; HF fallback sample interpolation separately labeled",
-            training_ready=False,
-        )
-    v = sim.fields(x)["total_force_N"] / sim.zeta if complete and safe_gap(x) > 0.1 * R else None
-    r = dict(
-        id=t["id"],
-        task=t,
-        status="PASS" if complete else "FAIL",
-        reason=reason,
-        completed_s=clock,
-        requested_s=T,
-        N=len(x),
-        scope="LOW_FIDELITY_PREDICTION",
-        trajectory_path=path.name,
-        trajectory_sha256=sha(path),
-        initial=endpoint(start, start),
-        final=endpoint(start, x, v) if complete else None,
-        accepted_slow_steps=low_steps,
-        HF_fallback_steps=fallback,
-        force_evaluations=nfev,
-        transitions=transitions,
-        whole_interval_min_margin_m=bound_min if np.isfinite(bound_min) else None,
-        wall_s=time.perf_counter() - begin,
-        rss_peak_MiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024,
-        identity=ident,
-    )
-    write(out / "STEP_RECORDS.json", records)
-    write(out / "SUMMARY.json", r)
-    print("LF", t["id"], r["status"], clock, "steps", low_steps, "HF", fallback, flush=True)
-    return clean(r)
+from .io import write, sha, clean
 
 
 PRETRAIN_LABELS = [
@@ -234,104 +18,167 @@ PRETRAIN_LABELS = [
 ]
 
 
-def integrate_pretrain(t, c, initial, segments, policy, out, ident):
-    """Pretraining tier: CPU forces, sparse contact step, displacement-controlled step size.
-
-    Each step is one force evaluation and one sparse_sequential_step() at the pretraining
-    tolerances. The step size is adapted so that the largest actual bubble displacement per
-    step stays near displacement_over_R x R; a step that fails any gate is retried at half the
-    size, never accepted. Steps end exactly at control switches and save times. Only the
-    central bore is admitted: the run stops when a bubble comes within wall_guard_over_R x R
-    of the lumen wall or end (no wall contact is modelled here).
-    t["field"] = "cache" reads the stored cubic cache and stops when a bubble leaves its
-    interior box; "direct" evaluates the same FNM model at the bubbles (CPUForces discs=).
+def integrate_pretrain(t, c, initial, radii_m, segments, policy, out, ident):
     """
-    import osqp
+    在给定气泡初始位置、每个泡的半径 radii_m（2026-11-07 起泡大小不一）、分段控制序列（segments，每一段有振幅、相位）、物理上下文 c、策略 policy 下，
+    自适应时间步推进气泡位置，计算声场作用力、气泡耦合、接触约束，保存轨迹，输出运行摘要
+    预训练层特点：力的计算默认在 CPU；用稀疏接触求解；
+    步长是固定步长 dt，每个控制段切成整数个等长小步，每步都接受，不再作废、减半、记忆失败步长，也不再在一步内重新线性化
+    """
     from scipy.spatial import cKDTree
     from .forces import CPUForces
+    from .acoustics import WaterSquares
 
+    # 入口参数、导入、声场模式分支选择
     begin = time.perf_counter()
+    field = t["field"]
+    discs, field_device = c.discs, "cpu"        # 默认值先设成 CPU，用 GPU 时再改
+
+    # field 声场计算模式
+    # direct：      CPU 上用 FNM 实时积分圆盘声源声场；
+    # direct_gpu：  GPU 上 GPUWaterDiscs + FNM 实时积分，就是你最早看到的那套 Warp FNM 内核。
+    # 注意：不管 direct 还是 direct_gpu，都只是声场计算设备；
+    # 预训练的主体动力学循环、接触求解依然跑在 CPU 上，注释写了 CPU forces。
+    if field not in ("direct", "direct_gpu"):
+        raise ValueError("PRETRAIN field must be 'direct' or 'direct_gpu'")
+    if field == "direct_gpu":
+        from .gpu import GPUWaterDiscs, GPUWaterSquares
+
+        # 声源形状随芯片：旧芯片是圆片（WaterDiscs），Y 形通道芯片是方片（WaterSquares）；GPU 版本对应
+        gpu_sources = GPUWaterSquares if isinstance(c.discs, WaterSquares) else GPUWaterDiscs
+
+        # 按当前频率选积分点数。声场的算法（FNM）是把每枚 PZT 圆片表面分成许多点做数值积分，
+        # 频率越高，波长越短，需要的点越多才算得准
+        # 5 MHz 以下用 96；10 MHz 以下用 192；超过 10 MHz 报错，因为那里没检查过精度
+        order = c.discs.quadrature_order(c.discs.frequency)
+        discs = gpu_sources(c.discs, order, t.get("device", "cuda:0"))
+
+        # 在显卡上建一个 GPU 版的圆片声场模型
+        field_device = f"{discs.device.alias} ({discs.device.name})"
+
+    def disc_model(frequency_Hz):
+        # 换频率时，按新频率重新建一个圆片声场模型，而且放在和原来相同的设备上（CPU 或 GPU）
+        # 圆片声场模型里只有频率会改变"声场长什么样"，其他参数只是改变"每枚圆片推得多大力、相位差多少"
+        sound_speed = 2 * np.pi * c.discs.frequency / c.discs.k
+        host = type(c.discs)(c.discs.elements, frequency_Hz, sound_speed)
+        if field == "direct_gpu":
+            order = host.quadrature_order(frequency_Hz)
+            return gpu_sources(host, order, t.get("device", "cuda:0"))
+        return host
+
+    from .contact import CompiledContactStep, DaqpQP
+    # "compiled"（C++ 版）或 "python"（Python 版）
+    contact = t["contact"]  
+    if contact == "compiled":
+        solver = compiled_contact = CompiledContactStep(t["contact_library"], policy)
+    else:
+        compiled_contact = None
+        solver = qp = DaqpQP(t["contact_library"], policy["daqp"]["iteration_limit"])
+
+    # 初始化气泡状态、物理常数
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
     cfg = policy["stepping"]
+    # R：参考半径（中位半径 1.78 µm），接触步里位移和阻力的单位；radii：每个泡自己的半径
     R = c.physics.radius_m
+    radii = np.asarray(radii_m, dtype=float)
     zeta = 6 * np.pi * c.physics.viscosity_Pa_s * R
     x = np.asarray(initial, dtype=float).copy()
-    if t.get("offset_m"):
-        x = x + np.asarray(t["offset_m"])
     start = x.copy()
-    field = t.get("field", "cache")
-    # Propagation delay of the bubble-bubble coupling: wavenumber of the same water model as
-    # the field (WaterDiscs); off unless the task asks for it (run_pretrain sets it).
+
+    # 初始化 CPUForces（力计算器）
     forces = CPUForces(
-        c.basis,
         c.response,
         c.physics,
+        discs,
         t["coupling"],
         policy["singular_guard"],
-        discs=c.discs if field == "direct" else None,
         wavenumber_rad_m=c.discs.k if t.get("propagation_delay") else 0.0,
         adhesion_force_N=t.get("adhesion_force_N", 0.0),
         adhesion_range_m=t.get("adhesion_range_m", 0.0),
+        pair_library=t["pair_library"],
+        radii_m=radii,
     )
+
+    # 保存时刻、边界、步长控制参数
     labels = ident["labels"] + PRETRAIN_LABELS
     if t.get("adhesion_force_N", 0.0) > 0:
         labels = labels + ["PHENOMENOLOGICAL_ADHESION"]
     T = t["duration"]
     save = t["save_interval_s"]
-    pending = [float(v) for v in np.round(np.arange(save, T + 1e-12, save), 12)]
-    if not pending or abs(pending[-1] - T) > 1e-12:
-        pending.append(T)
+    dt = cfg["fixed_step_s"]
+
+    def steps_in(span, what):
+        # 把一段时间换算成"等于几个固定步长"，并且要求必须正好是整数个步长
+        n = round(span / dt)
+        if n < 1 or abs(n * dt - span) > 1e-9 * span:
+            raise ValueError(f"PRETRAIN {what} ({span} s) must be a whole number of fixed steps ({dt} s)")
+        return n
+
+    # 积分循环开始前的准备
+    total = steps_in(T, "duration")                     # 整条运行一共多少步
+    save_every = steps_in(save, "save_interval_s")      # 每隔几步存一帧
+    ends = np.cumsum([steps_in(s["duration_s"], "segment duration") for s in segments])
     boundaries = [s["start_s"] + s["duration_s"] for s in segments]
-    delta = cfg["displacement_over_R"] * R
-    h = cfg["initial_step_s"]
-    # Rejection memory: after a step fails a gate, later steps stay below cap_factor x that size,
-    # a cap that rises by cap_growth per accepted step, instead of doubling straight back. Only
-    # the step sizes change; every accepted step passes the same gates; a failure at a size below
-    # min_step_s still stops the run. cap_factor None: the earlier control (halve, then grow).
-    # Evidence: evidence/pretrain_step_control_20261104/.
-    cap_factor = cfg.get("rejection_cap_factor")
-    cap_growth = cfg.get("rejection_cap_growth")
-    if cap_factor is not None and not (0 < cap_factor < 1 and cap_growth and cap_growth > 1):
-        raise ValueError("rejection_cap_factor must be in (0, 1) and rejection_cap_growth > 1")
-    ceiling = np.inf
     clock = 0.0
     times, states = [0.0], [x.copy()]
-    records, sizes = [], []
-    solves = rejected = 0
+    records = []
+    switches = taken = 0
     reason = None
     guard = policy["wall_guard_over_R"] * R
+    solved = ("no_candidates", "unconstrained_verified", "daqp_solved")
 
     def clearance(z):
-        q = c.cavity.lumen.local(z)
-        return float(
-            min(
-                (c.cavity.R - np.linalg.norm(q[:, 1:], axis=1) - R).min(),
-                (c.cavity.L - abs(q[:, 0]) - R).min(),
-            )
-        )
+        # 计算气泡表面到腔体壁、腔体两端的最小间隙（各泡按自己的半径）
+        # 由腔体自己算：旧芯片的直圆通道（PDMSCavity）或 Y 形通道（YChannelCavity）
+        return c.cavity.clearance(z, radii)
 
     try:
         if clearance(x) <= guard:
             raise RuntimeError("PRETRAIN_WALL_GUARD")
-        while clock < T - 1e-15:
+        
+        # 主循环（仿真步进核心，固定步长，第 n 步从 n·dt 走到 (n+1)·dt）
+        for n in range(total):
+            # 超时预算保护
             if time.perf_counter() - begin > cfg["budget_s"]:
                 raise RuntimeError("PRETRAIN_WALL_BUDGET")
-            k = next(
-                (i for i, b in enumerate(boundaries) if clock < b - 1e-15), len(boundaries) - 1
-            )
+            clock = n * dt
+            
+            # 找到当前属于哪一个激励段
+            k = int(np.searchsorted(ends, n, side="right"))
             seg = segments[k]
+            
+            # 给forces设置当前段的振幅、相位
+            # 换频率：每个泡的振动状态连续带入新频率，声场计算器按新频率重建
+            if seg["frequency_Hz"] != forces.physics.frequency_Hz:
+                forces.set_frequency(disc_model(seg["frequency_Hz"]))
+                switches += 1
             forces.control(seg["amplitude_Pa_equivalent"], seg["phase_rad"])
-            target = min(pending[0], boundaries[k], T)
-            hh = min(h, target - clock, T - clock)
+
+            # ============== 1. 力评估：输入气泡位置，得到合力 ===================================
+            # 声场 + 耦合 + 响应，算出每个气泡合力
             f = forces(x)
-            r = sparse_sequential_step(
-                x, f["total_force_N"], R, zeta, hh, sparse_resistance(x, R)["A"], policy
-            )
-            solves += 1
+
+            # ============== 2. 稀疏接触约束求解步进：sparse_sequential_step ====================
+            # 带气泡之间排斥约束的位移更新，每个有约束的步都直接用 DAQP 求解，热启动
+            # 根据合力算出泡在这一步之后的新位置，并保证泡和泡不互相穿透
+            if compiled_contact is None:
+                # Python 版
+                r = sparse_sequential_step(
+                    x, f["total_force_N"], R, radii, zeta, dt, sparse_resistance(x, R, radii)["A"], policy, qp
+                )
+            else:
+                # C++ 版
+                r = compiled_contact(x, f["total_force_N"], R, radii, zeta, dt)
+
+            # 等联立求解的最小奇异值检查（第二个线程上，和接触步同时算，2026-11-07 起）。紧接在接触步之后、
+            # 记录和其余检查之前：不通过时停在这里，这一步不记录、不接受，停止原因与以前在力计算里检查时相同
+            # （接触步只在力不是有限数或位置不合法时自己报错，被这项检查拦下的力仍是有限数）
+            forces.wait_for_singular_value_check()
+
             row = dict(
                 time_s=clock,
-                dt_s=hh,
+                dt_s=dt,
                 segment=k,
                 solver_status=r["solver_status"],
                 qp_iterations=r["qp_iterations"],
@@ -339,61 +186,79 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
                 candidate_count=r["candidate_count"],
                 gates=r["gates"],
             )
-            if not r["converged"]:
-                rejected += 1
-                records.append(dict(row, accepted=False))
-                if cap_factor is not None:
-                    ceiling = hh
-                h = hh / 2
-                if h < cfg["min_step_s"]:
-                    raise RuntimeError(
-                        "PRETRAIN_MIN_STEP:"
-                        + ",".join(name for name, ok in r["gates"].items() if not ok)
-                    )
-                continue
+            records.append(row)
+
+            # ================= 只有下面三种情况停止整条运行 =====================================
+            # 约束问题没解出来
+            if r["solver_status"] not in solved:
+                raise RuntimeError("PRETRAIN_CONTACT_UNSOLVED:" + r["solver_status"])
+            
+            # 出现真实重叠
+            if not r["gates"].get("TRUE_GEOMETRY_PASS", True):
+                raise RuntimeError("PRETRAIN_OVERLAP")
+            
+            # 出现了候选名单之外的接触
+            if not r["gates"].get("CANDIDATE_COVERAGE", True):
+                raise RuntimeError("PRETRAIN_CONTACT_OUTSIDE_CANDIDATES")
+            
+            # ============= 步接受，更新位置、时钟 ===============================================
+            # 算出所有泡里，泡表面离管壁或两个端面最近的那个距离。小于等于保护距离（2R = 3.56 µm）就停止运行
             y = r["positions_m"]
             if clearance(y) <= guard:
                 raise RuntimeError("PRETRAIN_WALL_GUARD")
-            moved = float(np.linalg.norm(y - x, axis=1).max())
+
+            # 算出每个泡这一步走了多远，取最大的那个
+            row["max_displacement_m"] = float(np.linalg.norm(y - x, axis=1).max())
+
             x = y
-            clock += hh
-            sizes.append(hh)
-            records.append(dict(row, accepted=True, max_displacement_m=moved))
-            while pending and clock >= pending[0] - 1e-12:
-                pending.pop(0)
+            taken = n + 1
+            clock = taken * dt
+            if taken % save_every == 0 or taken == total:
                 times.append(clock)
                 states.append(x.copy())
-            grow = min(cfg["max_growth"], max(cfg["min_growth"], delta / max(moved, 1e-30)))
-            intended = max(h, hh)  # hh < h only where the step was cut short at a save or switch
-            h = min(cfg["max_step_s"], intended * grow)
-            if np.isfinite(ceiling):
-                ceiling *= cap_growth
-                h = max(min(h, cap_factor * ceiling), cfg["min_step_s"])
+
     except Exception as ex:
         reason = repr(ex)
         (out / "exception.txt").write_text(traceback.format_exc())
+
+    # 运行中途停下时，把最后一个已接受的状态也存进轨迹
     if times[-1] < clock:
-        # Accepted prefix of a failed run: the last accepted state, labelled by its time.
         times.append(clock)
         states.append(x.copy())
-    complete = reason is None and abs(clock - T) < 1e-13
+
+    # 把整条运行的轨迹写进 trajectory.h5 文件
+    complete = reason is None
     path = out / "trajectory.h5"
     with h5py.File(path, "w") as h5:
         h5["time_s"] = times
         h5.create_dataset("positions_m", data=np.asarray(states), compression="gzip")
         h5["particle_id"] = np.arange(len(x))
+        h5["radii_m"] = radii
+        active = [
+            next((i for i, b in enumerate(boundaries) if ts < b - 1e-15), len(segments) - 1)
+            for ts in times
+        ]
+        h5["action_segment"] = np.array(active)
+        h5["action_amplitude_Pa_equivalent"] = np.array(
+            [segments[i]["amplitude_Pa_equivalent"] for i in active], float
+        )
+        h5["action_phase_rad"] = np.array([segments[i]["phase_rad"] for i in active], float)
+        h5["action_frequency_Hz"] = np.array([segments[i]["frequency_Hz"] for i in active], float)
         h5.attrs.update(
             scope="PRETRAIN_TIER",
             coupling=t["coupling"],
             field=field,
+            field_device=field_device,
+            contact=contact,
             propagation_delay=bool(t.get("propagation_delay")),
-            sampling="Accepted positions at the requested save times; steps end exactly there",
+            sampling="Positions at the requested save times; fixed steps land exactly there",
             labels=json.dumps(labels),
             adhesion_force_N=float(t.get("adhesion_force_N", 0.0)),
             adhesion_range_m=float(t.get("adhesion_range_m", 0.0)),
             training_ready=False,
         )
-    ident = dict(ident, versions=dict(ident["versions"], osqp=osqp.__version__))
+
+    # 记录运行日志
     r = dict(
         id=t["id"],
         task=t,
@@ -405,22 +270,29 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
         scope="PRETRAIN_TIER",
         coupling=t["coupling"],
         field=field,
+        field_device=field_device,
+        frequencies_Hz=sorted({s["frequency_Hz"] for s in segments}),
+        frequency_switches=switches,
+        contact=contact,
+        daqp_iterations=solver.iterations,
         labels=labels,
         training_ready=False,
         trajectory_path=path.name,
         trajectory_sha256=sha(path),
         initial=endpoint(start, start),
         final=endpoint(start, x),
-        contacts_final=len(cKDTree(x).query_pairs(2.01 * R)),
-        accepted_steps=len(sizes),
-        gate_rejected_steps=rejected,
-        constrained_solves=solves,
+        contacts_final=int(np.count_nonzero(
+            [np.linalg.norm(x[j] - x[i]) <= 2.01 * (0.5 * (radii[i] + radii[j]))
+             for i, j in cKDTree(x).query_pairs(2.01 * radii.max())]
+        )),
+        accepted_steps=taken,
+        fixed_step_s=dt,
         force_evaluations=forces.calls,
-        step_s=dict(
-            median=float(np.median(sizes)) if sizes else None,
-            min=float(min(sizes)) if sizes else None,
-            max=float(max(sizes)) if sizes else None,
-        ),
+        # Gates are recorded, not enforced: steps that did not pass each one (diagnostic only).
+        steps_failing_gates={
+            g: sum(1 for row in records if not row["gates"].get(g, True))
+            for g in sorted({g for row in records for g in row["gates"]})
+        },
         min_collective_singular_value=forces.min_singular_value,
         wall_s=time.perf_counter() - begin,
         rss_peak_MiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024,
@@ -428,5 +300,5 @@ def integrate_pretrain(t, c, initial, segments, policy, out, ident):
     )
     write(out / "STEP_RECORDS.json", records)
     write(out / "SUMMARY.json", r)
-    print("PRETRAIN", t["id"], r["status"], clock, "solves", solves, flush=True)
+    print("PRETRAIN", t["id"], r["status"], clock, "steps", taken, flush=True)
     return clean(r)

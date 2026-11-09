@@ -1,8 +1,9 @@
 """Frozen force parameters. Legacy contact selector fields do not select the SQP solver.
 
 The mobility/contact iteration fields retain the original F2 input vocabulary only.
-The active solver always uses hydrodynamics.resistance and contact.sequential_step;
-its tolerances come from the explicit contact policy. It never runs legacy PBD.
+The pretraining tier uses hydrodynamics.sparse_resistance and the contact steps in contact.py
+(compiled or Python); their tolerances come from the explicit contact policy. It never
+runs legacy PBD.
 """
 
 from dataclasses import dataclass

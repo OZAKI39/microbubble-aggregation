@@ -18,7 +18,8 @@ from microbubble.bubble_response import (
     apecss_harmonics,
     apecss_options,
     build_apecss_harmonics,
-    write_response_grid,
+    cached_apecss_library,
+    shell_parameters,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,10 @@ APECSS_DIR = os.environ.get("APECSS_DIR")
 needs_apecss = pytest.mark.skipif(
     not APECSS_DIR or shutil.which("gcc") is None,
     reason="set APECSS_DIR to the APECSS sources; needs gcc",
+)
+needs_daqp = pytest.mark.skipif(
+    not os.environ.get("DAQP_DIR") or shutil.which("g++") is None,
+    reason="pretraining runs need DAQP_DIR (the DAQP sources) and g++",
 )
 # Uncoated 3 um bubble in water: lightly damped, so it shows period doubling near 2 f0.
 FREE_BUBBLE = """BUBBLE
@@ -71,30 +76,6 @@ def test_options_are_exact_and_checked():
         apecss_options({**CASE, "radius_m": float("nan")})
 
 
-def test_grid_file_is_never_overwritten(tmp_path):
-    shape = (1, 2)
-    grid = dict(
-        axes={"frequency_Hz": np.array([2.5e6]), "pressure_Pa": np.array([1e3, 2e3])},
-        status=np.full(shape, "CONVERGED", dtype=object),
-        cycles=np.full(shape, 13, np.int32),
-        harmonics_m3=np.ones(shape + (8,), complex),
-        mean_volume_change_m3=np.zeros(shape),
-        max_R_over_R0=np.ones(shape),
-        min_R_over_R0=np.ones(shape),
-        estimated_relative_error=np.full(shape, 1e-7),
-        cpu_s=np.zeros(shape),
-        options={"case_0000.apecss": "BUBBLE\nEND\n"},
-    )
-    path = tmp_path / "RESPONSE_GRID.h5"
-    write_response_grid(path, grid, {"note": "test"})
-    with pytest.raises(FileExistsError):
-        write_response_grid(path, grid, {"note": "test"})
-    with h5py.File(path) as h:
-        assert json.loads(h.attrs["axis_order"]) == ["frequency_Hz", "pressure_Pa"]
-        assert h["harmonics_m3"].shape == (1, 2, 8)
-        assert h["status"][0, 1] == b"CONVERGED"
-
-
 @pytest.fixture(scope="module")
 def driver(tmp_path_factory):
     return build_apecss_harmonics(APECSS_DIR, tmp_path_factory.mktemp("apecss"))["executable"]
@@ -134,7 +115,7 @@ def test_carried_response_needs_apecss_sources(monkeypatch, tmp_path):
 
     monkeypatch.delenv("APECSS_DIR", raising=False)
     with pytest.raises(ValueError, match="apecss_dir"):
-        carried_apecss_response(ROOT, {}, load_pretrain_policy(ROOT), 2.5e6, 2, tmp_path)
+        carried_apecss_response(ROOT, {}, load_pretrain_policy(ROOT), 2.5e6, np.full(2, 1.78e-6), tmp_path)
 
 
 @pytest.fixture(scope="module")
@@ -149,7 +130,7 @@ def carried(tmp_path_factory):
 @needs_apecss
 def test_carried_bubbles_settle_like_the_driver(carried, driver):
     library, options = carried
-    r = CarriedApecssResponse(library, options, 2.4e6, 2, tolerance=1e-7)
+    r = CarriedApecssResponse(library, [options] * 2, 2.4e6, tolerance=1e-7)
     try:
         # From rest, real amplitude: same settled response as the command-line driver.
         H = r.query(np.array([3000.0 + 0j, 0j]))
@@ -162,14 +143,16 @@ def test_carried_bubbles_settle_like_the_driver(carried, driver):
         # same settled response.
         P = np.array([3030.0 * np.exp(0.01j), 0j])
         H2 = r.query(P)
-        fresh = CarriedApecssResponse(library, options, 2.4e6, 1, tolerance=1e-7)
+        fresh = CarriedApecssResponse(library, [options], 2.4e6, tolerance=1e-7)
         H3 = fresh.query(P[:1])
         assert r.cycles_per_call[-1][0] < fresh.cycles_per_call[-1][0]
         fresh.close()
         assert np.max(np.abs(H2[0] - H3[0])) / abs(H3[0, 0]) < 1e-5
         # Table convention: V_n(P) = V_n(|P|) exp(i n arg P).
         rotated = H3[0] * np.exp(-0.01j * np.arange(1, 9))
-        reference = r.query(np.array([3030.0 + 0j]))[0]  # a different shape: fresh bubble
+        once = CarriedApecssResponse(library, [options], 2.4e6, tolerance=1e-7)  # fresh bubble
+        reference = once.query(np.array([3030.0 + 0j]))[0]
+        once.close()
         assert np.max(np.abs(rotated - reference)) / abs(reference[0]) < 1e-5
     finally:
         r.close()
@@ -182,7 +165,122 @@ def test_carried_bubbles_do_not_depend_on_thread_count(carried):
     path = [rng.uniform(1e3, 3e4, 6) * np.exp(1j * rng.uniform(0, 2 * np.pi, 6)) for _ in range(5)]
     out = []
     for threads in (1, 2):
-        r = CarriedApecssResponse(library, options, 2.5e6, 6, threads=threads)
+        r = CarriedApecssResponse(library, [options] * 6, 2.5e6, threads=threads)
         out.append([r.query(P) for P in path])
         r.close()
     assert all(np.array_equal(a, b) for a, b in zip(*out))
+
+
+@needs_apecss
+def test_carried_bubbles_continue_at_a_new_frequency(carried):
+    # Settled at 2.2 MHz, switched to 2.8 MHz: the bubbles continue from their state and settle
+    # to the response of fresh bubbles at 2.8 MHz; the retry cache does not return the 2.2 MHz
+    # result for the same P; the decay rate is measured again (>= 3 cycles).
+    library, options = carried
+    P = np.array([3000.0 * np.exp(0.2j), 8000.0 + 0j])
+    r = CarriedApecssResponse(library, [options] * 2, 2.2e6, tolerance=1e-7)
+    fresh = CarriedApecssResponse(library, [options] * 2, 2.8e6, tolerance=1e-7)
+    try:
+        old = r.query(P)
+        r.set_frequency(2.8e6)
+        assert r.frequency_Hz == 2.8e6 and r.frequency_switches == 1
+        H = r.query(P)
+        assert r.cache_hits == 0 and np.abs(H - old).max() > 0.1 * np.abs(old[:, 0]).min()
+        reference = fresh.query(P)
+        assert np.abs(H - reference).max() / np.abs(reference[:, 0]).min() < 1e-5
+        assert min(r.cycles_per_call[-1]) >= 3
+        probe = r.probe(np.full(2, 1.0 + 0j))  # fresh bubbles at the new frequency
+        np.testing.assert_array_equal(probe, fresh.probe(np.full(2, 1.0 + 0j)))
+        for bad in (0.0, -2e6, float("nan")):
+            with pytest.raises(ValueError, match="frequency"):
+                r.set_frequency(bad)
+        assert r.frequency_Hz == 2.8e6
+    finally:
+        r.close()
+        fresh.close()
+
+
+@needs_apecss
+def test_carried_bubbles_settle_at_a_node_and_at_10_MHz(carried):
+    # 2026-11-08: a bubble relaxing onto a pressure node (drive 5 kPa x 0.7^k, down to 1e-13 Pa)
+    # and a bubble moving through a standing wave of 25 kPa settle at every call, at 2.5 and
+    # 10 MHz. Before, query() raised APECSS_CARRIED_NOT_CONVERGED: below about 1e-6 Pa the change
+    # was measured against a fundamental at round-off level, and at 10 MHz the change levels off
+    # at the 1e-8 ODE noise, above the round-off floor the check waited for.
+    library, options = carried
+    for f in (2.5e6, 10e6):
+        r = CarriedApecssResponse(library, [options], f)
+        try:
+            for k in range(110):
+                r.query(np.array([5e3 * 0.7**k * np.exp(0.4j)]))
+            for k in range(400):
+                drift = np.exp(1j * (0.4 + 0.5 * np.sin(0.05 * k)))
+                r.query(np.array([25e3 * np.cos(0.3 + 0.02 * k) * drift]))
+        finally:
+            r.close()
+
+
+@needs_apecss
+@needs_daqp
+def test_pretrain_runs_use_carried_apecss_by_default(tmp_path):
+    from workflows.f10ag import run
+
+    cfg = dict(
+        fidelity="PRETRAIN",
+        coupling="collective",
+        field="direct",
+        state_seed=27,  # a random start (seed 27: 16 bubbles, quick)
+        duration_s=1e-3,
+        save_interval_s=5e-4,
+        fixed_step_s=5e-5,
+        action_seed=0,
+        action_segment_s=1e-3,
+    )
+    path = tmp_path / "cfg.json"
+    path.write_text(json.dumps(cfg))  # no "response": the policy default
+    r = run(ROOT, path, tmp_path / "out")
+    assert r["status"] == "PASS" and r["task"]["response"] == "apecss"
+    record = json.loads((tmp_path / "out/EXECUTION.json").read_text())["identity"]["apecss_response"]
+    assert record["stats"]["calls"] >= r["accepted_steps"]
+
+
+@needs_apecss
+def test_carried_bubbles_have_their_own_size(carried, tmp_path):
+    # Since 2026-11-07 every bubble has its own options (radius, and shell parameters following
+    # apecss_response.shell_vs_radius); the case radius gives the case itself. Each bubble in a
+    # mixed set responds as it does alone.
+    from workflows.f10ag import load_pretrain_policy
+
+    library, _ = carried
+    law = load_pretrain_policy(ROOT)["apecss_response"]["shell_vs_radius"]
+    assert shell_parameters(CASE, CASE["radius_m"], law) == CASE
+    small, big = shell_parameters(CASE, 1.2e-6, law), shell_parameters(CASE, 2.4e-6, law)
+    assert small["elasticity_N_m"] < CASE["elasticity_N_m"] < big["elasticity_N_m"]
+    assert small["shell_viscosity_kg_s"] < CASE["shell_viscosity_kg_s"] < big["shell_viscosity_kg_s"]
+    paths = []
+    for name, bubble in (("small", small), ("big", big)):
+        paths.append(tmp_path / f"{name}.apecss")
+        paths[-1].write_text(apecss_options(bubble, 1e-8))
+    P = np.array([3000.0 + 0j, 3000.0 + 0j])
+    mixed = CarriedApecssResponse(library, paths, 2.5e6, tolerance=1e-7)
+    alone = [CarriedApecssResponse(library, [path], 2.5e6, tolerance=1e-7) for path in paths]
+    try:
+        H = mixed.query(P)
+        for k in range(2):
+            np.testing.assert_array_equal(H[k], alone[k].query(P[:1])[0])
+        np.testing.assert_allclose(mixed.rest_volume_m3, 4 / 3 * np.pi * np.array([1.2e-6, 2.4e-6]) ** 3,
+                                   rtol=1e-12)
+        assert abs(H[1, 0]) > 2 * abs(H[0, 0])  # the larger bubble oscillates much more here
+    finally:
+        mixed.close()
+        for r in alone:
+            r.close()
+
+
+@needs_apecss
+def test_library_is_compiled_once_per_source_set(tmp_path):
+    first = cached_apecss_library(APECSS_DIR, tmp_path)
+    second = cached_apecss_library(APECSS_DIR, tmp_path)
+    assert not first["cached"] and second["cached"]
+    assert second["library"] == first["library"] and Path(first["library"]).is_file()
+    assert [p.name for p in tmp_path.iterdir()] == [first["cache_key"][:16]]

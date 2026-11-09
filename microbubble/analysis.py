@@ -1,4 +1,8 @@
-"""Fixed-ID shape, capture/censoring, shared times and evidence-specific admission."""
+"""Fixed-ID cluster shape, deformation, rotation and endpoint metrics (SI).
+
+The F10AG capture/censoring, HF/LF shared-time and admission-window analysis was removed with
+the frozen HF/LF path on 2026-11-06 (user decision; last in commit 03e0701).
+"""
 
 import numpy as np
 from scipy.spatial import cKDTree
@@ -176,16 +180,6 @@ def measure(x0, x):
     return {**geometry(x), **deformation(x0, x)}
 
 
-def series(times, positions, stride=1):
-    ix = np.unique(np.r_[np.arange(0, len(times), stride), len(times) - 1]).astype(int)
-    rows = [measure(positions[0], positions[k]) for k in ix]
-    return {
-        "time_s": np.asarray(times)[ix],
-        "sample_index": ix,
-        **{key: np.asarray([row[key] for row in rows]) for key in rows[0]},
-    }
-
-
 def spatial(x):
     x = np.asarray(x)
     q = x[:, :2]
@@ -312,126 +306,3 @@ def endpoint(x0, x, v=None):
     if v is not None:
         out["rotation"] = rotation(x, v)
     return out
-
-
-def capture(times, x, roots, threshold=20e-6, hold=0.01, full_3d=False):
-    times = np.asarray(times)
-    x = np.asarray(x)
-    roots = np.asarray(roots)
-    dist = (
-        abs(x[:, :, 0, None] - roots)
-        if not full_3d
-        else np.sqrt((x[:, :, 0, None] - roots) ** 2 + np.sum(x[:, :, 1:] ** 2, axis=2)[:, :, None])
-    )
-    assignment = dist.argmin(2)
-    distance = dist.min(2)
-    rows = []
-    for i in range(x.shape[1]):
-        inside = distance[:, i] <= threshold
-        ids = np.flatnonzero(inside)
-        first = int(ids[0]) if len(ids) else None
-        held = None
-        reexit = False
-        stretches = []
-        start = None
-        # Maximal contiguous intervals with a fixed band assignment, vectorized.
-        cuts = np.r_[True, (~inside[:-1]) | (assignment[1:, i] != assignment[:-1, i])]
-        ends = np.r_[(~inside[1:]) | (assignment[1:, i] != assignment[:-1, i]), True]
-        stretches = list(zip(np.flatnonzero(inside & cuts), np.flatnonzero(inside & ends)))
-        for s, e in stretches:
-            if times[e] - times[s] >= hold - 1e-12 and held is None:
-                held = s
-        if first is not None:
-            reexit = bool((~inside[first:]).any())
-        rows.append(
-            dict(
-                particle_id=i,
-                initial_distance_m=float(distance[0, i]),
-                final_distance_m=float(distance[-1, i]),
-                initial_band=int(assignment[0, i]),
-                final_band=int(assignment[-1, i]),
-                first_entry_s=None if first is None else float(times[first]),
-                entry_bracket_s=None
-                if first is None
-                else [float(times[max(0, first - 1)]), float(times[first])],
-                first_held_entry_s=None if held is None else float(times[held]),
-                right_censored=held is None,
-                reexit=reexit,
-                completed_s=float(times[-1]),
-                threshold_m=threshold,
-                hold_s=hold,
-                final_hold_s=float(times[-1] - times[stretches[-1][0]])
-                if stretches and stretches[-1][1] == len(times) - 1
-                else 0.0,
-            )
-        )
-    return rows
-
-
-def aligned(h, z):
-    ht = h["time_s"][:]
-    candidates = []
-    for tk, xk in [("sample_time_s", "sample_positions_m"), ("time_s", "positions_m")]:
-        lt = z[tk][:]
-        ix = np.searchsorted(ht, lt)
-        ix = np.clip(ix, 0, len(ht) - 1)
-        left = np.maximum(ix - 1, 0)
-        ix = np.where(abs(ht[left] - lt) < abs(ht[ix] - lt), left, ix)
-        good = np.flatnonzero(abs(ht[ix] - lt) < 1e-12)
-        _, unique = np.unique(ix[good], return_index=True)
-        good = good[unique]
-        candidates.append((len(good), tk, xk, good, ix))
-        if len(good) >= 101:
-            break
-    count, tk, xk, good, ix = max(candidates, key=lambda c: c[0])
-    assert count >= min(101, len(ht)), "Insufficient exact shared times; no numeric admission"
-    good = good[np.unique(np.rint(np.linspace(0, len(good) - 1, min(401, len(good)))).astype(int))]
-    ids = ix[good]
-    return (
-        ht[ids],
-        h["positions_m"][ids],
-        z[xk][good],
-        dict(
-            LF_source=tk,
-            shared_samples=len(good),
-            HF_interpolation=False,
-            scope="Exact shared timestamps; original LF dense output or accepted nodes",
-        ),
-    )
-
-
-def time_windows(science):
-    convergence = science["convergence"]
-    complete = [r for r in science["rows"] if r["kind"] == "HF" and r["status"] == "PASS"]
-    paired = {r["id"]: r for r in science["paired"] if r["PASS"]}
-    rows = []
-    for r in complete:
-        if r["task"].get("variant"):
-            continue
-        checks = {q["id"].rsplit("_", 1)[-1]: q for q in convergence if q["parent"] == r["id"]}
-        refined = all(k in checks and checks[k]["PASS"] for k in ["DT05", "FINE"])
-        rows.append(
-            dict(
-                id=r["id"],
-                state=r["state"],
-                action=r["action"],
-                N=r["N"],
-                completed_s=r["completed_s"],
-                paired_pass=r["id"] in paired,
-                checks=checks,
-                both_dt_and_cache_refined=refined,
-                scope="This exact initial state, action and completed window only",
-            )
-        )
-    return dict(
-        rows=rows,
-        max_new_HF_dt_and_cache_refined_s=max(
-            [r["completed_s"] for r in rows if r["both_dt_and_cache_refined"]] + [0]
-        ),
-        max_new_paired_and_refined_s=max(
-            [r["completed_s"] for r in rows if r["both_dt_and_cache_refined"] and r["paired_pass"]]
-            + [0]
-        ),
-        historical_refinement="F10AF 50 ms X_PAIR convergence remains historical evidence, not a newly rerun AG refinement",
-        limit_m=50e-9,
-    )

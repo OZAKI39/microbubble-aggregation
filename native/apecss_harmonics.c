@@ -36,6 +36,14 @@
 #define NH 8  // harmonics 1..8, as in the response tables
 #define NT (2 * NH + 1)  // tallies: mean, then cos/sin for each harmonic
 #define TALLY_EXP 200  // tallies are stored times 2^-200 so they never limit the APECSS time step
+#define Q_MAX 0.99  // largest cycle-to-cycle contraction q the settling estimate admits
+// Smallest fundamental |W_1|/V0 that changes are measured against (2026-11-08). Near a pressure
+// node the drive and the response shrink together until the tallies are round-off (absolute
+// noise about 1e-15 to 2e-14 below 1e-6 Pa); relative to the bubble's own fundamental the change
+// then never settles. 1e-6 is the response to about 0.2 Pa at 2.5 MHz and 4 Pa at 10 MHz, far
+// below the responses that make the forces (1e-3 to 1e-1 at 0.1 to 10 kPa) and far above the
+// round-off.
+#define FUND_FLOOR 1.0e-6
 
 enum
 {
@@ -236,9 +244,32 @@ double carried_rest_volume(void *h)
   return (4.0 / 3.0 * APECSS_PI * pow(b->R0, 3));
 }
 
+// Continue a carried bubble at another drive frequency (a switch between pretraining segments).
+// Its radial, wall and gas state carry over unchanged, so the bubble itself is continuous.
+// Every call starts at drive phase 0 (t = 0, the drive is periodic) and ends after whole
+// cycles, so the drive phase is continuous as well; only the drive frequency and amplitude
+// change. The settling decay rate q was measured at the old frequency: it is measured again,
+// as in a first call (at least three cycles in the next call). Returns 0, or 1 for an invalid
+// frequency (nothing changed).
+int carried_set_frequency(void *h, double frequency_Hz)
+{
+  struct CarriedBubble *b = h;
+  if (!isfinite(frequency_Hz) || !(frequency_Hz > 0.0)) return (1);
+  b->T = 1.0 / frequency_Hz;
+  b->omega = 2.0 * APECSS_PI * frequency_Hz;
+  b->Excitation->f = frequency_Hz;
+  b->B->tEnd = 1.0e6 * b->T;  // only passed to the progress hook
+  b->B->dt = APECSS_MIN(b->B->dt, b->T / 64.0);  // first step at most 1/64 cycle, then adapted
+  b->q = 0.9;  // conservative until a contraction is measured again
+  b->q_known = 0;
+  b->calls_since_q = 0;
+  b->cache_valid = 0;
+  return (0);
+}
+
 static double max_change(const double *a, const double *c, double ref)
 {
-  // largest change of any tally (mean, cos, sin parts) relative to the fundamental magnitude
+  // largest change of any tally (mean, cos, sin parts) relative to ref (the fundamental magnitude, at least FUND_FLOOR)
   double m = 0.0;
   for (int j = 0; j < NT; j++)
     if (fabs(a[j] - c[j]) > m) m = fabs(a[j] - c[j]);
@@ -269,6 +300,12 @@ static int advance(struct CarriedBubble *b, double p_re, double p_im, struct Set
   b->steps_total += B->dtNumber;
   apecss_bubble_solver_initialize(B);  // t = 0 (the drive is periodic) and FSAL slope for the new drive
   double floor = 1.0e-3 * s.tol, d_prev = INFINITY, ratio_prev = -1.0;
+  // A change d1 <= settled bounds the remaining error by tol for any q <= Q_MAX
+  // (d1 q / (1 - q) <= tol), without a measured q (2026-11-08). With the ODE tolerance 1e-8 the
+  // change at 3-10 MHz levels off at 1e-6 to 1e-5 of the fundamental (integration noise): the
+  // ratios are then noise, q reads >= 0.9 (no estimate), and the bubble ran to max_cycles waiting
+  // for the round-off floor.
+  double settled = s.tol * (1.0 - Q_MAX) / Q_MAX;
   int status = s.fixed ? CARRIED_FIXED_CYCLES : CARRIED_NOT_CONVERGED, p2 = 0;
   for (int k = 1; k <= s.max_cycles; k++)
   {
@@ -286,9 +323,10 @@ static int advance(struct CarriedBubble *b, double p_re, double p_im, struct Set
       Hk[j] = j == 0 ? v : 2.0 * v;
     }
     double fund = hypot(Hk[1], Hk[2]);
-    if (!(fund > 0.0)) return (CARRIED_SOLVER_FAILED);
-    double d1 = b->cycles_seen >= 1 ? max_change(Hk, b->H, fund) : INFINITY;
-    double d2 = b->cycles_seen >= 2 ? max_change(Hk, b->Hprev, fund) : INFINITY;
+    if (!isfinite(fund)) return (CARRIED_SOLVER_FAILED);
+    double ref = fmax(fund, FUND_FLOOR);
+    double d1 = b->cycles_seen >= 1 ? max_change(Hk, b->H, ref) : INFINITY;
+    double d2 = b->cycles_seen >= 2 ? max_change(Hk, b->Hprev, ref) : INFINITY;
     memcpy(b->Hprev, b->H, sizeof(b->H));
     memcpy(b->H, Hk, sizeof(Hk));
     b->cycles_seen++;
@@ -302,7 +340,7 @@ static int advance(struct CarriedBubble *b, double p_re, double p_im, struct Set
       double ratio = d1 / d_prev;
       if (ratio_prev > 0.0 || b->q_known)
       {
-        b->q = fmin(ratio_prev > 0.0 ? fmax(ratio, ratio_prev) : ratio, 0.99);
+        b->q = fmin(ratio_prev > 0.0 ? fmax(ratio, ratio_prev) : ratio, Q_MAX);
         b->q_known = 1;
         measured = 1;
       }
@@ -310,6 +348,7 @@ static int advance(struct CarriedBubble *b, double p_re, double p_im, struct Set
     }
     double q = b->q, est = q < 0.9 ? d1 * q / (1.0 - q) : INFINITY;
     if (d1 <= floor) est = d1;  // round-off level: the ratio is meaningless
+    if (d1 <= settled) est = fmin(est, s.tol);  // at most tol for any q <= Q_MAX
     *est_out = est;
     d_prev = d1;
     if (log)
