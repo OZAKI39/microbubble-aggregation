@@ -1,0 +1,35 @@
+{
+ "name": "Q1_N800_7.0MHz_dots_adh1",
+ "seed": 5,
+ "bubbles": 800,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 7000000.0,
+   "pattern": "dots",
+   "duration_s": 1.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    4631.713446644066,
+    4631.713446644066,
+    6000.000000000001,
+    6000.000000000001
+   ],
+   "phases_rad": [
+    0.32701859675547906,
+    3.4686112503452717,
+    4.416139870142284,
+    1.2745472165524905
+   ]
+  }
+ ],
+ "adhesion_force_N": 5.04e-10,
+ "fixed_step_s": 0.001,
+ "duration_s": 1.0,
+ "status": "FAIL",
+ "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+ "completed_s": 0.373,
+ "wall_s": 3602.305109974928,
+ "step_max_displacement_median_m": 3.955189309400213e-08,
+ "step_max_displacement_max_m": 4.766758396430851e-07
+}

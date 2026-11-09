@@ -1,0 +1,5 @@
+STEP_BCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s_dt2.5ms 64944
+STEP_BCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s_dt2.5ms 64945
+STEP_BCPX_linecross_N250_9.375MHz_12.8s_each_way_dt2.5ms 64946
+STEP_BCPX_flap_N250_9.375MHz_T2s_total32s_dt2.5ms 64947
+STEP_BCPX_flap_N250_9.375MHz_T8s_total32s_dt2.5ms 64948

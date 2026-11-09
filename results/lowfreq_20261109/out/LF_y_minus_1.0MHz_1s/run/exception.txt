@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/workspace/new_microbubble_aggregation/microbubble/integration.py", line 208, in integrate_pretrain
+    raise RuntimeError("PRETRAIN_WALL_GUARD")
+RuntimeError: PRETRAIN_WALL_GUARD

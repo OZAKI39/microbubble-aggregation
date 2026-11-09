@@ -1,0 +1,35 @@
+{
+ "name": "Q1_N800_9.375MHz_cross_adh0",
+ "seed": 5,
+ "bubbles": 800,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 9375000.0,
+   "pattern": "cross",
+   "duration_s": 1.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    5156.211588932498,
+    5156.211588932498,
+    6000.000000000001,
+    6000.000000000001
+   ],
+   "phases_rad": [
+    3.9442131358217916,
+    3.9442131358217916,
+    2.997279862035681,
+    2.997279862035681
+   ]
+  }
+ ],
+ "adhesion_force_N": 0.0,
+ "fixed_step_s": 0.001,
+ "duration_s": 1.0,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 1.0,
+ "wall_s": 1174.9022969040088,
+ "step_max_displacement_median_m": 9.943089210548949e-09,
+ "step_max_displacement_max_m": 1.1615059733015473e-07
+}

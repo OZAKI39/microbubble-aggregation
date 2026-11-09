@@ -1,0 +1,5951 @@
+{
+  "identity": {
+    "commit": "NOT_COMMITTED",
+    "git_status": "NOT_COMMITTED",
+    "utc": "2026-11-08T11:37:05.913328+00:00",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "/workspace/envs/microbubble/bin/python",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "warp-lang": "1.18.0",
+      "matplotlib": "3.11.2"
+    },
+    "source_sha256": {
+      "main.py": "389c02a89b8f453dca111ac3efcf4753b7dfeb4abe281b30a367d0441ca53d2f",
+      "microbubble/__init__.py": "d882fce9cad7c5bb94cda8300a2dd3bc6e633d047f713b9fcff3a8b675a9e59e",
+      "microbubble/_warp_discs.py": "75f223ac0cac91335db897d57c74028d0a9498a1f30e83ca8c1aa6ac8121b20d",
+      "microbubble/acoustics.py": "8a1ad0f7442896106a0754e2ef07f57238fba832361203e65c5ff469e2c95ac5",
+      "microbubble/analysis.py": "50b4f537032b4f0bf108298a22059bbbfa91a1dc0deff73fa580d69bc952d46c",
+      "microbubble/bubble_response.py": "c42aa275826532baf7dbf1e97db3f5a90d2f17c244fa403226a437e743b05351",
+      "microbubble/contact.py": "52f0d1fb1c60d1730e4ed51f22adc0748794d1fd8062b4d97a18b31efc5e265f",
+      "microbubble/control.py": "c400fbf5fe6184f9381492a96408b06eca1c3c3572bd69ca3726da53e0a57ff2",
+      "microbubble/forces.py": "9e6060d895540044bd807027341f4a4d3ef2d29d1bddc1d90b070daebabe7d3a",
+      "microbubble/geometry.py": "1c165ad8b644a713a88407aa24f1ad465866f15ac180ede33132f6f61a7d046c",
+      "microbubble/gpu.py": "2c8012c3f4e2701c25f0b5362013727aa9c20d9aae289eb37fb8df3cd2e0b69a",
+      "microbubble/hydrodynamics.py": "36944209782893ef261befc88c8d88c939dba5f71c37b85fda9ffbf068ab43a2",
+      "microbubble/initial_conditions.py": "044cc73c9dd73e65e73982b87c08b913fa7c53590e0de1abf0a6569cb6d9b014",
+      "microbubble/integration.py": "011ab1d1f949036347b32ff34c8f42debbe8c9bb2ee31f8d55f7513e45100b96",
+      "microbubble/io.py": "a71546d31a68c857ee1af2091e0021caec80516468d82affe40bae8f8360268b",
+      "microbubble/parameters.py": "fd9c0b3f952add9584425461066f1f549cdcaf9a506f44f12c3cb882a6a9e711",
+      "workflows/__init__.py": "0a7c39e4b3d15cdd0bbd515cc6f8e76f6c278cf3f2f315e680d05b0bdd50053d",
+      "workflows/f10ag.py": "b6935a549b89507cbc09dcac5b1fb783a1bbe9dd6674c5681c77e24c4c8fb310",
+      "workflows/validation.py": "933657d6044edaea88b8895a03e5cdc58f4a333c46d4c5f716396029957c8699",
+      "native/apecss_harmonics.c": "20407fe3c86dbfd028d2722a21d05c1efce4a098229989e044474e3e57ebaa0e",
+      "native/contact_step.cpp": "fa0c5220ca83f743e8afbb09b214cea36c794a8f2941eec0fdcfb865f764eede",
+      "native/daqp_qp.cpp": "47a48f6304fc8ba4be79391427e611f81212b263ef275d94935d272503456e42",
+      "native/pair_forces.cpp": "5f9b685b9500b2ca3070b88943df5ccb8273142748ef9af8cc53fc2ca63127c6"
+    },
+    "input_sha256": {
+      "configs/frozen/f10ag_protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+      "configs/frozen/contact_policy.json": "2083c6fe0f4cfe199abad5c5bcef154f8fa8ad0175a062013abffa44f1d673e5",
+      "configs/frozen/contact_revision.json": "fd41b0dd567557166fe3d49771d5e3eca88f13b6ffe8bbd261bfeab8351ecaf5",
+      "inputs/apparatus_snapshot.json": "22263a9275aaca26158720a55fce02d620d07d4868b9658aca6c16e914f45bcb",
+      "inputs/response/adaptive_2500000.h5": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+      "inputs/response/LOW_PRESSURE_ADMISSION.json": "4afea0ba48f44f08d80bca2a533b699d8a52b87a81454ff79caa80e9cb94c000",
+      "inputs/response/low_pressure_2500000.h5": "aefe1d459c6667c0e459a1b7a070fe04960675d3fdaa4c14e7c11afc5878c6df",
+      "inputs/initial_states.h5": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "inputs/actions.json": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "inputs/source_order.json": "df940909e1f822995497855f3aa5260b1fe1e82aef4e203e279c5346f34c8ab5",
+      "inputs/fields/2400000/coarse.h5": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "inputs/fields/2400000/FIELD_GATE.json": "42a1e5ff5e1c301740ef99de31b3928e9659b327af0a67427a754264bfa3577a",
+      "inputs/response/2400000/response_shell_1.0.h5": "74606fc70639d262bd3b186a56ef1c6dfa48778a4c3d3822cebab6a870a24adc",
+      "inputs/response/2400000/PHYSICS_GATE.json": "ac7d87d73239516b61196e442dfab1e704eb303af653b0d2a92c14148cde256c",
+      "inputs/fields/2500000/coarse.h5": "3a20420af0b4f2e3168cdc5aaee636e62480f2b277d4bc5de0133856aea7251a",
+      "inputs/fields/2500000/FIELD_GATE.json": "5653310b677a7c1b4523b5a7ad767cc7dcad423836b8cbf24660ca4363bcff79",
+      "inputs/fields/2600000/coarse.h5": "06e1ea4f3d832c3f6fc744b8e2e1a143e13f2f9c3f64bb8860dae14ead296328",
+      "inputs/fields/2600000/FIELD_GATE.json": "da3990935c75e9e324a0a9292c7e150bea15ef5578c2f5ac34c8361acbff15a0",
+      "inputs/response/2600000/response_shell_1.0.h5": "6ccc1d8fafc3429063c05d45ce049f1ba935d8074770fd66456296002ddd7747",
+      "inputs/response/2600000/PHYSICS_GATE.json": "bc927860532eb3c024cb7b71b29dbfea438944a0e5844bd14cb1129c0c778c9d"
+    },
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "run_config_sha256": "a3529855938ae542c69987e1213f1ef6d44b1a676a6037f9e916a4df639106d9",
+    "compiled_contact": {
+      "library": "/workspace/new_microbubble_aggregation/build/contact/7693fe3fc4a409bd/libcontact_step.so",
+      "library_sha256": "445226b25320b9f663a49b813bf5aa2eb38a7602646e6adbcb6c812451622a89",
+      "source_sha256": "fa0c5220ca83f743e8afbb09b214cea36c794a8f2941eec0fdcfb865f764eede",
+      "daqp_interface_sha256": "47a48f6304fc8ba4be79391427e611f81212b263ef275d94935d272503456e42",
+      "daqp_dir": "/workspace/third_party/daqp",
+      "daqp_commit": "44a429a31ebb9e9eea3a12a5d84d3eaeec8c7938",
+      "daqp_source_sha256": "1791658904ec769eccc03f3e6cdc714155648c5ee43e7c046e117f5bd8c01280",
+      "compiler": "g++",
+      "compiler_version": "13.3.0",
+      "eigen_version": "3.4.0",
+      "command": [
+        "g++",
+        "-O3",
+        "-mavx2",
+        "-mfma",
+        "-fPIC",
+        "-shared",
+        "-I",
+        "/usr/include/eigen3",
+        "-I",
+        "/workspace/third_party/daqp/include",
+        "/workspace/new_microbubble_aggregation/native/contact_step.cpp",
+        "/workspace/new_microbubble_aggregation/native/daqp_qp.cpp",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/api.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/auxiliary.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/avi.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/bnb.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/daqp.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/daqp_prox.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/eq_elim.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/factorization.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/hierarchical.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/presolve.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/utils.c",
+        "-o",
+        "/workspace/new_microbubble_aggregation/build/contact/.staging__ja2q1f1/libcontact_step.so"
+      ],
+      "cache_key": "7693fe3fc4a409bd8d03ea22516ad237d9a2a1b5104dbddfa63ac5f4ee0247ec",
+      "cached": true
+    },
+    "compiled_pair_forces": {
+      "library": "/workspace/new_microbubble_aggregation/build/pair_forces/acf33178214f8551/libpair_forces.so",
+      "library_sha256": "b4b357e2958266de25848ee2097cb8b87815836c87cf4f2c82681aa62567aaf0",
+      "source_sha256": "5f9b685b9500b2ca3070b88943df5ccb8273142748ef9af8cc53fc2ca63127c6",
+      "compiler": "g++",
+      "compiler_version": "13.3.0",
+      "command": [
+        "g++",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/workspace/new_microbubble_aggregation/native/pair_forces.cpp",
+        "-o",
+        "/workspace/new_microbubble_aggregation/build/pair_forces/.staging_pzvrp_mk/libpair_forces.so"
+      ],
+      "cache_key": "acf33178214f8551175d7736aad0854d4fd210e81bc920048e9051da75e07b76",
+      "cached": true
+    },
+    "apecss_response": {
+      "bubble": {
+        "radius_m": 1.78e-06,
+        "ambient_pressure_Pa": 101300.0,
+        "polytropic_exponent": 1.07,
+        "density_kg_m3": 1000.0,
+        "sound_speed_m_s": 1500.0,
+        "viscosity_Pa_s": 0.002,
+        "sigma_water_N_m": 0.072,
+        "sigma_initial_N_m": 0.036,
+        "elasticity_N_m": 0.29325198219707016,
+        "shell_viscosity_kg_s": 4.619149127111346e-09
+      },
+      "shell_vs_radius": {
+        "elasticity_N_m_per_um": 0.4265,
+        "elasticity_floor_N_m": 0.03,
+        "shell_viscosity_decades_per_um": 0.667,
+        "use": "Since 2026-11-07 (user decision) the bubble of radius R has the case above except elasticity = max(elasticity_N_m + elasticity_N_m_per_um (R - radius_m) [um], elasticity_floor_N_m) and shell viscosity = shell_viscosity_kg_s x 10^(shell_viscosity_decades_per_um (R - radius_m) [um]) (bubble_response.shell_parameters): the slopes of least-squares fits to the SonoVue data of Tu et al. 2009 (J. Acoust. Soc. Am. 126, 2954, Fig. 4, linearized Marmottant model, read off the figure, about +-10%), the lines through the case at radius_m, the floor Tu's smallest elasticities (0.8-1.0 um). Evidence: evidence/f2_physics_check_20261107/."
+      },
+      "ode_tolerance": 1e-08,
+      "options": "BUBBLE\nInitialRadius 1.78e-06\nRPModel RPAR\nPressureAmbient 101300.0\nEND\n\nGAS\nEoS IG\nPolytropicExponent 1.07\nEND\n\nLIQUID\nReferenceDensity 1000.0\nReferenceSoundSpeed 1500.0\nViscosity 0.002\nEND\n\nINTERFACE\nSurfaceTensionCoeff 0.072\nLipidCoatingModel Marmottant\nSigmaInit 0.036\nElasticity 0.29325198219707016\nDilatationalViscosity 4.619149127111346e-09\nEND\n\nODESOLVER\nTolerance 1e-08\nEND\n",
+      "bubbles": [
+        {
+          "radius_m": 2.1501497068262807e-06,
+          "elasticity_N_m": 0.4511208321584789,
+          "shell_viscosity_kg_s": 8.155523395833426e-09
+        },
+        {
+          "radius_m": 1.0465681453077627e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.4974865707661227e-09
+        },
+        {
+          "radius_m": 1.8960304084228612e-06,
+          "elasticity_N_m": 0.3427389513894205,
+          "shell_viscosity_kg_s": 5.52019304898472e-09
+        },
+        {
+          "radius_m": 1.2217945765203e-06,
+          "elasticity_N_m": 0.055177369082978184,
+          "shell_viscosity_kg_s": 1.9599228039497883e-09
+        },
+        {
+          "radius_m": 1.4903963945695545e-06,
+          "elasticity_N_m": 0.1697360444809852,
+          "shell_viscosity_kg_s": 2.9607134638273476e-09
+        },
+        {
+          "radius_m": 1.3699460010655058e-06,
+          "elasticity_N_m": 0.11836395165150845,
+          "shell_viscosity_kg_s": 2.460684684513561e-09
+        },
+        {
+          "radius_m": 1.3799127884718934e-06,
+          "elasticity_N_m": 0.12261478648033275,
+          "shell_viscosity_kg_s": 2.4986407202765884e-09
+        },
+        {
+          "radius_m": 1.3777120172111624e-06,
+          "elasticity_N_m": 0.12167615753763095,
+          "shell_viscosity_kg_s": 2.4902095765738498e-09
+        },
+        {
+          "radius_m": 1.9281672752961473e-06,
+          "elasticity_N_m": 0.356445325110877,
+          "shell_viscosity_kg_s": 5.799486690561093e-09
+        },
+        {
+          "radius_m": 2.8450037733459735e-06,
+          "elasticity_N_m": 0.7474760915291279,
+          "shell_viscosity_kg_s": 2.3709341946707725e-08
+        },
+        {
+          "radius_m": 1.8667274974210393e-06,
+          "elasticity_N_m": 0.3302412598471435,
+          "shell_viscosity_kg_s": 5.277268903657835e-09
+        },
+        {
+          "radius_m": 1.957526512718742e-06,
+          "elasticity_N_m": 0.3689670398716137,
+          "shell_viscosity_kg_s": 6.066974470419559e-09
+        },
+        {
+          "radius_m": 1.4305459805683598e-06,
+          "elasticity_N_m": 0.14420984290947567,
+          "shell_viscosity_kg_s": 2.700698806519546e-09
+        },
+        {
+          "radius_m": 1.307172498215824e-06,
+          "elasticity_N_m": 0.09159105268611911,
+          "shell_viscosity_kg_s": 2.234529228546187e-09
+        },
+        {
+          "radius_m": 2.119074037222211e-06,
+          "elasticity_N_m": 0.4378670590723432,
+          "shell_viscosity_kg_s": 7.775429112067433e-09
+        },
+        {
+          "radius_m": 2.319489045653627e-06,
+          "elasticity_N_m": 0.5233440601683421,
+          "shell_viscosity_kg_s": 1.0577941890788927e-08
+        },
+        {
+          "radius_m": 2.401178569397037e-06,
+          "elasticity_N_m": 0.5581846420449065,
+          "shell_viscosity_kg_s": 1.1991902511864833e-08
+        },
+        {
+          "radius_m": 1.5386323816085597e-06,
+          "elasticity_N_m": 0.19030869295312092,
+          "shell_viscosity_kg_s": 3.188377839909484e-09
+        },
+        {
+          "radius_m": 2.0040231495761474e-06,
+          "elasticity_N_m": 0.3887978554912971,
+          "shell_viscosity_kg_s": 6.516065245203376e-09
+        },
+        {
+          "radius_m": 1.7215489187568343e-06,
+          "elasticity_N_m": 0.26832259604686004,
+          "shell_viscosity_kg_s": 4.2225530281285065e-09
+        },
+        {
+          "radius_m": 1.7615608670255995e-06,
+          "elasticity_N_m": 0.2853876919834884,
+          "shell_viscosity_kg_s": 4.490173079618428e-09
+        },
+        {
+          "radius_m": 1.4093562113151148e-06,
+          "elasticity_N_m": 0.13517240632296665,
+          "shell_viscosity_kg_s": 2.614222669821364e-09
+        },
+        {
+          "radius_m": 2.062946051158917e-06,
+          "elasticity_N_m": 0.4139284730163483,
+          "shell_viscosity_kg_s": 7.133242683161439e-09
+        },
+        {
+          "radius_m": 1.7811098953801331e-06,
+          "elasticity_N_m": 0.29372535257669696,
+          "shell_viscosity_kg_s": 4.627029663022888e-09
+        },
+        {
+          "radius_m": 1.6564543901192202e-06,
+          "elasticity_N_m": 0.2405597795829176,
+          "shell_viscosity_kg_s": 3.820824251576636e-09
+        },
+        {
+          "radius_m": 2.037792835068967e-06,
+          "elasticity_N_m": 0.40320062635398457,
+          "shell_viscosity_kg_s": 6.8629337172687075e-09
+        },
+        {
+          "radius_m": 1.238646537946603e-06,
+          "elasticity_N_m": 0.062364730631296356,
+          "shell_viscosity_kg_s": 2.0113109790868166e-09
+        },
+        {
+          "radius_m": 1.200400169056969e-06,
+          "elasticity_N_m": 0.04605265429986749,
+          "shell_viscosity_kg_s": 1.896570085756782e-09
+        },
+        {
+          "radius_m": 1.2906540664768027e-06,
+          "elasticity_N_m": 0.08454594154942655,
+          "shell_viscosity_kg_s": 2.178553581200226e-09
+        },
+        {
+          "radius_m": 1.52213349644005e-06,
+          "elasticity_N_m": 0.18327191842875157,
+          "shell_viscosity_kg_s": 3.108601309349662e-09
+        },
+        {
+          "radius_m": 1.462816148875844e-06,
+          "elasticity_N_m": 0.15797306969261768,
+          "shell_viscosity_kg_s": 2.8379213467130734e-09
+        },
+        {
+          "radius_m": 1.4522646998389171e-06,
+          "elasticity_N_m": 0.15347287667836837,
+          "shell_viscosity_kg_s": 2.792302970045684e-09
+        },
+        {
+          "radius_m": 1.6976608228119156e-06,
+          "elasticity_N_m": 0.2581343231263522,
+          "shell_viscosity_kg_s": 4.0704437006934696e-09
+        },
+        {
+          "radius_m": 1.3386184704099687e-06,
+          "elasticity_N_m": 0.10500275982692184,
+          "shell_viscosity_kg_s": 2.3450953375957834e-09
+        },
+        {
+          "radius_m": 1.884207670660157e-06,
+          "elasticity_N_m": 0.3376965537336271,
+          "shell_viscosity_kg_s": 5.420863851131761e-09
+        },
+        {
+          "radius_m": 1.2194585093538227e-06,
+          "elasticity_N_m": 0.054181036436475594,
+          "shell_viscosity_kg_s": 1.952903614430593e-09
+        },
+        {
+          "radius_m": 1.3644764369967512e-06,
+          "elasticity_N_m": 0.11603118257618458,
+          "shell_viscosity_kg_s": 2.440100797943332e-09
+        },
+        {
+          "radius_m": 1.203850231081214e-06,
+          "elasticity_N_m": 0.04752410575320798,
+          "shell_viscosity_kg_s": 1.9066460919404722e-09
+        },
+        {
+          "radius_m": 1.5316160170981998e-06,
+          "elasticity_N_m": 0.1873162134894524,
+          "shell_viscosity_kg_s": 3.1542046443804786e-09
+        },
+        {
+          "radius_m": 2.3009135655181303e-06,
+          "elasticity_N_m": 0.5154216178905527,
+          "shell_viscosity_kg_s": 1.0280431216197972e-08
+        },
+        {
+          "radius_m": 1.3775352625587772e-06,
+          "elasticity_N_m": 0.12160077167838867,
+          "shell_viscosity_kg_s": 2.4895336658623663e-09
+        },
+        {
+          "radius_m": 1.231842256508094e-06,
+          "elasticity_N_m": 0.05946270459777228,
+          "shell_viscosity_kg_s": 1.9904018586687497e-09
+        },
+        {
+          "radius_m": 1.8712402851142657e-06,
+          "elasticity_N_m": 0.33216596379830454,
+          "shell_viscosity_kg_s": 5.313971901076968e-09
+        },
+        {
+          "radius_m": 1.7391169374628511e-06,
+          "elasticity_N_m": 0.2758153560249762,
+          "shell_viscosity_kg_s": 4.338034291853156e-09
+        },
+        {
+          "radius_m": 2.1446407148799693e-06,
+          "elasticity_N_m": 0.4487712470933771,
+          "shell_viscosity_kg_s": 8.086811877620357e-09
+        },
+        {
+          "radius_m": 2.083223780624066e-06,
+          "elasticity_N_m": 0.4225769246332344,
+          "shell_viscosity_kg_s": 7.3588888810904205e-09
+        },
+        {
+          "radius_m": 1.3675914239857591e-06,
+          "elasticity_N_m": 0.11735972452699647,
+          "shell_viscosity_kg_s": 2.451802385562469e-09
+        },
+        {
+          "radius_m": 1.0674263467753824e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.5462344915702747e-09
+        },
+        {
+          "radius_m": 1.4714522690754698e-06,
+          "elasticity_N_m": 0.16165637495775806,
+          "shell_viscosity_kg_s": 2.8758130288270507e-09
+        },
+        {
+          "radius_m": 1.644328720325048e-06,
+          "elasticity_N_m": 0.23538818141570314,
+          "shell_viscosity_kg_s": 3.75032789266697e-09
+        },
+        {
+          "radius_m": 2.151406730866987e-06,
+          "elasticity_N_m": 0.45165695291184005,
+          "shell_viscosity_kg_s": 8.171283396415408e-09
+        },
+        {
+          "radius_m": 1.4094610160505006e-06,
+          "elasticity_N_m": 0.1352171055426087,
+          "shell_viscosity_kg_s": 2.6146434932957754e-09
+        },
+        {
+          "radius_m": 1.5127339725169547e-06,
+          "elasticity_N_m": 0.1792630214755514,
+          "shell_viscosity_kg_s": 3.064047849467479e-09
+        },
+        {
+          "radius_m": 9.08145319524647e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.2106954537124736e-09
+        },
+        {
+          "radius_m": 1.3747850520422497e-06,
+          "elasticity_N_m": 0.12042780689308974,
+          "shell_viscosity_kg_s": 2.4790404503577993e-09
+        },
+        {
+          "radius_m": 2.1559436002154544e-06,
+          "elasticity_N_m": 0.4535919276889615,
+          "shell_viscosity_kg_s": 8.228418364985104e-09
+        },
+        {
+          "radius_m": 1.4795754540278677e-06,
+          "elasticity_N_m": 0.1651209133399558,
+          "shell_viscosity_kg_s": 2.9119157892826533e-09
+        },
+        {
+          "radius_m": 1.318379820666813e-06,
+          "elasticity_N_m": 0.09637097571146594,
+          "shell_viscosity_kg_s": 2.2733239316888655e-09
+        },
+        {
+          "radius_m": 1.9446690719715886e-06,
+          "elasticity_N_m": 0.3634833413929528,
+          "shell_viscosity_kg_s": 5.948346439626657e-09
+        },
+        {
+          "radius_m": 2.5302792981010064e-06,
+          "elasticity_N_m": 0.6132461028371494,
+          "shell_viscosity_kg_s": 1.4621713677850469e-08
+        },
+        {
+          "radius_m": 2.021878470333703e-06,
+          "elasticity_N_m": 0.39641314979439457,
+          "shell_viscosity_kg_s": 6.6972255157235705e-09
+        },
+        {
+          "radius_m": 1.1304897121953884e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.7034862071455202e-09
+        },
+        {
+          "radius_m": 2.1869809630297233e-06,
+          "elasticity_N_m": 0.4668293629292472,
+          "shell_viscosity_kg_s": 8.630148839311894e-09
+        },
+        {
+          "radius_m": 1.742594192727598e-06,
+          "elasticity_N_m": 0.2772984053953908,
+          "shell_viscosity_kg_s": 4.361263331618345e-09
+        },
+        {
+          "radius_m": 1.3519184766743168e-06,
+          "elasticity_N_m": 0.11067521249866635,
+          "shell_viscosity_kg_s": 2.3934899452913324e-09
+        },
+        {
+          "radius_m": 1.659319087896893e-06,
+          "elasticity_N_m": 0.24178157318509505,
+          "shell_viscosity_kg_s": 3.837671660700518e-09
+        },
+        {
+          "radius_m": 1.5511021770905724e-06,
+          "elasticity_N_m": 0.19562706072619934,
+          "shell_viscosity_kg_s": 3.2500282470571474e-09
+        },
+        {
+          "radius_m": 1.38788775084387e-06,
+          "elasticity_N_m": 0.1260161079319808,
+          "shell_viscosity_kg_s": 2.529432610034051e-09
+        },
+        {
+          "radius_m": 1.739264473028253e-06,
+          "elasticity_N_m": 0.27587827994362013,
+          "shell_viscosity_kg_s": 4.339017352775459e-09
+        },
+        {
+          "radius_m": 1.1998333502914985e-06,
+          "elasticity_N_m": 0.04581090609639432,
+          "shell_viscosity_kg_s": 1.8949197754258746e-09
+        },
+        {
+          "radius_m": 1.8915783069360532e-06,
+          "elasticity_N_m": 0.3408401301052969,
+          "shell_viscosity_kg_s": 5.482576676322512e-09
+        },
+        {
+          "radius_m": 2.292173729555795e-06,
+          "elasticity_N_m": 0.5116940778526167,
+          "shell_viscosity_kg_s": 1.0143360506691002e-08
+        },
+        {
+          "radius_m": 2.0980030607923957e-06,
+          "elasticity_N_m": 0.42888028762502695,
+          "shell_viscosity_kg_s": 7.527833849853335e-09
+        },
+        {
+          "radius_m": 2.001707354765079e-06,
+          "elasticity_N_m": 0.3878101690043765,
+          "shell_viscosity_kg_s": 6.492931021293988e-09
+        },
+        {
+          "radius_m": 1.6125405102325432e-06,
+          "elasticity_N_m": 0.22183050981124985,
+          "shell_viscosity_kg_s": 3.5716303422848716e-09
+        },
+        {
+          "radius_m": 1.9584927497765194e-06,
+          "elasticity_N_m": 0.36937913997675575,
+          "shell_viscosity_kg_s": 6.075984363967343e-09
+        },
+        {
+          "radius_m": 1.801946667200544e-06,
+          "elasticity_N_m": 0.3026122357581022,
+          "shell_viscosity_kg_s": 4.777496862264465e-09
+        },
+        {
+          "radius_m": 1.4624234201074396e-06,
+          "elasticity_N_m": 0.15780557087289318,
+          "shell_viscosity_kg_s": 2.836210135471694e-09
+        },
+        {
+          "radius_m": 1.5433112149206206e-06,
+          "elasticity_N_m": 0.19230421536071488,
+          "shell_viscosity_kg_s": 3.211371610984782e-09
+        },
+        {
+          "radius_m": 1.3864213376188107e-06,
+          "elasticity_N_m": 0.12539068269149298,
+          "shell_viscosity_kg_s": 2.523742350860645e-09
+        },
+        {
+          "radius_m": 2.6550522286920523e-06,
+          "elasticity_N_m": 0.6664617577342304,
+          "shell_viscosity_kg_s": 1.7710132891151787e-08
+        },
+        {
+          "radius_m": 1.6250159697098184e-06,
+          "elasticity_N_m": 0.22715129327830774,
+          "shell_viscosity_kg_s": 3.640722981945325e-09
+        },
+        {
+          "radius_m": 1.6169930398164298e-06,
+          "elasticity_N_m": 0.22372951367877753,
+          "shell_viscosity_kg_s": 3.596137932214765e-09
+        },
+        {
+          "radius_m": 2.0332093584510096e-06,
+          "elasticity_N_m": 0.4012457735764258,
+          "shell_viscosity_kg_s": 6.814792324066525e-09
+        },
+        {
+          "radius_m": 1.603290508532803e-06,
+          "elasticity_N_m": 0.2178853840863107,
+          "shell_viscosity_kg_s": 3.5212491297597004e-09
+        },
+        {
+          "radius_m": 1.7780847368093792e-06,
+          "elasticity_N_m": 0.29243512244627046,
+          "shell_viscosity_kg_s": 4.605581828479125e-09
+        },
+        {
+          "radius_m": 1.712784006618798e-06,
+          "elasticity_N_m": 0.2645843610199875,
+          "shell_viscosity_kg_s": 4.1660925719533325e-09
+        },
+        {
+          "radius_m": 1.533624802005109e-06,
+          "elasticity_N_m": 0.18817296025224922,
+          "shell_viscosity_kg_s": 3.163950835603761e-09
+        },
+        {
+          "radius_m": 1.3866292522193873e-06,
+          "elasticity_N_m": 0.12547935826863887,
+          "shell_viscosity_kg_s": 2.5245483616732773e-09
+        },
+        {
+          "radius_m": 1.6839740822527346e-06,
+          "elasticity_N_m": 0.25229692827786154,
+          "shell_viscosity_kg_s": 3.9857742431038805e-09
+        },
+        {
+          "radius_m": 1.973187854048303e-06,
+          "elasticity_N_m": 0.3756466019486715,
+          "shell_viscosity_kg_s": 6.214672999906482e-09
+        },
+        {
+          "radius_m": 1.6011309753582151e-06,
+          "elasticity_N_m": 0.21696434318734897,
+          "shell_viscosity_kg_s": 3.5095896774588096e-09
+        },
+        {
+          "radius_m": 1.7744496031354566e-06,
+          "elasticity_N_m": 0.29088473793434244,
+          "shell_viscosity_kg_s": 4.579940846220743e-09
+        },
+        {
+          "radius_m": 2.006221383212696e-06,
+          "elasticity_N_m": 0.3897354021372851,
+          "shell_viscosity_kg_s": 6.538101313667615e-09
+        },
+        {
+          "radius_m": 2.1910832065192345e-06,
+          "elasticity_N_m": 0.4685789697775237,
+          "shell_viscosity_kg_s": 8.684693225568493e-09
+        },
+        {
+          "radius_m": 1.9926683424103156e-06,
+          "elasticity_N_m": 0.3839550302350698,
+          "shell_viscosity_kg_s": 6.403416752496085e-09
+        },
+        {
+          "radius_m": 1.6668306091954614e-06,
+          "elasticity_N_m": 0.2449852370189345,
+          "shell_viscosity_kg_s": 3.882200845176832e-09
+        },
+        {
+          "radius_m": 1.6342984688889758e-06,
+          "elasticity_N_m": 0.2311102791782184,
+          "shell_viscosity_kg_s": 3.6929979129915127e-09
+        },
+        {
+          "radius_m": 1.826715737490295e-06,
+          "elasticity_N_m": 0.31317624423668106,
+          "shell_viscosity_kg_s": 4.962738371076545e-09
+        },
+        {
+          "radius_m": 1.318394445973286e-06,
+          "elasticity_N_m": 0.09637721340467667,
+          "shell_viscosity_kg_s": 2.2733749954381964e-09
+        },
+        {
+          "radius_m": 2.467881573888926e-06,
+          "elasticity_N_m": 0.5866334734606972,
+          "shell_viscosity_kg_s": 1.3285533329588011e-08
+        },
+        {
+          "radius_m": 2.586967598718936e-06,
+          "elasticity_N_m": 0.6374236630506964,
+          "shell_viscosity_kg_s": 1.595178809566102e-08
+        },
+        {
+          "radius_m": 1.3982713104618387e-06,
+          "elasticity_N_m": 0.1304446961090444,
+          "shell_viscosity_kg_s": 2.5700936437887733e-09
+        },
+        {
+          "radius_m": 1.5979778385155638e-06,
+          "elasticity_N_m": 0.21561953032395817,
+          "shell_viscosity_kg_s": 3.4926349997405437e-09
+        },
+        {
+          "radius_m": 1.7221235258192472e-06,
+          "elasticity_N_m": 0.26856766595897913,
+          "shell_viscosity_kg_s": 4.2262810567675736e-09
+        },
+        {
+          "radius_m": 1.8566006541801694e-06,
+          "elasticity_N_m": 0.32592216120491246,
+          "shell_viscosity_kg_s": 5.195826251246119e-09
+        },
+        {
+          "radius_m": 1.0330248259623282e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.4666603197843902e-09
+        },
+        {
+          "radius_m": 1.7580761214169213e-06,
+          "elasticity_N_m": 0.28390144798138717,
+          "shell_viscosity_kg_s": 4.466206059549517e-09
+        },
+        {
+          "radius_m": 1.5971056633079753e-06,
+          "elasticity_N_m": 0.21524754759792164,
+          "shell_viscosity_kg_s": 3.4879597197616194e-09
+        },
+        {
+          "radius_m": 1.6564700256263207e-06,
+          "elasticity_N_m": 0.24056644812669598,
+          "shell_viscosity_kg_s": 3.820916003625256e-09
+        },
+        {
+          "radius_m": 1.1475130170354296e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.748610837953556e-09
+        },
+        {
+          "radius_m": 1.8317007322951157e-06,
+          "elasticity_N_m": 0.31530234452093703,
+          "shell_viscosity_kg_s": 5.000879291515545e-09
+        },
+        {
+          "radius_m": 2.161339172990641e-06,
+          "elasticity_N_m": 0.4558931394775787,
+          "shell_viscosity_kg_s": 8.296887699724629e-09
+        },
+        {
+          "radius_m": 2.1746859292978386e-06,
+          "elasticity_N_m": 0.46158553104259836,
+          "shell_viscosity_kg_s": 8.468714622327677e-09
+        },
+        {
+          "radius_m": 1.2035165859398234e-06,
+          "elasticity_N_m": 0.047381806100404905,
+          "shell_viscosity_kg_s": 1.9056693380510364e-09
+        },
+        {
+          "radius_m": 2.051241535813936e-06,
+          "elasticity_N_m": 0.4089364972217139,
+          "shell_viscosity_kg_s": 7.006160593036709e-09
+        },
+        {
+          "radius_m": 1.840517876968342e-06,
+          "elasticity_N_m": 0.3190628567240681,
+          "shell_viscosity_kg_s": 5.069059715465947e-09
+        },
+        {
+          "radius_m": 2.1051511341806736e-06,
+          "elasticity_N_m": 0.43192894092512746,
+          "shell_viscosity_kg_s": 7.61093109260371e-09
+        },
+        {
+          "radius_m": 1.7382398341631074e-06,
+          "elasticity_N_m": 0.27544127146763553,
+          "shell_viscosity_kg_s": 4.332194561864406e-09
+        },
+        {
+          "radius_m": 1.0274045066904065e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.4540548503428962e-09
+        },
+        {
+          "radius_m": 1.582007457177113e-06,
+          "elasticity_N_m": 0.20880816268310892,
+          "shell_viscosity_kg_s": 3.4080107610023582e-09
+        },
+        {
+          "radius_m": 1.326940073135219e-06,
+          "elasticity_N_m": 0.10002192338924112,
+          "shell_viscosity_kg_s": 2.30340874992506e-09
+        },
+        {
+          "radius_m": 2.222463348791116e-06,
+          "elasticity_N_m": 0.4819626004564812,
+          "shell_viscosity_kg_s": 9.113496625699974e-09
+        },
+        {
+          "radius_m": 1.7762995783508385e-06,
+          "elasticity_N_m": 0.2916737523637028,
+          "shell_viscosity_kg_s": 4.592972046340174e-09
+        },
+        {
+          "radius_m": 2.35434010387686e-06,
+          "elasticity_N_m": 0.5382080365005509,
+          "shell_viscosity_kg_s": 1.1159553864207038e-08
+        },
+        {
+          "radius_m": 2.1732577955427574e-06,
+          "elasticity_N_m": 0.4609764319960562,
+          "shell_viscosity_kg_s": 8.450160017487876e-09
+        },
+        {
+          "radius_m": 2.7909980734423707e-06,
+          "elasticity_N_m": 0.7244426605202414,
+          "shell_viscosity_kg_s": 2.1822158128863022e-08
+        },
+        {
+          "radius_m": 1.8493349408843684e-06,
+          "elasticity_N_m": 0.3228233344842533,
+          "shell_viscosity_kg_s": 5.138169052707848e-09
+        },
+        {
+          "radius_m": 1.6982185787714155e-06,
+          "elasticity_N_m": 0.2583722060430789,
+          "shell_viscosity_kg_s": 4.073931998212763e-09
+        },
+        {
+          "radius_m": 1.5611217648742688e-06,
+          "elasticity_N_m": 0.19990041491594585,
+          "shell_viscosity_kg_s": 3.3004275268423624e-09
+        },
+        {
+          "radius_m": 1.5585271776861024e-06,
+          "elasticity_N_m": 0.19879382348019287,
+          "shell_viscosity_kg_s": 3.2873020531751235e-09
+        },
+        {
+          "radius_m": 1.706584269895483e-06,
+          "elasticity_N_m": 0.26194017330749364,
+          "shell_viscosity_kg_s": 4.126612520124185e-09
+        },
+        {
+          "radius_m": 2.157300680887445e-06,
+          "elasticity_N_m": 0.45417072259556546,
+          "shell_viscosity_kg_s": 8.245586227141401e-09
+        },
+        {
+          "radius_m": 2.394021912871082e-06,
+          "elasticity_N_m": 0.5551323280365867,
+          "shell_viscosity_kg_s": 1.1860816839077664e-08
+        },
+        {
+          "radius_m": 1.9226271100206933e-06,
+          "elasticity_N_m": 0.3540824446208959,
+          "shell_viscosity_kg_s": 5.7503498232830945e-09
+        },
+        {
+          "radius_m": 2.262008203319711e-06,
+          "elasticity_N_m": 0.49882848091292686,
+          "shell_viscosity_kg_s": 9.68414882659549e-09
+        },
+        {
+          "radius_m": 2.1411025531099673e-06,
+          "elasticity_N_m": 0.44726222109847125,
+          "shell_viscosity_kg_s": 8.042987363892291e-09
+        },
+        {
+          "radius_m": 2.4853380984548805e-06,
+          "elasticity_N_m": 0.5940786811880767,
+          "shell_viscosity_kg_s": 1.3646538196982878e-08
+        },
+        {
+          "radius_m": 1.5030847339399686e-06,
+          "elasticity_N_m": 0.1751476212224668,
+          "shell_viscosity_kg_s": 3.0189748911727693e-09
+        },
+        {
+          "radius_m": 1.5649329287758784e-06,
+          "elasticity_N_m": 0.20152587631998237,
+          "shell_viscosity_kg_s": 3.3198024947884884e-09
+        },
+        {
+          "radius_m": 1.30419399199128e-06,
+          "elasticity_N_m": 0.09032071978135112,
+          "shell_viscosity_kg_s": 2.2243308031972067e-09
+        },
+        {
+          "radius_m": 1.6970704873677652e-06,
+          "elasticity_N_m": 0.25788254505942204,
+          "shell_viscosity_kg_s": 4.066754899308625e-09
+        },
+        {
+          "radius_m": 1.5289378772203768e-06,
+          "elasticity_N_m": 0.1861739868315609,
+          "shell_viscosity_kg_s": 3.1412575655518657e-09
+        },
+        {
+          "radius_m": 2.0468241888529326e-06,
+          "elasticity_N_m": 0.407052498742846,
+          "shell_viscosity_kg_s": 6.958789787444412e-09
+        },
+        {
+          "radius_m": 1.425910020863366e-06,
+          "elasticity_N_m": 0.14223260609529578,
+          "shell_viscosity_kg_s": 2.681538072051668e-09
+        },
+        {
+          "radius_m": 2.2208710864705075e-06,
+          "elasticity_N_m": 0.48128350057674163,
+          "shell_viscosity_kg_s": 9.091237389060435e-09
+        },
+        {
+          "radius_m": 1.987088974474391e-06,
+          "elasticity_N_m": 0.38157542981039794,
+          "shell_viscosity_kg_s": 6.348780751758354e-09
+        },
+        {
+          "radius_m": 1.5596465863447514e-06,
+          "elasticity_N_m": 0.1992712512731067,
+          "shell_viscosity_kg_s": 3.2929584930055093e-09
+        },
+        {
+          "radius_m": 1.451793656781781e-06,
+          "elasticity_N_m": 0.1532719768144998,
+          "shell_viscosity_kg_s": 2.7902836387108933e-09
+        },
+        {
+          "radius_m": 2.2440047039270736e-06,
+          "elasticity_N_m": 0.4911499884219671,
+          "shell_viscosity_kg_s": 9.420048113607708e-09
+        },
+        {
+          "radius_m": 1.6229866492563826e-06,
+          "elasticity_N_m": 0.2262857881049174,
+          "shell_viscosity_kg_s": 3.6293936790538037e-09
+        },
+        {
+          "radius_m": 1.87418350917467e-06,
+          "elasticity_N_m": 0.33342124886006697,
+          "shell_viscosity_kg_s": 5.3380468866949525e-09
+        },
+        {
+          "radius_m": 1.8993856042209293e-06,
+          "elasticity_N_m": 0.3441699423972966,
+          "shell_viscosity_kg_s": 5.548711970369891e-09
+        },
+        {
+          "radius_m": 2.0560993765144e-06,
+          "elasticity_N_m": 0.41100836628046183,
+          "shell_viscosity_kg_s": 7.0586275621513975e-09
+        },
+        {
+          "radius_m": 1.4527694216294533e-06,
+          "elasticity_N_m": 0.15368814052203206,
+          "shell_viscosity_kg_s": 2.7944683018336374e-09
+        },
+        {
+          "radius_m": 2.480880359226283e-06,
+          "elasticity_N_m": 0.5921774554070799,
+          "shell_viscosity_kg_s": 1.3553428938240126e-08
+        },
+        {
+          "radius_m": 1.9006552020123453e-06,
+          "elasticity_N_m": 0.3447114258553355,
+          "shell_viscosity_kg_s": 5.5595418428276825e-09
+        },
+        {
+          "radius_m": 1.797686111426351e-06,
+          "elasticity_N_m": 0.3007951087204089,
+          "shell_viscosity_kg_s": 4.746337535365552e-09
+        },
+        {
+          "radius_m": 2.2723189563842556e-06,
+          "elasticity_N_m": 0.5032260170949552,
+          "shell_viscosity_kg_s": 9.838722859311314e-09
+        },
+        {
+          "radius_m": 1.695337071250513e-06,
+          "elasticity_N_m": 0.257143243085414,
+          "shell_viscosity_kg_s": 4.055942691468248e-09
+        },
+        {
+          "radius_m": 1.7302864018490166e-06,
+          "elasticity_N_m": 0.27204913258567576,
+          "shell_viscosity_kg_s": 4.279598370689668e-09
+        },
+        {
+          "radius_m": 1.684400798503051e-06,
+          "elasticity_N_m": 0.2524789227586215,
+          "shell_viscosity_kg_s": 3.9883872208962044e-09
+        },
+        {
+          "radius_m": 1.5376980793538915e-06,
+          "elasticity_N_m": 0.1899102130415049,
+          "shell_viscosity_kg_s": 3.18380604069194e-09
+        },
+        {
+          "radius_m": 1.6281159692075145e-06,
+          "elasticity_N_m": 0.22847344306407516,
+          "shell_viscosity_kg_s": 3.658097991071115e-09
+        },
+        {
+          "radius_m": 1.6029969020427836e-06,
+          "elasticity_N_m": 0.2177601609183174,
+          "shell_viscosity_kg_s": 3.5196616579845035e-09
+        },
+        {
+          "radius_m": 1.4264752581786903e-06,
+          "elasticity_N_m": 0.14247367981028164,
+          "shell_viscosity_kg_s": 2.6838669398468303e-09
+        },
+        {
+          "radius_m": 1.377798403741288e-06,
+          "elasticity_N_m": 0.12171300139272956,
+          "shell_viscosity_kg_s": 2.490539985873121e-09
+        },
+        {
+          "radius_m": 2.815562245513925e-06,
+          "elasticity_N_m": 0.7349192799087592,
+          "shell_viscosity_kg_s": 2.2661152907424642e-08
+        },
+        {
+          "radius_m": 1.3363763987414928e-06,
+          "elasticity_N_m": 0.10404651626031688,
+          "shell_viscosity_kg_s": 2.3370340577039878e-09
+        },
+        {
+          "radius_m": 2.328135911063796e-06,
+          "elasticity_N_m": 0.5270319482657793,
+          "shell_viscosity_kg_s": 1.0719354559953257e-08
+        },
+        {
+          "radius_m": 1.8785752285415304e-06,
+          "elasticity_N_m": 0.33529431717003294,
+          "shell_viscosity_kg_s": 5.374173225372626e-09
+        },
+        {
+          "radius_m": 1.541857817657109e-06,
+          "elasticity_N_m": 0.19168434142782725,
+          "shell_viscosity_kg_s": 3.2042113012878297e-09
+        },
+        {
+          "radius_m": 1.5984559877284853e-06,
+          "elasticity_N_m": 0.2158234609632692,
+          "shell_viscosity_kg_s": 3.4952007692633973e-09
+        },
+        {
+          "radius_m": 1.8309004271756512e-06,
+          "elasticity_N_m": 0.31496101438748547,
+          "shell_viscosity_kg_s": 4.994736346682397e-09
+        },
+        {
+          "radius_m": 2.8340390097512435e-06,
+          "elasticity_N_m": 0.7427996198559755,
+          "shell_viscosity_kg_s": 2.3313420818474282e-08
+        },
+        {
+          "radius_m": 1.8740487796379693e-06,
+          "elasticity_N_m": 0.3333637867126641,
+          "shell_viscosity_kg_s": 5.336942447548784e-09
+        },
+        {
+          "radius_m": 1.0872299175945472e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.5939853975000259e-09
+        },
+        {
+          "radius_m": 2.3466185473980057e-06,
+          "elasticity_N_m": 0.5349147926623197,
+          "shell_viscosity_kg_s": 1.1027994849095647e-08
+        },
+        {
+          "radius_m": 1.7783148590854938e-06,
+          "elasticity_N_m": 0.2925332695970333,
+          "shell_viscosity_kg_s": 4.6072098548469e-09
+        },
+        {
+          "radius_m": 1.364210493228663e-06,
+          "elasticity_N_m": 0.11591775755909495,
+          "shell_viscosity_kg_s": 2.439104359629368e-09
+        },
+        {
+          "radius_m": 1.426665514470487e-06,
+          "elasticity_N_m": 0.14255482411873296,
+          "shell_viscosity_kg_s": 2.6846512809653042e-09
+        },
+        {
+          "radius_m": 2.301029967195203e-06,
+          "elasticity_N_m": 0.5154712632058243,
+          "shell_viscosity_kg_s": 1.0282269239074122e-08
+        },
+        {
+          "radius_m": 1.8105806493307175e-06,
+          "elasticity_N_m": 0.30629462913662125,
+          "shell_viscosity_kg_s": 4.841269692802262e-09
+        },
+        {
+          "radius_m": 1.654950948968359e-06,
+          "elasticity_N_m": 0.2399185619320753,
+          "shell_viscosity_kg_s": 3.812012064337673e-09
+        },
+        {
+          "radius_m": 1.5545426789335977e-06,
+          "elasticity_N_m": 0.19709443476224964,
+          "shell_viscosity_kg_s": 3.267246868008893e-09
+        },
+        {
+          "radius_m": 1.5871127215906178e-06,
+          "elasticity_N_m": 0.2109855579554687,
+          "shell_viscosity_kg_s": 3.4348372871608546e-09
+        },
+        {
+          "radius_m": 2.169550354103327e-06,
+          "elasticity_N_m": 0.4593952082221392,
+          "shell_viscosity_kg_s": 8.402181711424223e-09
+        },
+        {
+          "radius_m": 2.1695598395609603e-06,
+          "elasticity_N_m": 0.45939925376981977,
+          "shell_viscosity_kg_s": 8.402304115264717e-09
+        },
+        {
+          "radius_m": 2.4267397425045254e-06,
+          "elasticity_N_m": 0.5690864823752503,
+          "shell_viscosity_kg_s": 1.2472037032883216e-08
+        },
+        {
+          "radius_m": 1.4018828154693923e-06,
+          "elasticity_N_m": 0.131985002994766,
+          "shell_viscosity_kg_s": 2.584388628169604e-09
+        },
+        {
+          "radius_m": 1.2948637157541196e-06,
+          "elasticity_N_m": 0.08634135696620224,
+          "shell_viscosity_kg_s": 2.1926841732141903e-09
+        },
+        {
+          "radius_m": 1.5837671361964606e-06,
+          "elasticity_N_m": 0.20955866578486065,
+          "shell_viscosity_kg_s": 3.4172335637677993e-09
+        },
+        {
+          "radius_m": 2.5724313157314463e-06,
+          "elasticity_N_m": 0.6312239383565321,
+          "shell_viscosity_kg_s": 1.55996074930846e-08
+        },
+        {
+          "radius_m": 1.6775953430989199e-06,
+          "elasticity_N_m": 0.24957639602875953,
+          "shell_viscosity_kg_s": 3.946917760095674e-09
+        },
+        {
+          "radius_m": 1.7419490336433743e-06,
+          "elasticity_N_m": 0.27702324504596937,
+          "shell_viscosity_kg_s": 4.356944109816524e-09
+        },
+        {
+          "radius_m": 1.8333050949361393e-06,
+          "elasticity_N_m": 0.3159866051873336,
+          "shell_viscosity_kg_s": 5.013216747033016e-09
+        },
+        {
+          "radius_m": 2.3505084320070057e-06,
+          "elasticity_N_m": 0.5365738284480581,
+          "shell_viscosity_kg_s": 1.1094075257434036e-08
+        },
+        {
+          "radius_m": 1.6584453366633918e-06,
+          "elasticity_N_m": 0.2414089182840068,
+          "shell_viscosity_kg_s": 3.832525234183266e-09
+        },
+        {
+          "radius_m": 1.8141546257595757e-06,
+          "elasticity_N_m": 0.30781893008352923,
+          "shell_viscosity_kg_s": 4.867916485877972e-09
+        },
+        {
+          "radius_m": 1.688440498307973e-06,
+          "elasticity_N_m": 0.25420185472542073,
+          "shell_viscosity_kg_s": 4.013209169296829e-09
+        },
+        {
+          "radius_m": 1.6054334780347766e-06,
+          "elasticity_N_m": 0.21879936057890242,
+          "shell_viscosity_kg_s": 3.5328574436234447e-09
+        },
+        {
+          "radius_m": 1.8278778445128823e-06,
+          "elasticity_N_m": 0.31367188288181447,
+          "shell_viscosity_kg_s": 4.97160373665042e-09
+        },
+        {
+          "radius_m": 1.5969003240429e-06,
+          "elasticity_N_m": 0.21515997040136703,
+          "shell_viscosity_kg_s": 3.486859912689566e-09
+        },
+        {
+          "radius_m": 1.3865978901748805e-06,
+          "elasticity_N_m": 0.12546598235665674,
+          "shell_viscosity_kg_s": 2.5244267657191336e-09
+        },
+        {
+          "radius_m": 2.1667504861444122e-06,
+          "elasticity_N_m": 0.4582010645376621,
+          "shell_viscosity_kg_s": 8.366129017503329e-09
+        },
+        {
+          "radius_m": 1.577686415684778e-06,
+          "elasticity_N_m": 0.206965238486628,
+          "shell_viscosity_kg_s": 3.3854688543899368e-09
+        },
+        {
+          "radius_m": 1.5828287162543696e-06,
+          "elasticity_N_m": 0.20915842967955883,
+          "shell_viscosity_kg_s": 3.4123120297791208e-09
+        },
+        {
+          "radius_m": 2.115719572027875e-06,
+          "elasticity_N_m": 0.436436379666959,
+          "shell_viscosity_kg_s": 7.735474129539233e-09
+        },
+        {
+          "radius_m": 1.7762580211674418e-06,
+          "elasticity_N_m": 0.29165602822498415,
+          "shell_viscosity_kg_s": 4.592678911411268e-09
+        },
+        {
+          "radius_m": 1.9969720110883747e-06,
+          "elasticity_N_m": 0.38579054492626197,
+          "shell_viscosity_kg_s": 6.445881464585594e-09
+        },
+        {
+          "radius_m": 1.7967094607181053e-06,
+          "elasticity_N_m": 0.3003785671933421,
+          "shell_viscosity_kg_s": 4.739223537354087e-09
+        },
+        {
+          "radius_m": 1.6404846656322766e-06,
+          "elasticity_N_m": 0.23374869208923618,
+          "shell_viscosity_kg_s": 3.728251965165233e-09
+        },
+        {
+          "radius_m": 2.1584043717242587e-06,
+          "elasticity_N_m": 0.45464144673746654,
+          "shell_viscosity_kg_s": 8.259574968164273e-09
+        },
+        {
+          "radius_m": 2.0981908110421872e-06,
+          "elasticity_N_m": 0.42896036310656305,
+          "shell_viscosity_kg_s": 7.530004824178453e-09
+        },
+        {
+          "radius_m": 1.2470126643709334e-06,
+          "elasticity_N_m": 0.0659328835512733,
+          "shell_viscosity_kg_s": 2.0373208538239753e-09
+        },
+        {
+          "radius_m": 1.3789459886938619e-06,
+          "elasticity_N_m": 0.1222024463750023,
+          "shell_viscosity_kg_s": 2.494933405260962e-09
+        },
+        {
+          "radius_m": 1.7141690743064437e-06,
+          "elasticity_N_m": 0.26517509238876846,
+          "shell_viscosity_kg_s": 4.174964202307038e-09
+        },
+        {
+          "radius_m": 1.3295790970138422e-06,
+          "elasticity_N_m": 0.10114746707347391,
+          "shell_viscosity_kg_s": 2.3127635878245343e-09
+        },
+        {
+          "radius_m": 2.3337230696830185e-06,
+          "elasticity_N_m": 0.5294148714168776,
+          "shell_viscosity_kg_s": 1.0811731975912618e-08
+        },
+        {
+          "radius_m": 2.5268281325380964e-06,
+          "elasticity_N_m": 0.6117741807245684,
+          "shell_viscosity_kg_s": 1.4544418013047693e-08
+        },
+        {
+          "radius_m": 1.7620035165753616e-06,
+          "elasticity_N_m": 0.2855764820164619,
+          "shell_viscosity_kg_s": 4.493226680435848e-09
+        },
+        {
+          "radius_m": 1.2049386291551836e-06,
+          "elasticity_N_m": 0.04798830753175601,
+          "shell_viscosity_kg_s": 1.909835884246156e-09
+        },
+        {
+          "radius_m": 1.990783799754401e-06,
+          "elasticity_N_m": 0.3831512727923222,
+          "shell_viscosity_kg_s": 6.384909970076748e-09
+        },
+        {
+          "radius_m": 1.65045063651289e-06,
+          "elasticity_N_m": 0.23799917866981782,
+          "shell_viscosity_kg_s": 3.7857554656067175e-09
+        },
+        {
+          "radius_m": 1.965393743343356e-06,
+          "elasticity_N_m": 0.3723224137330115,
+          "shell_viscosity_kg_s": 6.140724455161452e-09
+        },
+        {
+          "radius_m": 1.774417292157571e-06,
+          "elasticity_N_m": 0.2908709573022742,
+          "shell_viscosity_kg_s": 4.579713576950328e-09
+        },
+        {
+          "radius_m": 1.8183574300829355e-06,
+          "elasticity_N_m": 0.3096114261274422,
+          "shell_viscosity_kg_s": 4.899439388542364e-09
+        },
+        {
+          "radius_m": 2.194651014926545e-06,
+          "elasticity_N_m": 0.4701006400632417,
+          "shell_viscosity_kg_s": 8.732411852295567e-09
+        },
+        {
+          "radius_m": 1.621501666911256e-06,
+          "elasticity_N_m": 0.22565244313472088,
+          "shell_viscosity_kg_s": 3.621125654760082e-09
+        },
+        {
+          "radius_m": 1.4835977275248203e-06,
+          "elasticity_N_m": 0.16683641298640606,
+          "shell_viscosity_kg_s": 2.9299598404551286e-09
+        },
+        {
+          "radius_m": 1.2031573674476823e-06,
+          "elasticity_N_m": 0.04722859941350671,
+          "shell_viscosity_kg_s": 1.9046182769570074e-09
+        },
+        {
+          "radius_m": 1.5792570754981472e-06,
+          "elasticity_N_m": 0.20763512489702995,
+          "shell_viscosity_kg_s": 3.3936453347477978e-09
+        },
+        {
+          "radius_m": 2.5393112306892784e-06,
+          "elasticity_N_m": 0.6170982220860475,
+          "shell_viscosity_kg_s": 1.4825951474613482e-08
+        },
+        {
+          "radius_m": 2.144720870676723e-06,
+          "elasticity_N_m": 0.4488054335406926,
+          "shell_viscosity_kg_s": 8.08780746763126e-09
+        },
+        {
+          "radius_m": 1.5179039234775714e-06,
+          "elasticity_N_m": 0.18146800556025441,
+          "shell_viscosity_kg_s": 3.088473650149912e-09
+        },
+        {
+          "radius_m": 1.6619164251141812e-06,
+          "elasticity_N_m": 0.2428893375082685,
+          "shell_viscosity_kg_s": 3.853010912485608e-09
+        },
+        {
+          "radius_m": 1.5319779194770032e-06,
+          "elasticity_N_m": 0.18747056485401206,
+          "shell_viscosity_kg_s": 3.155958296834391e-09
+        },
+        {
+          "radius_m": 1.5684611361674897e-06,
+          "elasticity_N_m": 0.20303065677250456,
+          "shell_viscosity_kg_s": 3.3378403569361702e-09
+        },
+        {
+          "radius_m": 1.2726121805307464e-06,
+          "elasticity_N_m": 0.07685107719343356,
+          "shell_viscosity_kg_s": 2.119016351038314e-09
+        },
+        {
+          "radius_m": 1.277483500528183e-06,
+          "elasticity_N_m": 0.07892869517234027,
+          "shell_viscosity_kg_s": 2.1349292053964617e-09
+        },
+        {
+          "radius_m": 1.897181888050821e-06,
+          "elasticity_N_m": 0.3432300574507454,
+          "shell_viscosity_kg_s": 5.529963983943333e-09
+        },
+        {
+          "radius_m": 2.03183498737497e-06,
+          "elasticity_N_m": 0.400659604312495,
+          "shell_viscosity_kg_s": 6.8004228827601495e-09
+        },
+        {
+          "radius_m": 1.950408610215321e-06,
+          "elasticity_N_m": 0.3659312544539046,
+          "shell_viscosity_kg_s": 6.001012432156332e-09
+        },
+        {
+          "radius_m": 1.922265478155568e-06,
+          "elasticity_N_m": 0.3539282086304199,
+          "shell_viscosity_kg_s": 5.7471569485425645e-09
+        },
+        {
+          "radius_m": 2.081266725666178e-06,
+          "elasticity_N_m": 0.42174224069369515,
+          "shell_viscosity_kg_s": 7.336803531655205e-09
+        },
+        {
+          "radius_m": 1.70701858534972e-06,
+          "elasticity_N_m": 0.2621254088487258,
+          "shell_viscosity_kg_s": 4.129366021827621e-09
+        },
+        {
+          "radius_m": 2.0751609523205137e-06,
+          "elasticity_N_m": 0.41913812836176934,
+          "shell_viscosity_kg_s": 7.268325005176195e-09
+        },
+        {
+          "radius_m": 1.1463596411082618e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.7455161206935474e-09
+        },
+        {
+          "radius_m": 2.4111684687407505e-06,
+          "elasticity_N_m": 0.5624453341150003,
+          "shell_viscosity_kg_s": 1.2177309720439903e-08
+        },
+        {
+          "radius_m": 1.914211157855464e-06,
+          "elasticity_N_m": 0.3504930410224255,
+          "shell_viscosity_kg_s": 5.6765023993815885e-09
+        },
+        {
+          "radius_m": 1.8142235074262085e-06,
+          "elasticity_N_m": 0.30784830811434816,
+          "shell_viscosity_kg_s": 4.868431490658378e-09
+        },
+        {
+          "radius_m": 1.3385475937361571e-06,
+          "elasticity_N_m": 0.10497253092554121,
+          "shell_viscosity_kg_s": 2.344840078211729e-09
+        },
+        {
+          "radius_m": 2.208665181443262e-06,
+          "elasticity_N_m": 0.47607768208262147,
+          "shell_viscosity_kg_s": 8.922399389853434e-09
+        },
+        {
+          "radius_m": 1.3581863392494182e-06,
+          "elasticity_N_m": 0.11334845588694709,
+          "shell_viscosity_kg_s": 2.4166417369125413e-09
+        },
+        {
+          "radius_m": 2.854430310714697e-06,
+          "elasticity_N_m": 0.7514965097168884,
+          "shell_viscosity_kg_s": 2.40550908087671e-08
+        },
+        {
+          "radius_m": 1.7731082128872382e-06,
+          "elasticity_N_m": 0.29031263499347726,
+          "shell_viscosity_kg_s": 4.570515240710819e-09
+        },
+        {
+          "radius_m": 1.1767765521981364e-06,
+          "elasticity_N_m": 0.03597718170957542,
+          "shell_viscosity_kg_s": 1.8289925807876468e-09
+        },
+        {
+          "radius_m": 1.8110191179476385e-06,
+          "elasticity_N_m": 0.30648163600173806,
+          "shell_viscosity_kg_s": 4.844530953758871e-09
+        },
+        {
+          "radius_m": 1.4943738272226804e-06,
+          "elasticity_N_m": 0.1714324195075434,
+          "shell_viscosity_kg_s": 2.9788547420997437e-09
+        },
+        {
+          "radius_m": 1.469567911722076e-06,
+          "elasticity_N_m": 0.16085269654653558,
+          "shell_viscosity_kg_s": 2.86750233745181e-09
+        },
+        {
+          "radius_m": 1.7447168805949689e-06,
+          "elasticity_N_m": 0.2782037317708244,
+          "shell_viscosity_kg_s": 4.375504580588535e-09
+        },
+        {
+          "radius_m": 1.7863123204724588e-06,
+          "elasticity_N_m": 0.2959441868785739,
+          "shell_viscosity_kg_s": 4.664147768879944e-09
+        },
+        {
+          "radius_m": 2.201345261040472e-06,
+          "elasticity_N_m": 0.4729557360308314,
+          "shell_viscosity_kg_s": 8.822654504793945e-09
+        },
+        {
+          "radius_m": 1.8728048960622271e-06,
+          "elasticity_N_m": 0.33283327036761007,
+          "shell_viscosity_kg_s": 5.3267565569720254e-09
+        },
+        {
+          "radius_m": 2.2524228748714487e-06,
+          "elasticity_N_m": 0.49474033832974307,
+          "shell_viscosity_kg_s": 9.54262903146386e-09
+        },
+        {
+          "radius_m": 1.2502357683278001e-06,
+          "elasticity_N_m": 0.06730753738887696,
+          "shell_viscosity_kg_s": 2.047430841242325e-09
+        },
+        {
+          "radius_m": 2.38529273915e-06,
+          "elasticity_N_m": 0.5514093354445453,
+          "shell_viscosity_kg_s": 1.1702866220346474e-08
+        },
+        {
+          "radius_m": 1.2577094190946886e-06,
+          "elasticity_N_m": 0.07049504944095489,
+          "shell_viscosity_kg_s": 2.071067082280975e-09
+        },
+        {
+          "radius_m": 1.6710811100753885e-06,
+          "elasticity_N_m": 0.2467980756442234,
+          "shell_viscosity_kg_s": 3.907626839519854e-09
+        },
+        {
+          "radius_m": 1.665289657974376e-06,
+          "elasticity_N_m": 0.24432802132314152,
+          "shell_viscosity_kg_s": 3.873023974577887e-09
+        },
+        {
+          "radius_m": 2.0477647820958956e-06,
+          "elasticity_N_m": 0.4074536617609697,
+          "shell_viscosity_kg_s": 6.96884962157936e-09
+        },
+        {
+          "radius_m": 1.9300785637663067e-06,
+          "elasticity_N_m": 0.3572604896434,
+          "shell_viscosity_kg_s": 5.8165355326907974e-09
+        },
+        {
+          "radius_m": 2.0744752753422373e-06,
+          "elasticity_N_m": 0.4188456871305344,
+          "shell_viscosity_kg_s": 7.260674911092911e-09
+        },
+        {
+          "radius_m": 1.4317069585831289e-06,
+          "elasticity_N_m": 0.14470500003277464,
+          "shell_viscosity_kg_s": 2.705518605377991e-09
+        },
+        {
+          "radius_m": 1.0878644335826166e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.59553950143113e-09
+        },
+        {
+          "radius_m": 1.5701498151963433e-06,
+          "elasticity_N_m": 0.2037508783783106,
+          "shell_viscosity_kg_s": 3.3465083287441943e-09
+        },
+        {
+          "radius_m": 2.234163428060676e-06,
+          "elasticity_N_m": 0.48695268426494853,
+          "shell_viscosity_kg_s": 9.278739668410535e-09
+        },
+        {
+          "radius_m": 1.3084152253577246e-06,
+          "elasticity_N_m": 0.09212107581213974,
+          "shell_viscosity_kg_s": 2.2387981470260495e-09
+        },
+        {
+          "radius_m": 1.859183900552517e-06,
+          "elasticity_N_m": 0.3270239157827187,
+          "shell_viscosity_kg_s": 5.21648118317809e-09
+        },
+        {
+          "radius_m": 2.4055825087465536e-06,
+          "elasticity_N_m": 0.5600629221774753,
+          "shell_viscosity_kg_s": 1.2073286783825263e-08
+        },
+        {
+          "radius_m": 1.4654590892374129e-06,
+          "elasticity_N_m": 0.1591002837568268,
+          "shell_viscosity_kg_s": 2.84946414109631e-09
+        },
+        {
+          "radius_m": 2.9868259612726213e-06,
+          "elasticity_N_m": 0.8079632546798432,
+          "shell_viscosity_kg_s": 2.947914611008615e-08
+        },
+        {
+          "radius_m": 1.6026780543258474e-06,
+          "elasticity_N_m": 0.21762417236704412,
+          "shell_viscosity_kg_s": 3.517938522523562e-09
+        },
+        {
+          "radius_m": 2.0989947908082207e-06,
+          "elasticity_N_m": 0.42930326047677636,
+          "shell_viscosity_kg_s": 7.5393084032009e-09
+        },
+        {
+          "radius_m": 2.1109664340699524e-06,
+          "elasticity_N_m": 0.43440916632790494,
+          "shell_viscosity_kg_s": 7.679210897946187e-09
+        },
+        {
+          "radius_m": 1.9608552661701815e-06,
+          "elasticity_N_m": 0.3703867532186526,
+          "shell_viscosity_kg_s": 6.098070570978288e-09
+        },
+        {
+          "radius_m": 1.4791622008827052e-06,
+          "elasticity_N_m": 0.16494466087354395,
+          "shell_viscosity_kg_s": 2.910068228696754e-09
+        },
+        {
+          "radius_m": 1.3607811909766522e-06,
+          "elasticity_N_m": 0.11445516014861237,
+          "shell_viscosity_kg_s": 2.4262918413087443e-09
+        },
+        {
+          "radius_m": 1.73257980355866e-06,
+          "elasticity_N_m": 0.2730272684148387,
+          "shell_viscosity_kg_s": 4.294698815556266e-09
+        },
+        {
+          "radius_m": 1.93876216458492e-06,
+          "elasticity_N_m": 0.3609640453925385,
+          "shell_viscosity_kg_s": 5.894627247292693e-09
+        },
+        {
+          "radius_m": 1.4276022165698375e-06,
+          "elasticity_N_m": 0.1429543275641059,
+          "shell_viscosity_kg_s": 2.6885162260305903e-09
+        },
+        {
+          "radius_m": 1.8650736436010558e-06,
+          "elasticity_N_m": 0.3295358911929205,
+          "shell_viscosity_kg_s": 5.263881497977462e-09
+        },
+        {
+          "radius_m": 2.2807763506061434e-06,
+          "elasticity_N_m": 0.5068330957305903,
+          "shell_viscosity_kg_s": 9.967352311092385e-09
+        },
+        {
+          "radius_m": 1.4243784818561854e-06,
+          "elasticity_N_m": 0.1415794047087333,
+          "shell_viscosity_kg_s": 2.675238038181497e-09
+        },
+        {
+          "radius_m": 1.380464805263131e-06,
+          "elasticity_N_m": 0.1228502216417956,
+          "shell_viscosity_kg_s": 2.500759968046871e-09
+        },
+        {
+          "radius_m": 1.6584755969912059e-06,
+          "elasticity_N_m": 0.2414218243138195,
+          "shell_viscosity_kg_s": 3.832703353190542e-09
+        },
+        {
+          "radius_m": 1.2984261392133066e-06,
+          "elasticity_N_m": 0.08786073057154548,
+          "shell_viscosity_kg_s": 2.2047137889950993e-09
+        },
+        {
+          "radius_m": 1.4543732284612982e-06,
+          "elasticity_N_m": 0.1543721641358139,
+          "shell_viscosity_kg_s": 2.80136002380776e-09
+        },
+        {
+          "radius_m": 1.2787321810533613e-06,
+          "elasticity_N_m": 0.07946125741632878,
+          "shell_viscosity_kg_s": 2.139027402488493e-09
+        },
+        {
+          "radius_m": 1.7483173942075282e-06,
+          "elasticity_N_m": 0.27973935082658097,
+          "shell_viscosity_kg_s": 4.399767074939158e-09
+        },
+        {
+          "radius_m": 1.7450348959297509e-06,
+          "elasticity_N_m": 0.278339365311109,
+          "shell_viscosity_kg_s": 4.377642167542116e-09
+        },
+        {
+          "radius_m": 2.2191690219436235e-06,
+          "elasticity_N_m": 0.4805575700560256,
+          "shell_viscosity_kg_s": 9.06750327492755e-09
+        },
+        {
+          "radius_m": 1.2910892004464997e-06,
+          "elasticity_N_m": 0.08473152618750232,
+          "shell_viscosity_kg_s": 2.180009971851419e-09
+        },
+        {
+          "radius_m": 2.0301399245890647e-06,
+          "elasticity_N_m": 0.3999366600343063,
+          "shell_viscosity_kg_s": 6.782742239922149e-09
+        },
+        {
+          "radius_m": 1.873103987170502e-06,
+          "elasticity_N_m": 0.33296083272528937,
+          "shell_viscosity_kg_s": 5.329203972011568e-09
+        },
+        {
+          "radius_m": 1.4058778120150975e-06,
+          "elasticity_N_m": 0.13368886902150928,
+          "shell_viscosity_kg_s": 2.600294180860887e-09
+        },
+        {
+          "radius_m": 1.9420394018488662e-06,
+          "elasticity_N_m": 0.3623617870856116,
+          "shell_viscosity_kg_s": 5.9243712335177115e-09
+        },
+        {
+          "radius_m": 2.1271865502536396e-06,
+          "elasticity_N_m": 0.4413270458802475,
+          "shell_viscosity_kg_s": 7.872912278749527e-09
+        },
+        {
+          "radius_m": 2.061728393521597e-06,
+          "elasticity_N_m": 0.41340914203403134,
+          "shell_viscosity_kg_s": 7.1199152137711804e-09
+        },
+        {
+          "radius_m": 1.968028363632225e-06,
+          "elasticity_N_m": 0.3734460792862142,
+          "shell_viscosity_kg_s": 6.165622090797871e-09
+        },
+        {
+          "radius_m": 2.327821935170882e-06,
+          "elasticity_N_m": 0.5268980375474515,
+          "shell_viscosity_kg_s": 1.0714186806852779e-08
+        },
+        {
+          "radius_m": 1.2193726207363924e-06,
+          "elasticity_N_m": 0.05414440494114156,
+          "shell_viscosity_kg_s": 1.9526460242520396e-09
+        },
+        {
+          "radius_m": 1.989614138322474e-06,
+          "elasticity_N_m": 0.3826524121916054,
+          "shell_viscosity_kg_s": 6.3734504495550876e-09
+        },
+        {
+          "radius_m": 1.743871943431991e-06,
+          "elasticity_N_m": 0.27784336607081433,
+          "shell_viscosity_kg_s": 4.3698302802183165e-09
+        },
+        {
+          "radius_m": 1.8281899723277113e-06,
+          "elasticity_N_m": 0.3138050053948391,
+          "shell_viscosity_kg_s": 4.973987562907561e-09
+        },
+        {
+          "radius_m": 1.4437369765382993e-06,
+          "elasticity_N_m": 0.14983580269065486,
+          "shell_viscosity_kg_s": 2.75597038745146e-09
+        },
+        {
+          "radius_m": 1.5285520323821848e-06,
+          "elasticity_N_m": 0.18600942400807202,
+          "shell_viscosity_kg_s": 3.139396639602148e-09
+        },
+        {
+          "radius_m": 1.4662669689066243e-06,
+          "elasticity_N_m": 0.15944484443574547,
+          "shell_viscosity_kg_s": 2.8530018398885017e-09
+        },
+        {
+          "radius_m": 2.39541558848368e-06,
+          "elasticity_N_m": 0.5557267306853597,
+          "shell_viscosity_kg_s": 1.1886231404990722e-08
+        },
+        {
+          "radius_m": 2.4126532451850207e-06,
+          "elasticity_N_m": 0.5630785912684815,
+          "shell_viscosity_kg_s": 1.2205110003039705e-08
+        },
+        {
+          "radius_m": 1.944582001433111e-06,
+          "elasticity_N_m": 0.36344620580829207,
+          "shell_viscosity_kg_s": 5.947551049913895e-09
+        },
+        {
+          "radius_m": 2.5063583823307074e-06,
+          "elasticity_N_m": 0.6030438322611169,
+          "shell_viscosity_kg_s": 1.40942842011118e-08
+        },
+        {
+          "radius_m": 2.254074102012671e-06,
+          "elasticity_N_m": 0.4954445867054745,
+          "shell_viscosity_kg_s": 9.566859799650045e-09
+        },
+        {
+          "radius_m": 2.1031023505314243e-06,
+          "elasticity_N_m": 0.4310551346987227,
+          "shell_viscosity_kg_s": 7.587020390876862e-09
+        },
+        {
+          "radius_m": 1.6365143464793432e-06,
+          "elasticity_N_m": 0.23205535097051008,
+          "shell_viscosity_kg_s": 3.7055873281375997e-09
+        },
+        {
+          "radius_m": 2.0968256096419333e-06,
+          "elasticity_N_m": 0.4283781047093547,
+          "shell_viscosity_kg_s": 7.514233132189562e-09
+        },
+        {
+          "radius_m": 1.6839236418741615e-06,
+          "elasticity_N_m": 0.2522754154564001,
+          "shell_viscosity_kg_s": 3.985465486870178e-09
+        },
+        {
+          "radius_m": 2.8373122113319584e-06,
+          "elasticity_N_m": 0.7441956403301505,
+          "shell_viscosity_kg_s": 2.3430913914482914e-08
+        },
+        {
+          "radius_m": 1.4404857519680194e-06,
+          "elasticity_N_m": 0.14844915541143047,
+          "shell_viscosity_kg_s": 2.7422432745522e-09
+        },
+        {
+          "radius_m": 1.735321174053459e-06,
+          "elasticity_N_m": 0.2741964629308705,
+          "shell_viscosity_kg_s": 4.31281874645203e-09
+        },
+        {
+          "radius_m": 1.5533275114865075e-06,
+          "elasticity_N_m": 0.1965761658460657,
+          "shell_viscosity_kg_s": 3.2611549450223852e-09
+        },
+        {
+          "radius_m": 1.5088728897635162e-06,
+          "elasticity_N_m": 0.17761626968120986,
+          "shell_viscosity_kg_s": 3.0459319817495575e-09
+        },
+        {
+          "radius_m": 1.4970856869077248e-06,
+          "elasticity_N_m": 0.17258902766321482,
+          "shell_viscosity_kg_s": 2.9912873656222463e-09
+        },
+        {
+          "radius_m": 1.9200921970116514e-06,
+          "elasticity_N_m": 0.3530013042225395,
+          "shell_viscosity_kg_s": 5.728006193365603e-09
+        },
+        {
+          "radius_m": 2.311314375127039e-06,
+          "elasticity_N_m": 0.5198575631887523,
+          "shell_viscosity_kg_s": 1.044596753309074e-08
+        },
+        {
+          "radius_m": 1.2223118962997907e-06,
+          "elasticity_N_m": 0.05539800596893091,
+          "shell_viscosity_kg_s": 1.9614806054221453e-09
+        },
+        {
+          "radius_m": 1.7201841502227304e-06,
+          "elasticity_N_m": 0.26774052226706474,
+          "shell_viscosity_kg_s": 4.213711637782954e-09
+        },
+        {
+          "radius_m": 2.2265889640157914e-06,
+          "elasticity_N_m": 0.4837221753498052,
+          "shell_viscosity_kg_s": 9.171425074606313e-09
+        },
+        {
+          "radius_m": 1.7819129669741752e-06,
+          "elasticity_N_m": 0.29406786261155593,
+          "shell_viscosity_kg_s": 4.632740055029401e-09
+        },
+        {
+          "radius_m": 1.9402923404975718e-06,
+          "elasticity_N_m": 0.36161666541928456,
+          "shell_viscosity_kg_s": 5.908496390887969e-09
+        },
+        {
+          "radius_m": 2.7017526334823918e-06,
+          "elasticity_N_m": 0.6863794803773102,
+          "shell_viscosity_kg_s": 1.902702943352816e-08
+        },
+        {
+          "radius_m": 1.849931273782418e-06,
+          "elasticity_N_m": 0.32307767046527147,
+          "shell_viscosity_kg_s": 5.142877064833337e-09
+        },
+        {
+          "radius_m": 1.6714462488217361e-06,
+          "elasticity_N_m": 0.24695380731954067,
+          "shell_viscosity_kg_s": 3.909818808006437e-09
+        },
+        {
+          "radius_m": 1.4871142421167676e-06,
+          "elasticity_N_m": 0.16833620645987157,
+          "shell_viscosity_kg_s": 2.945826624092603e-09
+        },
+        {
+          "radius_m": 2.066968220235255e-06,
+          "elasticity_N_m": 0.4156439281274065,
+          "shell_viscosity_kg_s": 7.1774435644806936e-09
+        },
+        {
+          "radius_m": 2.548630810283156e-06,
+          "elasticity_N_m": 0.6210730227828363,
+          "shell_viscosity_kg_s": 1.5039684781756677e-08
+        },
+        {
+          "radius_m": 1.7496185964792024e-06,
+          "elasticity_N_m": 0.28029431359545004,
+          "shell_viscosity_kg_s": 4.408568440185189e-09
+        },
+        {
+          "radius_m": 2.0473103814434782e-06,
+          "elasticity_N_m": 0.4072598598827136,
+          "shell_viscosity_kg_s": 6.963987900625641e-09
+        },
+        {
+          "radius_m": 2.2536500777338217e-06,
+          "elasticity_N_m": 0.49526374035054516,
+          "shell_viscosity_kg_s": 9.560631632609404e-09
+        },
+        {
+          "radius_m": 1.5412871123899373e-06,
+          "elasticity_N_m": 0.19144093563137848,
+          "shell_viscosity_kg_s": 3.2014040309624e-09
+        },
+        {
+          "radius_m": 1.6238081253368626e-06,
+          "elasticity_N_m": 0.2266361476532421,
+          "shell_viscosity_kg_s": 3.6339755675332566e-09
+        },
+        {
+          "radius_m": 1.3596521905343764e-06,
+          "elasticity_N_m": 0.11397364145998176,
+          "shell_viscosity_kg_s": 2.4220884269321212e-09
+        },
+        {
+          "radius_m": 2.136668093216227e-06,
+          "elasticity_N_m": 0.4453709239537911,
+          "shell_viscosity_kg_s": 7.988396296319709e-09
+        },
+        {
+          "radius_m": 2.3405708032449867e-06,
+          "elasticity_N_m": 0.532335429781057,
+          "shell_viscosity_kg_s": 1.0926038065619896e-08
+        },
+        {
+          "radius_m": 1.8562452102207882e-06,
+          "elasticity_N_m": 0.3257705643562364,
+          "shell_viscosity_kg_s": 5.192990626581565e-09
+        },
+        {
+          "radius_m": 1.7384663756358736e-06,
+          "elasticity_N_m": 0.2755378914057703,
+          "shell_viscosity_kg_s": 4.3337021154182275e-09
+        },
+        {
+          "radius_m": 1.3983784594712933e-06,
+          "elasticity_N_m": 0.1304903951615768,
+          "shell_viscosity_kg_s": 2.5705166184637624e-09
+        },
+        {
+          "radius_m": 2.289840709878034e-06,
+          "elasticity_N_m": 0.5106990449600518,
+          "shell_viscosity_kg_s": 1.0107080784250748e-08
+        },
+        {
+          "radius_m": 1.681713846283061e-06,
+          "elasticity_N_m": 0.2513329376367957,
+          "shell_viscosity_kg_s": 3.971962311140907e-09
+        },
+        {
+          "radius_m": 1.7842611572153103e-06,
+          "elasticity_N_m": 0.29506936574940007,
+          "shell_viscosity_kg_s": 4.649477767023915e-09
+        },
+        {
+          "radius_m": 2.286946703701735e-06,
+          "elasticity_N_m": 0.5094647513258601,
+          "shell_viscosity_kg_s": 1.0062257681127319e-08
+        },
+        {
+          "radius_m": 1.707154914303582e-06,
+          "elasticity_N_m": 0.26218355314754793,
+          "shell_viscosity_kg_s": 4.130230707914601e-09
+        },
+        {
+          "radius_m": 1.7035125574588274e-06,
+          "elasticity_N_m": 0.2606300879532601,
+          "shell_viscosity_kg_s": 4.107190618195049e-09
+        },
+        {
+          "radius_m": 2.2538986280329447e-06,
+          "elasticity_N_m": 0.49536974705312115,
+          "shell_viscosity_kg_s": 9.564281905156741e-09
+        },
+        {
+          "radius_m": 1.155808105097705e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.7710302922926935e-09
+        },
+        {
+          "radius_m": 1.792136265620789e-06,
+          "elasticity_N_m": 0.29842809948433674,
+          "shell_viscosity_kg_s": 4.7060536361689246e-09
+        },
+        {
+          "radius_m": 1.1977230318841597e-06,
+          "elasticity_N_m": 0.04491085529566427,
+          "shell_viscosity_kg_s": 1.8887881341828255e-09
+        },
+        {
+          "radius_m": 1.6594905594178224e-06,
+          "elasticity_N_m": 0.24185470578877147,
+          "shell_viscosity_kg_s": 3.838682445086869e-09
+        },
+        {
+          "radius_m": 1.7281938503399422e-06,
+          "elasticity_N_m": 0.2711566593670556,
+          "shell_viscosity_kg_s": 4.265866711555626e-09
+        },
+        {
+          "radius_m": 2.1577533860371996e-06,
+          "elasticity_N_m": 0.45436380134193577,
+          "shell_viscosity_kg_s": 8.251321175096333e-09
+        },
+        {
+          "radius_m": 1.0072626186113947e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.4097631363340638e-09
+        },
+        {
+          "radius_m": 1.5604826481185862e-06,
+          "elasticity_N_m": 0.1996278316196472,
+          "shell_viscosity_kg_s": 3.297189512270729e-09
+        },
+        {
+          "radius_m": 1.4063693046396022e-06,
+          "elasticity_N_m": 0.13389849062586057,
+          "shell_viscosity_kg_s": 2.6022577442899207e-09
+        },
+        {
+          "radius_m": 1.413510512648339e-06,
+          "elasticity_N_m": 0.1369442158415868,
+          "shell_viscosity_kg_s": 2.630955457107195e-09
+        },
+        {
+          "radius_m": 2.3805392212350404e-06,
+          "elasticity_N_m": 0.549381960053815,
+          "shell_viscosity_kg_s": 1.1617739762149861e-08
+        },
+        {
+          "radius_m": 1.6128933892615342e-06,
+          "elasticity_N_m": 0.22198101271711457,
+          "shell_viscosity_kg_s": 3.5735665483072392e-09
+        },
+        {
+          "radius_m": 1.800363233686048e-06,
+          "elasticity_N_m": 0.30193690136416973,
+          "shell_viscosity_kg_s": 4.765892699870131e-09
+        },
+        {
+          "radius_m": 1.601472361826396e-06,
+          "elasticity_N_m": 0.21710994451602814,
+          "shell_viscosity_kg_s": 3.5114302715633605e-09
+        },
+        {
+          "radius_m": 1.6820663039336205e-06,
+          "elasticity_N_m": 0.25148326082475936,
+          "shell_viscosity_kg_s": 3.97411296804916e-09
+        },
+        {
+          "radius_m": 2.0011527706405233e-06,
+          "elasticity_N_m": 0.3875736388752534,
+          "shell_viscosity_kg_s": 6.487403062406986e-09
+        },
+        {
+          "radius_m": 1.2673084711269506e-06,
+          "elasticity_N_m": 0.07458904513271467,
+          "shell_viscosity_kg_s": 2.1018258725736025e-09
+        },
+        {
+          "radius_m": 1.7370745552405194e-06,
+          "elasticity_N_m": 0.27494428000715176,
+          "shell_viscosity_kg_s": 4.3244483244423154e-09
+        },
+        {
+          "radius_m": 1.3796995106897027e-06,
+          "elasticity_N_m": 0.12252382350622842,
+          "shell_viscosity_kg_s": 2.49782240656959e-09
+        },
+        {
+          "radius_m": 1.942196646528844e-06,
+          "elasticity_N_m": 0.3624288519416221,
+          "shell_viscosity_kg_s": 5.925802143094254e-09
+        },
+        {
+          "radius_m": 1.3367507588631602e-06,
+          "elasticity_N_m": 0.10420618085220804,
+          "shell_viscosity_kg_s": 2.338378124953447e-09
+        },
+        {
+          "radius_m": 1.941269812533158e-06,
+          "elasticity_N_m": 0.362033557242462,
+          "shell_viscosity_kg_s": 5.91737303619024e-09
+        },
+        {
+          "radius_m": 1.67174398993147e-06,
+          "elasticity_N_m": 0.2470807939028422,
+          "shell_viscosity_kg_s": 3.911607091044318e-09
+        },
+        {
+          "radius_m": 1.7660392137906497e-06,
+          "elasticity_N_m": 0.2872977068787823,
+          "shell_viscosity_kg_s": 4.52116273221452e-09
+        },
+        {
+          "radius_m": 1.9551984676651855e-06,
+          "elasticity_N_m": 0.3679741286562718,
+          "shell_viscosity_kg_s": 6.0453209307890995e-09
+        },
+        {
+          "radius_m": 1.6137174425398593e-06,
+          "elasticity_N_m": 0.22233247144032017,
+          "shell_viscosity_kg_s": 3.5780921209347227e-09
+        },
+        {
+          "radius_m": 1.8104407854287055e-06,
+          "elasticity_N_m": 0.3062349771824131,
+          "shell_viscosity_kg_s": 4.8402298689013346e-09
+        },
+        {
+          "radius_m": 2.0695805145638913e-06,
+          "elasticity_N_m": 0.4167580716585699,
+          "shell_viscosity_kg_s": 7.2062974901036085e-09
+        },
+        {
+          "radius_m": 1.8339643687963525e-06,
+          "elasticity_N_m": 0.31626778548871454,
+          "shell_viscosity_kg_s": 5.018295343981462e-09
+        },
+        {
+          "radius_m": 1.6590175734941696e-06,
+          "elasticity_N_m": 0.24165297729233357,
+          "shell_viscosity_kg_s": 3.8358949494644485e-09
+        },
+        {
+          "radius_m": 1.5375871125437487e-06,
+          "elasticity_N_m": 0.18986288569697904,
+          "shell_viscosity_kg_s": 3.1832634851298505e-09
+        },
+        {
+          "radius_m": 1.8717266756003813e-06,
+          "elasticity_N_m": 0.3323734093406328,
+          "shell_viscosity_kg_s": 5.317942975890231e-09
+        },
+        {
+          "radius_m": 2.2689483695131025e-06,
+          "elasticity_N_m": 0.5017884617944084,
+          "shell_viscosity_kg_s": 9.787923039829512e-09
+        },
+        {
+          "radius_m": 1.6594695736014595e-06,
+          "elasticity_N_m": 0.24184575533809266,
+          "shell_viscosity_kg_s": 3.838558724326997e-09
+        },
+        {
+          "radius_m": 1.0458461793865318e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.4958270587407978e-09
+        },
+        {
+          "radius_m": 1.5263981396514222e-06,
+          "elasticity_N_m": 0.18509078875840176,
+          "shell_viscosity_kg_s": 3.1290286713892147e-09
+        },
+        {
+          "radius_m": 1.3329329531218467e-06,
+          "elasticity_N_m": 0.10257788670353782,
+          "shell_viscosity_kg_s": 2.3247072134210785e-09
+        },
+        {
+          "radius_m": 1.4452981640284392e-06,
+          "elasticity_N_m": 0.1505016491551995,
+          "shell_viscosity_kg_s": 2.7625863325419513e-09
+        },
+        {
+          "radius_m": 1.9132860751917458e-06,
+          "elasticity_N_m": 0.3500984932663498,
+          "shell_viscosity_kg_s": 5.6684431533867145e-09
+        },
+        {
+          "radius_m": 1.4818984566615756e-06,
+          "elasticity_N_m": 0.1661116739632322,
+          "shell_viscosity_kg_s": 2.922323254972233e-09
+        },
+        {
+          "radius_m": 1.5293705450637432e-06,
+          "elasticity_N_m": 0.18635851966675665,
+          "shell_viscosity_kg_s": 3.143345630445877e-09
+        },
+        {
+          "radius_m": 1.6715805749117052e-06,
+          "elasticity_N_m": 0.2470110973969125,
+          "shell_viscosity_kg_s": 3.910625491788626e-09
+        },
+        {
+          "radius_m": 1.548648628766619e-06,
+          "elasticity_N_m": 0.19458062236603318,
+          "shell_viscosity_kg_s": 3.2378044741540783e-09
+        },
+        {
+          "radius_m": 1.5492056838036914e-06,
+          "elasticity_N_m": 0.1948182063393446,
+          "shell_viscosity_kg_s": 3.2405757262730135e-09
+        },
+        {
+          "radius_m": 1.7394961765164063e-06,
+          "elasticity_N_m": 0.2759771014813175,
+          "shell_viscosity_kg_s": 4.340561692194448e-09
+        },
+        {
+          "radius_m": 1.7276182545987188e-06,
+          "elasticity_N_m": 0.2709111677834238,
+          "shell_viscosity_kg_s": 4.262097292435115e-09
+        },
+        {
+          "radius_m": 2.007539466761e-06,
+          "elasticity_N_m": 0.39029756477063665,
+          "shell_viscosity_kg_s": 6.551350089840652e-09
+        },
+        {
+          "radius_m": 1.7386049551681401e-06,
+          "elasticity_N_m": 0.275596995576282,
+          "shell_viscosity_kg_s": 4.334624571900127e-09
+        },
+        {
+          "radius_m": 2.282450587689057e-06,
+          "elasticity_N_m": 0.507547157846453,
+          "shell_viscosity_kg_s": 9.993014681344038e-09
+        },
+        {
+          "radius_m": 2.4828945122419803e-06,
+          "elasticity_N_m": 0.5930364916682749,
+          "shell_viscosity_kg_s": 1.3595419826322725e-08
+        },
+        {
+          "radius_m": 1.349884869332114e-06,
+          "elasticity_N_m": 0.10980787896721683,
+          "shell_viscosity_kg_s": 2.386026107376024e-09
+        },
+        {
+          "radius_m": 1.1823862154772126e-06,
+          "elasticity_N_m": 0.03836970309810139,
+          "shell_viscosity_kg_s": 1.844818262456606e-09
+        },
+        {
+          "radius_m": 1.4537821482489836e-06,
+          "elasticity_N_m": 0.15412006842526174,
+          "shell_viscosity_kg_s": 2.7988181162068073e-09
+        },
+        {
+          "radius_m": 1.5044824588301878e-06,
+          "elasticity_N_m": 0.1757437508881453,
+          "shell_viscosity_kg_s": 3.0254625641038e-09
+        },
+        {
+          "radius_m": 2.8039337469527128e-06,
+          "elasticity_N_m": 0.7299597252724022,
+          "shell_viscosity_kg_s": 2.226003242888588e-08
+        },
+        {
+          "radius_m": 1.4500166431137942e-06,
+          "elasticity_N_m": 0.15251408048510345,
+          "shell_viscosity_kg_s": 2.782678832632042e-09
+        },
+        {
+          "radius_m": 1.5851002304837488e-06,
+          "elasticity_N_m": 0.21012723049838908,
+          "shell_viscosity_kg_s": 3.4242371699284726e-09
+        },
+        {
+          "radius_m": 1.6799310806906943e-06,
+          "elasticity_N_m": 0.2505725881116513,
+          "shell_viscosity_kg_s": 3.961101894952176e-09
+        },
+        {
+          "radius_m": 2.776503048111115e-06,
+          "elasticity_N_m": 0.7182605322164608,
+          "shell_viscosity_kg_s": 2.134172485659275e-08
+        },
+        {
+          "radius_m": 1.6827230202372616e-06,
+          "elasticity_N_m": 0.2517633503282623,
+          "shell_viscosity_kg_s": 3.978123283747642e-09
+        },
+        {
+          "radius_m": 1.9330051592006877e-06,
+          "elasticity_N_m": 0.3585086825961635,
+          "shell_viscosity_kg_s": 5.842738168704705e-09
+        },
+        {
+          "radius_m": 1.8901574874809076e-06,
+          "elasticity_N_m": 0.3402341506076773,
+          "shell_viscosity_kg_s": 5.4706260305171286e-09
+        },
+        {
+          "radius_m": 2.4058709293358164e-06,
+          "elasticity_N_m": 0.5601859335587959,
+          "shell_viscosity_kg_s": 1.2078635991894249e-08
+        },
+        {
+          "radius_m": 1.5938529162938476e-06,
+          "elasticity_N_m": 0.21386025099639622,
+          "shell_viscosity_kg_s": 3.4705785528203945e-09
+        },
+        {
+          "radius_m": 1.7742866079132217e-06,
+          "elasticity_N_m": 0.29081522047205927,
+          "shell_viscosity_kg_s": 4.57879448388673e-09
+        },
+        {
+          "radius_m": 1.327977362332211e-06,
+          "elasticity_N_m": 0.10046432723175822,
+          "shell_viscosity_kg_s": 2.307081220896338e-09
+        },
+        {
+          "radius_m": 2.1758850979563708e-06,
+          "elasticity_N_m": 0.46209697647546233,
+          "shell_viscosity_kg_s": 8.48432592968754e-09
+        },
+        {
+          "radius_m": 2.1004145856031524e-06,
+          "elasticity_N_m": 0.42990880295681466,
+          "shell_viscosity_kg_s": 7.555766219060233e-09
+        },
+        {
+          "radius_m": 1.5778563754693145e-06,
+          "elasticity_N_m": 0.20703772633473283,
+          "shell_viscosity_kg_s": 3.386352673118045e-09
+        },
+        {
+          "radius_m": 2.0387438703263315e-06,
+          "elasticity_N_m": 0.4036062428912506,
+          "shell_viscosity_kg_s": 6.8729652005483035e-09
+        },
+        {
+          "radius_m": 2.4664608257465762e-06,
+          "elasticity_N_m": 0.5860275243779849,
+          "shell_viscosity_kg_s": 1.3256575641932875e-08
+        },
+        {
+          "radius_m": 1.3890645008405423e-06,
+          "elasticity_N_m": 0.12651799180556147,
+          "shell_viscosity_kg_s": 2.5340081393985516e-09
+        },
+        {
+          "radius_m": 1.7221678607227443e-06,
+          "elasticity_N_m": 0.26858657479532067,
+          "shell_viscosity_kg_s": 4.2265688366634136e-09
+        },
+        {
+          "radius_m": 2.345372602586605e-06,
+          "elasticity_N_m": 0.5343833972002572,
+          "shell_viscosity_kg_s": 1.1006912382216068e-08
+        },
+        {
+          "radius_m": 2.2452012119042402e-06,
+          "elasticity_N_m": 0.4916602990742287,
+          "shell_viscosity_kg_s": 9.437374553589901e-09
+        },
+        {
+          "radius_m": 1.5060942937097408e-06,
+          "elasticity_N_m": 0.17643119846427463,
+          "shell_viscosity_kg_s": 3.0329613596620745e-09
+        },
+        {
+          "radius_m": 1.6170652262414393e-06,
+          "elasticity_N_m": 0.22376030118904408,
+          "shell_viscosity_kg_s": 3.596536642530502e-09
+        },
+        {
+          "radius_m": 2.247566000462783e-06,
+          "elasticity_N_m": 0.4926688813944472,
+          "shell_viscosity_kg_s": 9.471712468934181e-09
+        },
+        {
+          "radius_m": 2.386055714566554e-06,
+          "elasticity_N_m": 0.5517347444597055,
+          "shell_viscosity_kg_s": 1.171658763173233e-08
+        },
+        {
+          "radius_m": 1.2502417002163006e-06,
+          "elasticity_N_m": 0.06731006733932243,
+          "shell_viscosity_kg_s": 2.047449494114797e-09
+        },
+        {
+          "radius_m": 2.7246219391944997e-06,
+          "elasticity_N_m": 0.6961332392635243,
+          "shell_viscosity_kg_s": 1.9707195137067535e-08
+        },
+        {
+          "radius_m": 1.4539785387306763e-06,
+          "elasticity_N_m": 0.15420382896570364,
+          "shell_viscosity_kg_s": 2.799662426593876e-09
+        },
+        {
+          "radius_m": 1.2703762105916661e-06,
+          "elasticity_N_m": 0.07589743601441581,
+          "shell_viscosity_kg_s": 2.1117520086008984e-09
+        },
+        {
+          "radius_m": 1.6139995558297733e-06,
+          "elasticity_N_m": 0.22245279275846852,
+          "shell_viscosity_kg_s": 3.579642759832362e-09
+        },
+        {
+          "radius_m": 1.5988019460247436e-06,
+          "elasticity_N_m": 0.21597101217662337,
+          "shell_viscosity_kg_s": 3.4970583717415613e-09
+        },
+        {
+          "radius_m": 1.440057109648276e-06,
+          "elasticity_N_m": 0.14826633946205992,
+          "shell_viscosity_kg_s": 2.7404385970475307e-09
+        },
+        {
+          "radius_m": 2.196570137887127e-06,
+          "elasticity_N_m": 0.4709191460059299,
+          "shell_viscosity_kg_s": 8.7581880419888e-09
+        },
+        {
+          "radius_m": 1.499685544018022e-06,
+          "elasticity_N_m": 0.1736978667207566,
+          "shell_viscosity_kg_s": 3.0032552250566333e-09
+        },
+        {
+          "radius_m": 2.1486606603214044e-06,
+          "elasticity_N_m": 0.4504857538241492,
+          "shell_viscosity_kg_s": 8.136893727647526e-09
+        },
+        {
+          "radius_m": 1.7611373936457925e-06,
+          "elasticity_N_m": 0.2852070805870007,
+          "shell_viscosity_kg_s": 4.487253707212193e-09
+        },
+        {
+          "radius_m": 2.697365295478571e-06,
+          "elasticity_N_m": 0.6845082807186806,
+          "shell_viscosity_kg_s": 1.8899252856116615e-08
+        },
+        {
+          "radius_m": 1.3386560112171689e-06,
+          "elasticity_N_m": 0.10501877098119272,
+          "shell_viscosity_kg_s": 2.3452305505035168e-09
+        },
+        {
+          "radius_m": 1.2795368458846951e-06,
+          "elasticity_N_m": 0.0798044469668927,
+          "shell_viscosity_kg_s": 2.1416724974891823e-09
+        },
+        {
+          "radius_m": 2.675603121966195e-06,
+          "elasticity_N_m": 0.6752267137156522,
+          "shell_viscosity_kg_s": 1.8278024950325254e-08
+        },
+        {
+          "radius_m": 1.51433694737059e-06,
+          "elasticity_N_m": 0.17994669025062682,
+          "shell_viscosity_kg_s": 3.071600484123219e-09
+        },
+        {
+          "radius_m": 1.4604888493943789e-06,
+          "elasticity_N_m": 0.1569804764637728,
+          "shell_viscosity_kg_s": 2.827795805936607e-09
+        },
+        {
+          "radius_m": 1.850327595018676e-06,
+          "elasticity_N_m": 0.3232467014725355,
+          "shell_viscosity_kg_s": 5.146008382941456e-09
+        },
+        {
+          "radius_m": 1.746877379644489e-06,
+          "elasticity_N_m": 0.2791251846154447,
+          "shell_viscosity_kg_s": 4.390047261351134e-09
+        },
+        {
+          "radius_m": 2.255690348395603e-06,
+          "elasticity_N_m": 0.49613391578779487,
+          "shell_viscosity_kg_s": 9.59063683085549e-09
+        },
+        {
+          "radius_m": 1.6262402094292744e-06,
+          "elasticity_N_m": 0.22767343151865577,
+          "shell_viscosity_kg_s": 3.6475747708044145e-09
+        },
+        {
+          "radius_m": 1.7954988575197252e-06,
+          "elasticity_N_m": 0.299862244929233,
+          "shell_viscosity_kg_s": 4.730420209833116e-09
+        },
+        {
+          "radius_m": 2.1015025001394948e-06,
+          "elasticity_N_m": 0.43037279850656474,
+          "shell_viscosity_kg_s": 7.568401289993432e-09
+        },
+        {
+          "radius_m": 2.899589351944407e-06,
+          "elasticity_N_m": 0.7707568408013599,
+          "shell_viscosity_kg_s": 2.5782681352895645e-08
+        },
+        {
+          "radius_m": 2.152357313940987e-06,
+          "elasticity_N_m": 0.45206237659290116,
+          "shell_viscosity_kg_s": 8.183221598622454e-09
+        },
+        {
+          "radius_m": 1.5351439415791636e-06,
+          "elasticity_N_m": 0.1888208732805835,
+          "shell_viscosity_kg_s": 3.171341366858309e-09
+        },
+        {
+          "radius_m": 1.8311732354552984e-06,
+          "elasticity_N_m": 0.31507736711875495,
+          "shell_viscosity_kg_s": 4.996829507626092e-09
+        },
+        {
+          "radius_m": 2.4727238699520563e-06,
+          "elasticity_N_m": 0.5886987127316222,
+          "shell_viscosity_kg_s": 1.3384705030412446e-08
+        },
+        {
+          "radius_m": 1.5398112383776964e-06,
+          "elasticity_N_m": 0.19081147536515775,
+          "shell_viscosity_kg_s": 3.194155680482735e-09
+        },
+        {
+          "radius_m": 1.451451944905868e-06,
+          "elasticity_N_m": 0.1531262366994229,
+          "shell_viscosity_kg_s": 2.7888196558518543e-09
+        },
+        {
+          "radius_m": 1.812415661091687e-06,
+          "elasticity_N_m": 0.30707726165267474,
+          "shell_viscosity_kg_s": 4.854932872223701e-09
+        },
+        {
+          "radius_m": 1.7595747084058302e-06,
+          "elasticity_N_m": 0.2845405953321568,
+          "shell_viscosity_kg_s": 4.476497166966405e-09
+        },
+        {
+          "radius_m": 1.7573131437347568e-06,
+          "elasticity_N_m": 0.283576037999944,
+          "shell_viscosity_kg_s": 4.46097562604175e-09
+        },
+        {
+          "radius_m": 2.065361401892114e-06,
+          "elasticity_N_m": 0.4149586201040568,
+          "shell_viscosity_kg_s": 7.159752974120289e-09
+        },
+        {
+          "radius_m": 1.9870184691066035e-06,
+          "elasticity_N_m": 0.3815453592710366,
+          "shell_viscosity_kg_s": 6.3480933185293585e-09
+        },
+        {
+          "radius_m": 2.085039603634588e-06,
+          "elasticity_N_m": 0.42335137314722193,
+          "shell_viscosity_kg_s": 7.379439883054167e-09
+        },
+        {
+          "radius_m": 2.0692216147850702e-06,
+          "elasticity_N_m": 0.41660500090290264,
+          "shell_viscosity_kg_s": 7.202326423123227e-09
+        },
+        {
+          "radius_m": 1.4020451252095977e-06,
+          "elasticity_N_m": 0.1320542280989636,
+          "shell_viscosity_kg_s": 2.5850329428965776e-09
+        },
+        {
+          "radius_m": 1.6230089059659752e-06,
+          "elasticity_N_m": 0.22629528059155862,
+          "shell_viscosity_kg_s": 3.629517742540624e-09
+        },
+        {
+          "radius_m": 1.9017438567930037e-06,
+          "elasticity_N_m": 0.3451757371192863,
+          "shell_viscosity_kg_s": 5.568845074302726e-09
+        },
+        {
+          "radius_m": 2.0327422132611552e-06,
+          "elasticity_N_m": 0.40104653615295294,
+          "shell_viscosity_kg_s": 6.8099047849536605e-09
+        },
+        {
+          "radius_m": 1.876202288118995e-06,
+          "elasticity_N_m": 0.33428225807982154,
+          "shell_viscosity_kg_s": 5.3546231298936626e-09
+        },
+        {
+          "radius_m": 1.877797348394654e-06,
+          "elasticity_N_m": 0.3349625512873901,
+          "shell_viscosity_kg_s": 5.367756603108469e-09
+        },
+        {
+          "radius_m": 1.7932527490910324e-06,
+          "elasticity_N_m": 0.29890427968439554,
+          "shell_viscosity_kg_s": 4.71413013423357e-09
+        },
+        {
+          "radius_m": 1.6227073889857698e-06,
+          "elasticity_N_m": 0.22616668359950104,
+          "shell_viscosity_kg_s": 3.6278373851162073e-09
+        },
+        {
+          "radius_m": 2.39691103175392e-06,
+          "elasticity_N_m": 0.5563645372401171,
+          "shell_viscosity_kg_s": 1.1913562338906729e-08
+        },
+        {
+          "radius_m": 2.71221362958978e-06,
+          "elasticity_N_m": 0.6908410952171113,
+          "shell_viscosity_kg_s": 1.9335191349909385e-08
+        },
+        {
+          "radius_m": 1.8493850600563978e-06,
+          "elasticity_N_m": 0.3228447103111239,
+          "shell_viscosity_kg_s": 5.1385645745887195e-09
+        },
+        {
+          "radius_m": 1.409637857110442e-06,
+          "elasticity_N_m": 0.1352925282546737,
+          "shell_viscosity_kg_s": 2.6153537185173107e-09
+        },
+        {
+          "radius_m": 2.0379171933293815e-06,
+          "elasticity_N_m": 0.4032536651520514,
+          "shell_viscosity_kg_s": 6.864244610857638e-09
+        },
+        {
+          "radius_m": 2.027821542482513e-06,
+          "elasticity_N_m": 0.398947870065862,
+          "shell_viscosity_kg_s": 6.758634366586223e-09
+        },
+        {
+          "radius_m": 2.0884902792266105e-06,
+          "elasticity_N_m": 0.4248230862872196,
+          "shell_viscosity_kg_s": 7.418652006589733e-09
+        },
+        {
+          "radius_m": 1.3386457047287812e-06,
+          "elasticity_N_m": 0.10501437526389537,
+          "shell_viscosity_kg_s": 2.3451934282487755e-09
+        },
+        {
+          "radius_m": 1.648508743814395e-06,
+          "elasticity_N_m": 0.23717096143390973,
+          "shell_viscosity_kg_s": 3.7744816260682315e-09
+        },
+        {
+          "radius_m": 2.0668780619753085e-06,
+          "elasticity_N_m": 0.41560547562953926,
+          "shell_viscosity_kg_s": 7.176449792465444e-09
+        },
+        {
+          "radius_m": 2.7665292048449926e-06,
+          "elasticity_N_m": 0.7140066880634596,
+          "shell_viscosity_kg_s": 2.1017301922561024e-08
+        },
+        {
+          "radius_m": 1.394581051975122e-06,
+          "elasticity_N_m": 0.12887080086445976,
+          "shell_viscosity_kg_s": 2.5555686104494005e-09
+        },
+        {
+          "radius_m": 1.7849602712563076e-06,
+          "elasticity_N_m": 0.2953675378878854,
+          "shell_viscosity_kg_s": 4.654472668174433e-09
+        },
+        {
+          "radius_m": 1.7334579296201318e-06,
+          "elasticity_N_m": 0.2734017891800564,
+          "shell_viscosity_kg_s": 4.300494757005588e-09
+        },
+        {
+          "radius_m": 1.8047063571368993e-06,
+          "elasticity_N_m": 0.30378924351595776,
+          "shell_viscosity_kg_s": 4.797788771198789e-09
+        },
+        {
+          "radius_m": 1.6145383732668274e-06,
+          "elasticity_N_m": 0.22268259839537208,
+          "shell_viscosity_kg_s": 3.582606243646895e-09
+        },
+        {
+          "radius_m": 1.7370801580343259e-06,
+          "elasticity_N_m": 0.27494666959871017,
+          "shell_viscosity_kg_s": 4.324485536076497e-09
+        },
+        {
+          "radius_m": 1.250960308636067e-06,
+          "elasticity_N_m": 0.06761655383035281,
+          "shell_viscosity_kg_s": 2.0497104219439983e-09
+        },
+        {
+          "radius_m": 1.9969302473837496e-06,
+          "elasticity_N_m": 0.3857727327062394,
+          "shell_viscosity_kg_s": 6.445468027981367e-09
+        },
+        {
+          "radius_m": 1.2386807696085293e-06,
+          "elasticity_N_m": 0.06237933043510796,
+          "shell_viscosity_kg_s": 2.011416724161335e-09
+        },
+        {
+          "radius_m": 1.2308962098441107e-06,
+          "elasticity_N_m": 0.05905921569558342,
+          "shell_viscosity_kg_s": 1.9875119815165066e-09
+        },
+        {
+          "radius_m": 1.291589709222666e-06,
+          "elasticity_N_m": 0.08494499318053725,
+          "shell_viscosity_kg_s": 2.181686375626583e-09
+        },
+        {
+          "radius_m": 1.8263962292728272e-06,
+          "elasticity_N_m": 0.313039973981931,
+          "shell_viscosity_kg_s": 4.960303710723041e-09
+        },
+        {
+          "radius_m": 1.4674340169919464e-06,
+          "elasticity_N_m": 0.15994259044413534,
+          "shell_viscosity_kg_s": 2.8581200910476328e-09
+        },
+        {
+          "radius_m": 2.2289705272612695e-06,
+          "elasticity_N_m": 0.48473791207400163,
+          "shell_viscosity_kg_s": 9.205032477912277e-09
+        },
+        {
+          "radius_m": 1.543905774224427e-06,
+          "elasticity_N_m": 0.19255779490378833,
+          "shell_viscosity_kg_s": 3.214305377628946e-09
+        },
+        {
+          "radius_m": 2.3890244927243138e-06,
+          "elasticity_N_m": 0.5530009283439901,
+          "shell_viscosity_kg_s": 1.1770131639811183e-08
+        },
+        {
+          "radius_m": 1.7448992270059706e-06,
+          "elasticity_N_m": 0.2782815025151167,
+          "shell_viscosity_kg_s": 4.376730121177164e-09
+        },
+        {
+          "radius_m": 2.4298933953576966e-06,
+          "elasticity_N_m": 0.5704315153171278,
+          "shell_viscosity_kg_s": 1.253259133001839e-08
+        },
+        {
+          "radius_m": 1.6281057940404382e-06,
+          "elasticity_N_m": 0.2284691033553171,
+          "shell_viscosity_kg_s": 3.6580408254385924e-09
+        },
+        {
+          "radius_m": 1.9599155018244797e-06,
+          "elasticity_N_m": 0.3699859437252108,
+          "shell_viscosity_kg_s": 6.089275495741599e-09
+        },
+        {
+          "radius_m": 1.8752736713687958e-06,
+          "elasticity_N_m": 0.3338862030358616,
+          "shell_viscosity_kg_s": 5.3469918516523526e-09
+        },
+        {
+          "radius_m": 1.3807277500902489e-06,
+          "elasticity_N_m": 0.12296236761056134,
+          "shell_viscosity_kg_s": 2.501770071504358e-09
+        },
+        {
+          "radius_m": 1.9038795888011233e-06,
+          "elasticity_N_m": 0.3460866268207493,
+          "shell_viscosity_kg_s": 5.587141483992271e-09
+        },
+        {
+          "radius_m": 1.7947301577595755e-06,
+          "elasticity_N_m": 0.29953439448152913,
+          "shell_viscosity_kg_s": 4.724838829040893e-09
+        },
+        {
+          "radius_m": 2.496983941120924e-06,
+          "elasticity_N_m": 0.5990456330851444,
+          "shell_viscosity_kg_s": 1.3892815627452152e-08
+        },
+        {
+          "radius_m": 1.5674669084123905e-06,
+          "elasticity_N_m": 0.20260661863495477,
+          "shell_viscosity_kg_s": 3.3327475004991077e-09
+        },
+        {
+          "radius_m": 1.4146619855824256e-06,
+          "elasticity_N_m": 0.13743531904797474,
+          "shell_viscosity_kg_s": 2.635612313280292e-09
+        },
+        {
+          "radius_m": 1.6806498919974527e-06,
+          "elasticity_N_m": 0.2508791611339838,
+          "shell_viscosity_kg_s": 3.965477238734747e-09
+        },
+        {
+          "radius_m": 2.2545759391858577e-06,
+          "elasticity_N_m": 0.49565862025983853,
+          "shell_viscosity_kg_s": 9.574236143168934e-09
+        },
+        {
+          "radius_m": 2.36993496124602e-06,
+          "elasticity_N_m": 0.5448592431684977,
+          "shell_viscosity_kg_s": 1.1430062433736813e-08
+        },
+        {
+          "radius_m": 2.014659881783448e-06,
+          "elasticity_N_m": 0.3933344217777107,
+          "shell_viscosity_kg_s": 6.623386897834511e-09
+        },
+        {
+          "radius_m": 1.6580113838725983e-06,
+          "elasticity_N_m": 0.24122383741873335,
+          "shell_viscosity_kg_s": 3.829971802069192e-09
+        },
+        {
+          "radius_m": 2.063951443219204e-06,
+          "elasticity_N_m": 0.4143572727300606,
+          "shell_viscosity_kg_s": 7.144265670659034e-09
+        },
+        {
+          "radius_m": 2.1361749781391104e-06,
+          "elasticity_N_m": 0.44516061037340077,
+          "shell_viscosity_kg_s": 7.98234866980907e-09
+        },
+        {
+          "radius_m": 1.4763000814166461e-06,
+          "elasticity_N_m": 0.16372396692126978,
+          "shell_viscosity_kg_s": 2.8973044788402696e-09
+        },
+        {
+          "radius_m": 1.6386251869235039e-06,
+          "elasticity_N_m": 0.2329556244199446,
+          "shell_viscosity_kg_s": 3.717619890948868e-09
+        },
+        {
+          "radius_m": 1.4825820415118148e-06,
+          "elasticity_N_m": 0.1664032229018592,
+          "shell_viscosity_kg_s": 2.9253929144516175e-09
+        },
+        {
+          "radius_m": 2.121036946776076e-06,
+          "elasticity_N_m": 0.43870423999706654,
+          "shell_viscosity_kg_s": 7.798904942965556e-09
+        },
+        {
+          "radius_m": 1.8098366524776683e-06,
+          "elasticity_N_m": 0.3059773144787957,
+          "shell_viscosity_kg_s": 4.835740982953036e-09
+        },
+        {
+          "radius_m": 2.004313493104443e-06,
+          "elasticity_N_m": 0.3889216870061152,
+          "shell_viscosity_kg_s": 6.518971515010881e-09
+        },
+        {
+          "radius_m": 2.3056772304322375e-06,
+          "elasticity_N_m": 0.5174533209764195,
+          "shell_viscosity_kg_s": 1.0355920222720208e-08
+        },
+        {
+          "radius_m": 1.7855552084706603e-06,
+          "elasticity_N_m": 0.2956212786098068,
+          "shell_viscosity_kg_s": 4.658727491871193e-09
+        },
+        {
+          "radius_m": 2.0968708726291075e-06,
+          "elasticity_N_m": 0.42839740937338455,
+          "shell_viscosity_kg_s": 7.514755509728833e-09
+        },
+        {
+          "radius_m": 1.6156713305013463e-06,
+          "elasticity_N_m": 0.22316580465589442,
+          "shell_viscosity_kg_s": 3.5888454882788795e-09
+        },
+        {
+          "radius_m": 1.4952149841742466e-06,
+          "elasticity_N_m": 0.17179117294738638,
+          "shell_viscosity_kg_s": 2.982705519756889e-09
+        },
+        {
+          "radius_m": 1.7972163684494643e-06,
+          "elasticity_N_m": 0.30059476334076674,
+          "shell_viscosity_kg_s": 4.742914559884769e-09
+        },
+        {
+          "radius_m": 1.9223329667767196e-06,
+          "elasticity_N_m": 0.35395699252734114,
+          "shell_viscosity_kg_s": 5.74775267603491e-09
+        },
+        {
+          "radius_m": 1.6456945595535236e-06,
+          "elasticity_N_m": 0.235970711846648,
+          "shell_viscosity_kg_s": 3.758203171357426e-09
+        },
+        {
+          "radius_m": 2.037893468830334e-06,
+          "elasticity_N_m": 0.4032435466532077,
+          "shell_viscosity_kg_s": 6.863994505259423e-09
+        },
+        {
+          "radius_m": 1.8374649261991457e-06,
+          "elasticity_N_m": 0.3177607732210059,
+          "shell_viscosity_kg_s": 5.04534756348678e-09
+        },
+        {
+          "radius_m": 2.202035374334048e-06,
+          "elasticity_N_m": 0.4732500693505416,
+          "shell_viscosity_kg_s": 8.83201052953456e-09
+        },
+        {
+          "radius_m": 2.507593812928119e-06,
+          "elasticity_N_m": 0.6035707434109129,
+          "shell_viscosity_kg_s": 1.4121052143042842e-08
+        },
+        {
+          "radius_m": 1.3028512687237652e-06,
+          "elasticity_N_m": 0.08974804830775607,
+          "shell_viscosity_kg_s": 2.219748543571536e-09
+        },
+        {
+          "radius_m": 1.4538575381430544e-06,
+          "elasticity_N_m": 0.15415222221508293,
+          "shell_viscosity_kg_s": 2.7991421978818243e-09
+        },
+        {
+          "radius_m": 1.6306695377104197e-06,
+          "elasticity_N_m": 0.2295625400305642,
+          "shell_viscosity_kg_s": 3.672472607467302e-09
+        },
+        {
+          "radius_m": 2.079615803412742e-06,
+          "elasticity_N_m": 0.4210381223526047,
+          "shell_viscosity_kg_s": 7.318224436139022e-09
+        },
+        {
+          "radius_m": 1.125252102740996e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.68983824893189e-09
+        },
+        {
+          "radius_m": 1.5317321664662163e-06,
+          "elasticity_N_m": 0.18736575119491147,
+          "shell_viscosity_kg_s": 3.1547673574173726e-09
+        },
+        {
+          "radius_m": 1.915159356355216e-06,
+          "elasticity_N_m": 0.35089744768256975,
+          "shell_viscosity_kg_s": 5.684774920314732e-09
+        },
+        {
+          "radius_m": 2.745279556617161e-06,
+          "elasticity_N_m": 0.7049437130942894,
+          "shell_viscosity_kg_s": 2.0342458924207262e-08
+        },
+        {
+          "radius_m": 1.8632363037104689e-06,
+          "elasticity_N_m": 0.32875226572958516,
+          "shell_viscosity_kg_s": 5.249048650816567e-09
+        },
+        {
+          "radius_m": 1.3774818226797307e-06,
+          "elasticity_N_m": 0.12157797956997535,
+          "shell_viscosity_kg_s": 2.4893293476074416e-09
+        },
+        {
+          "radius_m": 1.989225187703754e-06,
+          "elasticity_N_m": 0.3824865247527212,
+          "shell_viscosity_kg_s": 6.369644343421565e-09
+        },
+        {
+          "radius_m": 2.015712489856499e-06,
+          "elasticity_N_m": 0.393783359120867,
+          "shell_viscosity_kg_s": 6.634103063918165e-09
+        },
+        {
+          "radius_m": 1.4050337296100403e-06,
+          "elasticity_N_m": 0.13332886787575238,
+          "shell_viscosity_kg_s": 2.596925441716005e-09
+        },
+        {
+          "radius_m": 2.0022047255864583e-06,
+          "elasticity_N_m": 0.38802229765969465,
+          "shell_viscosity_kg_s": 6.497892698410343e-09
+        },
+        {
+          "radius_m": 1.646467057065769e-06,
+          "elasticity_N_m": 0.2363001820356207,
+          "shell_viscosity_kg_s": 3.76266462639151e-09
+        },
+        {
+          "radius_m": 1.8624575812938304e-06,
+          "elasticity_N_m": 0.32842014061888886,
+          "shell_viscosity_kg_s": 5.24277464207761e-09
+        },
+        {
+          "radius_m": 1.7682662326530003e-06,
+          "elasticity_N_m": 0.28824753042357487,
+          "shell_viscosity_kg_s": 4.5366529840913446e-09
+        },
+        {
+          "radius_m": 2.0629587283379676e-06,
+          "elasticity_N_m": 0.4139338798332134,
+          "shell_viscosity_kg_s": 7.133381568171412e-09
+        },
+        {
+          "radius_m": 1.846557974683753e-06,
+          "elasticity_N_m": 0.32163895839969087,
+          "shell_viscosity_kg_s": 5.1163017751999915e-09
+        },
+        {
+          "radius_m": 1.8516600960090667e-06,
+          "elasticity_N_m": 0.32381501314493716,
+          "shell_viscosity_kg_s": 5.15655040734747e-09
+        },
+        {
+          "radius_m": 2.1643531854369867e-06,
+          "elasticity_N_m": 0.45717861578594504,
+          "shell_viscosity_kg_s": 8.335382966774279e-09
+        },
+        {
+          "radius_m": 2.4143045081976807e-06,
+          "elasticity_N_m": 0.563782854943381,
+          "shell_viscosity_kg_s": 1.2236102051773414e-08
+        },
+        {
+          "radius_m": 2.048592872626812e-06,
+          "elasticity_N_m": 0.4078068423724056,
+          "shell_viscosity_kg_s": 6.977718253525784e-09
+        },
+        {
+          "radius_m": 1.543973088865772e-06,
+          "elasticity_N_m": 0.19258650459832197,
+          "shell_viscosity_kg_s": 3.2146377008153305e-09
+        },
+        {
+          "radius_m": 2.6018146670280162e-06,
+          "elasticity_N_m": 0.6437559376845191,
+          "shell_viscosity_kg_s": 1.631970734222174e-08
+        },
+        {
+          "radius_m": 2.5495047093495166e-06,
+          "elasticity_N_m": 0.621445740734639,
+          "shell_viscosity_kg_s": 1.5059883927828965e-08
+        },
+        {
+          "radius_m": 1.5858152715346814e-06,
+          "elasticity_N_m": 0.21043219550661185,
+          "shell_viscosity_kg_s": 3.427999655329271e-09
+        },
+        {
+          "radius_m": 1.4606197622672592e-06,
+          "elasticity_N_m": 0.15703631080405625,
+          "shell_viscosity_kg_s": 2.8283644173625476e-09
+        },
+        {
+          "radius_m": 1.6458601184862149e-06,
+          "elasticity_N_m": 0.23604132273144085,
+          "shell_viscosity_kg_s": 3.759158889015809e-09
+        },
+        {
+          "radius_m": 2.1877243405457078e-06,
+          "elasticity_N_m": 0.46714641343981456,
+          "shell_viscosity_kg_s": 8.640007482982253e-09
+        },
+        {
+          "radius_m": 2.3009446358747937e-06,
+          "elasticity_N_m": 0.5154348693976697,
+          "shell_viscosity_kg_s": 1.0280921795764267e-08
+        },
+        {
+          "radius_m": 9.726066063311474e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.3366896640817513e-09
+        },
+        {
+          "radius_m": 1.549174084626541e-06,
+          "elasticity_N_m": 0.19480472929028997,
+          "shell_viscosity_kg_s": 3.2404184624124934e-09
+        },
+        {
+          "radius_m": 1.8049911409689874e-06,
+          "elasticity_N_m": 0.30391070382034335,
+          "shell_viscosity_kg_s": 4.799887677033396e-09
+        },
+        {
+          "radius_m": 2.1903869379705064e-06,
+          "elasticity_N_m": 0.46828201124149116,
+          "shell_viscosity_kg_s": 8.67541124621636e-09
+        },
+        {
+          "radius_m": 1.2608489413671077e-06,
+          "elasticity_N_m": 0.07183405569014167,
+          "shell_viscosity_kg_s": 2.0810773734135458e-09
+        },
+        {
+          "radius_m": 1.3942961218201307e-06,
+          "elasticity_N_m": 0.12874927815335596,
+          "shell_viscosity_kg_s": 2.5544505315245705e-09
+        },
+        {
+          "radius_m": 2.6110956332837103e-06,
+          "elasticity_N_m": 0.6477142697925726,
+          "shell_viscosity_kg_s": 1.6553993139265804e-08
+        },
+        {
+          "radius_m": 1.6724053091222605e-06,
+          "elasticity_N_m": 0.2473628465377143,
+          "shell_viscosity_kg_s": 3.915582011495174e-09
+        },
+        {
+          "radius_m": 1.7184627542676725e-06,
+          "elasticity_N_m": 0.2670063468922325,
+          "shell_viscosity_kg_s": 4.202586301341997e-09
+        },
+        {
+          "radius_m": 1.4319157034606105e-06,
+          "elasticity_N_m": 0.14479402972302058,
+          "shell_viscosity_kg_s": 2.7063861213763432e-09
+        },
+        {
+          "radius_m": 1.743823717360683e-06,
+          "elasticity_N_m": 0.2778227976514015,
+          "shell_viscosity_kg_s": 4.36950663298932e-09
+        },
+        {
+          "radius_m": 1.4731165300998543e-06,
+          "elasticity_N_m": 0.1623661822846581,
+          "shell_viscosity_kg_s": 2.8831730448755634e-09
+        },
+        {
+          "radius_m": 1.681375013366679e-06,
+          "elasticity_N_m": 0.2511884253979588,
+          "shell_viscosity_kg_s": 3.969895888081554e-09
+        },
+        {
+          "radius_m": 1.3700472987694306e-06,
+          "elasticity_N_m": 0.11840715512223235,
+          "shell_viscosity_kg_s": 2.4610675364724286e-09
+        },
+        {
+          "radius_m": 1.8111227110848122e-06,
+          "elasticity_N_m": 0.3065258184747426,
+          "shell_viscosity_kg_s": 4.8453017840839275e-09
+        },
+        {
+          "radius_m": 2.1759141146909328e-06,
+          "elasticity_N_m": 0.46210935211275306,
+          "shell_viscosity_kg_s": 8.48470403874467e-09
+        },
+        {
+          "radius_m": 1.8153944973595168e-06,
+          "elasticity_N_m": 0.30834773532090415,
+          "shell_viscosity_kg_s": 4.877194924871739e-09
+        },
+        {
+          "radius_m": 2.188801459429667e-06,
+          "elasticity_N_m": 0.46760580464382306,
+          "shell_viscosity_kg_s": 8.654312176253524e-09
+        },
+        {
+          "radius_m": 2.0713425615848103e-06,
+          "elasticity_N_m": 0.41750958471299177,
+          "shell_viscosity_kg_s": 7.225825544585226e-09
+        },
+        {
+          "radius_m": 1.8570030199599507e-06,
+          "elasticity_N_m": 0.3260937702099892,
+          "shell_viscosity_kg_s": 5.199038072563542e-09
+        },
+        {
+          "radius_m": 1.2185989201558845e-06,
+          "elasticity_N_m": 0.05381442164355496,
+          "shell_viscosity_kg_s": 1.950327135237096e-09
+        },
+        {
+          "radius_m": 1.9438002151150635e-06,
+          "elasticity_N_m": 0.3631127739436448,
+          "shell_viscosity_kg_s": 5.940414191729725e-09
+        },
+        {
+          "radius_m": 2.263343639214291e-06,
+          "elasticity_N_m": 0.4993980443219652,
+          "shell_viscosity_kg_s": 9.70403134837946e-09
+        },
+        {
+          "radius_m": 1.8539240747418315e-06,
+          "elasticity_N_m": 0.3247806000744613,
+          "shell_viscosity_kg_s": 5.174511319498883e-09
+        },
+        {
+          "radius_m": 2.0220387507979707e-06,
+          "elasticity_N_m": 0.39648150941240473,
+          "shell_viscosity_kg_s": 6.698874325265718e-09
+        },
+        {
+          "radius_m": 1.326112914073028e-06,
+          "elasticity_N_m": 0.09966914004921662,
+          "shell_viscosity_kg_s": 2.300484424240752e-09
+        },
+        {
+          "radius_m": 1.5698510943587075e-06,
+          "elasticity_N_m": 0.20362347394105895,
+          "shell_viscosity_kg_s": 3.344973360724363e-09
+        },
+        {
+          "radius_m": 1.7512703703610427e-06,
+          "elasticity_N_m": 0.2809987951560549,
+          "shell_viscosity_kg_s": 4.419766445974015e-09
+        },
+        {
+          "radius_m": 1.977976426822178e-06,
+          "elasticity_N_m": 0.37768892823672906,
+          "shell_viscosity_kg_s": 6.260546709872577e-09
+        },
+        {
+          "radius_m": 2.0301017932683696e-06,
+          "elasticity_N_m": 0.39992039702602983,
+          "shell_viscosity_kg_s": 6.782345033769909e-09
+        },
+        {
+          "radius_m": 1.6919711221344766e-06,
+          "elasticity_N_m": 0.25570766578742443,
+          "shell_viscosity_kg_s": 4.035029571995512e-09
+        },
+        {
+          "radius_m": 1.2594919227257525e-06,
+          "elasticity_N_m": 0.0712552872396037,
+          "shell_viscosity_kg_s": 2.0767446289452187e-09
+        },
+        {
+          "radius_m": 1.6659015839331425e-06,
+          "elasticity_N_m": 0.24458900774455547,
+          "shell_viscosity_kg_s": 3.876665595019478e-09
+        },
+        {
+          "radius_m": 1.8581653404222323e-06,
+          "elasticity_N_m": 0.32658949988715225,
+          "shell_viscosity_kg_s": 5.208327267899028e-09
+        },
+        {
+          "radius_m": 1.3789929273519404e-06,
+          "elasticity_N_m": 0.12222246571267278,
+          "shell_viscosity_kg_s": 2.49511327031982e-09
+        },
+        {
+          "radius_m": 2.038302979856629e-06,
+          "elasticity_N_m": 0.40341820310592247,
+          "shell_viscosity_kg_s": 6.868312883001247e-09
+        },
+        {
+          "radius_m": 1.570251389568707e-06,
+          "elasticity_N_m": 0.20379419984812375,
+          "shell_viscosity_kg_s": 3.3470304260544107e-09
+        },
+        {
+          "radius_m": 1.998469174136459e-06,
+          "elasticity_N_m": 0.38642908496626993,
+          "shell_viscosity_kg_s": 6.460720044386932e-09
+        },
+        {
+          "radius_m": 1.5086257491577169e-06,
+          "elasticity_N_m": 0.17751086421283643,
+          "shell_viscosity_kg_s": 3.044776073371101e-09
+        },
+        {
+          "radius_m": 1.3223600074460538e-06,
+          "elasticity_N_m": 0.09806852537281216,
+          "shell_viscosity_kg_s": 2.2872630199412735e-09
+        },
+        {
+          "radius_m": 1.7380595507644182e-06,
+          "elasticity_N_m": 0.27536438059809454,
+          "shell_viscosity_kg_s": 4.3309952142127556e-09
+        },
+        {
+          "radius_m": 2.6792516799990996e-06,
+          "elasticity_N_m": 0.6767828237166862,
+          "shell_viscosity_kg_s": 1.8380734165135474e-08
+        },
+        {
+          "radius_m": 2.778766900592889e-06,
+          "elasticity_N_m": 0.7192260652999374,
+          "shell_viscosity_kg_s": 2.141605660982845e-08
+        },
+        {
+          "radius_m": 2.080845625725331e-06,
+          "elasticity_N_m": 0.42156264156892387,
+          "shell_viscosity_kg_s": 7.332060094366973e-09
+        },
+        {
+          "radius_m": 1.8747564668793744e-06,
+          "elasticity_N_m": 0.3336656153211234,
+          "shell_viscosity_kg_s": 5.342746234251661e-09
+        },
+        {
+          "radius_m": 1.2679560698039388e-06,
+          "elasticity_N_m": 0.07486524596845012,
+          "shell_viscosity_kg_s": 2.103917383805712e-09
+        },
+        {
+          "radius_m": 1.828500335856874e-06,
+          "elasticity_N_m": 0.313937375440027,
+          "shell_viscosity_kg_s": 4.976359048058124e-09
+        },
+        {
+          "radius_m": 1.7960939212578893e-06,
+          "elasticity_N_m": 0.30011603961356,
+          "shell_viscosity_kg_s": 4.734745380003148e-09
+        },
+        {
+          "radius_m": 2.0844439791426004e-06,
+          "elasticity_N_m": 0.42309733930138926,
+          "shell_viscosity_kg_s": 7.372692445970846e-09
+        },
+        {
+          "radius_m": 1.7066336486215076e-06,
+          "elasticity_N_m": 0.26196123333414323,
+          "shell_viscosity_kg_s": 4.1269254820913434e-09
+        },
+        {
+          "radius_m": 1.919495043330732e-06,
+          "elasticity_N_m": 0.35274661817762737,
+          "shell_viscosity_kg_s": 5.722755314740128e-09
+        },
+        {
+          "radius_m": 1.3592417297022798e-06,
+          "elasticity_N_m": 0.11379857991509254,
+          "shell_viscosity_kg_s": 2.4205620339630565e-09
+        },
+        {
+          "radius_m": 2.4483579170882823e-06,
+          "elasticity_N_m": 0.5783066338352225,
+          "shell_viscosity_kg_s": 1.289308109106982e-08
+        },
+        {
+          "radius_m": 1.7042298991714992e-06,
+          "elasticity_N_m": 0.26093603419371464,
+          "shell_viscosity_kg_s": 4.111718047969888e-09
+        },
+        {
+          "radius_m": 1.5038666588764446e-06,
+          "elasticity_N_m": 0.1754811122078738,
+          "shell_viscosity_kg_s": 3.0226025537525725e-09
+        },
+        {
+          "radius_m": 1.4304605504770483e-06,
+          "elasticity_N_m": 0.1441734069755313,
+          "shell_viscosity_kg_s": 2.7003444829397473e-09
+        },
+        {
+          "radius_m": 1.970155231359138e-06,
+          "elasticity_N_m": 0.3743531883717425,
+          "shell_viscosity_kg_s": 6.185794994223436e-09
+        },
+        {
+          "radius_m": 1.373293170067097e-06,
+          "elasticity_N_m": 0.11979151923068704,
+          "shell_viscosity_kg_s": 2.4733668054032963e-09
+        },
+        {
+          "radius_m": 1.5782931759904252e-06,
+          "elasticity_N_m": 0.20722402175698654,
+          "shell_viscosity_kg_s": 3.3886251660308143e-09
+        },
+        {
+          "radius_m": 1.8060600168061943e-06,
+          "elasticity_N_m": 0.30436657936491207,
+          "shell_viscosity_kg_s": 4.807773669821708e-09
+        },
+        {
+          "radius_m": 1.7586204622798494e-06,
+          "elasticity_N_m": 0.284133609359426,
+          "shell_viscosity_kg_s": 4.469941422155536e-09
+        },
+        {
+          "radius_m": 1.938129723122082e-06,
+          "elasticity_N_m": 0.3606943091086382,
+          "shell_viscosity_kg_s": 5.888904463978324e-09
+        },
+        {
+          "radius_m": 1.5399597517285562e-06,
+          "elasticity_N_m": 0.19087481630929942,
+          "shell_viscosity_kg_s": 3.1948843198457613e-09
+        },
+        {
+          "radius_m": 2.0443472059036623e-06,
+          "elasticity_N_m": 0.4059960655149822,
+          "shell_viscosity_kg_s": 6.932367376355787e-09
+        },
+        {
+          "radius_m": 1.676078560403639e-06,
+          "elasticity_N_m": 0.24892948820922225,
+          "shell_viscosity_kg_s": 3.937734070077563e-09
+        },
+        {
+          "radius_m": 1.2424275248245523e-06,
+          "elasticity_N_m": 0.06397732153474175,
+          "shell_viscosity_kg_s": 2.0230245007841665e-09
+        },
+        {
+          "radius_m": 1.6088595283441583e-06,
+          "elasticity_N_m": 0.22026057103585372,
+          "shell_viscosity_kg_s": 3.551495664783322e-09
+        },
+        {
+          "radius_m": 2.243048733207956e-06,
+          "elasticity_N_m": 0.4907422669102634,
+          "shell_viscosity_kg_s": 9.40622771857963e-09
+        },
+        {
+          "radius_m": 2.1033503273955385e-06,
+          "elasticity_N_m": 0.43116089683126735,
+          "shell_viscosity_kg_s": 7.589910449421545e-09
+        },
+        {
+          "radius_m": 2.4683301550286826e-06,
+          "elasticity_N_m": 0.5868247933168034,
+          "shell_viscosity_kg_s": 1.3294689442428958e-08
+        },
+        {
+          "radius_m": 1.637987043243306e-06,
+          "elasticity_N_m": 0.2326834561403402,
+          "shell_viscosity_kg_s": 3.71397812379283e-09
+        },
+        {
+          "radius_m": 1.4797154220331156e-06,
+          "elasticity_N_m": 0.16518060969419404,
+          "shell_viscosity_kg_s": 2.91254182020787e-09
+        },
+        {
+          "radius_m": 1.481716328994836e-06,
+          "elasticity_N_m": 0.16603399651336778,
+          "shell_viscosity_kg_s": 2.9215059484543735e-09
+        },
+        {
+          "radius_m": 1.397203341492278e-06,
+          "elasticity_N_m": 0.1299892073435268,
+          "shell_viscosity_kg_s": 2.5658815989535073e-09
+        },
+        {
+          "radius_m": 1.8339404875734523e-06,
+          "elasticity_N_m": 0.3162576001471476,
+          "shell_viscosity_kg_s": 5.018111289524767e-09
+        },
+        {
+          "radius_m": 1.5484154908874272e-06,
+          "elasticity_N_m": 0.19448118906055795,
+          "shell_viscosity_kg_s": 3.2366453572651357e-09
+        },
+        {
+          "radius_m": 1.1057496729465801e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.6399741982107165e-09
+        },
+        {
+          "radius_m": 1.479273407244864e-06,
+          "elasticity_N_m": 0.16499209038700471,
+          "shell_viscosity_kg_s": 2.9105652916731532e-09
+        },
+        {
+          "radius_m": 2.02723178413391e-06,
+          "elasticity_N_m": 0.3986963381301828,
+          "shell_viscosity_kg_s": 6.752515402519675e-09
+        },
+        {
+          "radius_m": 2.284020463549406e-06,
+          "elasticity_N_m": 0.508216709900892,
+          "shell_viscosity_kg_s": 1.0017137442583263e-08
+        },
+        {
+          "radius_m": 1.6932656918414293e-06,
+          "elasticity_N_m": 0.2562597997674398,
+          "shell_viscosity_kg_s": 4.043060125784227e-09
+        },
+        {
+          "radius_m": 1.9066367058819571e-06,
+          "elasticity_N_m": 0.3472625372557249,
+          "shell_viscosity_kg_s": 5.6108501011394975e-09
+        },
+        {
+          "radius_m": 1.8076965655591195e-06,
+          "elasticity_N_m": 0.30506456740803467,
+          "shell_viscosity_kg_s": 4.819872973806035e-09
+        },
+        {
+          "radius_m": 1.7171709446597846e-06,
+          "elasticity_N_m": 0.26645539009446834,
+          "shell_viscosity_kg_s": 4.194256667206415e-09
+        },
+        {
+          "radius_m": 2.195083464279439e-06,
+          "elasticity_N_m": 0.47028507971225086,
+          "shell_viscosity_kg_s": 8.738213551578727e-09
+        },
+        {
+          "radius_m": 1.74038983178298e-06,
+          "elasticity_N_m": 0.2763582454525112,
+          "shell_viscosity_kg_s": 4.3465231921228725e-09
+        },
+        {
+          "radius_m": 2.04231329109981e-06,
+          "elasticity_N_m": 0.4051286008511392,
+          "shell_viscosity_kg_s": 6.910746279825388e-09
+        },
+        {
+          "radius_m": 2.0040495402383868e-06,
+          "elasticity_N_m": 0.38880911110874217,
+          "shell_viscosity_kg_s": 6.516329355927889e-09
+        },
+        {
+          "radius_m": 2.1896399192818466e-06,
+          "elasticity_N_m": 0.46796340777077783,
+          "shell_viscosity_kg_s": 8.66546374607975e-09
+        },
+        {
+          "radius_m": 1.9420595937526733e-06,
+          "elasticity_N_m": 0.3623703989325854,
+          "shell_viscosity_kg_s": 5.92455495832045e-09
+        },
+        {
+          "radius_m": 2.218632504731161e-06,
+          "elasticity_N_m": 0.48032874546491033,
+          "shell_viscosity_kg_s": 9.060034764580494e-09
+        },
+        {
+          "radius_m": 1.7537168319466792e-06,
+          "elasticity_N_m": 0.28204221102232885,
+          "shell_viscosity_kg_s": 4.436404226625925e-09
+        },
+        {
+          "radius_m": 1.049460951275937e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.504154467600013e-09
+        },
+        {
+          "radius_m": 2.5387849771375884e-06,
+          "elasticity_N_m": 0.6168737749462516,
+          "shell_viscosity_kg_s": 1.481397349297148e-08
+        },
+        {
+          "radius_m": 1.3798983604056529e-06,
+          "elasticity_N_m": 0.12260863291008114,
+          "shell_viscosity_kg_s": 2.498585353574984e-09
+        },
+        {
+          "radius_m": 1.7568073285741121e-06,
+          "elasticity_N_m": 0.283360307833929,
+          "shell_viscosity_kg_s": 4.457511493209444e-09
+        },
+        {
+          "radius_m": 2.2107264822856318e-06,
+          "elasticity_N_m": 0.4769568268918921,
+          "shell_viscosity_kg_s": 8.950690643215233e-09
+        },
+        {
+          "radius_m": 1.91252907055054e-06,
+          "elasticity_N_m": 0.34977563078687557,
+          "shell_viscosity_kg_s": 5.6618567030146774e-09
+        },
+        {
+          "radius_m": 1.631188758533246e-06,
+          "elasticity_N_m": 0.22978398771149963,
+          "shell_viscosity_kg_s": 3.675402322371752e-09
+        },
+        {
+          "radius_m": 2.503117258605617e-06,
+          "elasticity_N_m": 0.6016614929923658,
+          "shell_viscosity_kg_s": 1.4024300051367001e-08
+        },
+        {
+          "radius_m": 1.5617176600860798e-06,
+          "elasticity_N_m": 0.20015456422378325,
+          "shell_viscosity_kg_s": 3.3034494287666856e-09
+        },
+        {
+          "radius_m": 1.7435008373966468e-06,
+          "elasticity_N_m": 0.2776850893467401,
+          "shell_viscosity_kg_s": 4.367340389124472e-09
+        },
+        {
+          "radius_m": 1.6220105047546029e-06,
+          "elasticity_N_m": 0.22586946247490833,
+          "shell_viscosity_kg_s": 3.6239566179970394e-09
+        },
+        {
+          "radius_m": 2.4726461942964525e-06,
+          "elasticity_N_m": 0.5886655840645072,
+          "shell_viscosity_kg_s": 1.3383108381791281e-08
+        },
+        {
+          "radius_m": 1.329894851276869e-06,
+          "elasticity_N_m": 0.10128213626665486,
+          "shell_viscosity_kg_s": 2.3138854184575853e-09
+        },
+        {
+          "radius_m": 1.7737610905854647e-06,
+          "elasticity_N_m": 0.2905910873317709,
+          "shell_viscosity_kg_s": 4.5751004194575985e-09
+        },
+        {
+          "radius_m": 2.5277399136597707e-06,
+          "elasticity_N_m": 0.6121630553729625,
+          "shell_viscosity_kg_s": 1.4564799345867695e-08
+        },
+        {
+          "radius_m": 1.8596210515743332e-06,
+          "elasticity_N_m": 0.32721036069352333,
+          "shell_viscosity_kg_s": 5.219984637533191e-09
+        },
+        {
+          "radius_m": 1.7626501352857302e-06,
+          "elasticity_N_m": 0.2858522648964341,
+          "shell_viscosity_kg_s": 4.49769108747168e-09
+        },
+        {
+          "radius_m": 2.106529699586096e-06,
+          "elasticity_N_m": 0.43251689907054014,
+          "shell_viscosity_kg_s": 7.627062286859332e-09
+        },
+        {
+          "radius_m": 1.3937720016351458e-06,
+          "elasticity_N_m": 0.12852574089445992,
+          "shell_viscosity_kg_s": 2.552395137343821e-09
+        },
+        {
+          "radius_m": 2.06878877540944e-06,
+          "elasticity_N_m": 0.4164203949091964,
+          "shell_viscosity_kg_s": 7.19754015811564e-09
+        },
+        {
+          "radius_m": 1.0760076826311682e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.566747851380392e-09
+        },
+        {
+          "radius_m": 2.453350796543756e-06,
+          "elasticity_N_m": 0.5804360969229821,
+          "shell_viscosity_kg_s": 1.2992327661229795e-08
+        },
+        {
+          "radius_m": 2.1346139873616753e-06,
+          "elasticity_N_m": 0.4444948478068247,
+          "shell_viscosity_kg_s": 7.963234648436655e-09
+        },
+        {
+          "radius_m": 1.847070844551972e-06,
+          "elasticity_N_m": 0.32185769739848624,
+          "shell_viscosity_kg_s": 5.120333361056663e-09
+        },
+        {
+          "radius_m": 1.5817384333919522e-06,
+          "elasticity_N_m": 0.20869342403873783,
+          "shell_viscosity_kg_s": 3.406602952957616e-09
+        },
+        {
+          "radius_m": 1.3873899398715794e-06,
+          "elasticity_N_m": 0.12580379155229882,
+          "shell_viscosity_kg_s": 2.527499470995552e-09
+        },
+        {
+          "radius_m": 1.6315495194304718e-06,
+          "elasticity_N_m": 0.22993785223416643,
+          "shell_viscosity_kg_s": 3.6774392996550515e-09
+        },
+        {
+          "radius_m": 2.1417828228806743e-06,
+          "elasticity_N_m": 0.4475523561556778,
+          "shell_viscosity_kg_s": 8.05139486573717e-09
+        },
+        {
+          "radius_m": 1.1917874795583895e-06,
+          "elasticity_N_m": 0.042379342228723305,
+          "shell_viscosity_kg_s": 1.871648249197028e-09
+        },
+        {
+          "radius_m": 1.5717074906815595e-06,
+          "elasticity_N_m": 0.20441522697275533,
+          "shell_viscosity_kg_s": 3.3545238174436556e-09
+        },
+        {
+          "radius_m": 2.535813989141606e-06,
+          "elasticity_N_m": 0.6156066485659651,
+          "shell_viscosity_kg_s": 1.4746532565353343e-08
+        },
+        {
+          "radius_m": 2.198930068200932e-06,
+          "elasticity_N_m": 0.4719256562847677,
+          "shell_viscosity_kg_s": 8.789989149234658e-09
+        },
+        {
+          "radius_m": 1.3826349339255665e-06,
+          "elasticity_N_m": 0.12377578151632435,
+          "shell_viscosity_kg_s": 2.5091087468186707e-09
+        },
+        {
+          "radius_m": 1.9810162370991936e-06,
+          "elasticity_N_m": 0.3789854073198763,
+          "shell_viscosity_kg_s": 6.2898431217576774e-09
+        },
+        {
+          "radius_m": 1.4839943707960877e-06,
+          "elasticity_N_m": 0.16700558134160162,
+          "shell_viscosity_kg_s": 2.931745240612927e-09
+        },
+        {
+          "radius_m": 1.7410832135226267e-06,
+          "elasticity_N_m": 0.27665397276447046,
+          "shell_viscosity_kg_s": 4.351154324418199e-09
+        },
+        {
+          "radius_m": 1.3299822616247515e-06,
+          "elasticity_N_m": 0.10131941678002673,
+          "shell_viscosity_kg_s": 2.314196071329016e-09
+        },
+        {
+          "radius_m": 1.5332489524065168e-06,
+          "elasticity_N_m": 0.18801266039844966,
+          "shell_viscosity_kg_s": 3.1621250070275906e-09
+        },
+        {
+          "radius_m": 1.5444167904712867e-06,
+          "elasticity_N_m": 0.19277574333307398,
+          "shell_viscosity_kg_s": 3.216829054808095e-09
+        },
+        {
+          "radius_m": 1.8382174644463483e-06,
+          "elasticity_N_m": 0.31808173078343777,
+          "shell_viscosity_kg_s": 5.051182178229859e-09
+        },
+        {
+          "radius_m": 1.5716420105734547e-06,
+          "elasticity_N_m": 0.20438729970664865,
+          "shell_viscosity_kg_s": 3.354186483570569e-09
+        },
+        {
+          "radius_m": 1.7945118148466317e-06,
+          "elasticity_N_m": 0.2994412712291586,
+          "shell_viscosity_kg_s": 4.723254684496653e-09
+        },
+        {
+          "radius_m": 1.460592734889242e-06,
+          "elasticity_N_m": 0.1570247836273319,
+          "shell_viscosity_kg_s": 2.828247016364258e-09
+        },
+        {
+          "radius_m": 2.109792088914389e-06,
+          "elasticity_N_m": 0.433908308119057,
+          "shell_viscosity_kg_s": 7.665373249498909e-09
+        },
+        {
+          "radius_m": 1.7787262125143716e-06,
+          "elasticity_N_m": 0.2927087118344497,
+          "shell_viscosity_kg_s": 4.610121455663088e-09
+        },
+        {
+          "radius_m": 1.8004754473729193e-06,
+          "elasticity_N_m": 0.3019847605016203,
+          "shell_viscosity_kg_s": 4.766714126992327e-09
+        },
+        {
+          "radius_m": 2.7723000171936424e-06,
+          "elasticity_N_m": 0.7164679395301586,
+          "shell_viscosity_kg_s": 2.120440521315626e-08
+        },
+        {
+          "radius_m": 1.1516416905257406e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.7597338617760921e-09
+        },
+        {
+          "radius_m": 1.7524339035705038e-06,
+          "elasticity_N_m": 0.28149504206989007,
+          "shell_viscosity_kg_s": 4.42767155242609e-09
+        },
+        {
+          "radius_m": 1.8955626199553601e-06,
+          "elasticity_N_m": 0.3425394396080313,
+          "shell_viscosity_kg_s": 5.5162285409602605e-09
+        },
+        {
+          "radius_m": 1.6669696454580244e-06,
+          "elasticity_N_m": 0.2450445359849176,
+          "shell_viscosity_kg_s": 3.8830299204769904e-09
+        },
+        {
+          "radius_m": 1.9983592939422245e-06,
+          "elasticity_N_m": 0.3863822210634289,
+          "shell_viscosity_kg_s": 6.4596298467931224e-09
+        },
+        {
+          "radius_m": 1.121413792532275e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.6799060071729668e-09
+        },
+        {
+          "radius_m": 1.7409974503793878e-06,
+          "elasticity_N_m": 0.2766173947838791,
+          "shell_viscosity_kg_s": 4.3505812406637225e-09
+        },
+        {
+          "radius_m": 1.8587953475792857e-06,
+          "elasticity_N_m": 0.32685819793963555,
+          "shell_viscosity_kg_s": 5.213369181458174e-09
+        },
+        {
+          "radius_m": 1.8606703786490874e-06,
+          "elasticity_N_m": 0.327657898690906,
+          "shell_viscosity_kg_s": 5.228403852990363e-09
+        },
+        {
+          "radius_m": 2.0900917051173848e-06,
+          "elasticity_N_m": 0.42550609442963483,
+          "shell_viscosity_kg_s": 7.436920702756099e-09
+        },
+        {
+          "radius_m": 2.1643109888442884e-06,
+          "elasticity_N_m": 0.45716061893915916,
+          "shell_viscosity_kg_s": 8.334842796859487e-09
+        },
+        {
+          "radius_m": 1.8067372858768625e-06,
+          "elasticity_N_m": 0.30465543462355205,
+          "shell_viscosity_kg_s": 4.812777155591141e-09
+        },
+        {
+          "radius_m": 2.337292225307394e-06,
+          "elasticity_N_m": 0.5309371162906737,
+          "shell_viscosity_kg_s": 1.0871160252427781e-08
+        },
+        {
+          "radius_m": 1.7264330043165603e-06,
+          "elasticity_N_m": 0.2704056585380832,
+          "shell_viscosity_kg_s": 4.254345899937485e-09
+        },
+        {
+          "radius_m": 1.9809603470063646e-06,
+          "elasticity_N_m": 0.3789615701952847,
+          "shell_viscosity_kg_s": 6.289303241398725e-09
+        },
+        {
+          "radius_m": 1.4039094243896863e-06,
+          "elasticity_N_m": 0.1328493516992714,
+          "shell_viscosity_kg_s": 2.5924451083547795e-09
+        },
+        {
+          "radius_m": 2.636162159536176e-06,
+          "elasticity_N_m": 0.6584051432392493,
+          "shell_viscosity_kg_s": 1.7203711218726827e-08
+        },
+        {
+          "radius_m": 2.173114194819121e-06,
+          "elasticity_N_m": 0.46091518628742534,
+          "shell_viscosity_kg_s": 8.448296578429715e-09
+        },
+        {
+          "radius_m": 1.8805184629737799e-06,
+          "elasticity_N_m": 0.3361231066553873,
+          "shell_viscosity_kg_s": 5.390236223566693e-09
+        },
+        {
+          "radius_m": 1.8973316249547901e-06,
+          "elasticity_N_m": 0.3432939202402882,
+          "shell_viscosity_kg_s": 5.531235853618954e-09
+        },
+        {
+          "radius_m": 1.3628140731963245e-06,
+          "elasticity_N_m": 0.11532218441530259,
+          "shell_viscosity_kg_s": 2.4338789257997703e-09
+        },
+        {
+          "radius_m": 1.382662415502351e-06,
+          "elasticity_N_m": 0.12378750240882289,
+          "shell_viscosity_kg_s": 2.5092146506859206e-09
+        },
+        {
+          "radius_m": 2.440410070835919e-06,
+          "elasticity_N_m": 0.5749168774085895,
+          "shell_viscosity_kg_s": 1.2736658389047214e-08
+        },
+        {
+          "radius_m": 1.2258854750478497e-06,
+          "elasticity_N_m": 0.05692213730497811,
+          "shell_viscosity_kg_s": 1.9722755702400123e-09
+        },
+        {
+          "radius_m": 1.9623145764436993e-06,
+          "elasticity_N_m": 0.37100914905030796,
+          "shell_viscosity_kg_s": 6.111753163055082e-09
+        },
+        {
+          "radius_m": 1.5094651958003339e-06,
+          "elasticity_N_m": 0.17786888820591262,
+          "shell_viscosity_kg_s": 3.0487040596566203e-09
+        },
+        {
+          "radius_m": 1.5155311272470159e-06,
+          "elasticity_N_m": 0.1804560079679225,
+          "shell_viscosity_kg_s": 3.077239123479575e-09
+        },
+        {
+          "radius_m": 1.5160630506460337e-06,
+          "elasticity_N_m": 0.18068287329760357,
+          "shell_viscosity_kg_s": 3.0797540729953794e-09
+        },
+        {
+          "radius_m": 2.1907565313068837e-06,
+          "elasticity_N_m": 0.46843964279945605,
+          "shell_viscosity_kg_s": 8.680337071361575e-09
+        },
+        {
+          "radius_m": 1.913586016290834e-06,
+          "elasticity_N_m": 0.35022641814511096,
+          "shell_viscosity_kg_s": 5.671054961887006e-09
+        },
+        {
+          "radius_m": 1.9490661259900646e-06,
+          "elasticity_N_m": 0.36535868493183277,
+          "shell_viscosity_kg_s": 5.988652172369818e-09
+        },
+        {
+          "radius_m": 2.2101732166625334e-06,
+          "elasticity_N_m": 0.4767208591036407,
+          "shell_viscosity_kg_s": 8.943088303802803e-09
+        },
+        {
+          "radius_m": 1.8929545793144462e-06,
+          "elasticity_N_m": 0.3414271102746815,
+          "shell_viscosity_kg_s": 5.49417752330046e-09
+        },
+        {
+          "radius_m": 1.1873778859009974e-06,
+          "elasticity_N_m": 0.040498650533845604,
+          "shell_viscosity_kg_s": 1.8590155964951509e-09
+        },
+        {
+          "radius_m": 1.8914106398055071e-06,
+          "elasticity_N_m": 0.340768620074119,
+          "shell_viscosity_kg_s": 5.481165054859697e-09
+        },
+        {
+          "radius_m": 1.8931898913130424e-06,
+          "elasticity_N_m": 0.3415274708420828,
+          "shell_viscosity_kg_s": 5.496163466220687e-09
+        },
+        {
+          "radius_m": 1.289662210495408e-06,
+          "elasticity_N_m": 0.08412291497336172,
+          "shell_viscosity_kg_s": 2.1752374810130555e-09
+        },
+        {
+          "radius_m": 1.5611034163615368e-06,
+          "elasticity_N_m": 0.19989258927526565,
+          "shell_viscosity_kg_s": 3.300334521804986e-09
+        },
+        {
+          "radius_m": 2.1737986958326337e-06,
+          "elasticity_N_m": 0.4612071259696885,
+          "shell_viscosity_kg_s": 8.457182716780918e-09
+        },
+        {
+          "radius_m": 2.287514263965883e-06,
+          "elasticity_N_m": 0.5097068157785193,
+          "shell_viscosity_kg_s": 1.0071032501496502e-08
+        },
+        {
+          "radius_m": 1.938488599880174e-06,
+          "elasticity_N_m": 0.3608473700459644,
+          "shell_viscosity_kg_s": 5.892151155712769e-09
+        },
+        {
+          "radius_m": 1.9190686355945123e-06,
+          "elasticity_N_m": 0.3525647552781297,
+          "shell_viscosity_kg_s": 5.719008781620325e-09
+        },
+        {
+          "radius_m": 2.0540570585099996e-06,
+          "elasticity_N_m": 0.410137317651585,
+          "shell_viscosity_kg_s": 7.0365218647312514e-09
+        },
+        {
+          "radius_m": 1.928493336637643e-06,
+          "elasticity_N_m": 0.35658439027302485,
+          "shell_viscosity_kg_s": 5.802391643731635e-09
+        },
+        {
+          "radius_m": 1.7571481817921808e-06,
+          "elasticity_N_m": 0.2835056817314353,
+          "shell_viscosity_kg_s": 4.459845569635875e-09
+        },
+        {
+          "radius_m": 1.3604244843721486e-06,
+          "elasticity_N_m": 0.1143030247817916,
+          "shell_viscosity_kg_s": 2.4249629888793297e-09
+        },
+        {
+          "radius_m": 2.78450735756794e-06,
+          "elasticity_N_m": 0.7216743701997965,
+          "shell_viscosity_kg_s": 2.1605702460015563e-08
+        },
+        {
+          "radius_m": 1.725178191375538e-06,
+          "elasticity_N_m": 0.26987048081873716,
+          "shell_viscosity_kg_s": 4.2461549382222776e-09
+        },
+        {
+          "radius_m": 1.7104357222148668e-06,
+          "elasticity_N_m": 0.2635828177217109,
+          "shell_viscosity_kg_s": 4.151094403925646e-09
+        },
+        {
+          "radius_m": 1.2506315735417064e-06,
+          "elasticity_N_m": 0.06747634831260799,
+          "shell_viscosity_kg_s": 2.0486758267101127e-09
+        },
+        {
+          "radius_m": 1.455917591678777e-06,
+          "elasticity_N_m": 0.15503083504806855,
+          "shell_viscosity_kg_s": 2.8080123731198756e-09
+        },
+        {
+          "radius_m": 1.3900465562687878e-06,
+          "elasticity_N_m": 0.12693683844570822,
+          "shell_viscosity_kg_s": 2.537832977749639e-09
+        },
+        {
+          "radius_m": 2.0490943017808974e-06,
+          "elasticity_N_m": 0.408020701906623,
+          "shell_viscosity_kg_s": 6.9830939132528054e-09
+        },
+        {
+          "radius_m": 1.7288125129337436e-06,
+          "elasticity_N_m": 0.2714205189633119,
+          "shell_viscosity_kg_s": 4.269921880970248e-09
+        },
+        {
+          "radius_m": 2.7895220506712053e-06,
+          "elasticity_N_m": 0.7238131368083394,
+          "shell_viscosity_kg_s": 2.1772745254459104e-08
+        },
+        {
+          "radius_m": 1.951315587401202e-06,
+          "elasticity_N_m": 0.36631808022368284,
+          "shell_viscosity_kg_s": 6.009377412485975e-09
+        },
+        {
+          "radius_m": 2.2754943825943027e-06,
+          "elasticity_N_m": 0.5045803363735403,
+          "shell_viscosity_kg_s": 9.886822486490378e-09
+        },
+        {
+          "radius_m": 2.4681553247336293e-06,
+          "elasticity_N_m": 0.5867502281959631,
+          "shell_viscosity_kg_s": 1.3291120183082773e-08
+        },
+        {
+          "radius_m": 1.2542256646957579e-06,
+          "elasticity_N_m": 0.06900922818981095,
+          "shell_viscosity_kg_s": 2.0600155650625143e-09
+        },
+        {
+          "radius_m": 2.2000847846900546e-06,
+          "elasticity_N_m": 0.4724181428673785,
+          "shell_viscosity_kg_s": 8.805591512453282e-09
+        },
+        {
+          "radius_m": 1.9981283096702124e-06,
+          "elasticity_N_m": 0.3862837062714158,
+          "shell_viscosity_kg_s": 6.457338691462826e-09
+        },
+        {
+          "radius_m": 2.706735175079417e-06,
+          "elasticity_N_m": 0.6885045343684415,
+          "shell_viscosity_kg_s": 1.9173188642195214e-08
+        },
+        {
+          "radius_m": 1.40665365917583e-06,
+          "elasticity_N_m": 0.13401976783556172,
+          "shell_viscosity_kg_s": 2.6033944468256032e-09
+        },
+        {
+          "radius_m": 2.478510584225707e-06,
+          "elasticity_N_m": 0.5911667463693343,
+          "shell_viscosity_kg_s": 1.3504190106618e-08
+        },
+        {
+          "radius_m": 2.1624748044490534e-06,
+          "elasticity_N_m": 0.45637748629459146,
+          "shell_viscosity_kg_s": 8.311371180163817e-09
+        },
+        {
+          "radius_m": 1.6945709603514653e-06,
+          "elasticity_N_m": 0.25681649678697016,
+          "shell_viscosity_kg_s": 4.051173228286825e-09
+        },
+        {
+          "radius_m": 1.5997822487675784e-06,
+          "elasticity_N_m": 0.2163891112964424,
+          "shell_viscosity_kg_s": 3.502327412934205e-09
+        },
+        {
+          "radius_m": 1.6545156355649954e-06,
+          "elasticity_N_m": 0.23973290076554074,
+          "shell_viscosity_kg_s": 3.809464338687799e-09
+        },
+        {
+          "radius_m": 1.8507980807055951e-06,
+          "elasticity_N_m": 0.3234473636180065,
+          "shell_viscosity_kg_s": 5.149728146575612e-09
+        },
+        {
+          "radius_m": 1.570649711507265e-06,
+          "elasticity_N_m": 0.20396408415491873,
+          "shell_viscosity_kg_s": 3.3490786066954726e-09
+        },
+        {
+          "radius_m": 1.6632540237161543e-06,
+          "elasticity_N_m": 0.24345982331201,
+          "shell_viscosity_kg_s": 3.860934351750864e-09
+        },
+        {
+          "radius_m": 2.156081069776289e-06,
+          "elasticity_N_m": 0.45365055845665747,
+          "shell_viscosity_kg_s": 8.23015580684062e-09
+        },
+        {
+          "radius_m": 1.9408947367369054e-06,
+          "elasticity_N_m": 0.36187358741536035,
+          "shell_viscosity_kg_s": 5.913965312062749e-09
+        },
+        {
+          "radius_m": 1.3850283088467823e-06,
+          "elasticity_N_m": 0.12479655592022285,
+          "shell_viscosity_kg_s": 2.518348708667442e-09
+        },
+        {
+          "radius_m": 1.5180351417948367e-06,
+          "elasticity_N_m": 0.18152397017256805,
+          "shell_viscosity_kg_s": 3.0890961276371436e-09
+        },
+        {
+          "radius_m": 1.9518215555210464e-06,
+          "elasticity_N_m": 0.3665338756267965,
+          "shell_viscosity_kg_s": 6.014048982990915e-09
+        },
+        {
+          "radius_m": 1.8815386059652858e-06,
+          "elasticity_N_m": 0.3365581976412646,
+          "shell_viscosity_kg_s": 5.39868805123497e-09
+        },
+        {
+          "radius_m": 1.3720477126663666e-06,
+          "elasticity_N_m": 0.11926033164927552,
+          "shell_viscosity_kg_s": 2.4686402621740703e-09
+        },
+        {
+          "radius_m": 1.3105001615766965e-06,
+          "elasticity_N_m": 0.09301030110953126,
+          "shell_viscosity_kg_s": 2.24597848269092e-09
+        }
+      ],
+      "frequency_Hz": 7000000.0,
+      "build": {
+        "library": "/workspace/new_microbubble_aggregation/build/apecss/16b0195e2dc6a2d9/libapecss_harmonics.so",
+        "library_sha256": "29977148b8b6e81a613fb117fb283d773dd4778ed54fff4ce2dd03cd0518458b",
+        "driver_sha256": "20407fe3c86dbfd028d2722a21d05c1efce4a098229989e044474e3e57ebaa0e",
+        "apecss_dir": "/workspace/third_party/apecss",
+        "apecss_commit": null,
+        "apecss_source_changes": null,
+        "apecss_source_sha256": "be87a0c02602beab07081a1f73a2cc8b4670dff5a046ef88de40ebeb6e5bad33",
+        "command": [
+          "gcc",
+          "-O3",
+          "-fPIC",
+          "-shared",
+          "-fopenmp",
+          "-DAPECSS_HARMONICS_LIBRARY",
+          "-I",
+          "/workspace/third_party/apecss/include",
+          "/workspace/new_microbubble_aggregation/native/apecss_harmonics.c",
+          "/workspace/third_party/apecss/src/bubble.c",
+          "/workspace/third_party/apecss/src/emissions.c",
+          "/workspace/third_party/apecss/src/gas.c",
+          "/workspace/third_party/apecss/src/interactions.c",
+          "/workspace/third_party/apecss/src/interface.c",
+          "/workspace/third_party/apecss/src/liquid.c",
+          "/workspace/third_party/apecss/src/misc.c",
+          "/workspace/third_party/apecss/src/odesolver.c",
+          "/workspace/third_party/apecss/src/rayleighplesset.c",
+          "/workspace/third_party/apecss/src/results.c",
+          "/workspace/third_party/apecss/src/viscoelasticity.c",
+          "-lm",
+          "-o",
+          "/workspace/new_microbubble_aggregation/build/apecss/.staging_nyhyq5rh/libapecss_harmonics.so"
+        ],
+        "cache_key": "16b0195e2dc6a2d9b0e30193d996aa98973cd8e0aacbbf021e7bfe798bd85150",
+        "cached": true
+      },
+      "stats": {
+        "settings": {
+          "tolerance": 0.001,
+          "min_cycles_warm": 1,
+          "min_cycles_cold": 4,
+          "max_cycles": 400,
+          "q_refresh": 10,
+          "threads": 2
+        },
+        "frequency_Hz": 7000000.0,
+        "frequency_switches": 0,
+        "calls": 491,
+        "cache_hits": 0,
+        "seconds_in_apecss": 51.31538178352639,
+        "cycles_total": 983093,
+        "cycles_per_bubble_call_mean": 2.5027825865580446,
+        "cycles_first_call_max": 34,
+        "cycles_later_calls_max": 29,
+        "cycles_later_calls_histogram": {
+          "1": 259517,
+          "2": 19821,
+          "3": 3556,
+          "4": 40855,
+          "5": 20934,
+          "6": 14272,
+          "7": 9481,
+          "8": 7156,
+          "9": 4666,
+          "10": 3642,
+          "11": 3378,
+          "12": 1637,
+          "13": 991,
+          "14": 981,
+          "15": 514,
+          "16": 147,
+          "17": 222,
+          "18": 126,
+          "19": 37,
+          "20": 38,
+          "21": 9,
+          "22": 5,
+          "23": 9,
+          "24": 1,
+          "25": 3,
+          "26": 1,
+          "29": 1
+        }
+      }
+    }
+  },
+  "task": {
+    "id": "run",
+    "duration": 1.0,
+    "device": "cuda:0",
+    "stepping": {
+      "fixed_step_s": 0.001,
+      "save_interval_s": 0.01,
+      "budget_s": 3600
+    },
+    "variant": "FIXED_STEP",
+    "coupling": "collective",
+    "field": "direct_gpu",
+    "response": "apecss",
+    "contact": "compiled",
+    "propagation_delay": true,
+    "save_interval_s": 0.005,
+    "action_seed": 0,
+    "action_segment_s": 1.0,
+    "channel_on_probability": 0.5,
+    "segments": [
+      {
+        "amplitudes": [
+          4631.713446644066,
+          4631.713446644066,
+          6000.000000000001,
+          6000.000000000001
+        ],
+        "phases": [
+          3.4686112503452717,
+          3.4686112503452717,
+          5.98693619693718,
+          5.98693619693718
+        ],
+        "duration": 1.0,
+        "frequency": 7000000.0
+      }
+    ],
+    "adhesion_force_N": 5.04e-10,
+    "adhesion_range_m": 2e-07,
+    "state_seed": 5,
+    "wall_margin_m": 5e-05,
+    "start": {
+      "state": "CENTRED3D_N800_s5",
+      "bubble_count": 800,
+      "aspect": 1.0,
+      "cluster_seed": 5,
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "centre_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "radius_sigma_g": 1.25,
+      "radii_m": [
+        2.1501497068262807e-06,
+        1.0465681453077627e-06,
+        1.8960304084228612e-06,
+        1.2217945765203e-06,
+        1.4903963945695545e-06,
+        1.3699460010655058e-06,
+        1.3799127884718934e-06,
+        1.3777120172111624e-06,
+        1.9281672752961473e-06,
+        2.8450037733459735e-06,
+        1.8667274974210393e-06,
+        1.957526512718742e-06,
+        1.4305459805683598e-06,
+        1.307172498215824e-06,
+        2.119074037222211e-06,
+        2.319489045653627e-06,
+        2.401178569397037e-06,
+        1.5386323816085597e-06,
+        2.0040231495761474e-06,
+        1.7215489187568343e-06,
+        1.7615608670255995e-06,
+        1.4093562113151148e-06,
+        2.062946051158917e-06,
+        1.7811098953801331e-06,
+        1.6564543901192202e-06,
+        2.037792835068967e-06,
+        1.238646537946603e-06,
+        1.200400169056969e-06,
+        1.2906540664768027e-06,
+        1.52213349644005e-06,
+        1.462816148875844e-06,
+        1.4522646998389171e-06,
+        1.6976608228119156e-06,
+        1.3386184704099687e-06,
+        1.884207670660157e-06,
+        1.2194585093538227e-06,
+        1.3644764369967512e-06,
+        1.203850231081214e-06,
+        1.5316160170981998e-06,
+        2.3009135655181303e-06,
+        1.3775352625587772e-06,
+        1.231842256508094e-06,
+        1.8712402851142657e-06,
+        1.7391169374628511e-06,
+        2.1446407148799693e-06,
+        2.083223780624066e-06,
+        1.3675914239857591e-06,
+        1.0674263467753824e-06,
+        1.4714522690754698e-06,
+        1.644328720325048e-06,
+        2.151406730866987e-06,
+        1.4094610160505006e-06,
+        1.5127339725169547e-06,
+        9.08145319524647e-07,
+        1.3747850520422497e-06,
+        2.1559436002154544e-06,
+        1.4795754540278677e-06,
+        1.318379820666813e-06,
+        1.9446690719715886e-06,
+        2.5302792981010064e-06,
+        2.021878470333703e-06,
+        1.1304897121953884e-06,
+        2.1869809630297233e-06,
+        1.742594192727598e-06,
+        1.3519184766743168e-06,
+        1.659319087896893e-06,
+        1.5511021770905724e-06,
+        1.38788775084387e-06,
+        1.739264473028253e-06,
+        1.1998333502914985e-06,
+        1.8915783069360532e-06,
+        2.292173729555795e-06,
+        2.0980030607923957e-06,
+        2.001707354765079e-06,
+        1.6125405102325432e-06,
+        1.9584927497765194e-06,
+        1.801946667200544e-06,
+        1.4624234201074396e-06,
+        1.5433112149206206e-06,
+        1.3864213376188107e-06,
+        2.6550522286920523e-06,
+        1.6250159697098184e-06,
+        1.6169930398164298e-06,
+        2.0332093584510096e-06,
+        1.603290508532803e-06,
+        1.7780847368093792e-06,
+        1.712784006618798e-06,
+        1.533624802005109e-06,
+        1.3866292522193873e-06,
+        1.6839740822527346e-06,
+        1.973187854048303e-06,
+        1.6011309753582151e-06,
+        1.7744496031354566e-06,
+        2.006221383212696e-06,
+        2.1910832065192345e-06,
+        1.9926683424103156e-06,
+        1.6668306091954614e-06,
+        1.6342984688889758e-06,
+        1.826715737490295e-06,
+        1.318394445973286e-06,
+        2.467881573888926e-06,
+        2.586967598718936e-06,
+        1.3982713104618387e-06,
+        1.5979778385155638e-06,
+        1.7221235258192472e-06,
+        1.8566006541801694e-06,
+        1.0330248259623282e-06,
+        1.7580761214169213e-06,
+        1.5971056633079753e-06,
+        1.6564700256263207e-06,
+        1.1475130170354296e-06,
+        1.8317007322951157e-06,
+        2.161339172990641e-06,
+        2.1746859292978386e-06,
+        1.2035165859398234e-06,
+        2.051241535813936e-06,
+        1.840517876968342e-06,
+        2.1051511341806736e-06,
+        1.7382398341631074e-06,
+        1.0274045066904065e-06,
+        1.582007457177113e-06,
+        1.326940073135219e-06,
+        2.222463348791116e-06,
+        1.7762995783508385e-06,
+        2.35434010387686e-06,
+        2.1732577955427574e-06,
+        2.7909980734423707e-06,
+        1.8493349408843684e-06,
+        1.6982185787714155e-06,
+        1.5611217648742688e-06,
+        1.5585271776861024e-06,
+        1.706584269895483e-06,
+        2.157300680887445e-06,
+        2.394021912871082e-06,
+        1.9226271100206933e-06,
+        2.262008203319711e-06,
+        2.1411025531099673e-06,
+        2.4853380984548805e-06,
+        1.5030847339399686e-06,
+        1.5649329287758784e-06,
+        1.30419399199128e-06,
+        1.6970704873677652e-06,
+        1.5289378772203768e-06,
+        2.0468241888529326e-06,
+        1.425910020863366e-06,
+        2.2208710864705075e-06,
+        1.987088974474391e-06,
+        1.5596465863447514e-06,
+        1.451793656781781e-06,
+        2.2440047039270736e-06,
+        1.6229866492563826e-06,
+        1.87418350917467e-06,
+        1.8993856042209293e-06,
+        2.0560993765144e-06,
+        1.4527694216294533e-06,
+        2.480880359226283e-06,
+        1.9006552020123453e-06,
+        1.797686111426351e-06,
+        2.2723189563842556e-06,
+        1.695337071250513e-06,
+        1.7302864018490166e-06,
+        1.684400798503051e-06,
+        1.5376980793538915e-06,
+        1.6281159692075145e-06,
+        1.6029969020427836e-06,
+        1.4264752581786903e-06,
+        1.377798403741288e-06,
+        2.815562245513925e-06,
+        1.3363763987414928e-06,
+        2.328135911063796e-06,
+        1.8785752285415304e-06,
+        1.541857817657109e-06,
+        1.5984559877284853e-06,
+        1.8309004271756512e-06,
+        2.8340390097512435e-06,
+        1.8740487796379693e-06,
+        1.0872299175945472e-06,
+        2.3466185473980057e-06,
+        1.7783148590854938e-06,
+        1.364210493228663e-06,
+        1.426665514470487e-06,
+        2.301029967195203e-06,
+        1.8105806493307175e-06,
+        1.654950948968359e-06,
+        1.5545426789335977e-06,
+        1.5871127215906178e-06,
+        2.169550354103327e-06,
+        2.1695598395609603e-06,
+        2.4267397425045254e-06,
+        1.4018828154693923e-06,
+        1.2948637157541196e-06,
+        1.5837671361964606e-06,
+        2.5724313157314463e-06,
+        1.6775953430989199e-06,
+        1.7419490336433743e-06,
+        1.8333050949361393e-06,
+        2.3505084320070057e-06,
+        1.6584453366633918e-06,
+        1.8141546257595757e-06,
+        1.688440498307973e-06,
+        1.6054334780347766e-06,
+        1.8278778445128823e-06,
+        1.5969003240429e-06,
+        1.3865978901748805e-06,
+        2.1667504861444122e-06,
+        1.577686415684778e-06,
+        1.5828287162543696e-06,
+        2.115719572027875e-06,
+        1.7762580211674418e-06,
+        1.9969720110883747e-06,
+        1.7967094607181053e-06,
+        1.6404846656322766e-06,
+        2.1584043717242587e-06,
+        2.0981908110421872e-06,
+        1.2470126643709334e-06,
+        1.3789459886938619e-06,
+        1.7141690743064437e-06,
+        1.3295790970138422e-06,
+        2.3337230696830185e-06,
+        2.5268281325380964e-06,
+        1.7620035165753616e-06,
+        1.2049386291551836e-06,
+        1.990783799754401e-06,
+        1.65045063651289e-06,
+        1.965393743343356e-06,
+        1.774417292157571e-06,
+        1.8183574300829355e-06,
+        2.194651014926545e-06,
+        1.621501666911256e-06,
+        1.4835977275248203e-06,
+        1.2031573674476823e-06,
+        1.5792570754981472e-06,
+        2.5393112306892784e-06,
+        2.144720870676723e-06,
+        1.5179039234775714e-06,
+        1.6619164251141812e-06,
+        1.5319779194770032e-06,
+        1.5684611361674897e-06,
+        1.2726121805307464e-06,
+        1.277483500528183e-06,
+        1.897181888050821e-06,
+        2.03183498737497e-06,
+        1.950408610215321e-06,
+        1.922265478155568e-06,
+        2.081266725666178e-06,
+        1.70701858534972e-06,
+        2.0751609523205137e-06,
+        1.1463596411082618e-06,
+        2.4111684687407505e-06,
+        1.914211157855464e-06,
+        1.8142235074262085e-06,
+        1.3385475937361571e-06,
+        2.208665181443262e-06,
+        1.3581863392494182e-06,
+        2.854430310714697e-06,
+        1.7731082128872382e-06,
+        1.1767765521981364e-06,
+        1.8110191179476385e-06,
+        1.4943738272226804e-06,
+        1.469567911722076e-06,
+        1.7447168805949689e-06,
+        1.7863123204724588e-06,
+        2.201345261040472e-06,
+        1.8728048960622271e-06,
+        2.2524228748714487e-06,
+        1.2502357683278001e-06,
+        2.38529273915e-06,
+        1.2577094190946886e-06,
+        1.6710811100753885e-06,
+        1.665289657974376e-06,
+        2.0477647820958956e-06,
+        1.9300785637663067e-06,
+        2.0744752753422373e-06,
+        1.4317069585831289e-06,
+        1.0878644335826166e-06,
+        1.5701498151963433e-06,
+        2.234163428060676e-06,
+        1.3084152253577246e-06,
+        1.859183900552517e-06,
+        2.4055825087465536e-06,
+        1.4654590892374129e-06,
+        2.9868259612726213e-06,
+        1.6026780543258474e-06,
+        2.0989947908082207e-06,
+        2.1109664340699524e-06,
+        1.9608552661701815e-06,
+        1.4791622008827052e-06,
+        1.3607811909766522e-06,
+        1.73257980355866e-06,
+        1.93876216458492e-06,
+        1.4276022165698375e-06,
+        1.8650736436010558e-06,
+        2.2807763506061434e-06,
+        1.4243784818561854e-06,
+        1.380464805263131e-06,
+        1.6584755969912059e-06,
+        1.2984261392133066e-06,
+        1.4543732284612982e-06,
+        1.2787321810533613e-06,
+        1.7483173942075282e-06,
+        1.7450348959297509e-06,
+        2.2191690219436235e-06,
+        1.2910892004464997e-06,
+        2.0301399245890647e-06,
+        1.873103987170502e-06,
+        1.4058778120150975e-06,
+        1.9420394018488662e-06,
+        2.1271865502536396e-06,
+        2.061728393521597e-06,
+        1.968028363632225e-06,
+        2.327821935170882e-06,
+        1.2193726207363924e-06,
+        1.989614138322474e-06,
+        1.743871943431991e-06,
+        1.8281899723277113e-06,
+        1.4437369765382993e-06,
+        1.5285520323821848e-06,
+        1.4662669689066243e-06,
+        2.39541558848368e-06,
+        2.4126532451850207e-06,
+        1.944582001433111e-06,
+        2.5063583823307074e-06,
+        2.254074102012671e-06,
+        2.1031023505314243e-06,
+        1.6365143464793432e-06,
+        2.0968256096419333e-06,
+        1.6839236418741615e-06,
+        2.8373122113319584e-06,
+        1.4404857519680194e-06,
+        1.735321174053459e-06,
+        1.5533275114865075e-06,
+        1.5088728897635162e-06,
+        1.4970856869077248e-06,
+        1.9200921970116514e-06,
+        2.311314375127039e-06,
+        1.2223118962997907e-06,
+        1.7201841502227304e-06,
+        2.2265889640157914e-06,
+        1.7819129669741752e-06,
+        1.9402923404975718e-06,
+        2.7017526334823918e-06,
+        1.849931273782418e-06,
+        1.6714462488217361e-06,
+        1.4871142421167676e-06,
+        2.066968220235255e-06,
+        2.548630810283156e-06,
+        1.7496185964792024e-06,
+        2.0473103814434782e-06,
+        2.2536500777338217e-06,
+        1.5412871123899373e-06,
+        1.6238081253368626e-06,
+        1.3596521905343764e-06,
+        2.136668093216227e-06,
+        2.3405708032449867e-06,
+        1.8562452102207882e-06,
+        1.7384663756358736e-06,
+        1.3983784594712933e-06,
+        2.289840709878034e-06,
+        1.681713846283061e-06,
+        1.7842611572153103e-06,
+        2.286946703701735e-06,
+        1.707154914303582e-06,
+        1.7035125574588274e-06,
+        2.2538986280329447e-06,
+        1.155808105097705e-06,
+        1.792136265620789e-06,
+        1.1977230318841597e-06,
+        1.6594905594178224e-06,
+        1.7281938503399422e-06,
+        2.1577533860371996e-06,
+        1.0072626186113947e-06,
+        1.5604826481185862e-06,
+        1.4063693046396022e-06,
+        1.413510512648339e-06,
+        2.3805392212350404e-06,
+        1.6128933892615342e-06,
+        1.800363233686048e-06,
+        1.601472361826396e-06,
+        1.6820663039336205e-06,
+        2.0011527706405233e-06,
+        1.2673084711269506e-06,
+        1.7370745552405194e-06,
+        1.3796995106897027e-06,
+        1.942196646528844e-06,
+        1.3367507588631602e-06,
+        1.941269812533158e-06,
+        1.67174398993147e-06,
+        1.7660392137906497e-06,
+        1.9551984676651855e-06,
+        1.6137174425398593e-06,
+        1.8104407854287055e-06,
+        2.0695805145638913e-06,
+        1.8339643687963525e-06,
+        1.6590175734941696e-06,
+        1.5375871125437487e-06,
+        1.8717266756003813e-06,
+        2.2689483695131025e-06,
+        1.6594695736014595e-06,
+        1.0458461793865318e-06,
+        1.5263981396514222e-06,
+        1.3329329531218467e-06,
+        1.4452981640284392e-06,
+        1.9132860751917458e-06,
+        1.4818984566615756e-06,
+        1.5293705450637432e-06,
+        1.6715805749117052e-06,
+        1.548648628766619e-06,
+        1.5492056838036914e-06,
+        1.7394961765164063e-06,
+        1.7276182545987188e-06,
+        2.007539466761e-06,
+        1.7386049551681401e-06,
+        2.282450587689057e-06,
+        2.4828945122419803e-06,
+        1.349884869332114e-06,
+        1.1823862154772126e-06,
+        1.4537821482489836e-06,
+        1.5044824588301878e-06,
+        2.8039337469527128e-06,
+        1.4500166431137942e-06,
+        1.5851002304837488e-06,
+        1.6799310806906943e-06,
+        2.776503048111115e-06,
+        1.6827230202372616e-06,
+        1.9330051592006877e-06,
+        1.8901574874809076e-06,
+        2.4058709293358164e-06,
+        1.5938529162938476e-06,
+        1.7742866079132217e-06,
+        1.327977362332211e-06,
+        2.1758850979563708e-06,
+        2.1004145856031524e-06,
+        1.5778563754693145e-06,
+        2.0387438703263315e-06,
+        2.4664608257465762e-06,
+        1.3890645008405423e-06,
+        1.7221678607227443e-06,
+        2.345372602586605e-06,
+        2.2452012119042402e-06,
+        1.5060942937097408e-06,
+        1.6170652262414393e-06,
+        2.247566000462783e-06,
+        2.386055714566554e-06,
+        1.2502417002163006e-06,
+        2.7246219391944997e-06,
+        1.4539785387306763e-06,
+        1.2703762105916661e-06,
+        1.6139995558297733e-06,
+        1.5988019460247436e-06,
+        1.440057109648276e-06,
+        2.196570137887127e-06,
+        1.499685544018022e-06,
+        2.1486606603214044e-06,
+        1.7611373936457925e-06,
+        2.697365295478571e-06,
+        1.3386560112171689e-06,
+        1.2795368458846951e-06,
+        2.675603121966195e-06,
+        1.51433694737059e-06,
+        1.4604888493943789e-06,
+        1.850327595018676e-06,
+        1.746877379644489e-06,
+        2.255690348395603e-06,
+        1.6262402094292744e-06,
+        1.7954988575197252e-06,
+        2.1015025001394948e-06,
+        2.899589351944407e-06,
+        2.152357313940987e-06,
+        1.5351439415791636e-06,
+        1.8311732354552984e-06,
+        2.4727238699520563e-06,
+        1.5398112383776964e-06,
+        1.451451944905868e-06,
+        1.812415661091687e-06,
+        1.7595747084058302e-06,
+        1.7573131437347568e-06,
+        2.065361401892114e-06,
+        1.9870184691066035e-06,
+        2.085039603634588e-06,
+        2.0692216147850702e-06,
+        1.4020451252095977e-06,
+        1.6230089059659752e-06,
+        1.9017438567930037e-06,
+        2.0327422132611552e-06,
+        1.876202288118995e-06,
+        1.877797348394654e-06,
+        1.7932527490910324e-06,
+        1.6227073889857698e-06,
+        2.39691103175392e-06,
+        2.71221362958978e-06,
+        1.8493850600563978e-06,
+        1.409637857110442e-06,
+        2.0379171933293815e-06,
+        2.027821542482513e-06,
+        2.0884902792266105e-06,
+        1.3386457047287812e-06,
+        1.648508743814395e-06,
+        2.0668780619753085e-06,
+        2.7665292048449926e-06,
+        1.394581051975122e-06,
+        1.7849602712563076e-06,
+        1.7334579296201318e-06,
+        1.8047063571368993e-06,
+        1.6145383732668274e-06,
+        1.7370801580343259e-06,
+        1.250960308636067e-06,
+        1.9969302473837496e-06,
+        1.2386807696085293e-06,
+        1.2308962098441107e-06,
+        1.291589709222666e-06,
+        1.8263962292728272e-06,
+        1.4674340169919464e-06,
+        2.2289705272612695e-06,
+        1.543905774224427e-06,
+        2.3890244927243138e-06,
+        1.7448992270059706e-06,
+        2.4298933953576966e-06,
+        1.6281057940404382e-06,
+        1.9599155018244797e-06,
+        1.8752736713687958e-06,
+        1.3807277500902489e-06,
+        1.9038795888011233e-06,
+        1.7947301577595755e-06,
+        2.496983941120924e-06,
+        1.5674669084123905e-06,
+        1.4146619855824256e-06,
+        1.6806498919974527e-06,
+        2.2545759391858577e-06,
+        2.36993496124602e-06,
+        2.014659881783448e-06,
+        1.6580113838725983e-06,
+        2.063951443219204e-06,
+        2.1361749781391104e-06,
+        1.4763000814166461e-06,
+        1.6386251869235039e-06,
+        1.4825820415118148e-06,
+        2.121036946776076e-06,
+        1.8098366524776683e-06,
+        2.004313493104443e-06,
+        2.3056772304322375e-06,
+        1.7855552084706603e-06,
+        2.0968708726291075e-06,
+        1.6156713305013463e-06,
+        1.4952149841742466e-06,
+        1.7972163684494643e-06,
+        1.9223329667767196e-06,
+        1.6456945595535236e-06,
+        2.037893468830334e-06,
+        1.8374649261991457e-06,
+        2.202035374334048e-06,
+        2.507593812928119e-06,
+        1.3028512687237652e-06,
+        1.4538575381430544e-06,
+        1.6306695377104197e-06,
+        2.079615803412742e-06,
+        1.125252102740996e-06,
+        1.5317321664662163e-06,
+        1.915159356355216e-06,
+        2.745279556617161e-06,
+        1.8632363037104689e-06,
+        1.3774818226797307e-06,
+        1.989225187703754e-06,
+        2.015712489856499e-06,
+        1.4050337296100403e-06,
+        2.0022047255864583e-06,
+        1.646467057065769e-06,
+        1.8624575812938304e-06,
+        1.7682662326530003e-06,
+        2.0629587283379676e-06,
+        1.846557974683753e-06,
+        1.8516600960090667e-06,
+        2.1643531854369867e-06,
+        2.4143045081976807e-06,
+        2.048592872626812e-06,
+        1.543973088865772e-06,
+        2.6018146670280162e-06,
+        2.5495047093495166e-06,
+        1.5858152715346814e-06,
+        1.4606197622672592e-06,
+        1.6458601184862149e-06,
+        2.1877243405457078e-06,
+        2.3009446358747937e-06,
+        9.726066063311474e-07,
+        1.549174084626541e-06,
+        1.8049911409689874e-06,
+        2.1903869379705064e-06,
+        1.2608489413671077e-06,
+        1.3942961218201307e-06,
+        2.6110956332837103e-06,
+        1.6724053091222605e-06,
+        1.7184627542676725e-06,
+        1.4319157034606105e-06,
+        1.743823717360683e-06,
+        1.4731165300998543e-06,
+        1.681375013366679e-06,
+        1.3700472987694306e-06,
+        1.8111227110848122e-06,
+        2.1759141146909328e-06,
+        1.8153944973595168e-06,
+        2.188801459429667e-06,
+        2.0713425615848103e-06,
+        1.8570030199599507e-06,
+        1.2185989201558845e-06,
+        1.9438002151150635e-06,
+        2.263343639214291e-06,
+        1.8539240747418315e-06,
+        2.0220387507979707e-06,
+        1.326112914073028e-06,
+        1.5698510943587075e-06,
+        1.7512703703610427e-06,
+        1.977976426822178e-06,
+        2.0301017932683696e-06,
+        1.6919711221344766e-06,
+        1.2594919227257525e-06,
+        1.6659015839331425e-06,
+        1.8581653404222323e-06,
+        1.3789929273519404e-06,
+        2.038302979856629e-06,
+        1.570251389568707e-06,
+        1.998469174136459e-06,
+        1.5086257491577169e-06,
+        1.3223600074460538e-06,
+        1.7380595507644182e-06,
+        2.6792516799990996e-06,
+        2.778766900592889e-06,
+        2.080845625725331e-06,
+        1.8747564668793744e-06,
+        1.2679560698039388e-06,
+        1.828500335856874e-06,
+        1.7960939212578893e-06,
+        2.0844439791426004e-06,
+        1.7066336486215076e-06,
+        1.919495043330732e-06,
+        1.3592417297022798e-06,
+        2.4483579170882823e-06,
+        1.7042298991714992e-06,
+        1.5038666588764446e-06,
+        1.4304605504770483e-06,
+        1.970155231359138e-06,
+        1.373293170067097e-06,
+        1.5782931759904252e-06,
+        1.8060600168061943e-06,
+        1.7586204622798494e-06,
+        1.938129723122082e-06,
+        1.5399597517285562e-06,
+        2.0443472059036623e-06,
+        1.676078560403639e-06,
+        1.2424275248245523e-06,
+        1.6088595283441583e-06,
+        2.243048733207956e-06,
+        2.1033503273955385e-06,
+        2.4683301550286826e-06,
+        1.637987043243306e-06,
+        1.4797154220331156e-06,
+        1.481716328994836e-06,
+        1.397203341492278e-06,
+        1.8339404875734523e-06,
+        1.5484154908874272e-06,
+        1.1057496729465801e-06,
+        1.479273407244864e-06,
+        2.02723178413391e-06,
+        2.284020463549406e-06,
+        1.6932656918414293e-06,
+        1.9066367058819571e-06,
+        1.8076965655591195e-06,
+        1.7171709446597846e-06,
+        2.195083464279439e-06,
+        1.74038983178298e-06,
+        2.04231329109981e-06,
+        2.0040495402383868e-06,
+        2.1896399192818466e-06,
+        1.9420595937526733e-06,
+        2.218632504731161e-06,
+        1.7537168319466792e-06,
+        1.049460951275937e-06,
+        2.5387849771375884e-06,
+        1.3798983604056529e-06,
+        1.7568073285741121e-06,
+        2.2107264822856318e-06,
+        1.91252907055054e-06,
+        1.631188758533246e-06,
+        2.503117258605617e-06,
+        1.5617176600860798e-06,
+        1.7435008373966468e-06,
+        1.6220105047546029e-06,
+        2.4726461942964525e-06,
+        1.329894851276869e-06,
+        1.7737610905854647e-06,
+        2.5277399136597707e-06,
+        1.8596210515743332e-06,
+        1.7626501352857302e-06,
+        2.106529699586096e-06,
+        1.3937720016351458e-06,
+        2.06878877540944e-06,
+        1.0760076826311682e-06,
+        2.453350796543756e-06,
+        2.1346139873616753e-06,
+        1.847070844551972e-06,
+        1.5817384333919522e-06,
+        1.3873899398715794e-06,
+        1.6315495194304718e-06,
+        2.1417828228806743e-06,
+        1.1917874795583895e-06,
+        1.5717074906815595e-06,
+        2.535813989141606e-06,
+        2.198930068200932e-06,
+        1.3826349339255665e-06,
+        1.9810162370991936e-06,
+        1.4839943707960877e-06,
+        1.7410832135226267e-06,
+        1.3299822616247515e-06,
+        1.5332489524065168e-06,
+        1.5444167904712867e-06,
+        1.8382174644463483e-06,
+        1.5716420105734547e-06,
+        1.7945118148466317e-06,
+        1.460592734889242e-06,
+        2.109792088914389e-06,
+        1.7787262125143716e-06,
+        1.8004754473729193e-06,
+        2.7723000171936424e-06,
+        1.1516416905257406e-06,
+        1.7524339035705038e-06,
+        1.8955626199553601e-06,
+        1.6669696454580244e-06,
+        1.9983592939422245e-06,
+        1.121413792532275e-06,
+        1.7409974503793878e-06,
+        1.8587953475792857e-06,
+        1.8606703786490874e-06,
+        2.0900917051173848e-06,
+        2.1643109888442884e-06,
+        1.8067372858768625e-06,
+        2.337292225307394e-06,
+        1.7264330043165603e-06,
+        1.9809603470063646e-06,
+        1.4039094243896863e-06,
+        2.636162159536176e-06,
+        2.173114194819121e-06,
+        1.8805184629737799e-06,
+        1.8973316249547901e-06,
+        1.3628140731963245e-06,
+        1.382662415502351e-06,
+        2.440410070835919e-06,
+        1.2258854750478497e-06,
+        1.9623145764436993e-06,
+        1.5094651958003339e-06,
+        1.5155311272470159e-06,
+        1.5160630506460337e-06,
+        2.1907565313068837e-06,
+        1.913586016290834e-06,
+        1.9490661259900646e-06,
+        2.2101732166625334e-06,
+        1.8929545793144462e-06,
+        1.1873778859009974e-06,
+        1.8914106398055071e-06,
+        1.8931898913130424e-06,
+        1.289662210495408e-06,
+        1.5611034163615368e-06,
+        2.1737986958326337e-06,
+        2.287514263965883e-06,
+        1.938488599880174e-06,
+        1.9190686355945123e-06,
+        2.0540570585099996e-06,
+        1.928493336637643e-06,
+        1.7571481817921808e-06,
+        1.3604244843721486e-06,
+        2.78450735756794e-06,
+        1.725178191375538e-06,
+        1.7104357222148668e-06,
+        1.2506315735417064e-06,
+        1.455917591678777e-06,
+        1.3900465562687878e-06,
+        2.0490943017808974e-06,
+        1.7288125129337436e-06,
+        2.7895220506712053e-06,
+        1.951315587401202e-06,
+        2.2754943825943027e-06,
+        2.4681553247336293e-06,
+        1.2542256646957579e-06,
+        2.2000847846900546e-06,
+        1.9981283096702124e-06,
+        2.706735175079417e-06,
+        1.40665365917583e-06,
+        2.478510584225707e-06,
+        2.1624748044490534e-06,
+        1.6945709603514653e-06,
+        1.5997822487675784e-06,
+        1.6545156355649954e-06,
+        1.8507980807055951e-06,
+        1.570649711507265e-06,
+        1.6632540237161543e-06,
+        2.156081069776289e-06,
+        1.9408947367369054e-06,
+        1.3850283088467823e-06,
+        1.5180351417948367e-06,
+        1.9518215555210464e-06,
+        1.8815386059652858e-06,
+        1.3720477126663666e-06,
+        1.3105001615766965e-06
+      ]
+    },
+    "state": "CENTRED3D_N800_s5",
+    "contact_library": "/workspace/new_microbubble_aggregation/build/contact/7693fe3fc4a409bd/libcontact_step.so",
+    "pair_library": "/workspace/new_microbubble_aggregation/build/pair_forces/acf33178214f8551/libpair_forces.so"
+  },
+  "config": {
+    "fidelity": "PRETRAIN",
+    "coupling": "collective",
+    "duration_s": 1.0,
+    "action_segment_s": 1.0,
+    "save_interval_s": 0.005,
+    "fixed_step_s": 0.001,
+    "state_seed": 5,
+    "action_seed": 0,
+    "apecss_threads": 2
+  },
+  "fixed_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    220,
+    221,
+    222,
+    223,
+    224,
+    225,
+    226,
+    227,
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241,
+    242,
+    243,
+    244,
+    245,
+    246,
+    247,
+    248,
+    249,
+    250,
+    251,
+    252,
+    253,
+    254,
+    255,
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271,
+    272,
+    273,
+    274,
+    275,
+    276,
+    277,
+    278,
+    279,
+    280,
+    281,
+    282,
+    283,
+    284,
+    285,
+    286,
+    287,
+    288,
+    289,
+    290,
+    291,
+    292,
+    293,
+    294,
+    295,
+    296,
+    297,
+    298,
+    299,
+    300,
+    301,
+    302,
+    303,
+    304,
+    305,
+    306,
+    307,
+    308,
+    309,
+    310,
+    311,
+    312,
+    313,
+    314,
+    315,
+    316,
+    317,
+    318,
+    319,
+    320,
+    321,
+    322,
+    323,
+    324,
+    325,
+    326,
+    327,
+    328,
+    329,
+    330,
+    331,
+    332,
+    333,
+    334,
+    335,
+    336,
+    337,
+    338,
+    339,
+    340,
+    341,
+    342,
+    343,
+    344,
+    345,
+    346,
+    347,
+    348,
+    349,
+    350,
+    351,
+    352,
+    353,
+    354,
+    355,
+    356,
+    357,
+    358,
+    359,
+    360,
+    361,
+    362,
+    363,
+    364,
+    365,
+    366,
+    367,
+    368,
+    369,
+    370,
+    371,
+    372,
+    373,
+    374,
+    375,
+    376,
+    377,
+    378,
+    379,
+    380,
+    381,
+    382,
+    383,
+    384,
+    385,
+    386,
+    387,
+    388,
+    389,
+    390,
+    391,
+    392,
+    393,
+    394,
+    395,
+    396,
+    397,
+    398,
+    399,
+    400,
+    401,
+    402,
+    403,
+    404,
+    405,
+    406,
+    407,
+    408,
+    409,
+    410,
+    411,
+    412,
+    413,
+    414,
+    415,
+    416,
+    417,
+    418,
+    419,
+    420,
+    421,
+    422,
+    423,
+    424,
+    425,
+    426,
+    427,
+    428,
+    429,
+    430,
+    431,
+    432,
+    433,
+    434,
+    435,
+    436,
+    437,
+    438,
+    439,
+    440,
+    441,
+    442,
+    443,
+    444,
+    445,
+    446,
+    447,
+    448,
+    449,
+    450,
+    451,
+    452,
+    453,
+    454,
+    455,
+    456,
+    457,
+    458,
+    459,
+    460,
+    461,
+    462,
+    463,
+    464,
+    465,
+    466,
+    467,
+    468,
+    469,
+    470,
+    471,
+    472,
+    473,
+    474,
+    475,
+    476,
+    477,
+    478,
+    479,
+    480,
+    481,
+    482,
+    483,
+    484,
+    485,
+    486,
+    487,
+    488,
+    489,
+    490,
+    491,
+    492,
+    493,
+    494,
+    495,
+    496,
+    497,
+    498,
+    499,
+    500,
+    501,
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    508,
+    509,
+    510,
+    511,
+    512,
+    513,
+    514,
+    515,
+    516,
+    517,
+    518,
+    519,
+    520,
+    521,
+    522,
+    523,
+    524,
+    525,
+    526,
+    527,
+    528,
+    529,
+    530,
+    531,
+    532,
+    533,
+    534,
+    535,
+    536,
+    537,
+    538,
+    539,
+    540,
+    541,
+    542,
+    543,
+    544,
+    545,
+    546,
+    547,
+    548,
+    549,
+    550,
+    551,
+    552,
+    553,
+    554,
+    555,
+    556,
+    557,
+    558,
+    559,
+    560,
+    561,
+    562,
+    563,
+    564,
+    565,
+    566,
+    567,
+    568,
+    569,
+    570,
+    571,
+    572,
+    573,
+    574,
+    575,
+    576,
+    577,
+    578,
+    579,
+    580,
+    581,
+    582,
+    583,
+    584,
+    585,
+    586,
+    587,
+    588,
+    589,
+    590,
+    591,
+    592,
+    593,
+    594,
+    595,
+    596,
+    597,
+    598,
+    599,
+    600,
+    601,
+    602,
+    603,
+    604,
+    605,
+    606,
+    607,
+    608,
+    609,
+    610,
+    611,
+    612,
+    613,
+    614,
+    615,
+    616,
+    617,
+    618,
+    619,
+    620,
+    621,
+    622,
+    623,
+    624,
+    625,
+    626,
+    627,
+    628,
+    629,
+    630,
+    631,
+    632,
+    633,
+    634,
+    635,
+    636,
+    637,
+    638,
+    639,
+    640,
+    641,
+    642,
+    643,
+    644,
+    645,
+    646,
+    647,
+    648,
+    649,
+    650,
+    651,
+    652,
+    653,
+    654,
+    655,
+    656,
+    657,
+    658,
+    659,
+    660,
+    661,
+    662,
+    663,
+    664,
+    665,
+    666,
+    667,
+    668,
+    669,
+    670,
+    671,
+    672,
+    673,
+    674,
+    675,
+    676,
+    677,
+    678,
+    679,
+    680,
+    681,
+    682,
+    683,
+    684,
+    685,
+    686,
+    687,
+    688,
+    689,
+    690,
+    691,
+    692,
+    693,
+    694,
+    695,
+    696,
+    697,
+    698,
+    699,
+    700,
+    701,
+    702,
+    703,
+    704,
+    705,
+    706,
+    707,
+    708,
+    709,
+    710,
+    711,
+    712,
+    713,
+    714,
+    715,
+    716,
+    717,
+    718,
+    719,
+    720,
+    721,
+    722,
+    723,
+    724,
+    725,
+    726,
+    727,
+    728,
+    729,
+    730,
+    731,
+    732,
+    733,
+    734,
+    735,
+    736,
+    737,
+    738,
+    739,
+    740,
+    741,
+    742,
+    743,
+    744,
+    745,
+    746,
+    747,
+    748,
+    749,
+    750,
+    751,
+    752,
+    753,
+    754,
+    755,
+    756,
+    757,
+    758,
+    759,
+    760,
+    761,
+    762,
+    763,
+    764,
+    765,
+    766,
+    767,
+    768,
+    769,
+    770,
+    771,
+    772,
+    773,
+    774,
+    775,
+    776,
+    777,
+    778,
+    779,
+    780,
+    781,
+    782,
+    783,
+    784,
+    785,
+    786,
+    787,
+    788,
+    789,
+    790,
+    791,
+    792,
+    793,
+    794,
+    795,
+    796,
+    797,
+    798,
+    799
+  ],
+  "status": "FAIL"
+}

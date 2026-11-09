@@ -1,0 +1,10 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Module microbubble._warp_squares 25e1d6c load on device 'cuda:0' took 1.65 ms  (cached)
+PRETRAIN run PASS 1.0 steps 10000
+LF_y_pair_antinode_1.5MHz_1s 250 PASS None 1.0 1491 s step disp median/max 6.82e-10/1.03e-06 m

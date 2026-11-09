@@ -1,0 +1,22 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Traceback (most recent call last):
+  File "/workspace/scratch/complex_ball_20261109/scripts/path_runs.py", line 74, in <module>
+    f10ag.run(root, folder / "cfg.json", folder / "run")
+  File "/workspace/new_microbubble_aggregation/workflows/f10ag.py", line 408, in run
+    return run_pretrain(root, config_path, cfg, task, out)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/new_microbubble_aggregation/workflows/f10ag.py", line 322, in run_pretrain
+    result = integrate_pretrain(task, c, x, radii, segments, p, out, ident)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/new_microbubble_aggregation/microbubble/integration.py", line 118, in integrate_pretrain
+    save_every = steps_in(save, "save_interval_s")      # 每隔几步存一帧
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/new_microbubble_aggregation/microbubble/integration.py", line 113, in steps_in
+    raise ValueError(f"PRETRAIN {what} ({span} s) must be a whole number of fixed steps ({dt} s)")
+ValueError: PRETRAIN save_interval_s (0.0025 s) must be a whole number of fixed steps (0.005 s)

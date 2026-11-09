@@ -1,0 +1,35 @@
+{
+ "name": "L_N250_9.375MHz_dots_adh0",
+ "seed": 3,
+ "bubbles": 250,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 9375000.0,
+   "pattern": "dots",
+   "duration_s": 20.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    5156.211588932498,
+    5156.211588932498,
+    6000.000000000001,
+    6000.000000000001
+   ],
+   "phases_rad": [
+    0.8026204822319988,
+    3.9442131358217916,
+    1.4264835352407843,
+    4.568076188830577
+   ]
+  }
+ ],
+ "adhesion_force_N": 0.0,
+ "fixed_step_s": 0.005,
+ "duration_s": 20.0,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 20.0,
+ "wall_s": 2500.7024053379428,
+ "step_max_displacement_median_m": 1.3142343856681948e-08,
+ "step_max_displacement_max_m": 1.737536147637308e-06
+}

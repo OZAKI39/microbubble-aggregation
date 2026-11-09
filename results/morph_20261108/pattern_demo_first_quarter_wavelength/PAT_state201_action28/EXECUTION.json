@@ -1,0 +1,1727 @@
+{
+  "identity": {
+    "commit": "NOT_COMMITTED",
+    "git_status": "NOT_COMMITTED",
+    "utc": "2026-11-08T19:39:28.061532+00:00",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "executable": "/workspace/envs/microbubble/bin/python",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "h5py": "3.16.0",
+      "warp-lang": "1.18.0",
+      "matplotlib": "3.11.2"
+    },
+    "source_sha256": {
+      "main.py": "389c02a89b8f453dca111ac3efcf4753b7dfeb4abe281b30a367d0441ca53d2f",
+      "microbubble/__init__.py": "d882fce9cad7c5bb94cda8300a2dd3bc6e633d047f713b9fcff3a8b675a9e59e",
+      "microbubble/_warp_discs.py": "75f223ac0cac91335db897d57c74028d0a9498a1f30e83ca8c1aa6ac8121b20d",
+      "microbubble/acoustics.py": "8a1ad0f7442896106a0754e2ef07f57238fba832361203e65c5ff469e2c95ac5",
+      "microbubble/analysis.py": "50b4f537032b4f0bf108298a22059bbbfa91a1dc0deff73fa580d69bc952d46c",
+      "microbubble/bubble_response.py": "c42aa275826532baf7dbf1e97db3f5a90d2f17c244fa403226a437e743b05351",
+      "microbubble/contact.py": "52f0d1fb1c60d1730e4ed51f22adc0748794d1fd8062b4d97a18b31efc5e265f",
+      "microbubble/control.py": "0e466222839564986f3191dfc8d30b70ab96753492b0c25898eae4e7107d4e11",
+      "microbubble/forces.py": "9e6060d895540044bd807027341f4a4d3ef2d29d1bddc1d90b070daebabe7d3a",
+      "microbubble/geometry.py": "1c165ad8b644a713a88407aa24f1ad465866f15ac180ede33132f6f61a7d046c",
+      "microbubble/gpu.py": "2c8012c3f4e2701c25f0b5362013727aa9c20d9aae289eb37fb8df3cd2e0b69a",
+      "microbubble/hydrodynamics.py": "36944209782893ef261befc88c8d88c939dba5f71c37b85fda9ffbf068ab43a2",
+      "microbubble/initial_conditions.py": "044cc73c9dd73e65e73982b87c08b913fa7c53590e0de1abf0a6569cb6d9b014",
+      "microbubble/integration.py": "011ab1d1f949036347b32ff34c8f42debbe8c9bb2ee31f8d55f7513e45100b96",
+      "microbubble/io.py": "a71546d31a68c857ee1af2091e0021caec80516468d82affe40bae8f8360268b",
+      "microbubble/parameters.py": "fd9c0b3f952add9584425461066f1f549cdcaf9a506f44f12c3cb882a6a9e711",
+      "workflows/__init__.py": "0a7c39e4b3d15cdd0bbd515cc6f8e76f6c278cf3f2f315e680d05b0bdd50053d",
+      "workflows/f10ag.py": "021841086ca4e995399f02401680054d8bc53e33b80236a2f124a52510c0e0c0",
+      "workflows/validation.py": "933657d6044edaea88b8895a03e5cdc58f4a333c46d4c5f716396029957c8699",
+      "native/apecss_harmonics.c": "20407fe3c86dbfd028d2722a21d05c1efce4a098229989e044474e3e57ebaa0e",
+      "native/contact_step.cpp": "fa0c5220ca83f743e8afbb09b214cea36c794a8f2941eec0fdcfb865f764eede",
+      "native/daqp_qp.cpp": "47a48f6304fc8ba4be79391427e611f81212b263ef275d94935d272503456e42",
+      "native/pair_forces.cpp": "5f9b685b9500b2ca3070b88943df5ccb8273142748ef9af8cc53fc2ca63127c6"
+    },
+    "input_sha256": {
+      "configs/frozen/f10ag_protocol.json": "227eed969d52f9bc68970e2a85841fd022a6e703da3ad6f8f85a0cb5ee52b2a7",
+      "configs/frozen/contact_policy.json": "2083c6fe0f4cfe199abad5c5bcef154f8fa8ad0175a062013abffa44f1d673e5",
+      "configs/frozen/contact_revision.json": "fd41b0dd567557166fe3d49771d5e3eca88f13b6ffe8bbd261bfeab8351ecaf5",
+      "inputs/apparatus_snapshot.json": "22263a9275aaca26158720a55fce02d620d07d4868b9658aca6c16e914f45bcb",
+      "inputs/response/adaptive_2500000.h5": "5d53cb2ef42fa64591f45e3e7de5db106d6cbe74794c8a9abfa88a3354bec983",
+      "inputs/response/LOW_PRESSURE_ADMISSION.json": "4afea0ba48f44f08d80bca2a533b699d8a52b87a81454ff79caa80e9cb94c000",
+      "inputs/response/low_pressure_2500000.h5": "aefe1d459c6667c0e459a1b7a070fe04960675d3fdaa4c14e7c11afc5878c6df",
+      "inputs/initial_states.h5": "de1892a8f7487891f5051a536b596a969db6263f9c566f202741969328332d46",
+      "inputs/actions.json": "b08293b85324fa880d374b4ae686c41b8e1675fc2af29187d2f8c13e84ab5b26",
+      "inputs/source_order.json": "df940909e1f822995497855f3aa5260b1fe1e82aef4e203e279c5346f34c8ab5",
+      "inputs/fields/2400000/coarse.h5": "cab1f0e7f847e4496f57c2b106d88d69784f883638ed00710a38eda0c3167775",
+      "inputs/fields/2400000/FIELD_GATE.json": "42a1e5ff5e1c301740ef99de31b3928e9659b327af0a67427a754264bfa3577a",
+      "inputs/response/2400000/response_shell_1.0.h5": "74606fc70639d262bd3b186a56ef1c6dfa48778a4c3d3822cebab6a870a24adc",
+      "inputs/response/2400000/PHYSICS_GATE.json": "ac7d87d73239516b61196e442dfab1e704eb303af653b0d2a92c14148cde256c",
+      "inputs/fields/2500000/coarse.h5": "3a20420af0b4f2e3168cdc5aaee636e62480f2b277d4bc5de0133856aea7251a",
+      "inputs/fields/2500000/FIELD_GATE.json": "5653310b677a7c1b4523b5a7ad767cc7dcad423836b8cbf24660ca4363bcff79",
+      "inputs/fields/2600000/coarse.h5": "06e1ea4f3d832c3f6fc744b8e2e1a143e13f2f9c3f64bb8860dae14ead296328",
+      "inputs/fields/2600000/FIELD_GATE.json": "da3990935c75e9e324a0a9292c7e150bea15ef5578c2f5ac34c8361acbff15a0",
+      "inputs/response/2600000/response_shell_1.0.h5": "6ccc1d8fafc3429063c05d45ce049f1ba935d8074770fd66456296002ddd7747",
+      "inputs/response/2600000/PHYSICS_GATE.json": "bc927860532eb3c024cb7b71b29dbfea438944a0e5844bd14cb1129c0c778c9d"
+    },
+    "labels": [
+      "EXPLORATORY",
+      "HOMOGENEOUS_WATER_CONTROL_PROXY",
+      "PHYSICS_UNCALIBRATED",
+      "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED"
+    ],
+    "training_ready": false,
+    "run_config_sha256": "d6989e4e25363c3de6633ade88587561a95a544b8b24459a8245d182cb854217",
+    "compiled_contact": {
+      "library": "/workspace/new_microbubble_aggregation/build/contact/7693fe3fc4a409bd/libcontact_step.so",
+      "library_sha256": "445226b25320b9f663a49b813bf5aa2eb38a7602646e6adbcb6c812451622a89",
+      "source_sha256": "fa0c5220ca83f743e8afbb09b214cea36c794a8f2941eec0fdcfb865f764eede",
+      "daqp_interface_sha256": "47a48f6304fc8ba4be79391427e611f81212b263ef275d94935d272503456e42",
+      "daqp_dir": "/workspace/third_party/daqp",
+      "daqp_commit": "44a429a31ebb9e9eea3a12a5d84d3eaeec8c7938",
+      "daqp_source_sha256": "1791658904ec769eccc03f3e6cdc714155648c5ee43e7c046e117f5bd8c01280",
+      "compiler": "g++",
+      "compiler_version": "13.3.0",
+      "eigen_version": "3.4.0",
+      "command": [
+        "g++",
+        "-O3",
+        "-mavx2",
+        "-mfma",
+        "-fPIC",
+        "-shared",
+        "-I",
+        "/usr/include/eigen3",
+        "-I",
+        "/workspace/third_party/daqp/include",
+        "/workspace/new_microbubble_aggregation/native/contact_step.cpp",
+        "/workspace/new_microbubble_aggregation/native/daqp_qp.cpp",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/api.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/auxiliary.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/avi.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/bnb.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/daqp.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/daqp_prox.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/eq_elim.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/factorization.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/hierarchical.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/presolve.c",
+        "-x",
+        "c",
+        "/workspace/third_party/daqp/src/utils.c",
+        "-o",
+        "/workspace/new_microbubble_aggregation/build/contact/.staging__ja2q1f1/libcontact_step.so"
+      ],
+      "cache_key": "7693fe3fc4a409bd8d03ea22516ad237d9a2a1b5104dbddfa63ac5f4ee0247ec",
+      "cached": true
+    },
+    "compiled_pair_forces": {
+      "library": "/workspace/new_microbubble_aggregation/build/pair_forces/acf33178214f8551/libpair_forces.so",
+      "library_sha256": "b4b357e2958266de25848ee2097cb8b87815836c87cf4f2c82681aa62567aaf0",
+      "source_sha256": "5f9b685b9500b2ca3070b88943df5ccb8273142748ef9af8cc53fc2ca63127c6",
+      "compiler": "g++",
+      "compiler_version": "13.3.0",
+      "command": [
+        "g++",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/workspace/new_microbubble_aggregation/native/pair_forces.cpp",
+        "-o",
+        "/workspace/new_microbubble_aggregation/build/pair_forces/.staging_pzvrp_mk/libpair_forces.so"
+      ],
+      "cache_key": "acf33178214f8551175d7736aad0854d4fd210e81bc920048e9051da75e07b76",
+      "cached": true
+    },
+    "apecss_response": {
+      "bubble": {
+        "radius_m": 1.78e-06,
+        "ambient_pressure_Pa": 101300.0,
+        "polytropic_exponent": 1.07,
+        "density_kg_m3": 1000.0,
+        "sound_speed_m_s": 1500.0,
+        "viscosity_Pa_s": 0.002,
+        "sigma_water_N_m": 0.072,
+        "sigma_initial_N_m": 0.036,
+        "elasticity_N_m": 0.29325198219707016,
+        "shell_viscosity_kg_s": 4.619149127111346e-09
+      },
+      "shell_vs_radius": {
+        "elasticity_N_m_per_um": 0.4265,
+        "elasticity_floor_N_m": 0.03,
+        "shell_viscosity_decades_per_um": 0.667,
+        "use": "Since 2026-11-07 (user decision) the bubble of radius R has the case above except elasticity = max(elasticity_N_m + elasticity_N_m_per_um (R - radius_m) [um], elasticity_floor_N_m) and shell viscosity = shell_viscosity_kg_s x 10^(shell_viscosity_decades_per_um (R - radius_m) [um]) (bubble_response.shell_parameters): the slopes of least-squares fits to the SonoVue data of Tu et al. 2009 (J. Acoust. Soc. Am. 126, 2954, Fig. 4, linearized Marmottant model, read off the figure, about +-10%), the lines through the case at radius_m, the floor Tu's smallest elasticities (0.8-1.0 um). Evidence: evidence/f2_physics_check_20261107/."
+      },
+      "ode_tolerance": 1e-08,
+      "options": "BUBBLE\nInitialRadius 1.78e-06\nRPModel RPAR\nPressureAmbient 101300.0\nEND\n\nGAS\nEoS IG\nPolytropicExponent 1.07\nEND\n\nLIQUID\nReferenceDensity 1000.0\nReferenceSoundSpeed 1500.0\nViscosity 0.002\nEND\n\nINTERFACE\nSurfaceTensionCoeff 0.072\nLipidCoatingModel Marmottant\nSigmaInit 0.036\nElasticity 0.29325198219707016\nDilatationalViscosity 4.619149127111346e-09\nEND\n\nODESOLVER\nTolerance 1e-08\nEND\n",
+      "bubbles": [
+        {
+          "radius_m": 1.9334835822549173e-06,
+          "elasticity_N_m": 0.35871273002879245,
+          "shell_viscosity_kg_s": 5.84703283684434e-09
+        },
+        {
+          "radius_m": 1.139340887766199e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.7268012549658124e-09
+        },
+        {
+          "radius_m": 9.713432579334195e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.3340986248559545e-09
+        },
+        {
+          "radius_m": 1.043706562432921e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.4909197252645176e-09
+        },
+        {
+          "radius_m": 2.547683684934327e-06,
+          "elasticity_N_m": 0.6206690738215608,
+          "shell_viscosity_kg_s": 1.5017823687903695e-08
+        },
+        {
+          "radius_m": 1.628182700143941e-06,
+          "elasticity_N_m": 0.22850190380846105,
+          "shell_viscosity_kg_s": 3.6584729177387085e-09
+        },
+        {
+          "radius_m": 8.73763192027715e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.1484233988329053e-09
+        },
+        {
+          "radius_m": 8.362953504653572e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.0842039426380785e-09
+        },
+        {
+          "radius_m": 2.6034122601308013e-06,
+          "elasticity_N_m": 0.644437311142857,
+          "shell_viscosity_kg_s": 1.635979890376886e-08
+        },
+        {
+          "radius_m": 9.147503859575795e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.2230395208762668e-09
+        },
+        {
+          "radius_m": 1.3664236160076577e-06,
+          "elasticity_N_m": 0.11686165442433621,
+          "shell_viscosity_kg_s": 2.4474089018772885e-09
+        },
+        {
+          "radius_m": 1.3161311209199991e-06,
+          "elasticity_N_m": 0.09541190526944981,
+          "shell_viscosity_kg_s": 2.265486304674761e-09
+        },
+        {
+          "radius_m": 1.532733370791659e-06,
+          "elasticity_N_m": 0.1877927648397128,
+          "shell_viscosity_kg_s": 3.159622092352562e-09
+        },
+        {
+          "radius_m": 8.883716641617748e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.1744806972055896e-09
+        },
+        {
+          "radius_m": 2.8314722834771983e-06,
+          "elasticity_N_m": 0.7417049111000953,
+          "shell_viscosity_kg_s": 2.3221699273845333e-08
+        },
+        {
+          "radius_m": 2.2911443537991576e-06,
+          "elasticity_N_m": 0.5112550490924109,
+          "shell_viscosity_kg_s": 1.0127337129067105e-08
+        },
+        {
+          "radius_m": 2.676291646186132e-06,
+          "elasticity_N_m": 0.6755203692954557,
+          "shell_viscosity_kg_s": 1.8297363310887695e-08
+        },
+        {
+          "radius_m": 2.8051431943869994e-06,
+          "elasticity_N_m": 0.7304755546031254,
+          "shell_viscosity_kg_s": 2.2301418836043512e-08
+        },
+        {
+          "radius_m": 2.110077306369284e-06,
+          "elasticity_N_m": 0.43402995336356975,
+          "shell_viscosity_kg_s": 7.668731754915564e-09
+        },
+        {
+          "radius_m": 1.2735075689749037e-06,
+          "elasticity_N_m": 0.07723296036486663,
+          "shell_viscosity_kg_s": 2.12193234057887e-09
+        },
+        {
+          "radius_m": 2.9864737251849026e-06,
+          "elasticity_N_m": 0.8078130259884312,
+          "shell_viscosity_kg_s": 2.946320300878448e-08
+        },
+        {
+          "radius_m": 1.9986395194592288e-06,
+          "elasticity_N_m": 0.3865017372464313,
+          "shell_viscosity_kg_s": 6.462410522180378e-09
+        },
+        {
+          "radius_m": 1.2138633276646127e-06,
+          "elasticity_N_m": 0.05179469144602755,
+          "shell_viscosity_kg_s": 1.9361937906978127e-09
+        },
+        {
+          "radius_m": 1.0935492274405778e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.6095308978722909e-09
+        },
+        {
+          "radius_m": 2.15170454807443e-06,
+          "elasticity_N_m": 0.45178397195081466,
+          "shell_viscosity_kg_s": 8.175021754584501e-09
+        },
+        {
+          "radius_m": 2.2992975238373465e-06,
+          "elasticity_N_m": 0.5147323761136984,
+          "shell_viscosity_kg_s": 1.0254947276208383e-08
+        },
+        {
+          "radius_m": 1.648642783861476e-06,
+          "elasticity_N_m": 0.23722812951398972,
+          "shell_viscosity_kg_s": 3.775258728222743e-09
+        },
+        {
+          "radius_m": 1.6987264551575791e-06,
+          "elasticity_N_m": 0.2585888153217777,
+          "shell_viscosity_kg_s": 4.077110940961766e-09
+        },
+        {
+          "radius_m": 1.1546454119279966e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.7678705989662244e-09
+        },
+        {
+          "radius_m": 1.7631428905607844e-06,
+          "elasticity_N_m": 0.28606242502124474,
+          "shell_viscosity_kg_s": 4.501096163182532e-09
+        },
+        {
+          "radius_m": 1.6297962052066019e-06,
+          "elasticity_N_m": 0.2291900637176859,
+          "shell_viscosity_kg_s": 3.6675500761478953e-09
+        },
+        {
+          "radius_m": 2.8716383908815257e-06,
+          "elasticity_N_m": 0.7588357559080409,
+          "shell_viscosity_kg_s": 2.469930824901133e-08
+        },
+        {
+          "radius_m": 1.0771281896670805e-06,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.569446392008449e-09
+        },
+        {
+          "radius_m": 1.996778990017e-06,
+          "elasticity_N_m": 0.38570822143932065,
+          "shell_viscosity_kg_s": 6.443970889155609e-09
+        },
+        {
+          "radius_m": 1.3538305936418839e-06,
+          "elasticity_N_m": 0.11149073038533369,
+          "shell_viscosity_kg_s": 2.400529179778182e-09
+        },
+        {
+          "radius_m": 9.381162242395681e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.267726314097112e-09
+        },
+        {
+          "radius_m": 8.443064485730858e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.097625997069619e-09
+        },
+        {
+          "radius_m": 1.7322482830406735e-06,
+          "elasticity_N_m": 0.27288587491391747,
+          "shell_viscosity_kg_s": 4.292512695090679e-09
+        },
+        {
+          "radius_m": 1.6957582680500225e-06,
+          "elasticity_N_m": 0.25732288352040483,
+          "shell_viscosity_kg_s": 4.058567265767971e-09
+        },
+        {
+          "radius_m": 1.9196658064025053e-06,
+          "elasticity_N_m": 0.3528194486277387,
+          "shell_viscosity_kg_s": 5.724256373209424e-09
+        },
+        {
+          "radius_m": 2.2368371030817865e-06,
+          "elasticity_N_m": 0.4880930066614521,
+          "shell_viscosity_kg_s": 9.316919244933163e-09
+        },
+        {
+          "radius_m": 2.2548088061668104e-06,
+          "elasticity_N_m": 0.4957579380272148,
+          "shell_viscosity_kg_s": 9.577660911774336e-09
+        },
+        {
+          "radius_m": 1.5837710902689672e-06,
+          "elasticity_N_m": 0.2095603521967847,
+          "shell_viscosity_kg_s": 3.417254315871712e-09
+        },
+        {
+          "radius_m": 1.658069387113482e-06,
+          "elasticity_N_m": 0.24124857580097026,
+          "shell_viscosity_kg_s": 3.830313001818532e-09
+        },
+        {
+          "radius_m": 1.526038331478661e-06,
+          "elasticity_N_m": 0.1849373305727191,
+          "shell_viscosity_kg_s": 3.1273000411794536e-09
+        },
+        {
+          "radius_m": 2.238176361446514e-06,
+          "elasticity_N_m": 0.48866420035400837,
+          "shell_viscosity_kg_s": 9.336102616579975e-09
+        },
+        {
+          "radius_m": 2.29877788941729e-06,
+          "elasticity_N_m": 0.5145107520335443,
+          "shell_viscosity_kg_s": 1.0246766404568562e-08
+        },
+        {
+          "radius_m": 2.629762787799792e-06,
+          "elasticity_N_m": 0.6556758111936813,
+          "shell_viscosity_kg_s": 1.703545599250879e-08
+        },
+        {
+          "radius_m": 9.911818962338619e-07,
+          "elasticity_N_m": 0.03,
+          "shell_viscosity_kg_s": 1.3753724103872648e-09
+        }
+      ],
+      "frequency_Hz": 3253246.7084354763,
+      "build": {
+        "library": "/workspace/new_microbubble_aggregation/build/apecss/16b0195e2dc6a2d9/libapecss_harmonics.so",
+        "library_sha256": "29977148b8b6e81a613fb117fb283d773dd4778ed54fff4ce2dd03cd0518458b",
+        "driver_sha256": "20407fe3c86dbfd028d2722a21d05c1efce4a098229989e044474e3e57ebaa0e",
+        "apecss_dir": "/workspace/third_party/apecss",
+        "apecss_commit": null,
+        "apecss_source_changes": null,
+        "apecss_source_sha256": "be87a0c02602beab07081a1f73a2cc8b4670dff5a046ef88de40ebeb6e5bad33",
+        "command": [
+          "gcc",
+          "-O3",
+          "-fPIC",
+          "-shared",
+          "-fopenmp",
+          "-DAPECSS_HARMONICS_LIBRARY",
+          "-I",
+          "/workspace/third_party/apecss/include",
+          "/workspace/new_microbubble_aggregation/native/apecss_harmonics.c",
+          "/workspace/third_party/apecss/src/bubble.c",
+          "/workspace/third_party/apecss/src/emissions.c",
+          "/workspace/third_party/apecss/src/gas.c",
+          "/workspace/third_party/apecss/src/interactions.c",
+          "/workspace/third_party/apecss/src/interface.c",
+          "/workspace/third_party/apecss/src/liquid.c",
+          "/workspace/third_party/apecss/src/misc.c",
+          "/workspace/third_party/apecss/src/odesolver.c",
+          "/workspace/third_party/apecss/src/rayleighplesset.c",
+          "/workspace/third_party/apecss/src/results.c",
+          "/workspace/third_party/apecss/src/viscoelasticity.c",
+          "-lm",
+          "-o",
+          "/workspace/new_microbubble_aggregation/build/apecss/.staging_nyhyq5rh/libapecss_harmonics.so"
+        ],
+        "cache_key": "16b0195e2dc6a2d9b0e30193d996aa98973cd8e0aacbbf021e7bfe798bd85150",
+        "cached": true
+      },
+      "stats": {
+        "settings": {
+          "tolerance": 0.001,
+          "min_cycles_warm": 1,
+          "min_cycles_cold": 4,
+          "max_cycles": 400,
+          "q_refresh": 10,
+          "threads": 16
+        },
+        "frequency_Hz": 3253246.7084354763,
+        "frequency_switches": 0,
+        "calls": 6400,
+        "cache_hits": 0,
+        "seconds_in_apecss": 110.92459503165446,
+        "cycles_total": 512066,
+        "cycles_per_bubble_call_mean": 1.6328635204081632,
+        "cycles_first_call_max": 12,
+        "cycles_later_calls_max": 15,
+        "cycles_later_calls_histogram": {
+          "1": 222381,
+          "2": 31325,
+          "3": 21265,
+          "4": 34778,
+          "5": 1990,
+          "6": 535,
+          "7": 415,
+          "8": 386,
+          "9": 296,
+          "10": 103,
+          "11": 49,
+          "12": 19,
+          "13": 5,
+          "14": 2,
+          "15": 2
+        }
+      }
+    }
+  },
+  "task": {
+    "id": "PAT_state201_action28",
+    "duration": 6.4,
+    "device": "cuda:0",
+    "stepping": {
+      "fixed_step_s": 0.001,
+      "save_interval_s": 0.01,
+      "budget_s": 3600
+    },
+    "variant": "FIXED_STEP",
+    "coupling": "collective",
+    "field": "direct_gpu",
+    "response": "apecss",
+    "contact": "compiled",
+    "propagation_delay": true,
+    "save_interval_s": 0.01,
+    "action_seed": 28,
+    "action_segment_s": 0.1,
+    "channel_on_probability": 0.5,
+    "segments": [
+      {
+        "amplitudes": [
+          3917.476690814727,
+          3910.3248371001664,
+          1425.637503588873,
+          2814.9556276017975
+        ],
+        "phases": [
+          1.6303607856938331,
+          4.519099989391973,
+          0.7526844668533763,
+          4.247335117393408
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3857.745426623955,
+          3850.7026199561014,
+          1500.1588278624677,
+          2962.099779331961
+        ],
+        "phases": [
+          1.614949068801629,
+          4.452830248445137,
+          0.7352865843928593,
+          4.2647329998539245
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3794.9953650770817,
+          3788.0671166558195,
+          1573.5062344710882,
+          3106.9260023256547
+        ],
+        "phases": [
+          1.5995373519094258,
+          4.3865605074983005,
+          0.7178887019323426,
+          4.2821308823144415
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3729.2756099118956,
+          3722.467341291969,
+          1645.6223269479758,
+          3249.3209658752453
+        ],
+        "phases": [
+          1.5841256350172217,
+          4.320290766551464,
+          0.7004908194718256,
+          4.2995287647749585
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3660.637588737325,
+          3653.9546275858115,
+          1716.450672365286,
+          3389.1732418039214
+        ],
+        "phases": [
+          1.5687139181250176,
+          4.254021025604627,
+          0.6830929370113088,
+          4.3169266472354755
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3589.1350127898377,
+          3582.5825887171004,
+          1785.9358454944877,
+          3526.3733916614683
+        ],
+        "phases": [
+          1.553302201232814,
+          4.187751284657789,
+          0.6656950545507918,
+          4.3343245296959925
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3514.8238349028534,
+          3508.4070753702144,
+          1854.0234721782087,
+          3660.8140523630145
+        ],
+        "phases": [
+          1.5378904843406103,
+          4.121481543710954,
+          0.648297172090275,
+          4.3517224121565095
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3437.762205722026,
+          3431.486132029382,
+          1920.6602718795855,
+          3792.3900202037557
+        ],
+        "phases": [
+          1.5224787674484066,
+          4.055211802764116,
+          0.630899289629758,
+          4.3691202946170264
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3358.0104282006896,
+          3351.879951557198,
+          1985.7940993758218,
+          3920.99833318389
+        ],
+        "phases": [
+          1.507067050556202,
+          3.98894206181728,
+          0.6135014071692413,
+          4.3865181770775425
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3275.6309104110455,
+          3269.6508280919643,
+          2049.373985563338,
+          4046.5383515793674
+        ],
+        "phases": [
+          1.4916553336639993,
+          3.9226723208704435,
+          0.5961035247087243,
+          4.40391605953806
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3190.688116708048,
+          3184.8631083007263,
+          2111.3501773425637,
+          4168.911836695378
+        ],
+        "phases": [
+          1.4762436167717952,
+          3.856402579923607,
+          0.5787056422482073,
+          4.4213139419985765
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3103.2485172841766,
+          3097.583141026143,
+          2171.67417655118,
+          4288.0230277409755
+        ],
+        "phases": [
+          1.460831899879591,
+          3.7901328389767697,
+          0.5613077597876905,
+          4.4387118244590935
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          3013.380536154595,
+          3007.8792253666034,
+          2230.298777915335,
+          4403.778716764663
+        ],
+        "phases": [
+          1.445420182987387,
+          3.7238630980299323,
+          0.5439098773271736,
+          4.4561097069196105
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2921.154497613372,
+          2915.8215572302042,
+          2287.178105989131,
+          4516.08832159231
+        ],
+        "phases": [
+          1.4300084660951828,
+          3.657593357083096,
+          0.5265119948666568,
+          4.4735075893801275
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2826.642571202695,
+          2821.4821744044216,
+          2342.267651053492,
+          4624.863956710329
+        ],
+        "phases": [
+          1.4145967492029796,
+          3.5913236161362594,
+          0.5091141124061398,
+          4.4909054718406445
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2729.918715238112,
+          2724.934900184457,
+          2395.524303946306,
+          4730.020502038626
+        ],
+        "phases": [
+          1.3991850323107755,
+          3.525053875189423,
+          0.49171622994562303,
+          4.5083033543011615
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2631.0586189340133,
+          2626.2552856043803,
+          2446.906389796586,
+          4831.475669539518
+        ],
+        "phases": [
+          1.3837733154185714,
+          3.4587841342425865,
+          0.47431834748510604,
+          4.5257012367616785
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2530.1396431746316,
+          2525.520550316256,
+          2496.3737006362685,
+          4929.150067610521
+        ],
+        "phases": [
+          1.3683615985263682,
+          3.39251439329575,
+          0.4569204650245893,
+          4.543099119222195
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2427.2407599769126,
+          2422.809522163532,
+          2543.8875268641054,
+          5022.967263210558
+        ],
+        "phases": [
+          1.3529498816341645,
+          3.3262446523489126,
+          0.4395225825640723,
+          4.560497001682712
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2322.4424906926274,
+          2318.2025754959755,
+          2589.4106875370517,
+          5112.853841671028
+        ],
+        "phases": [
+          1.3375381647419609,
+          3.259974911402076,
+          0.4221247001035553,
+          4.5778948841432285
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2215.826842998088,
+          2211.7815682744185,
+          2632.907559465423,
+          5198.739464144913
+        ],
+        "phases": [
+          1.3221264478497563,
+          3.1937051704552397,
+          0.40472681764303853,
+          4.5952927666037455
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2107.477246720769,
+          2103.6297780145346,
+          2674.3441050890783,
+          5280.5569226489515
+        ],
+        "phases": [
+          1.306714730957553,
+          3.1274354295084024,
+          0.38732893518252176,
+          4.6126906490642625
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1997.47848855305,
+          1993.8318366197766,
+          2713.687899112787,
+          5358.242192655838
+        ],
+        "phases": [
+          1.291303014065349,
+          3.061165688561566,
+          0.36993105272200477,
+          4.6300885315247795
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1885.916645704186,
+          1882.4736641544664,
+          2750.9081538799674,
+          5431.73448319526
+        ],
+        "phases": [
+          1.2758912971731453,
+          2.9948959476147294,
+          0.3525331702614878,
+          4.6474864139852965
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1772.8790185423943,
+          1769.6424016088567,
+          2785.975743464914,
+          5500.976284424586
+        ],
+        "phases": [
+          1.2604795802809412,
+          2.928626206667893,
+          0.3351352878009708,
+          4.6648842964458135
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1658.4540622797947,
+          1655.4263427087872,
+          2818.863226464679,
+          5565.913412632
+        ],
+        "phases": [
+          1.2450678633887375,
+          2.8623564657210565,
+          0.31773740534045425,
+          4.6822821789063305
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1542.731317753646,
+          1539.9148648232901,
+          2849.5448674727622,
+          5626.495052636798
+        ],
+        "phases": [
+          1.2296561464965334,
+          2.796086724774219,
+          0.30033952287993726,
+          4.699680061366847
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1425.8013413580572,
+          1423.198359024218,
+          2877.996657217812,
+          5682.673797553757
+        ],
+        "phases": [
+          1.2142444296043298,
+          2.7298169838273827,
+          0.28294164041942027,
+          4.7170779438273645
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1307.7556341809827,
+          1305.3681593526105,
+          2904.1963313515707,
+          5734.405685890379
+        ],
+        "phases": [
+          1.198832712712126,
+          2.6635472428805462,
+          0.2655437579589033,
+          4.7344758262878806
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1188.6865704019797,
+          1186.5164713471695,
+          2928.1233878713783,
+          5781.650235948036
+        ],
+        "phases": [
+          1.1834209958199224,
+          2.597277501933709,
+          0.2481458754983863,
+          4.751873708748398
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1068.6873250067413,
+          1066.7362998907593,
+          2949.7591031635757,
+          5824.370477500074
+        ],
+        "phases": [
+          1.1680092789277183,
+          2.5310077609868724,
+          0.23074799303786975,
+          4.7692715912089145
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          947.8518008749727,
+          946.1213764313927,
+          2969.0865466552773,
+          5862.53298072208
+        ],
+        "phases": [
+          1.1525975620355142,
+          2.464738020040036,
+          0.21335011057735276,
+          4.7866694736694315
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          826.2745552986756,
+          824.7660856346658,
+          2986.0905940630314,
+          5896.107882351679
+        ],
+        "phases": [
+          1.1371858451433106,
+          2.3984682790931995,
+          0.19595222811683577,
+          4.8040673561299485
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          704.0507259883318,
+          702.7653915250264,
+          3000.7579392280127,
+          5925.06890905742
+        ],
+        "phases": [
+          1.121774128251107,
+          2.332198538146362,
+          0.17855434565631878,
+          4.8214652385904655
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          581.2759566248908,
+          580.2147631736776,
+          3013.0771045284732,
+          5949.393397998395
+        ],
+        "phases": [
+          1.1063624113589032,
+          2.2659287971995257,
+          0.16115646319580224,
+          4.8388631210509825
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          458.04632201582996,
+          457.2100999912725,
+          3023.038449861315,
+          5969.062314558587
+        ],
+        "phases": [
+          1.0909506944666996,
+          2.199659056252689,
+          0.14375858073528525,
+          4.856261003511499
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          334.45825291383096,
+          333.8476566838455,
+          3030.634180185749,
+          5984.06026724199
+        ],
+        "phases": [
+          1.0755389775744955,
+          2.133389315305852,
+          0.12636069827476826,
+          4.8736588859720165
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          210.60846055693438,
+          210.22396793072838,
+          3035.8583516231406,
+          5994.375519716915
+        ],
+        "phases": [
+          1.0601272606822918,
+          2.0671195743590154,
+          0.10896281581425127,
+          4.891056768432533
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          86.59386098919468,
+          86.43577284336708,
+          3038.706876108265,
+          6000.0
+        ],
+        "phases": [
+          1.0447155437900877,
+          2.000849833412179,
+          0.09156493335373428,
+          4.90845465089305
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          90.98068542516043,
+          90.81458857140329,
+          3038.646699652157,
+          5999.881180136365
+        ],
+        "phases": [
+          1.0286387292900185,
+          2.0563975367604064,
+          0.14683428997993797,
+          4.853185294266846
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          205.41338620805783,
+          205.0383778531601,
+          3036.0254586053265,
+          5994.705476482736
+        ],
+        "phases": [
+          1.0119918838839066,
+          2.2163505293806685,
+          0.26438408732095686,
+          4.735635496925827
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          319.7092255405242,
+          319.1255555425322,
+          3031.381394920283,
+          5985.5356607531085
+        ],
+        "phases": [
+          0.9953450384777947,
+          2.3763035220009314,
+          0.38193388466197686,
+          4.618085699584808
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          433.7920511588796,
+          433.00010840151697,
+          3024.7176028125655,
+          5972.377842550679
+        ],
+        "phases": [
+          0.9786981930716832,
+          2.5362565146211935,
+          0.49948368200299575,
+          4.500535902243788
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          547.5858527247938,
+          546.5861648583583,
+          3016.0385221887946,
+          5955.2407885781295
+        ],
+        "phases": [
+          0.9620513476655717,
+          2.6962095072414547,
+          0.6170334793440146,
+          4.38298610490277
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          661.0148124689392,
+          659.8080455587441,
+          3005.349935688479,
+          5934.1359167966075
+        ],
+        "phases": [
+          0.9454045022594597,
+          2.8561624998617177,
+          0.7345832766850346,
+          4.26543630756175
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          774.003355706342,
+          772.5903137889338,
+          2992.658964831196,
+          5909.077288818243
+        ],
+        "phases": [
+          0.9287576568533478,
+          3.0161154924819797,
+          0.8521330740260535,
+          4.147886510220731
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          886.4762011897836,
+          884.8578257372341,
+          2977.974065271717,
+          5880.081600537273
+        ],
+        "phases": [
+          0.9121108114472358,
+          3.1760684851022427,
+          0.9696828713670733,
+          4.030336712879711
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          998.3584112676735,
+          996.5357805603028,
+          2961.3050211662253,
+          5847.16817100601
+        ],
+        "phases": [
+          0.8954639660411239,
+          3.336021477722504,
+          1.0872326687080924,
+          3.9127869155386916
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1109.5754418130148,
+          1107.5497702209611,
+          2942.6629386534005,
+          5810.3589295630845
+        ],
+        "phases": [
+          0.8788171206350119,
+          3.4959744703427678,
+          1.2047824660491124,
+          3.795237118197672
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1220.0531918901556,
+          1217.825829064273,
+          2922.0602384546896,
+          5769.678401222496
+        ],
+        "phases": [
+          0.8621702752289004,
+          3.65592746296303,
+          1.3223322633901313,
+          3.677687320856653
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1329.7180531262668,
+          1327.2904830988898,
+          2899.510647598717,
+          5725.153690333265
+        ],
+        "phases": [
+          0.845523429822788,
+          3.815880455583291,
+          1.4398820607311502,
+          3.560137523515634
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1438.4969587546354,
+          1435.8707989508066,
+          2875.029190275326,
+          5676.814462520523
+        ],
+        "phases": [
+          0.8288765844166761,
+          3.975833448203554,
+          1.5574318580721702,
+          3.4425877261746143
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1546.3174322970915,
+          1543.4944324569149,
+          2848.632177825371,
+          5624.692924920103
+        ],
+        "phases": [
+          0.812229739010565,
+          4.135786440823816,
+          1.674981655413189,
+          3.325037928833595
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1653.1076358531593,
+          1650.0896768659966,
+          2820.337197872898,
+          5568.82380471978
+        ],
+        "phases": [
+          0.7955828936044531,
+          4.295739433444079,
+          1.792531452754209,
+          3.207488131492575
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1758.7964179637208,
+          1755.5855106150022,
+          2790.163102606986,
+          5509.24432602148
+        ],
+        "phases": [
+          0.7789360481983412,
+          4.45569242606434,
+          1.910081250095228,
+          3.0899383341515563
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1863.3133610173397,
+          1859.9116446488345,
+          2758.1299962210383,
+          5445.994185039854
+        ],
+        "phases": [
+          0.7622892027922288,
+          4.615645418684602,
+          2.027631047436247,
+          2.9723885368105374
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1966.588828167631,
+          1962.9985692520586,
+          2724.2592215178893,
+          5379.1155236537425
+        ],
+        "phases": [
+          0.7456423573861177,
+          4.775598411304866,
+          2.1451808447772667,
+          2.8548387394695176
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          2049.3801132962003,
+          2045.638708322384,
+          2695.4581614529266,
+          5322.247136068068
+        ],
+        "phases": [
+          0.7324706011691431,
+          4.919947456982032,
+          2.2475623264351663,
+          2.752457257811618
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1936.5121415880349,
+          1932.9767915027153,
+          2734.3556428740244,
+          5399.051151079048
+        ],
+        "phases": [
+          0.754487126543959,
+          4.906293053224493,
+          2.196351501685749,
+          2.8036680825610354
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1822.0731783732658,
+          1818.746751221956,
+          2771.0348838830246,
+          5471.475196907338
+        ],
+        "phases": [
+          0.7765036519187736,
+          4.892638649466953,
+          2.1451406769363324,
+          2.854878907310452
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1706.1560620262965,
+          1703.0412563662055,
+          2805.466128520821,
+          5539.460519694167
+        ],
+        "phases": [
+          0.798520177293589,
+          4.878984245709413,
+          2.0939298521869154,
+          2.906089732059869
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1588.8548300702253,
+          1585.9541727810629,
+          2837.621444510756,
+          5602.951966485738
+        ],
+        "phases": [
+          0.820536702668405,
+          4.865329841951874,
+          2.042719027437498,
+          2.9573005568092863
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1470.2646428891094,
+          1467.580487123157,
+          2867.474745918627,
+          5661.898029975951
+        ],
+        "phases": [
+          0.8425532280432204,
+          4.851675438194334,
+          1.9915082026880813,
+          3.0085113815587032
+        ],
+        "duration": 0.1,
+        "frequency": 3253246.7084354763
+      },
+      {
+        "amplitudes": [
+          1350.481706529283,
+          1348.0162298024059,
+          2895.001814314839,
+          5716.250890291587
+        ],
+        "phases": [
+          0.8645697534180359,
+          4.838021034436795,
+          1.9402973779386639,
+          3.0597222063081206
+        ],
+        "duration": 0.10000000000000675,
+        "frequency": 3253246.7084354763
+      }
+    ],
+    "action_kind": "pattern",
+    "adhesion_force_N": 1.3879429837249664e-13,
+    "adhesion_range_m": 2e-07,
+    "state_seed": 201,
+    "wall_margin_m": 5e-05,
+    "start": {
+      "state": "IRREGULAR3D_N49_a1.215",
+      "bubble_count": 49,
+      "aspect": 1.2146533311469416,
+      "cluster_seed": 4504153939908841708,
+      "rotation": [
+        [
+          0.9158957071207305,
+          0.13858529259517033,
+          -0.37673488072400185
+        ],
+        [
+          0.3771218003561398,
+          -0.6186108051130981,
+          0.6892748504721963
+        ],
+        [
+          -0.13752891104768017,
+          -0.7733788130493592,
+          -0.6188465158279586
+        ]
+      ],
+      "centre_local_m": [
+        0.0013852515235918232,
+        9.469092891265115e-06,
+        8.829216304606766e-05
+      ],
+      "radius_sigma_g": 1.4922229971714347,
+      "radii_m": [
+        1.9334835822549173e-06,
+        1.139340887766199e-06,
+        9.713432579334195e-07,
+        1.043706562432921e-06,
+        2.547683684934327e-06,
+        1.628182700143941e-06,
+        8.73763192027715e-07,
+        8.362953504653572e-07,
+        2.6034122601308013e-06,
+        9.147503859575795e-07,
+        1.3664236160076577e-06,
+        1.3161311209199991e-06,
+        1.532733370791659e-06,
+        8.883716641617748e-07,
+        2.8314722834771983e-06,
+        2.2911443537991576e-06,
+        2.676291646186132e-06,
+        2.8051431943869994e-06,
+        2.110077306369284e-06,
+        1.2735075689749037e-06,
+        2.9864737251849026e-06,
+        1.9986395194592288e-06,
+        1.2138633276646127e-06,
+        1.0935492274405778e-06,
+        2.15170454807443e-06,
+        2.2992975238373465e-06,
+        1.648642783861476e-06,
+        1.6987264551575791e-06,
+        1.1546454119279966e-06,
+        1.7631428905607844e-06,
+        1.6297962052066019e-06,
+        2.8716383908815257e-06,
+        1.0771281896670805e-06,
+        1.996778990017e-06,
+        1.3538305936418839e-06,
+        9.381162242395681e-07,
+        8.443064485730858e-07,
+        1.7322482830406735e-06,
+        1.6957582680500225e-06,
+        1.9196658064025053e-06,
+        2.2368371030817865e-06,
+        2.2548088061668104e-06,
+        1.5837710902689672e-06,
+        1.658069387113482e-06,
+        1.526038331478661e-06,
+        2.238176361446514e-06,
+        2.29877788941729e-06,
+        2.629762787799792e-06,
+        9.911818962338619e-07
+      ]
+    },
+    "state": "IRREGULAR3D_N49_a1.215",
+    "pattern_path": {
+      "knot_times_s": [
+        0.0,
+        3.8461515461447062,
+        5.691011934244358,
+        11.643978570076602
+      ],
+      "direction_a_deg": [
+        -62.026063680008136,
+        -0.3788596793345107,
+        -27.663887060289895,
+        69.4871785188881
+      ],
+      "node_offset_x_rad": [
+        0.0,
+        -0.669148925251609,
+        1.4994807221842743,
+        -1.549082589083042
+      ],
+      "node_offset_y_rad": [
+        0.0,
+        0.9780383392579544,
+        -0.6509718893404065,
+        0.4107673656298183
+      ],
+      "phi_deg": [
+        90.0,
+        0.0,
+        75.7392434878592,
+        90.0
+      ],
+      "kappa_x_per_m": 13462.237671435218,
+      "kappa_y_per_m": 13353.922567289532,
+      "centre_m": [
+        0.001385251523591823,
+        9.469092891265115e-06,
+        8.829216304606766e-05
+      ]
+    },
+    "contact_library": "/workspace/new_microbubble_aggregation/build/contact/7693fe3fc4a409bd/libcontact_step.so",
+    "pair_library": "/workspace/new_microbubble_aggregation/build/pair_forces/acf33178214f8551/libpair_forces.so"
+  },
+  "config": {
+    "fidelity": "PRETRAIN",
+    "coupling": "collective",
+    "duration_s": 6.4,
+    "save_interval_s": 0.01,
+    "state_seed": 201,
+    "action_seed": 28
+  },
+  "fixed_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "status": "PASS"
+}

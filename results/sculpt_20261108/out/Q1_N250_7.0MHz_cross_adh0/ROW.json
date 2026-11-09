@@ -1,0 +1,35 @@
+{
+ "name": "Q1_N250_7.0MHz_cross_adh0",
+ "seed": 3,
+ "bubbles": 250,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 7000000.0,
+   "pattern": "cross",
+   "duration_s": 1.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    4631.713446644066,
+    4631.713446644066,
+    6000.000000000001,
+    6000.000000000001
+   ],
+   "phases_rad": [
+    3.4686112503452717,
+    3.4686112503452717,
+    5.98693619693718,
+    5.98693619693718
+   ]
+  }
+ ],
+ "adhesion_force_N": 0.0,
+ "fixed_step_s": 0.001,
+ "duration_s": 1.0,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 1.0,
+ "wall_s": 150.024219277082,
+ "step_max_displacement_median_m": 4.1290152990440506e-09,
+ "step_max_displacement_max_m": 2.8712305023019408e-08
+}

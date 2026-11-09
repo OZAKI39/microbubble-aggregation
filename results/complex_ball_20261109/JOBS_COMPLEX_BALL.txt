@@ -1,0 +1,5 @@
+BCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 spin 0.4 64 6.4 0 9.375 6000 0.005 0.025
+BCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 pivot 0.4 64 6.4 0 9.375 6000 0.005 0.025
+BCPX_linecross_N250_9.375MHz_12.8s_each_way /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 line_cross 0.4 64 6 0 9.375 6000 0.005 0.025
+BCPX_flap_N250_9.375MHz_T2s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 flap 0.125 64 24 2 9.375 6000 0.005 0.025
+BCPX_flap_N250_9.375MHz_T8s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 flap 0.25 64 16 8 9.375 6000 0.005 0.025

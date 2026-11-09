@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/lowfreq_20261109/scripts/lowfreq_runs.py", line 58, in <module>
+    f10ag.run(root, folder / "cfg.json", folder / "run")
+  File "/workspace/new_microbubble_aggregation/workflows/f10ag.py", line 418, in run
+    return run_pretrain(root, config_path, cfg, task, out)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/new_microbubble_aggregation/workflows/f10ag.py", line 214, in run_pretrain
+    segments = pretrain_segments(task, p["max_source_amplitude_Pa_equivalent"],
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/new_microbubble_aggregation/microbubble/control.py", line 218, in pretrain_segments
+    raise ValueError(
+ValueError: Pretraining source limit 0-6000 Pa-equivalent; no clipping

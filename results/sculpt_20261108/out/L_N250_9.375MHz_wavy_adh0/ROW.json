@@ -1,0 +1,35 @@
+{
+ "name": "L_N250_9.375MHz_wavy_adh0",
+ "seed": 3,
+ "bubbles": 250,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 9375000.0,
+   "pattern": "wavy",
+   "duration_s": 20.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    3609.348112252747,
+    3609.348112252747,
+    6000.0,
+    5999.999999999999
+   ],
+   "phases_rad": [
+    0.8026204822319988,
+    0.8026204822319988,
+    0.651086038630031,
+    5.343473685441331
+   ]
+  }
+ ],
+ "adhesion_force_N": 0.0,
+ "fixed_step_s": 0.005,
+ "duration_s": 20.0,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 20.0,
+ "wall_s": 1871.1753810690716,
+ "step_max_displacement_median_m": 1.6201353610360637e-08,
+ "step_max_displacement_max_m": 9.94239617130894e-07
+}

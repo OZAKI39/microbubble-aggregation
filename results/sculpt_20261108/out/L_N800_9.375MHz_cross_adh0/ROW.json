@@ -1,0 +1,35 @@
+{
+ "name": "L_N800_9.375MHz_cross_adh0",
+ "seed": 5,
+ "bubbles": 800,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 9375000.0,
+   "pattern": "cross",
+   "duration_s": 20.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    5156.211588932498,
+    5156.211588932498,
+    6000.000000000001,
+    6000.000000000001
+   ],
+   "phases_rad": [
+    3.9442131358217916,
+    3.9442131358217916,
+    2.997279862035681,
+    2.997279862035681
+   ]
+  }
+ ],
+ "adhesion_force_N": 0.0,
+ "fixed_step_s": 0.005,
+ "duration_s": 20.0,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 20.0,
+ "wall_s": 8057.270008980995,
+ "step_max_displacement_median_m": 1.0080123949045452e-08,
+ "step_max_displacement_max_m": 5.807509363728285e-07
+}

@@ -1,0 +1,35 @@
+{
+ "name": "Q1_N800_7.0MHz_lines_x_adh1",
+ "seed": 5,
+ "bubbles": 800,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 7000000.0,
+   "pattern": "lines_x",
+   "duration_s": 1.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    0.0,
+    0.0,
+    6000.000000000001,
+    6000.000000000001
+   ],
+   "phases_rad": [
+    0.0,
+    0.0,
+    4.416139870142284,
+    1.2745472165524905
+   ]
+  }
+ ],
+ "adhesion_force_N": 5.04e-10,
+ "fixed_step_s": 0.001,
+ "duration_s": 1.0,
+ "status": "FAIL",
+ "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+ "completed_s": 0.462,
+ "wall_s": 3623.598633270012,
+ "step_max_displacement_median_m": 1.8154976570079777e-07,
+ "step_max_displacement_max_m": 4.553005280943931e-07
+}

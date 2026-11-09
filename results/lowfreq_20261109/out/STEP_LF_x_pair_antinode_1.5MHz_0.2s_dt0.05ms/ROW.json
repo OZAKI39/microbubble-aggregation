@@ -1,0 +1,47 @@
+{
+ "name": "STEP_LF_x_pair_antinode_1.5MHz_0.2s_dt0.05ms",
+ "action": "x_pair_antinode",
+ "frequency_Hz": 1500000.0,
+ "apparatus": {
+  "file": "inputs/apparatus_y_channel.json",
+  "sha256": "2c9bf07ece83b856732265fcb6e536ab6bec32cb75a16fc5ee819fd5793a1499"
+ },
+ "bubbles": 250,
+ "start": {
+  "state": "START_BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0_t0s",
+  "bubble_count": 250,
+  "source_run": "BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0",
+  "source_time_s": 0.0
+ },
+ "segments": [
+  {
+   "frequency_Hz": 1500000.0,
+   "pattern": "x_pair_antinode",
+   "value": 0.0,
+   "duration_s": 0.2,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    0.0,
+    0.0,
+    6000.0,
+    6000.0
+   ],
+   "phases_rad": [
+    0.0,
+    0.0,
+    1.8240612831694412,
+    1.8240612831694412
+   ]
+  }
+ ],
+ "adhesion_force_N": 0.0,
+ "fixed_step_s": 5e-05,
+ "save_interval_s": 0.01,
+ "duration_s": 0.2,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 0.2,
+ "wall_s": 434.4945055260323,
+ "step_max_displacement_median_m": 1.7445644740423993e-08,
+ "step_max_displacement_max_m": 7.168867633705351e-07
+}

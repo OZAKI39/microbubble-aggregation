@@ -1,0 +1,1 @@
+{"fidelity": "PRETRAIN", "coupling": "collective", "duration_s": 1.0, "action_segment_s": 1.0, "save_interval_s": 0.005, "fixed_step_s": 0.001, "state_seed": 5, "action_seed": 0, "apecss_threads": 2}

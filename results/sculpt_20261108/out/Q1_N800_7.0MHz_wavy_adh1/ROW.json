@@ -1,0 +1,35 @@
+{
+ "name": "Q1_N800_7.0MHz_wavy_adh1",
+ "seed": 5,
+ "bubbles": 800,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 7000000.0,
+   "pattern": "wavy",
+   "duration_s": 1.0,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    3242.199412650844,
+    3242.199412650844,
+    5999.999999999998,
+    5999.999999999998
+   ],
+   "phases_rad": [
+    0.327018596755479,
+    0.327018596755479,
+    3.6407423735315305,
+    2.049944713163244
+   ]
+  }
+ ],
+ "adhesion_force_N": 5.04e-10,
+ "fixed_step_s": 0.001,
+ "duration_s": 1.0,
+ "status": "FAIL",
+ "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+ "completed_s": 0.5760000000000001,
+ "wall_s": 3611.610502392985,
+ "step_max_displacement_median_m": 9.606801880953106e-08,
+ "step_max_displacement_max_m": 4.5132581848519093e-07
+}

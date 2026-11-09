@@ -1,0 +1,5 @@
+STEP_YCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s_dt2.5ms 65537
+STEP_YCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s_dt2.5ms 65538
+STEP_YCPX_linecross_N250_9.375MHz_12.8s_each_way_dt2.5ms 65539
+STEP_YCPX_flap_N250_9.375MHz_T2s_total32s_dt2.5ms 65540
+STEP_YCPX_flap_N250_9.375MHz_T8s_total32s_dt2.5ms 65541

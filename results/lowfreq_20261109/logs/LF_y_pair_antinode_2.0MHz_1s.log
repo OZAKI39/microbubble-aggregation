@@ -1,0 +1,10 @@
+Warp 1.18.0 initialized:
+   CUDA Toolkit 13.4, Driver 13.4
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /root/.cache/warp/1.18.0
+Module microbubble._warp_squares 25e1d6c load on device 'cuda:0' took 1.21 ms  (cached)
+PRETRAIN run FAIL 0.21230000000000002 steps 2123
+LF_y_pair_antinode_2.0MHz_1s 250 FAIL RuntimeError('PRETRAIN_WALL_GUARD') 0.21230000000000002 285 s step disp median/max 1.98e-07/2.46e-06 m

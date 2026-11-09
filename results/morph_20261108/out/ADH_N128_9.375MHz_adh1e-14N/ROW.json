@@ -1,0 +1,36 @@
+{
+ "name": "ADH_N128_9.375MHz_adh1e-14N",
+ "bubbles": 128,
+ "seed": 6,
+ "radius_sigma_g": 1.25,
+ "frequency_Hz": 9375000.0,
+ "segments": [
+  {
+   "pattern": "lines_x",
+   "frequency_Hz": 9375000.0,
+   "duration_s": 6.4,
+   "amplitudes_Pa_eq": [
+    0.0,
+    0.0,
+    6000.0,
+    6000.0
+   ],
+   "phases_rad": [
+    0.0,
+    0.0,
+    1.4264835352407843,
+    4.568076188830577
+   ]
+  }
+ ],
+ "adhesion_force_N": 1e-14,
+ "fixed_step_s": 0.001,
+ "save_interval_s": 0.05,
+ "duration_s": 6.4,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 6.4,
+ "wall_s": 137.62642462691292,
+ "step_max_displacement_median_m": 9.209376670789514e-09,
+ "step_max_displacement_max_m": 2.2624797999325988e-07
+}

@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/morph_20261108/scripts/adhesion_runs.py", line 52, in <module>
+    f10ag.run(root, folder / "cfg.json", folder / "run")
+  File "/workspace/new_microbubble_aggregation/workflows/f10ag.py", line 373, in run
+    return run_pretrain(root, config_path, cfg, task, out)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/new_microbubble_aggregation/workflows/f10ag.py", line 210, in run_pretrain
+    segments = pretrain_segments(task, p["max_source_amplitude_Pa_equivalent"],
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/new_microbubble_aggregation/microbubble/control.py", line 96, in pretrain_segments
+    raise ValueError(
+ValueError: Pretraining source limit 0-6000 Pa-equivalent; no clipping

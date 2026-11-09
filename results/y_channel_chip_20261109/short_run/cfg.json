@@ -1,0 +1,10 @@
+{
+ "fidelity": "PRETRAIN",
+ "coupling": "collective",
+ "state_seed": 3,
+ "duration_s": 0.3,
+ "save_interval_s": 0.01,
+ "action_seed": 1,
+ "action_kind": "pattern_local",
+ "action_segment_s": 0.1
+}

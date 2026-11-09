@@ -1,0 +1,28 @@
+morph_runs.py MOV_translate_N250_9.375MHz_sweep1.6s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 translate 20 1.6 0.1 2.0 20 9.375 6000 0.005 0.025
+morph_runs.py MOV_translate_N250_9.375MHz_sweep6.4s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 translate 20 6.4 0.1 2.0 20 9.375 6000 0.005 0.025
+morph_runs.py MOV_translate_N250_9.375MHz_sweep25.6s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 translate 20 25.6 0.4 2.0 20 9.375 6000 0.005 0.025
+morph_runs.py MOV_bend_N250_9.375MHz_sweep1.6s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 bend 0.7 1.6 0.1 2.0 0.7 9.375 6000 0.005 0.025
+morph_runs.py MOV_bend_N250_9.375MHz_sweep6.4s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 bend 0.7 6.4 0.1 2.0 0.7 9.375 6000 0.005 0.025
+morph_runs.py MOV_bend_N250_9.375MHz_sweep25.6s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 bend 0.7 25.6 0.4 2.0 0.7 9.375 6000 0.005 0.025
+morph_runs.py MOV_linedot_N250_9.375MHz_sweep1.6s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 line_dot 45 1.6 0.1 2.0 45 9.375 6000 0.005 0.025
+morph_runs.py MOV_linedot_N250_9.375MHz_sweep6.4s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 line_dot 45 6.4 0.1 2.0 45 9.375 6000 0.005 0.025
+morph_runs.py MOV_linedot_N250_9.375MHz_sweep25.6s_hold2s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 line_dot 45 25.6 0.4 2.0 45 9.375 6000 0.005 0.025
+morph_runs.py MOV_linedot_N250_9.375MHz_to22.5deg_in3.2s_then_linesx5s /workspace/scratch/sculpt_20261108/out/L_N250_9.375MHz_lines_x_adh0 line_dot 22.5 3.2 0.1 5.0 0 9.375 6000 0.005 0.025
+adhesion_runs.py ADH_N128_3.4MHz_adh0N 128 6 1.25 0 3.4 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_3.4MHz_adh1e-14N 128 6 1.25 1e-14 3.4 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_3.4MHz_adh1e-13N 128 6 1.25 1e-13 3.4 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_3.4MHz_adh1e-12N 128 6 1.25 1e-12 3.4 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_3.4MHz_adh1e-11N 128 6 1.25 1e-11 3.4 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_3.4MHz_adh1e-10N 128 6 1.25 1e-10 3.4 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_6.0MHz_adh0N 128 6 1.25 0 6.0 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_6.0MHz_adh1e-14N 128 6 1.25 1e-14 6.0 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_6.0MHz_adh1e-13N 128 6 1.25 1e-13 6.0 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_6.0MHz_adh1e-12N 128 6 1.25 1e-12 6.0 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_6.0MHz_adh1e-11N 128 6 1.25 1e-11 6.0 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_6.0MHz_adh1e-10N 128 6 1.25 1e-10 6.0 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_9.375MHz_adh0N 128 6 1.25 0 9.375 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_9.375MHz_adh1e-14N 128 6 1.25 1e-14 9.375 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_9.375MHz_adh1e-13N 128 6 1.25 1e-13 9.375 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_9.375MHz_adh1e-12N 128 6 1.25 1e-12 9.375 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_9.375MHz_adh1e-11N 128 6 1.25 1e-11 9.375 6.4 6000 0.001 0.05
+adhesion_runs.py ADH_N128_9.375MHz_adh1e-10N 128 6 1.25 1e-10 9.375 6.4 6000 0.001 0.05

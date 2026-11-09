@@ -1,0 +1,35 @@
+{
+ "name": "N250_lines",
+ "seed": 3,
+ "bubbles": 250,
+ "radius_sigma_g": 1.25,
+ "segments": [
+  {
+   "frequency_Hz": 9375000.0,
+   "pattern": "lines_x",
+   "duration_s": 0.03,
+   "cap_Pa_eq": 6000.0,
+   "amplitudes_Pa_eq": [
+    0.0,
+    0.0,
+    6000.000000000001,
+    6000.000000000001
+   ],
+   "phases_rad": [
+    0.0,
+    0.0,
+    1.4264835352407843,
+    4.568076188830577
+   ]
+  }
+ ],
+ "adhesion_force_N": 5.04e-10,
+ "fixed_step_s": 0.001,
+ "duration_s": 0.03,
+ "status": "PASS",
+ "reason": null,
+ "completed_s": 0.03,
+ "wall_s": 3.9112567878328264,
+ "step_max_displacement_median_m": 1.8250367946750113e-07,
+ "step_max_displacement_max_m": 3.379640711859323e-07
+}

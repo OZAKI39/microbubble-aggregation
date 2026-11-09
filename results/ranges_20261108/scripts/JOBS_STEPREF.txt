@@ -1,0 +1,3 @@
+STEPREF_N64_random_adh1.00e-11_dt1ms {"fidelity": "PRETRAIN", "coupling": "collective", "duration_s": 2.0, "save_interval_s": 0.01, "state_seed": 27, "action_seed": 28, "action_kind": "random", "adhesion_force_N": 1e-11, "fixed_step_s": 0.001}
+STEPREF_N64_random_adh1.00e-10_dt1ms {"fidelity": "PRETRAIN", "coupling": "collective", "duration_s": 2.0, "save_interval_s": 0.01, "state_seed": 27, "action_seed": 28, "action_kind": "random", "adhesion_force_N": 1e-10, "fixed_step_s": 0.001}
+STEPREF_N64_random_adh5.04e-10_dt1ms {"fidelity": "PRETRAIN", "coupling": "collective", "duration_s": 2.0, "save_interval_s": 0.01, "state_seed": 27, "action_seed": 28, "action_kind": "random", "adhesion_force_N": 5.04e-10, "fixed_step_s": 0.001}
