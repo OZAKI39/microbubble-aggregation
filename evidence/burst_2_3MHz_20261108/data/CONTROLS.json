@@ -1,0 +1,41 @@
+{
+ "STEPFINE_N64_random_adh1e-12_dt0.25ms": {
+  "label": "baseline: sizes sigma_g 1.25 (drawn), collective",
+  "wall_s": 336.9821063110139,
+  "sigma_g": 0.19615940780730118,
+  "steps": 8000,
+  "steps_above_0p1R": 1198,
+  "step_max_um": 1.6549924863620629,
+  "pieces_max": 6,
+  "pieces_end": 4,
+  "first_split_s": 0.02,
+  "moved_um_median": 18.543779058513646,
+  "moved_um_max": 207.45364382722698
+ },
+ "BURST_N64_random_adh1e-12_dt0.25ms_equal_sizes": {
+  "label": "all bubbles 1.78 um, collective",
+  "wall_s": 56.276175713166595,
+  "sigma_g": 0.0,
+  "steps": 8000,
+  "steps_above_0p1R": 747,
+  "step_max_um": 1.3791140699788773,
+  "pieces_max": 5,
+  "pieces_end": 3,
+  "first_split_s": 1.29,
+  "moved_um_median": 12.328701361820402,
+  "moved_um_max": 268.7740950137948
+ },
+ "BURST_N64_random_adh1e-12_dt0.25ms_pairwise": {
+  "label": "sizes sigma_g 1.25, pairwise coupling",
+  "wall_s": 57.18939210800454,
+  "sigma_g": 0.19615940780730118,
+  "steps": 8000,
+  "steps_above_0p1R": 1796,
+  "step_max_um": 3.6273774154753244,
+  "pieces_max": 6,
+  "pieces_end": 1,
+  "first_split_s": 0.9500000000000001,
+  "moved_um_median": 652.343378363938,
+  "moved_um_max": 664.9007347873177
+ }
+}

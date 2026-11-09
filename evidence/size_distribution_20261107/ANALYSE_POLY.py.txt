@@ -1,0 +1,95 @@
+"""Shape change, contacts, pieces and force balance of the size-distribution runs (2026-11-07).
+
+usage (repository root):  PYTHONPATH=.:visualization python ANALYSE_POLY.py DATA_DIR OUT_JSON
+DATA_DIR: RUNS.json and <name>/compact.npz of POLY_RUNS.py (or of evidence/soft3d_20261107/SOFT3D_RUNS.py.txt,
+every bubble 1.78 um). Same quantities as
+evidence/soft3d_20261107/ANALYSE.py.txt, with every bubble drawn and in contact at its own radius:
+shape metric (visualization/ab_protocol_figures.py, camera frames at 60/s, discs at 0.6 um/px seen
+from above, 0.1 s windows within 1 s of the switch-on, |d ln aspect| of the main region) against the
+run's own rigid floor; contacts: pairs with a surface gap below 0.01 R (R = 1.78 um) every 10 ms,
+broken in a 0.1 s window = in contact at its start and not at its end; pieces: bubbles whose
+surfaces are within 0.5 R belong together.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from ab_protocol_figures import deformation_stats, frame_shapes, sim_windows, speed_px_s
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+from microbubble.parameters import Physics
+
+R = Physics().radius_m
+data, out = Path(sys.argv[1]), Path(sys.argv[2])
+runs = json.loads((data / "RUNS.json").read_text())
+
+
+def pairs_with_gap_below(x, radii, gap_m):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + gap_m)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    return pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < gap_m]
+
+
+def contacts(x, radii):
+    return {tuple(p) for p in pairs_with_gap_below(x, radii, 0.01 * R)}
+
+
+def piece_count(x, radii):
+    pairs = pairs_with_gap_below(x, radii, 0.5 * R)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    n, labels = connected_components(graph, directed=False)
+    return n, np.bincount(labels).max() / len(x)
+
+
+def shape_stats(t, positions, radii, duration):
+    run = dict(times_s=t, positions_m=positions, segments=[dict(duration=duration, amplitudes=[0, 0, 6000.0, 0])])
+    windows = sim_windows(run, frame_shapes(run, radii), radii)
+    d = deformation_stats(windows)
+    return dict(dln=d["dln_aspect_first_1s"].get("median"), aspect=d["aspect"].get("median"),
+                split=d["split_share"], speed=float(np.median([speed_px_s(w) for w in windows])) if windows else None,
+                windows=len(windows))
+
+
+result = {}
+for name, r in runs.items():
+    c = np.load(data / name / "compact.npz")
+    # runs of evidence/soft3d_20261107/ (every bubble R) have no radii in their compact file
+    radii = c["radii_m"] if "radii_m" in c else np.full(r["bubbles"], R)
+    t, cam = c["camera_t"], c["camera_positions_m"]
+    sim = shape_stats(t, cam, radii, r["completed_s"])
+    x0 = cam[0]
+    rigid = np.array([x0 - x0.mean(0) + p.mean(0) for p in cam])
+    floor = shape_stats(t, rigid, radii, r["completed_s"])
+    sets = [contacts(x, radii) for x in c["positions10_m"]]
+    n = r["bubbles"]
+    broken = [len(sets[i] - sets[i + 10]) / n for i in range(len(sets) - 10)]
+    pieces = [piece_count(x, radii) for x in c["positions10_m"]]
+    fs = dict(zip(c["force_summary_columns"], c["force_summary"].T))
+    late = c["step_t"] >= 0.5
+    result[name] = dict(
+        r, sim=sim, rigid_floor=floor,
+        contacts_per_bubble_start=len(sets[0]) / n, contacts_per_bubble_end=len(sets[-1]) / n,
+        pressed_contacts_per_bubble_median=float(np.median(c["active_count"][late]) / n),
+        broken_per_bubble_per_0p1s_median=float(np.median(broken)),
+        broken_per_bubble_per_0p1s_after_0p1s_mean=float(np.mean(broken[10:])) if len(broken) > 10 else None,
+        broken_per_bubble_per_0p1s_first_0p1s=float(broken[0]) if broken else None,
+        start_contacts_broken_by_end=len(sets[0] - sets[-1]),
+        pieces_end=int(pieces[-1][0]), largest_piece_share_end=float(pieces[-1][1]),
+        largest_piece_share_min=float(min(p[1] for p in pieces)),
+        drive_per_bubble_N=float(np.median(fs["total_mean"])),
+        F2_spread_median_N=float(np.median(fs["F2_spread_median"])),
+        F1_spread_median_N=float(np.median(fs["F1_spread_median"])),
+        F2_spread_over_drive=float(np.median(fs["F2_spread_median"] / fs["total_mean"])),
+        radius_min_m=float(radii.min()), radius_median_m=float(np.median(radii)), radius_max_m=float(radii.max()),
+    )
+    s = result[name]
+    print(f"{name:16s} N{n:4d} {r['status']} {r['completed_s']:.2f}s speed {sim['speed']} px/s dln {sim['dln']} "
+          f"(floor {floor['dln']}) split {sim['split']} pieces {s['pieces_end']} largest {s['largest_piece_share_end']:.2f} "
+          f"contacts {s['contacts_per_bubble_start']:.2f}->{s['contacts_per_bubble_end']:.2f} "
+          f"broken/0.1s {s['broken_per_bubble_per_0p1s_median']:.3f} (after 0.1 s mean {s['broken_per_bubble_per_0p1s_after_0p1s_mean']}) "
+          f"F2/drive {s['F2_spread_over_drive']:.0f}")
+out.write_text(json.dumps(result, indent=1, default=float) + "\n")

@@ -1,0 +1,77 @@
+{
+ "runs": {
+  "project_1": {
+   "status": "PASS",
+   "wall_s": 5.7936677960678935,
+   "force_evaluations": 500,
+   "force_ms_mean": 6.69183956598863,
+   "force_ms_median": 6.756198941729963,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  },
+  "overlap_1": {
+   "status": "PASS",
+   "wall_s": 5.047559267142788,
+   "force_evaluations": 500,
+   "force_ms_mean": 5.980488789733499,
+   "force_ms_median": 5.958332447335124,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  },
+  "project_2": {
+   "status": "PASS",
+   "wall_s": 5.380191751057282,
+   "force_evaluations": 500,
+   "force_ms_mean": 6.687361999414861,
+   "force_ms_median": 6.766353501006961,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  },
+  "overlap_2": {
+   "status": "PASS",
+   "wall_s": 5.063183392165229,
+   "force_evaluations": 500,
+   "force_ms_mean": 6.019343496765941,
+   "force_ms_median": 6.0706124641001225,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  }
+ },
+ "sub_steps_ms": {
+  "SVD alone": {
+   "median_ms": 0.8524950826540589,
+   "same_smallest_singular_value": true
+  },
+  "SVD alone, through ctypes": {
+   "median_ms": 0.8567330660298467,
+   "same_smallest_singular_value": true
+  },
+  "pure Python loop": {
+   "median_ms": 1.2009839992970228,
+   "same_smallest_singular_value": true
+  },
+  "pure Python loop, ctypes SVD on a second thread": {
+   "median_ms": 2.1510369842872024,
+   "same_smallest_singular_value": true
+  },
+  "solve + F2 (no SVD)": {
+   "median_ms": 2.2210829192772508,
+   "same_smallest_singular_value": true
+  },
+  "SVD, solve, F2 one after another (as now)": {
+   "median_ms": 3.039884613826871,
+   "same_smallest_singular_value": true
+  },
+  "SVD on a second thread during solve + F2": {
+   "median_ms": 2.2230014437809587,
+   "same_smallest_singular_value": true
+  }
+ },
+ "ctypes_values_same_as_numpy": true,
+ "smallest_singular_value": 0.8536541712850318,
+ "bubbles": 122
+}

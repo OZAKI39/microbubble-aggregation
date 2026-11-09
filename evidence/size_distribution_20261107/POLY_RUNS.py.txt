@@ -1,0 +1,104 @@
+"""Do bubbles of different size loosen the 3D clusters? (2026-11-07, test runs, measurement only)
+
+usage (repository root):  python POLY_RUNS.py OUT_DIR
+Starts: random_start seeds 23, 14, 21, 16, 17, 7 (20, 32, 50, 76, 99, 122 bubbles, as in
+evidence/soft3d_20261107/, which is the same with every bubble alike). Drive as there: channel X-
+alone, 6000 Pa-eq, 2.5 MHz, 1.5 s. Cases, all with radius_sigma_g 1.5 (the widest spread of the
+policy range):
+  tu_x1:    shells following apecss_response.shell_vs_radius (default), adhesion default;
+  tu_x0:    the same without adhesion;
+  same_x1:  every bubble with the shell parameters of the 1.78 um case (only the radius changes;
+            the case with most pairs pushing apart, a check, not a default), adhesion default.
+The project code is not changed: only the run's drive is replaced in this process
+(microbubble.control.random_actions), for same_x1 bubble_response.shell_parameters too, and every
+force evaluation is summarised by a wrapper (as in evidence/soft3d_20261107/SOFT3D_RUNS.py.txt).
+Writes OUT_DIR/<name>/run, OUT_DIR/<name>/compact.npz (camera frames at 60/s, positions every
+10 ms, radii, per-step contact counts and force summaries) and OUT_DIR/RUNS.json.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+import microbubble.bubble_response as bubble_response
+import microbubble.control as control
+import microbubble.forces as forces
+from workflows.f10ag import run
+
+STARTS = [23, 14, 21, 16, 17, 7]
+CASES = [("tu_x1", True, None), ("tu_x0", True, 0.0), ("same_x1", False, None)]
+SIGMA_G = 1.5
+DRIVE = dict(amplitudes=[0.0, 0.0, 6000.0, 0.0], phases=[0.0, 0.0, 0.0, 0.0], frequency=2.5e6)
+DURATION_S = 1.5
+CAMERA_FPS = 60.0
+
+out = Path(sys.argv[1])
+out.mkdir(parents=True)
+control.random_actions = lambda duration, *rest: [dict(DRIVE, duration=duration)]
+project_shells = bubble_response.shell_parameters
+
+
+def same_shell(case, radius_m, law):
+    return dict(case, radius_m=float(radius_m))
+
+
+summary = []  # one row per force evaluation of the current run
+project_call = forces.CPUForces.__call__
+
+
+def summarised(self, x):
+    f = project_call(self, x)
+    row = []
+    for key in ("total_force_N", "secondary_force_N", "primary_force_N"):
+        v = f[key]
+        mean = v.mean(0)
+        spread = np.linalg.norm(v - mean, axis=1)
+        row += [np.linalg.norm(mean), np.median(spread), np.percentile(spread, 90)]
+    summary.append(row)
+    return f
+
+
+forces.CPUForces.__call__ = summarised
+rows = {}
+for seed in STARTS:
+    for case, tu, adhesion in CASES:
+        name = f"seed{seed}_{case}"
+        folder = out / name
+        folder.mkdir()
+        summary.clear()
+        bubble_response.shell_parameters = project_shells if tu else same_shell
+        cfg = dict(fidelity="PRETRAIN", coupling="collective", duration_s=DURATION_S, save_interval_s=0.001,
+                   state_seed=seed, action_seed=0, radius_sigma_g=SIGMA_G)
+        if adhesion is not None:
+            cfg["adhesion_force_N"] = adhesion
+        (folder / "cfg.json").write_text(json.dumps(cfg))
+        run(Path("."), folder / "cfg.json", folder / "run")
+        s = json.loads((folder / "run" / "SUMMARY.json").read_text())
+        records = json.loads((folder / "run" / "STEP_RECORDS.json").read_text())
+        with h5py.File(folder / "run" / "trajectory.h5") as h:
+            times, positions, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+        camera_t = np.arange(0.0, times[-1] + 1e-9, 1 / CAMERA_FPS)
+        k = np.minimum(np.searchsorted(times, camera_t, side="right") - 1, len(times) - 2)
+        w = ((camera_t - times[k]) / (times[k + 1] - times[k]))[:, None, None]
+        camera = (1 - w) * positions[k] + w * positions[k + 1]
+        np.savez_compressed(
+            folder / "compact.npz", camera_t=camera_t, camera_positions_m=camera, radii_m=radii,
+            t10=times[::10], positions10_m=positions[::10],
+            step_t=np.array([row["time_s"] for row in records]),
+            active_count=np.array([row["active_count"] for row in records]),
+            candidate_count=np.array([row["candidate_count"] for row in records]),
+            force_summary=np.array(summary[:len(records)]),  # one force evaluation per step
+            force_summary_columns=np.array(["total_mean", "total_spread_median", "total_spread_p90",
+                                            "F2_mean", "F2_spread_median", "F2_spread_p90",
+                                            "F1_mean", "F1_spread_median", "F1_spread_p90"]))
+        rows[name] = dict(seed=seed, case=case, shell_vs_radius=tu, bubbles=s["N"], status=s["status"],
+                          reason=s["reason"], completed_s=s["completed_s"], radius_sigma_g=SIGMA_G,
+                          adhesion_force_N=s["task"]["adhesion_force_N"], wall_s=s["wall_s"],
+                          radii_m=radii.tolist(), daqp_iterations=s["daqp_iterations"],
+                          min_collective_singular_value=s["min_collective_singular_value"])
+        print(name, s["N"], s["status"], s["reason"], s["completed_s"], f"{s['wall_s']:.1f} s", flush=True)
+bubble_response.shell_parameters = project_shells
+(out / "RUNS.json").write_text(json.dumps(rows, indent=1) + "\n")

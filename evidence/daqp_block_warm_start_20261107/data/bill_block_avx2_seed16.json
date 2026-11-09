@@ -1,0 +1,59 @@
+{
+ "seed": 16,
+ "bubbles": 76,
+ "steps": 500,
+ "dt_s": 0.001,
+ "status": "PASS",
+ "daqp_solves": 500,
+ "mean_active_pairs": 220.848,
+ "mean_daqp_iterations": 1.482,
+ "per_step_ms": {
+  "forces": {
+   "sound field (GPU)": 0.2549361949786544,
+   "bubble response (APECSS, 8 threads)": 0.9118996104225516,
+   "collective coupling solve": 0.6387512581422925,
+   "bubble-bubble force F2": 0.8629349954426289,
+   "adhesion": 0.15563482325524092,
+   "rest of the force evaluation": 0.02126943226903677
+  },
+  "contact": {
+   "resistance matrix A (assembly)": 0.04483575886115432,
+   "sparse Cholesky of A": 0.15236000809818506,
+   "free displacement": 0.008169708773493767,
+   "candidate pairs + initial check": 0.0088270865380764,
+   "linearize constraints": 0.0032231537625193596,
+   "transform: build B' and permute": 0.05831281468272209,
+   "transform: triangular solve": 0.3103549084626138,
+   "transform: z0 and d": 0.007110116071999073,
+   "load table: warm-start guess": 0.000721389427781105,
+   "load table: copy into DAQP": 0.010201082099229097,
+   "load table: DAQP activates the warm-start constraints": 0.00020785599999999992,
+   "load table: one matrix product G = Ma Ma'": 0.1740048942156136,
+   "load table: block factorization of G": 0.1066997847519815,
+   "load table: write the factor into DAQP": 0.023264386225491762,
+   "DAQP other set-up (bounds, row scaling)": 0.05952223233825588,
+   "DAQP iterations": 0.04894946003332734,
+   "DAQP free memory": 0.0005715149454772472,
+   "transform back + active pairs": 0.004891716875135899,
+   "quality checks (gates)": 0.02289046999067068,
+   "quality checks (candidate coverage)": 0.004210292361676693,
+   "call overhead outside C++ (ctypes, arrays)": 0.0734397484920919
+  },
+  "loop": {
+   "rest of the loop (segments, wall check, records)": 0.06509162997826934
+  }
+ },
+ "per_step_total_ms": 4.033286327496171,
+ "block_fast_path": 499,
+ "block_pivoted_path": 0,
+ "dropped_dependent": 0,
+ "loop_ms_per_step": 4.0350039741024375,
+ "one_time": {
+  "before_the_loop_s": 0.2922588400542736,
+  "after_the_loop_s": 0.03519853204488754,
+  "run_outside_the_integrator_s": 0.10092161083593965
+ },
+ "run_s": 2.4458809699863195,
+ "wall_s": 2.3314876039512455,
+ "minor_page_faults": 49466
+}

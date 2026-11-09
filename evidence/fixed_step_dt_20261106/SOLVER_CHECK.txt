@@ -1,0 +1,33 @@
+# Captured fallback QPs that stopped runs, re-solved (python SOLVE_CAPTURED.py.txt FILE INDEX)
+## qp_seed16_dt500.npz
+QP 12: 76 bubbles, 279 candidate pairs, recorded osqp_maximum iterations reached, rank(M) 221
+  osqp eps 1e-9 (policy)   osqp_maximum iterations reached   0.492 s {'violation_nm': 5.079288815513158e-07, 'mobility_nm': 0.0015877930872232326, 'compl_nm': 8.32102554856117, 'neg_lam': -7.894726223607096e-34}
+  osqp eps 1e-7            osqp_polished                     0.020 s {'violation_nm': 3.950222852815154e-15, 'mobility_nm': 9.485745522397337e-12, 'compl_nm': 4.848823165898297e-15, 'neg_lam': 0.0}
+  osqp eps 1e-6            osqp_polished                     0.016 s {'violation_nm': 3.950222852815154e-15, 'mobility_nm': 9.485745522397337e-12, 'compl_nm': 4.848823165898297e-15, 'neg_lam': 0.0}
+  osqp eps 1e-5            osqp_polished                     0.012 s {'violation_nm': 3.950222852815154e-15, 'mobility_nm': 9.485745522397337e-12, 'compl_nm': 4.848823165898297e-15, 'neg_lam': 0.0}
+  osqp 1e-7 iter 500000    osqp_polished                     0.020 s {'violation_nm': 3.950222852815154e-15, 'mobility_nm': 9.485745522397337e-12, 'compl_nm': 4.848823165898297e-15, 'neg_lam': 0.0}
+  NNLS (Lawson-Hanson LDP)                                   0.032 s {'violation_nm': 3.6822107862821696e-13, 'mobility_nm': 1.2647660696529783e-11, 'compl_nm': 3.6822107862821696e-13, 'neg_lam': 0.0} active 221
+## qp_seed16_dt500_e7.npz
+QP 13: 76 bubbles, 279 candidate pairs, recorded osqp_maximum iterations reached, rank(M) 221
+  osqp eps 1e-9 (policy)   osqp_maximum iterations reached   0.499 s {'violation_nm': 0.0006626748539287677, 'mobility_nm': 5.272700886588968, 'compl_nm': 21.087379532589967, 'neg_lam': -2.6702082692694673e-33}
+  osqp eps 1e-7            osqp_maximum iterations reached   0.459 s {'violation_nm': 0.0006626748539287677, 'mobility_nm': 5.272700886588968, 'compl_nm': 21.087379532589967, 'neg_lam': -2.6702082692694673e-33}
+  osqp eps 1e-6            osqp_maximum iterations reached   0.468 s {'violation_nm': 0.0006626748539287677, 'mobility_nm': 5.272700886588968, 'compl_nm': 21.087379532589967, 'neg_lam': -2.6702082692694673e-33}
+  osqp eps 1e-5            osqp_polished                     0.167 s {'violation_nm': 3.1723342638364073e-15, 'mobility_nm': 1.106670310946356e-11, 'compl_nm': 4.276267010037017e-15, 'neg_lam': 0.0}
+  osqp 1e-7 iter 500000    osqp_maximum iterations reached   4.728 s {'violation_nm': 1.1134284594110204e-05, 'mobility_nm': 4.765871178940433, 'compl_nm': 21.098099488404493, 'neg_lam': -2.6702082692694673e-33}
+  NNLS (Lawson-Hanson LDP)                                   0.035 s {'violation_nm': 1.8673849291428284e-13, 'mobility_nm': 1.0276224315930449e-11, 'compl_nm': 4.140438521857035e-13, 'neg_lam': 0.0} active 221
+## qp_seed7_dt1e-3.npz
+QP 74: 122 bubbles, 526 candidate pairs, recorded osqp_run time limit reached, rank(M) 360
+  osqp eps 1e-9 (policy)   osqp_polished                     0.324 s {'violation_nm': 5.2936001665015295e-15, 'mobility_nm': 2.0552448631860898e-11, 'compl_nm': 5.2936001665015295e-15, 'neg_lam': 0.0}
+  osqp eps 1e-7            osqp_polished                     0.191 s {'violation_nm': 5.2936001665015295e-15, 'mobility_nm': 2.0552448631860898e-11, 'compl_nm': 5.2936001665015295e-15, 'neg_lam': 0.0}
+  osqp eps 1e-6            osqp_polished                     0.142 s {'violation_nm': 5.2936001665015295e-15, 'mobility_nm': 2.0552448631860898e-11, 'compl_nm': 5.2936001665015295e-15, 'neg_lam': 0.0}
+  osqp eps 1e-5            osqp_polished                     0.082 s {'violation_nm': 5.2936001665015295e-15, 'mobility_nm': 2.0552448631860898e-11, 'compl_nm': 5.2936001665015295e-15, 'neg_lam': 0.0}
+  osqp 1e-7 iter 500000    osqp_polished                     0.184 s {'violation_nm': 5.2936001665015295e-15, 'mobility_nm': 2.0552448631860898e-11, 'compl_nm': 5.2936001665015295e-15, 'neg_lam': 0.0}
+  NNLS (Lawson-Hanson LDP)                                   0.143 s {'violation_nm': 3.1653889578930894e-12, 'mobility_nm': 2.5295321393059567e-11, 'compl_nm': 3.1653889578930894e-12, 'neg_lam': 0.0} active 359
+## qp_seed7_dt5e-3.npz
+QP 0: 122 bubbles, 6152 candidate pairs, recorded osqp_run time limit reached, rank(M) 360
+  osqp eps 1e-9 (policy)   osqp_polished                     1.288 s {'violation_nm': 2.115148334258521e-13, 'mobility_nm': 1.0118128557223827e-10, 'compl_nm': 2.115148334258521e-13, 'neg_lam': 0.0}
+  osqp eps 1e-7            osqp_polished                     0.872 s {'violation_nm': 2.115148334258521e-13, 'mobility_nm': 1.0118128557223827e-10, 'compl_nm': 2.115148334258521e-13, 'neg_lam': 0.0}
+  osqp eps 1e-6            osqp_polished                     0.692 s {'violation_nm': 2.115148334258521e-13, 'mobility_nm': 1.0118128557223827e-10, 'compl_nm': 2.115148334258521e-13, 'neg_lam': 0.0}
+  osqp eps 1e-5            osqp_polished                     0.503 s {'violation_nm': 2.115148334258521e-13, 'mobility_nm': 1.0118128557223827e-10, 'compl_nm': 2.115148334258521e-13, 'neg_lam': 0.0}
+  osqp 1e-7 iter 500000    osqp_polished                     0.876 s {'violation_nm': 2.115148334258521e-13, 'mobility_nm': 1.0118128557223827e-10, 'compl_nm': 2.115148334258521e-13, 'neg_lam': 0.0}
+  NNLS (Lawson-Hanson LDP)                                   3.902 s {'violation_nm': 2.4171853407750628e-09, 'mobility_nm': 1.1382894626876804e-10, 'compl_nm': 1.0826212287762259e-08, 'neg_lam': 0.0} active 340

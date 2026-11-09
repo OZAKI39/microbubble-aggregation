@@ -1,0 +1,5 @@
+{
+ "library_build_s": 1.55,
+ "library_build_s_repeats": [1.61, 1.5, 1.55],
+ "note": "bubble_response.build_apecss_harmonics(library=True), three builds into fresh folders, gcc 13.3.0, APECSS a0ee071; before 2026-11-04 every carried-APECSS run did one such build at its start"
+}

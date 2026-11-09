@@ -1,0 +1,237 @@
+"""Fixed-step convergence test (2026-11-06): compare every dt with the finest run of each seed.
+
+usage (repository root):  python analyse.py RESULTS_DIR OUT_DIR
+RESULTS_DIR holds seed<k>_dt<us>us runs of run_seed.py. Writes fig1_error_vs_step.png,
+fig2_cost_vs_step.png, fig3_error_over_time.png, fig4_top_view_end.png and DT_CONVERGENCE.json.
+Pixel scale 0.6 µm/px (provisional value of the data plan).
+"""
+
+import json
+import re
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import matplotlib
+import matplotlib.ticker
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEED_COLOURS = ["#2a6fb0", "#d0812c", "#3a9a5b", "#b8457a"]
+PX = 0.6e-6
+R = 1.78e-6
+
+
+def setup_style(font_dir):
+    family = "DejaVu Sans"
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+            family = "Arial"
+    plt.rcParams.update({"font.family": family, "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+    return family
+
+
+def load(path):
+    with h5py.File(path / "trajectory.h5") as h:
+        x, t = h["positions_m"][()], h["time_s"][()]
+    s = json.loads((path / "SUMMARY.json").read_text())
+    rec = json.loads((path / "STEP_RECORDS.json").read_text())
+    step = np.array([row["max_displacement_m"] for row in rec if "max_displacement_m" in row]) / R
+    calls = path / "NNLS_CALLS.json"
+    s["nnls_calls"] = json.loads(calls.read_text())["calls"] if calls.is_file() else None
+    return x, t, s, step
+
+
+def dt_axis(ax, ticks):
+    ax.set_xscale("log")
+    ax.set_xticks(ticks, [f"{v:g}" for v in ticks])
+    ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+
+
+def kabsch_residual(a, b):
+    """RMS per-bubble difference after the best rigid motion of b onto a (shape change only)."""
+    p, q = a - a.mean(0), b - b.mean(0)
+    u, _, vt = np.linalg.svd(q.T @ p)
+    d = np.sign(np.linalg.det(u @ vt))
+    rot = u @ np.diag([1, 1, d]) @ vt
+    return float(np.sqrt(((q @ rot - p) ** 2).sum(1).mean()))
+
+
+def top_aspect(local):
+    """Aspect of the top-view (x-y) footprint from the second moments of the bubble centres."""
+    p = local[:, :2] - local[:, :2].mean(0)
+    w = np.linalg.eigvalsh(p.T @ p / len(p))
+    return float(np.sqrt(w[1] / w[0]))
+
+
+def main():
+    results, out = Path(sys.argv[1]), Path(sys.argv[2])
+    out.mkdir(parents=True, exist_ok=True)
+    lumen = pretrain_context(Path("."), 2.5e6).cavity.lumen
+    runs = {}
+    for path in sorted(results.glob("seed*_dt*us")):
+        seed, us = map(int, re.match(r"seed(\d+)_dt(\d+)us", path.name).groups())
+        runs.setdefault(seed, {})[us] = load(path)
+    table = []
+    for seed, by_dt in runs.items():
+        ref_us = min(by_dt)
+        xr, tr, sr, _ = by_dt[ref_us]
+        for us, (x, t, s, step) in sorted(by_dt.items(), reverse=True):
+            k = len(t)
+            err = np.linalg.norm(x - xr[:k], axis=2).max(1) / PX  # largest bubble difference per frame
+            centroid = np.linalg.norm(x.mean(1) - xr[:k].mean(1), axis=1) / PX
+            shape = np.array([kabsch_residual(xr[i], x[i]) for i in range(k)]) / PX
+            aspect = np.array([abs(top_aspect(lumen.local(x[i])) - top_aspect(lumen.local(xr[i])))
+                               for i in range(k)])
+            travel = np.linalg.norm(xr[-1].mean(0) - xr[0].mean(0)) / PX
+            table.append(dict(
+                seed=seed, bubbles=int(x.shape[1]), dt_ms=us / 1e3, reference_dt_ms=ref_us / 1e3,
+                status=s["status"], reason=s["reason"], completed_s=float(t[-1]),
+                steps=s["accepted_steps"], wall_s=s["wall_s"],
+                step_over_R_median=float(np.median(step)), step_over_R_max=float(step.max()),
+                steps_failing_gates=s["steps_failing_gates"],
+                contact_fallback_steps=s.get("contact_fallback_steps"), nnls_calls=s["nnls_calls"],
+                max_bubble_error_px=float(err.max()), max_centroid_error_px=float(centroid.max()),
+                max_shape_error_px=float(shape.max()), max_top_aspect_error=float(aspect.max()),
+                reference_centroid_travel_px=float(travel),
+                error_px_over_time=err.tolist(), time_s=t.tolist()))
+    for row in table:
+        print(f"seed {row['seed']:>2} N{row['bubbles']:>3} dt {row['dt_ms']:>4} ms {row['status']} "
+              f"{row['completed_s']:.2f} s steps {row['steps']:>5} wall {row['wall_s']:7.1f} s  "
+              f"step/R med {row['step_over_R_median']:.4f} max {row['step_over_R_max']:.3f}  "
+              f"bubble {row['max_bubble_error_px']:.4f} px centroid {row['max_centroid_error_px']:.4f} "
+              f"shape {row['max_shape_error_px']:.4f} aspect {row['max_top_aspect_error']:.4f}  "
+              f"travel {row['reference_centroid_travel_px']:.0f} px")
+
+    seeds = sorted(runs)
+    colour = dict(zip(seeds, SEED_COLOURS))
+    label = {seed: f"seed {seed}, {next(iter(runs[seed].values()))[0].shape[1]} bubbles" for seed in seeds}
+    with tempfile.TemporaryDirectory() as font_dir:
+        font = setup_style(Path(font_dir))
+        # Fig 1: largest bubble difference from the finest run vs dt; failed runs hollow.
+        fig, axes = plt.subplots(1, 3, figsize=(12.5, 3.9))
+        keys = [("max_bubble_error_px", "Largest bubble difference (px)"),
+                ("max_centroid_error_px", "Largest centroid difference (px)"),
+                ("max_shape_error_px", "Largest shape difference, RMS after rigid fit (px)")]
+        for ax, (key, title) in zip(axes, keys):
+            for seed in seeds:
+                rows = [r for r in table if r["seed"] == seed and r["dt_ms"] != r["reference_dt_ms"]]
+                dt = np.array([r["dt_ms"] for r in rows])
+                v = np.array([max(r[key], 1e-7) for r in rows])
+                ok = np.array([r["status"] == "PASS" for r in rows])
+                ax.plot(dt, v, color=colour[seed], linewidth=2, label=label[seed])
+                ax.scatter(dt[ok], v[ok], s=36, color=colour[seed], zorder=3)
+                ax.scatter(dt[~ok], v[~ok], s=36, facecolor="white", edgecolor=colour[seed],
+                           linewidth=1.6, zorder=3)
+            ax.axhline(1, color=MUTED, linestyle="--", linewidth=1)
+            ax.text(0.2, 0.8, "1 px (0.6 µm)", color=MUTED, fontsize=8, va="top")
+            dt_axis(ax, [0.2, 0.5, 1, 2, 5])
+            ax.set_yscale("log")
+            ax.set_xlabel("Fixed step dt (ms)")
+            ax.set_title(title, loc="left", fontsize=9.5, color=INK)
+            ax.grid(color=GRID, linewidth=0.8)
+            ax.set_axisbelow(True)
+        axes[0].legend(frameon=False, fontsize=8)
+        fig.suptitle("Difference from the 0.1 ms run of the same start over 0.5 s (NNLS fallback; "
+                     "hollow: run stopped early)", x=0.01, ha="left", fontsize=10.5, color=INK)
+        fig.tight_layout()
+        fig.savefig(out / "fig1_error_vs_step.png", dpi=170)
+        plt.close(fig)
+
+        # Fig 2: cost and step size vs dt.
+        fig, axes = plt.subplots(1, 2, figsize=(10, 3.8))
+        for seed in seeds:
+            rows = [r for r in table if r["seed"] == seed]
+            dt = np.array([r["dt_ms"] for r in rows])
+            ok = np.array([r["status"] == "PASS" for r in rows])
+            per_s = np.array([r["wall_s"] / max(r["completed_s"], 1e-9) for r in rows])
+            med = np.array([r["step_over_R_median"] for r in rows])
+            for ax, v in zip(axes, (per_s, med)):
+                ax.plot(dt, v, color=colour[seed], linewidth=2, label=label[seed])
+                ax.scatter(dt[ok], v[ok], s=36, color=colour[seed], zorder=3)
+                ax.scatter(dt[~ok], v[~ok], s=36, facecolor="white", edgecolor=colour[seed],
+                           linewidth=1.6, zorder=3)
+        axes[0].set_title("Wall time per simulated second (s, 4 runs in parallel)", loc="left",
+                          fontsize=9.5, color=INK)
+        axes[1].set_title("Median step of the fastest bubble (fraction of R)", loc="left",
+                          fontsize=9.5, color=INK)
+        for ax in axes:
+            dt_axis(ax, [0.1, 0.2, 0.5, 1, 2, 5])
+            ax.set_yscale("log")
+            ax.set_xlabel("Fixed step dt (ms)")
+            ax.grid(color=GRID, linewidth=0.8)
+            ax.set_axisbelow(True)
+        axes[0].legend(frameon=False, fontsize=8)
+        fig.tight_layout()
+        fig.savefig(out / "fig2_cost_vs_step.png", dpi=170)
+        plt.close(fig)
+
+        # Fig 3: largest bubble difference over time, one panel per seed.
+        dts = sorted({r["dt_ms"] for r in table if r["dt_ms"] != r["reference_dt_ms"]}, reverse=True)
+        cmap = plt.get_cmap("viridis")
+        shade = {dt: cmap(0.85 * k / max(len(dts) - 1, 1)) for k, dt in enumerate(dts)}
+        fig, axes = plt.subplots(1, len(seeds), figsize=(3.3 * len(seeds), 3.6), squeeze=False)
+        for ax, seed in zip(axes[0], seeds):
+            for r in (r for r in table if r["seed"] == seed and r["dt_ms"] in shade):
+                t, e = np.array(r["time_s"]), np.maximum(r["error_px_over_time"], 1e-7)
+                ax.plot(t, e, color=shade[r["dt_ms"]], linewidth=1.6,
+                        label=f"{r['dt_ms']:g} ms" + ("" if r["status"] == "PASS" else " (stopped)"))
+            ax.axhline(1, color=MUTED, linestyle="--", linewidth=1)
+            ax.set_yscale("log")
+            ax.set_xlabel("Time (s)")
+            ax.set_title(label[seed], loc="left", fontsize=9.5, color=INK)
+            ax.grid(color=GRID, linewidth=0.8)
+            ax.set_axisbelow(True)
+        axes[0, 0].set_ylabel("Largest bubble difference (px)")
+        axes[0, 0].legend(frameon=False, fontsize=7.5)
+        fig.tight_layout()
+        fig.savefig(out / "fig3_error_over_time.png", dpi=170)
+        plt.close(fig)
+
+        # Fig 4: top view at the end, reference (black) and the 1 ms default (coloured ring).
+        fig, axes = plt.subplots(1, len(seeds), figsize=(3.3 * len(seeds), 4.1), squeeze=False)
+        for ax, seed in zip(axes[0], seeds):
+            r = next(v for v in table if v["seed"] == seed and v["dt_ms"] == 1.0)
+            ref = lumen.local(runs[seed][min(runs[seed])][0][-1]) * 1e6
+            x = lumen.local(runs[seed][1000][0][-1]) * 1e6
+            centre = ref.mean(0)
+            span = np.abs(ref - centre).max() + 2 * R * 1e6
+            for pos, face, edge in ((ref, "#202020", "none"), (x, "none", colour[seed])):
+                ax.add_collection(EllipseCollection(2 * R * 1e6, 2 * R * 1e6, 0, units="xy",
+                                                    offsets=(pos - centre)[:, :2],
+                                                    offset_transform=ax.transData, facecolors=face,
+                                                    edgecolors=edge, linewidths=1.0))
+            ax.set_xlim(-span, span)
+            ax.set_ylim(-span, span)
+            ax.set_aspect("equal")
+            ax.set_xlabel("x (µm)")
+            ax.set_title(f"{label[seed]}\nlargest bubble difference {r['max_bubble_error_px']:.2f} px",
+                         loc="left", fontsize=8.5, color=INK)
+        axes[0, 0].set_ylabel("y (µm)")
+        fig.suptitle("Top view at t = 0.5 s: black 0.1 ms, coloured ring 1 ms (the default)", x=0.01,
+                     ha="left", fontsize=10.5, color=INK)
+        fig.tight_layout()
+        fig.savefig(out / "fig4_top_view_end.png", dpi=170)
+        plt.close(fig)
+    for row in table:
+        row.pop("error_px_over_time")
+        row.pop("time_s")
+    (out / "DT_CONVERGENCE.json").write_text(json.dumps(dict(font=font, pixel_m=PX, runs=table),
+                                                        indent=1) + "\n")
+
+
+if __name__ == "__main__":
+    main()

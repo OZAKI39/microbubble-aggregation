@@ -1,0 +1,94 @@
+"""Ordinary pretraining runs with the new rules: what does a cluster meet, and what does it do? (2026-11-08)
+
+usage (repository root):  PYTHONPATH=. python analyse_demo.py OUT_DIR OUT_JSON OUT_NPZ
+OUT_DIR: ordinary workflows.f10ag runs named PAT2_* (pattern actions designed at the channel centre, drawn) and
+LOCAL_* (pattern_local: designed at the start cluster). At every saved frame (10 ms), with the disc field of
+the segment that acted up to the frame: the pressure the bubbles meet, median |p| at the bubble centres over
+the largest |p| in a 100 um x 100 um square around the cluster's centroid (plane of the centroid; 0: the
+bubbles sit on zeros); the centroid's distance from its start; the top-view aspect (square root of the ratio
+of the eigenvalues of the x-y covariance of the centres) and the largest spread; pieces (surfaces within
+0.5 R) and the share of the largest.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from workflows.f10ag import pretrain_context
+
+R = 1.78e-6
+HALF_M = 50e-6
+out_dir, out_json, out_npz = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+elements = pretrain_context(Path("."), 3e6).discs.elements
+square = np.linspace(-HALF_M, HALF_M, 41)
+sx, sy = np.meshgrid(square, square)
+
+
+def pieces(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    pairs = pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < 0.5 * R]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    n, labels = connected_components(graph, directed=False)
+    return n, np.bincount(labels).max() / len(x)
+
+
+result, series = {}, {}
+for folder in sorted(p for p in out_dir.iterdir() if p.name.startswith(("PAT2_", "LOCAL_")) and (p / "SUMMARY.json").is_file()):
+    name = folder.name
+    task = json.loads((folder / "EXECUTION.json").read_text())["task"]
+    summary = json.loads((folder / "SUMMARY.json").read_text())
+    with h5py.File(folder / "trajectory.h5") as h:
+        t, positions, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+        in_effect = h["action_segment"][()]
+    f = task["segments"][0]["frequency"]
+    discs = WaterDiscs(elements, f)
+    order = direct_quadrature_order(f)
+    weights = [np.array(s["amplitudes"]) * np.exp(1j * np.array(s["phases"])) for s in task["segments"]]
+    rows = {k: [] for k in ("p_ratio_median", "centroid_moved_m", "aspect", "spread_max_m", "pieces", "largest_share")}
+    for j, x in enumerate(positions):
+        k = int(in_effect[j - 1]) if j > 0 else 0
+        c = x.mean(axis=0)
+        box = np.column_stack([sx.ravel() + c[0], sy.ravel() + c[1], np.full(sx.size, c[2])])
+        p_box = np.abs(weights[k] @ discs.evaluate(box, order)[0]).max()
+        p_bubbles = np.abs(weights[k] @ discs.evaluate(x, order)[0])
+        rows["p_ratio_median"].append(np.median(p_bubbles) / p_box)
+        rows["centroid_moved_m"].append(np.linalg.norm(c - positions[0].mean(axis=0)))
+        w = np.linalg.eigvalsh(np.cov(x[:, :2].T))
+        rows["aspect"].append(np.sqrt(w[1] / w[0]))
+        rows["spread_max_m"].append(np.sqrt(np.linalg.eigvalsh(np.cov(x.T))[-1]))
+        n, share = pieces(x, radii)
+        rows["pieces"].append(n)
+        rows["largest_share"].append(share)
+    rows = {k: np.asarray(v, float) for k, v in rows.items()}
+    start = positions[0].mean(axis=0)
+    path = task["pattern_path"]
+    result[name] = dict(status=summary["status"], reason=summary["reason"], completed_s=summary["completed_s"],
+                        wall_s=summary["wall_s"], action_kind=task["action_kind"], bubbles=int(len(radii)), frequency_Hz=f,
+                        adhesion_force_N=task["adhesion_force_N"], reference_m=path["reference_m"],
+                        start_centre_m=start.tolist(),
+                        start_distance_from_reference_mm=float(np.linalg.norm(start - np.array(path["reference_m"])) * 1e3),
+                        p_ratio_start=float(rows["p_ratio_median"][0]), p_ratio_end=float(rows["p_ratio_median"][-1]),
+                        p_ratio_median=float(np.median(rows["p_ratio_median"])),
+                        centroid_moved_um_end=float(rows["centroid_moved_m"][-1] * 1e6),
+                        aspect_start=float(rows["aspect"][0]), aspect_max=float(rows["aspect"].max()),
+                        aspect_end=float(rows["aspect"][-1]), pieces_max=int(rows["pieces"].max()),
+                        largest_share_min=float(rows["largest_share"].min()))
+    for key, v in rows.items():
+        series[f"{name}__{key}"] = v
+    series[f"{name}__t_s"] = t
+    s = result[name]
+    print(f"{name}: {s['status']} {s['action_kind']} {s['bubbles']} bubbles {f / 1e6:.2f} MHz adhesion {s['adhesion_force_N']:.1e} N, "
+          f"start {s['start_distance_from_reference_mm']:.2f} mm from the reference; |p| at bubbles / local max "
+          f"{s['p_ratio_start']:.2f} -> {s['p_ratio_end']:.2f} (median {s['p_ratio_median']:.2f}); moved {s['centroid_moved_um_end']:.1f} um; "
+          f"aspect {s['aspect_start']:.2f} -> {s['aspect_end']:.2f} (max {s['aspect_max']:.2f}); pieces max {s['pieces_max']} "
+          f"(largest >= {s['largest_share_min']:.2f}); wall {s['wall_s']:.0f} s", flush=True)
+out_json.write_text(json.dumps(result, indent=1) + "\n")
+np.savez_compressed(out_npz, **series)

@@ -1,0 +1,91 @@
+"""Softness of the current 3D random starts at matched cluster speed (2026-11-07, measurement only).
+
+usage (repository root):  python SOFT3D_RUNS.py OUT_DIR
+Starts: random_start seeds 23, 14, 21, 16, 17, 7 (20, 32, 50, 76, 99, 122 bubbles, 3D irregular
+clusters, the current default starts). Drive as in evidence/softness_matched_speed_20261104/
+(there with monolayer clusters): channel X- alone, 6000 Pa-eq, 2.5 MHz, 1.5 s. Adhesion: default
+(x1), x0.1, 0 (config "adhesion_coefficient_N_per_Pa2"). Everything else is the current default
+(collective coupling with delay, APECSS, GPU field, compiled contact step, 1 ms steps).
+The project code is not changed: only the run's drive is replaced in this process
+(microbubble.control.random_actions), and every force evaluation is summarised by a wrapper.
+Writes OUT_DIR/<name>/run (the run output, positions every 1 ms), OUT_DIR/<name>/compact.npz
+(camera frames at 60/s by linear interpolation of the 1 ms positions; positions every 10 ms;
+per-step contact counts and force summaries) and OUT_DIR/RUNS.json.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+import microbubble.control as control
+import microbubble.forces as forces
+from workflows.f10ag import load_pretrain_policy, run
+
+STARTS = [23, 14, 21, 16, 17, 7]
+ADHESION = {"x1": 1.0, "x0.1": 0.1, "x0": 0.0}
+DRIVE = dict(amplitudes=[0.0, 0.0, 6000.0, 0.0], phases=[0.0, 0.0, 0.0, 0.0], frequency=2.5e6)
+DURATION_S = 1.5
+CAMERA_FPS = 60.0
+
+out = Path(sys.argv[1])
+out.mkdir(parents=True)
+coefficient = load_pretrain_policy(Path("."))["adhesion"]["coefficient_N_per_Pa2"]
+control.random_actions = lambda duration, *rest: [dict(DRIVE, duration=duration)]
+
+summary = []  # one row per force evaluation of the current run
+project_call = forces.CPUForces.__call__
+
+
+def summarised(self, x):
+    f = project_call(self, x)
+    row = []
+    for key in ("total_force_N", "secondary_force_N", "primary_force_N"):
+        v = f[key]
+        mean = v.mean(0)
+        spread = np.linalg.norm(v - mean, axis=1)
+        row += [np.linalg.norm(mean), np.median(spread), np.percentile(spread, 90)]
+    summary.append(row)
+    return f
+
+
+forces.CPUForces.__call__ = summarised
+rows = {}
+for seed in STARTS:
+    for level, factor in ADHESION.items():
+        name = f"seed{seed}_adhesion_{level}"
+        folder = out / name
+        folder.mkdir()
+        summary.clear()
+        cfg = folder / "cfg.json"
+        cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=DURATION_S,
+                                       save_interval_s=0.001, state_seed=seed, action_seed=0,
+                                       adhesion_coefficient_N_per_Pa2=coefficient * factor)))
+        r = run(Path("."), cfg, folder / "run")
+        s = json.loads((folder / "run" / "SUMMARY.json").read_text())
+        records = json.loads((folder / "run" / "STEP_RECORDS.json").read_text())
+        with h5py.File(folder / "run" / "trajectory.h5") as h:
+            times, positions = h["time_s"][()], h["positions_m"][()]
+        camera_t = np.arange(0.0, times[-1] + 1e-9, 1 / CAMERA_FPS)
+        k = np.minimum(np.searchsorted(times, camera_t, side="right") - 1, len(times) - 2)
+        w = ((camera_t - times[k]) / (times[k + 1] - times[k]))[:, None, None]
+        camera = (1 - w) * positions[k] + w * positions[k + 1]
+        every10 = positions[::10]
+        np.savez_compressed(
+            folder / "compact.npz", camera_t=camera_t, camera_positions_m=camera,
+            t10=times[::10], positions10_m=every10,
+            step_t=np.array([row["time_s"] for row in records]),
+            active_count=np.array([row["active_count"] for row in records]),
+            candidate_count=np.array([row["candidate_count"] for row in records]),
+            force_summary=np.array(summary[:len(records)]),  # one force evaluation per step
+            force_summary_columns=np.array(["total_mean", "total_spread_median", "total_spread_p90",
+                                            "F2_mean", "F2_spread_median", "F2_spread_p90",
+                                            "F1_mean", "F1_spread_median", "F1_spread_p90"]))
+        rows[name] = dict(seed=seed, adhesion=level, bubbles=s["N"], status=s["status"], reason=s["reason"],
+                          completed_s=s["completed_s"], adhesion_force_N=s["task"]["adhesion_force_N"],
+                          start=s["task"]["start"], wall_s=s["wall_s"], daqp_iterations=s["daqp_iterations"],
+                          min_collective_singular_value=s["min_collective_singular_value"])
+        print(name, s["N"], s["status"], s["reason"], s["completed_s"], f"{s['wall_s']:.1f} s", flush=True)
+(out / "RUNS.json").write_text(json.dumps(rows, indent=1) + "\n")

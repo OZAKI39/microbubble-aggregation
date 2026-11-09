@@ -1,0 +1,78 @@
+"""Compiled F2, pair distances and adhesion on the inputs of a real force evaluation, against the
+NumPy versions before 2026-11-07 (numpy_before.py). Measurement only.
+
+usage (repository root):  python SUBSTEPS.py OUT_DIR NUMPY_BEFORE_DIR
+A 122-bubble run (seed 7, 0.3 s, default settings) keeps the inputs of the 250th force evaluation
+(F2 of the collective coupling); the same positions also go through the pairwise model (single
+bubble oscillations, two-bubble feedback). Compared: F2 (largest difference over the largest
+force), distances and adhesion (bit for bit); timed: median of 300.
+"""
+
+import json
+import sys
+import time
+from pathlib import Path
+
+import numpy as np
+
+import microbubble.forces as forces
+from workflows.f10ag import run
+
+sys.path.insert(0, sys.argv[2])
+import numpy_before  # noqa: E402
+
+out = Path(sys.argv[1])
+out.mkdir(parents=True, exist_ok=True)
+kept = {}
+real_f2 = forces.CompiledPairForces.delayed_pair_forces
+count = [0]
+
+
+def keep(self, *a):
+    count[0] += 1
+    if count[0] == 250:
+        kept["pairs"], kept["args"] = self, a
+    return real_f2(self, *a)
+
+
+forces.CompiledPairForces.delayed_pair_forces = keep
+cfg = out / "cfg.json"
+cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.3,
+                               save_interval_s=0.01, state_seed=7, action_seed=7)))
+run(Path("."), cfg, out / "run")
+forces.CompiledPairForces.delayed_pair_forces = real_f2
+
+
+def median_ms(f, repeat=300):
+    t = []
+    for _ in range(repeat):
+        a = time.perf_counter()
+        f()
+        t.append(time.perf_counter() - a)
+    return 1e3 * float(np.median(t))
+
+
+pairs = kept["pairs"]
+x, D, H, P, physics, chi_zero, u, k = kept["args"]
+policy = json.loads(Path("configs/pretrain_policy.json").read_text())
+task = json.loads((out / "run" / "SUMMARY.json").read_text())["task"]
+adhesion_N, range_m = task["adhesion_force_N"], task["adhesion_range_m"]
+result = dict(bubbles=len(x), pairs=len(x) * (len(x) - 1) // 2)
+for mode, fundamental in (("collective", u), ("pairwise (two-bubble feedback)", None)):
+    old = numpy_before._pair_forces_delayed(x, H, P, physics, chi_zero, fundamental, k)
+    new = pairs.delayed_pair_forces(x, D, H, P, physics, chi_zero, fundamental, k)
+    result[f"F2, {mode}"] = dict(
+        max_difference_over_max_force=float(np.abs(new - old).max() / np.abs(old).max()),
+        numpy_ms=median_ms(lambda: numpy_before._pair_forces_delayed(x, H, P, physics, chi_zero, fundamental, k)),
+        compiled_ms=median_ms(lambda: pairs.delayed_pair_forces(x, D, H, P, physics, chi_zero, fundamental, k)))
+result["pair distances"] = dict(
+    bit_identical=bool(np.array_equal(pairs.distances(x), np.linalg.norm(x[:, None] - x[None], axis=-1))),
+    numpy_ms=median_ms(lambda: np.linalg.norm(x[:, None] - x[None], axis=-1)),
+    compiled_ms=median_ms(lambda: pairs.distances(x)))
+result["adhesion"] = dict(
+    bit_identical=bool(np.array_equal(forces.adhesion_forces(x, D, physics.radius_m, adhesion_N, range_m),
+                                      numpy_before.adhesion_forces(x, physics.radius_m, adhesion_N, range_m))),
+    numpy_before_ms=median_ms(lambda: numpy_before.adhesion_forces(x, physics.radius_m, adhesion_N, range_m)),
+    shared_distances_ms=median_ms(lambda: forces.adhesion_forces(x, D, physics.radius_m, adhesion_N, range_m)))
+(out / "SUBSTEPS.json").write_text(json.dumps(result, indent=1) + "\n")
+print(json.dumps(result, indent=1))

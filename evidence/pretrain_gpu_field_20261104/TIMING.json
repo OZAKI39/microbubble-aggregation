@@ -1,0 +1,172 @@
+{
+ "device": "cuda:0 (NVIDIA GeForce RTX 4060 Laptop GPU)",
+ "warp": "1.18.0",
+ "gpu_init_s": 0.7074750869942363,
+ "quadrature_order": 96,
+ "field": [
+  {
+   "N": 16,
+   "cpu_ms": 0.46068149094935507,
+   "gpu_ms": 0.5708700191462412
+  },
+  {
+   "N": 32,
+   "cpu_ms": 0.6808210018789396,
+   "gpu_ms": 0.7492760050809011
+  },
+  {
+   "N": 64,
+   "cpu_ms": 1.1529774928931147,
+   "gpu_ms": 1.055052998708561
+  },
+  {
+   "N": 128,
+   "cpu_ms": 2.1719924989156425,
+   "gpu_ms": 1.0249385086353868
+  },
+  {
+   "N": 256,
+   "cpu_ms": 4.4859530025860295,
+   "gpu_ms": 1.097890009987168
+  },
+  {
+   "N": 512,
+   "cpu_ms": 8.806047000689432,
+   "gpu_ms": 1.197805002448149
+  },
+  {
+   "N": 1024,
+   "cpu_ms": 20.39539949328173,
+   "gpu_ms": 1.5553334960713983
+  },
+  {
+   "N": 4096,
+   "cpu_ms": 124.45813750673551,
+   "gpu_ms": 10.224997517070733
+  },
+  {
+   "N": 16384,
+   "cpu_ms": 489.2720314965118,
+   "gpu_ms": 12.103405490051955
+  }
+ ],
+ "force_calls": [
+  {
+   "state": "FORMED_N16_a1.0_s0",
+   "N": 16,
+   "cpu_force_call_ms": 0.8639689913252369,
+   "gpu_force_call_ms": 1.1016919888788834
+  },
+  {
+   "state": "FORMED_N32_a1.0_s1",
+   "N": 32,
+   "cpu_force_call_ms": 1.335854991339147,
+   "gpu_force_call_ms": 1.5224579983623698
+  },
+  {
+   "state": "FORMED_N64_a1.0_s0",
+   "N": 64,
+   "cpu_force_call_ms": 2.781021496048197,
+   "gpu_force_call_ms": 3.0714889871887863
+  },
+  {
+   "state": "FORMED_N128_a1.0_s0",
+   "N": 128,
+   "cpu_force_call_ms": 7.905160498921759,
+   "gpu_force_call_ms": 9.101703006308526
+  }
+ ],
+ "gpu_breakdown_N32": {
+  "whole_call_ms": 0.7808270020177588,
+  "kernel_launch_and_wait_ms": 0.4032440047012642,
+  "launch_only_ms": 0.02161250449717045,
+  "copy_results_back_ms": 0.11777199688367546,
+  "copy_points_in_ms": 0.02219951420556754,
+  "allocate_outputs_ms": 0.04284149326849729
+ },
+ "idle_gaps": [
+  {
+   "N": 32,
+   "cpu_busy_between_calls_ms": 0.0,
+   "gpu_call_median_ms": 0.6939954910194501,
+   "gpu_call_p90_ms": 0.8080558007350191
+  },
+  {
+   "N": 32,
+   "cpu_busy_between_calls_ms": 2.5,
+   "gpu_call_median_ms": 0.7672089996049181,
+   "gpu_call_p90_ms": 0.9263495885534212
+  },
+  {
+   "N": 32,
+   "cpu_busy_between_calls_ms": 19.0,
+   "gpu_call_median_ms": 2.107146996422671,
+   "gpu_call_p90_ms": 2.741914518992417
+  },
+  {
+   "N": 128,
+   "cpu_busy_between_calls_ms": 0.0,
+   "gpu_call_median_ms": 1.196191500639543,
+   "gpu_call_p90_ms": 5.825640508555807
+  },
+  {
+   "N": 128,
+   "cpu_busy_between_calls_ms": 2.5,
+   "gpu_call_median_ms": 1.2260550138307735,
+   "gpu_call_p90_ms": 1.44486750359647
+  },
+  {
+   "N": 128,
+   "cpu_busy_between_calls_ms": 19.0,
+   "gpu_call_median_ms": 2.789768506772816,
+   "gpu_call_p90_ms": 4.139311477774754
+  }
+ ],
+ "in_run": [
+  {
+   "run": "protocol_formed32",
+   "field": "direct",
+   "duration_s": 0.5,
+   "wall_s": 4.5605452170129865,
+   "steps": 1450,
+   "field_call_median_ms": 0.740359493647702,
+   "field_call_p90_ms": 0.868185190483928,
+   "field_total_s": 1.1040618158876896,
+   "rest_per_step_ms": 2.383781655948481
+  },
+  {
+   "run": "protocol_formed32",
+   "field": "direct_gpu",
+   "duration_s": 0.5,
+   "wall_s": 5.712723083997844,
+   "steps": 1450,
+   "field_call_median_ms": 1.3219090178608894,
+   "field_call_p90_ms": 1.9796938955551016,
+   "field_total_s": 2.0561968444962986,
+   "rest_per_step_ms": 2.521742234138997
+  },
+  {
+   "run": "protocol_formed128",
+   "field": "direct",
+   "duration_s": 0.3,
+   "wall_s": 5.918019945995184,
+   "steps": 278,
+   "field_call_median_ms": 2.4672110012033954,
+   "field_call_p90_ms": 2.7863580005941913,
+   "field_total_s": 0.6964939229656011,
+   "rest_per_step_ms": 18.782467708739507
+  },
+  {
+   "run": "protocol_formed128",
+   "field": "direct_gpu",
+   "duration_s": 0.3,
+   "wall_s": 6.163754567998694,
+   "steps": 278,
+   "field_call_median_ms": 1.882685988675803,
+   "field_call_p90_ms": 4.940780781907965,
+   "field_total_s": 0.8074178270471748,
+   "rest_per_step_ms": 19.267398348746475
+  }
+ ],
+ "note": "median wall time per call in one process on an otherwise idle machine; CPU = NumPy WaterDiscs.evaluate (cached nodes since 2026-11-04); in_run wall_s includes start-up (GPU: Warp and device initialisation)"
+}

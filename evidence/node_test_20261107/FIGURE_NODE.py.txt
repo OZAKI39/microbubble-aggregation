@@ -1,0 +1,198 @@
+"""Figure of the standing-wave test (2026-11-07).
+
+usage (repository root):  python FIGURE_NODE.py DATA_DIR ANALYSIS_JSON SERIES_NPZ EVIDENCE_DIR
+DATA_DIR: RUNS.json, PROFILES.npz and <name>/compact.npz of NODE_RUNS.py; ANALYSIS_JSON and
+SERIES_NPZ from ANALYSE_NODE.py. Single-channel reference (X- alone, adhesion x1) from
+evidence/soft3d_20261107/data/ANALYSIS.json. Writes EVIDENCE_DIR/fig1_node_test.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEEDS = [23, 14, 21, 16, 17, 7]
+CASES = [  # key, label, colour
+    ("single", "X- alone, adhesion x1 (2026-11-07 soft3d)", "#9aa5b1"),
+    ("antinode_adhesion_x1", "X- and X+, antinode at the cluster, adhesion x1", "#6a9f58"),
+    ("node_adhesion_x1", "X- and X+, node at the cluster, adhesion x1", "#2a6fb0"),
+    ("node_adhesion_x0", "X- and X+, node at the cluster, no adhesion", "#d08a1e"),
+]
+SOFT3D = Path("evidence/soft3d_20261107/data/ANALYSIS.json")
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def title(ax, text):
+    ax.set_title(text, loc="left", fontsize=9.5, color=INK)
+
+
+def grid(ax, axis="both"):
+    ax.grid(axis=axis, color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+
+
+def main():
+    data, analysis, series, folder = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]), Path(sys.argv[4])
+    runs = json.loads((data / "RUNS.json").read_text())
+    a = json.loads(analysis.read_text())
+    s = np.load(series)
+    prof = np.load(data / "PROFILES.npz")
+    soft = json.loads(SOFT3D.read_text())
+    n_of = {seed: runs[f"seed{seed}_node_adhesion_x1"]["bubbles"] for seed in SEEDS}
+
+    def row(seed, key):
+        return soft[f"seed{seed}_adhesion_x1"] if key == "single" else a[f"seed{seed}_{key}"]
+
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(2, 3, figsize=(17, 9.6), gridspec_kw=dict(wspace=0.32, hspace=0.42))
+
+        # (a) pressure along x and where the bubbles of the no-adhesion node runs end up
+        ax = axes[0, 0]
+        x_um = prof["seed7_x_m"] * 1e6
+        ax.plot(x_um, prof["seed7_node_abs_pressure_Pa"] / 1e3, color="#2a6fb0", lw=2, label="Node setting")
+        ax.plot(x_um, prof["seed7_antinode_abs_pressure_Pa"] / 1e3, color="#6a9f58", lw=2, label="Antinode setting")
+        for k, seed in enumerate(SEEDS):
+            name = f"seed{seed}_node_adhesion_x0"
+            end = np.load(data / name / "compact.npz")["positions10_m"][-1][:, 0] - runs[name]["centroid_m"][0]
+            y = -1.6 - 0.75 * k
+            ax.scatter(np.clip(end * 1e6, -395, 395), np.full(len(end), y), s=7, color="#d08a1e", alpha=0.55,
+                       linewidths=0)
+            ax.text(400, y, f"{n_of[seed]}", fontsize=7, color=MUTED, va="center")
+        ax.text(-395, -0.75, "End positions, no adhesion, node at 0 (one row per start; bubbles beyond 400 um at the edge)",
+                fontsize=6.8, color=MUTED)
+        ax.axvline(0, color=MUTED, lw=0.8, ls=":")
+        ax.set_xlim(-400, 430)
+        ax.set_ylim(-6.4, 14.5)
+        ax.set_yticks([0, 5, 10])
+        ax.set_xlabel("x from the start centroid (um)")
+        ax.set_ylabel("Pressure amplitude (kPa), 122-bubble start")
+        ax.legend(loc="upper right", fontsize=7.5, frameon=False)
+        grid(ax)
+        title(ax, "(a) Standing wave along the channel; where bubbles go")
+
+        # (b) force scales
+        ax = axes[0, 1]
+        x = np.arange(len(SEEDS))
+        bars = [("F2 spread, antinode", "#6a9f58", lambda seed: a[f"seed{seed}_antinode_adhesion_x1"]["F2_spread_median_N"]),
+                ("F2 spread, node", "#2a6fb0", lambda seed: a[f"seed{seed}_node_adhesion_x1"]["F2_spread_median_N"]),
+                ("Primary-force spread, node", "#8fb3d9", lambda seed: a[f"seed{seed}_node_adhesion_x1"]["F1_spread_median_N"])]
+        for k, (label, colour, value) in enumerate(bars):
+            ax.bar(x + (k - 1) * 0.26, [value(seed) for seed in SEEDS], width=0.24, color=colour, label=label)
+        adhesion = runs["seed7_node_adhesion_x1"]["adhesion_force_N"]
+        ax.axhline(adhesion, color="#d08a1e", lw=1.2, ls="--")
+        ax.text(5.4, adhesion * 1.3, f"adhesion at contact (x1), {adhesion:.1e} N", ha="right", fontsize=7.5,
+                color="#d08a1e")
+        ax.set_yscale("log")
+        ax.set_ylim(1e-13, 3e-9)
+        ax.set_xticks(x, [str(n_of[seed]) for seed in SEEDS])
+        ax.set_xlabel("Bubbles")
+        ax.set_ylabel("Force (N): median over bubbles and steps")
+        ax.legend(loc="upper left", fontsize=7.5, frameon=False)
+        grid(ax, "y")
+        title(ax, "(b) At the node F2 drops; adhesion does not")
+
+        # (c) largest piece
+        ax = axes[0, 2]
+        shades = ["#f0c27a", "#e5a94f", "#d08a1e", "#a86b12", "#7d4f0c", "#4f3207"]
+        for seed, colour in zip(SEEDS, shades):
+            name = f"seed{seed}_node_adhesion_x0"
+            ax.plot(s[name + "__t_s"], s[name + "__largest_share"] * 100, color=colour, lw=1.6,
+                    label=f"{n_of[seed]} bubbles")
+        ax.text(0.02, 0.04, "With adhesion x1 (node or antinode): 100% throughout in every start",
+                transform=ax.transAxes, fontsize=7.5, color="#2a6fb0")
+        ax.set_ylim(45, 102)
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Largest piece (% of the bubbles)")
+        ax.legend(loc="lower right", fontsize=7.5, frameon=False, title="Node, no adhesion", title_fontsize=7.5,
+                  bbox_to_anchor=(1.0, 0.1))
+        grid(ax)
+        title(ax, "(c) Node without adhesion: the edges shed")
+
+        # (d) contacts broken
+        ax = axes[1, 0]
+        width = 0.2
+        for k, (key, label, colour) in enumerate(CASES):
+            values = [row(seed, key)["broken_per_bubble_per_0p1s_median"] for seed in SEEDS]
+            ax.bar(x + (k - 1.5) * width, [np.nan if v is None else v for v in values], width=width * 0.92,
+                   color=colour, label=label)
+        ax.set_xticks(x, [str(n_of[seed]) for seed in SEEDS])
+        ax.set_xlabel("Bubbles")
+        ax.set_ylabel("Contacts broken per bubble per 0.1 s (median)")
+        ax.set_ylim(0, 0.62)
+        ax.text(2 - 0.5 * width, 0.02, "antinode run stopped\nat the wall guard (0.1 s)", fontsize=6.5, color=MUTED,
+                ha="center", rotation=90, va="bottom")
+        ax.legend(loc="upper left", fontsize=7.2, frameon=False)
+        ax.text(0.02, 0.66, "grey, green, blue: 0 in every start (after the first 0.1 s at most\n2 of the 122-bubble contacts open in any 0.1 s)",
+                transform=ax.transAxes, fontsize=7, color=MUTED)
+        grid(ax, "y")
+        title(ax, "(d) Rearrangement: contacts that open")
+
+        # (e) shape change, with each run's rigid floor
+        ax = axes[1, 1]
+        for k, (key, label, colour) in enumerate(CASES):
+            for i, seed in enumerate(SEEDS):
+                r = row(seed, key)
+                if r["sim"]["dln"] is None:
+                    continue
+                pos = i + (k - 1.5) * width
+                ax.bar(pos, r["sim"]["dln"], width=width * 0.92, color=colour)
+                ax.plot([pos - width * 0.46, pos + width * 0.46], [max(r["rigid_floor"]["dln"], 2e-4)] * 2,
+                        color=INK, lw=1.4)
+        ax.set_yscale("log")
+        ax.set_ylim(2e-4, 0.6)
+        ax.set_xticks(x, [str(n_of[seed]) for seed in SEEDS])
+        ax.set_xlabel("Bubbles")
+        ax.set_ylabel("Top-view |d ln aspect| per 0.1 s (median)")
+        ax.text(0.02, 0.97, "black tick: the run's rigid floor (start moved rigidly along the same path;\n"
+                "at the bottom edge when below it). Colours as in (d). With adhesion the\n"
+                "node clusters only turn (4-39 deg in 1.4 s) and settle (<0.41 um after the turn)", transform=ax.transAxes, fontsize=7,
+                color=MUTED, va="top")
+        grid(ax, "y")
+        title(ax, "(e) Shape change (same metric as soft3d)")
+
+        # (f) where the cluster goes
+        ax = axes[1, 2]
+        for seed, colour in zip(SEEDS, ["#c9dcc0", "#a9c79c", "#88b07a", "#6a9f58", "#4d7f3e", "#33592a"]):
+            name = f"seed{seed}_antinode_adhesion_x1"
+            ax.plot(s[name + "__t_s"], s[name + "__centroid_x_m"] * 1e6, color=colour, lw=1.8,
+                    label=f"{n_of[seed]} bubbles")
+        for seed in SEEDS:
+            name = f"seed{seed}_node_adhesion_x1"
+            ax.plot(s[name + "__t_s"], s[name + "__centroid_x_m"] * 1e6, color="#2a6fb0", lw=1, alpha=0.8)
+        ax.axhline(150, color=MUTED, lw=0.8, ls=":")
+        ax.axhline(-150, color=MUTED, lw=0.8, ls=":")
+        ax.text(0.02, 156, "a node of the antinode setting (150 um away)", fontsize=7, color=MUTED)
+        ax.text(1.48, -8, "node setting, all starts (blue): stay at the node", ha="right", va="top", fontsize=7,
+                color="#2a6fb0")
+        ax.set_ylim(-170, 175)
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Cluster centroid x from the start (um)")
+        ax.legend(loc="lower right", fontsize=7.2, frameon=False, title="Antinode at the start, adhesion x1",
+                  title_fontsize=7.2, bbox_to_anchor=(1.0, 0.06))
+        grid(ax)
+        title(ax, "(f) Clusters stay at the node; one left the antinode for a node")
+        fig.savefig(folder / "fig1_node_test.png", dpi=160, bbox_inches="tight")
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

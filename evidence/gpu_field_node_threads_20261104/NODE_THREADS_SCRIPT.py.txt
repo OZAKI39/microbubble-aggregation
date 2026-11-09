@@ -1,0 +1,273 @@
+"""fnm_discs with one thread per (disc, point, quadrature node), summed in a 96-thread block.
+
+usage (repository root, PYTHONPATH=.:visualization):
+  python node_threads_test.py measure OUT_DIR    kernel, call and in-run timings, agreement
+  python node_threads_test.py figure OUT_DIR     figure from OUT_DIR/NODE_THREADS.json
+Evidence script only; not imported by project code.
+"""
+
+import json
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+import numpy as np
+import warp as wp
+
+from microbubble import _warp_discs, gpu
+from microbubble._warp_discs import phasor, times_i
+from microbubble.acoustics import direct_quadrature_order
+
+ROOT = Path.cwd()
+ORDER = 96  # registered order up to 5 MHz; one block of ORDER threads per (disc, point)
+vec6d = wp.types.vector(length=6, dtype=wp.float64)
+
+
+@wp.kernel
+def fnm_discs_node_threads(
+    points: wp.array(dtype=wp.vec3d),
+    centers: wp.array(dtype=wp.vec3d),
+    normals: wp.array(dtype=wp.vec3d),
+    radii: wp.array(dtype=wp.float64),
+    node_cos: wp.array(dtype=wp.float64),
+    node_weights: wp.array(dtype=wp.float64),
+    k: wp.float64,
+    pressure: wp.array2d(dtype=wp.vec2d),
+    gradient_real: wp.array2d(dtype=wp.vec3d),
+    gradient_imag: wp.array2d(dtype=wp.vec3d),
+):
+    # Block (e, i) = one disc and one point; thread j = one quadrature node. The node term is
+    # the loop body of _warp_discs.fnm_discs; the block sums the 96 terms in a fixed order.
+    e, i, j = wp.tid()
+    zero = wp.float64(0.0)
+    two = wp.float64(2.0)
+    n = normals[e]
+    delta = points[i] - centers[e]
+    z = wp.dot(delta, n)
+    lateral = delta - z * n
+    r = wp.length(lateral)
+    a = radii[e]
+    e0 = phasor(k * z)
+
+    cs = node_cos[j]
+    w = node_weights[j]
+    big_d = r * r + a * a - two * a * r * cs
+    big_n = a * (a - r * cs)
+    big_w = big_n / big_d
+    d = wp.sqrt(z * z + big_d)
+    wave = phasor(k * d)
+    big_wr = (-a * cs * big_d - big_n * (two * r - two * a * cs)) / (big_d * big_d)
+    difference = e0 - wave
+    ik_wave = k * times_i(wave)
+    p = (big_w * w) * difference
+    pr = w * (big_wr * difference + (big_w * (r - a * cs) / d) * ik_wave)
+    pz = (w * big_w) * ((z / d) * ik_wave - k * times_i(e0))
+
+    term = vec6d(p[0], p[1], pr[0], pr[1], pz[0], pz[1])
+    total = wp.tile_extract(wp.tile_sum(wp.tile(term, preserve_type=True)), 0)
+    if j == 0:
+        pressure[e, i] = wp.vec2d(total[0], total[1])
+        direction = wp.vec3d(zero, zero, zero)
+        if r > zero:
+            direction = lateral / r
+        gradient_real[e, i] = total[4] * n + total[2] * direction
+        gradient_imag[e, i] = total[5] * n + total[3] * direction
+
+
+class NodeThreadDiscs(gpu.GPUWaterDiscs):
+    """GPUWaterDiscs with the node-thread kernel (same buffers, copies and checks)."""
+
+    def evaluate(self, points, order=None):
+        x = np.atleast_2d(np.asarray(points, dtype=float))
+        in_front = np.einsum("dk,ndk->nd", self.normals, x[:, None, :] - self.centers_m)
+        if not np.isfinite(x).all() or np.any(in_front <= 0):
+            raise ValueError("Only finite points in front of each piston are admitted")
+        shape = (len(self.centers_m), len(x))
+        pressure = wp.zeros(shape, dtype=wp.vec2d, device=self.device)
+        gradient_real = wp.zeros(shape, dtype=wp.vec3d, device=self.device)
+        gradient_imag = wp.zeros(shape, dtype=wp.vec3d, device=self.device)
+        wp.launch_tiled(
+            fnm_discs_node_threads,
+            dim=shape,
+            inputs=[wp.array(x, dtype=wp.vec3d, device=self.device), self.centers,
+                    self.normal_array, self.radii, self.node_cos, self.node_weights,
+                    float(self.discs.k), pressure, gradient_real, gradient_imag],
+            block_dim=self.order,
+            device=self.device,
+        )
+        p = pressure.numpy()
+        gradient = gradient_real.numpy() + 1j * gradient_imag.numpy()
+        return p[..., 0] + 1j * p[..., 1], gradient
+
+
+def median_ms(fn, repeats):
+    for _ in range(30):  # warm-up: GPU clock up
+        fn()
+    t = []
+    for _ in range(repeats):
+        a = time.perf_counter()
+        fn()
+        t.append(time.perf_counter() - a)
+    return float(np.median(t) * 1e3)
+
+
+def measure(out_dir):
+    from workflows.f10ag import context
+
+    out_dir = Path(out_dir)
+    c = context(ROOT, device="cpu")
+    order = direct_quadrature_order(c.discs.frequency)
+    assert order == ORDER
+    loop = gpu.GPUWaterDiscs(c.discs, order)
+    node = NodeThreadDiscs(c.discs, order)
+    a = time.perf_counter()
+    wp.load_module(fnm_discs_node_threads.module, device=loop.device)
+    load_s = time.perf_counter() - a
+    rng = np.random.default_rng(3)
+    rows = []
+    for n in (32, 128, 1024, 16384, 131072):
+        x = rng.uniform([-3e-4, -1e-4, -1e-4], [3e-4, 1e-4, 1e-4], (n, 3))
+        shape = (4, n)
+        xs = wp.array(x, dtype=wp.vec3d, device=loop.device)
+        bufs = [wp.zeros(shape, dtype=t, device=loop.device) for t in (wp.vec2d, wp.vec3d, wp.vec3d)]
+        args = [xs, loop.centers, loop.normal_array, loop.radii, loop.node_cos, loop.node_weights,
+                float(loop.discs.k), *bufs]
+
+        def kernel_loop():
+            wp.launch(_warp_discs.fnm_discs, dim=shape, inputs=args, device=loop.device)
+            wp.synchronize_device(loop.device)
+
+        def kernel_node():
+            wp.launch_tiled(fnm_discs_node_threads, dim=shape, inputs=args, block_dim=ORDER,
+                            device=loop.device)
+            wp.synchronize_device(loop.device)
+
+        repeats = 300 if n <= 16384 else 30
+        p_c, g_c = c.discs.evaluate(x, order) if n <= 16384 else (None, None)
+        p_l, g_l = loop.evaluate(x, order)
+        p_n, g_n = node.evaluate(x, order)
+        p_n2, g_n2 = node.evaluate(x, order)
+        row = dict(
+            N=n,
+            kernel_loop_ms=median_ms(kernel_loop, repeats),
+            kernel_node_ms=median_ms(kernel_node, repeats),
+            call_loop_ms=median_ms(lambda: loop.evaluate(x, order), repeats),
+            call_node_ms=median_ms(lambda: node.evaluate(x, order), repeats),
+            node_vs_loop_pressure=float(np.abs(p_n - p_l).max() / np.abs(p_l).max()),
+            node_vs_loop_gradient=float(np.abs(g_n - g_l).max() / np.abs(g_l).max()),
+            node_repeat_identical=bool(np.array_equal(p_n, p_n2) and np.array_equal(g_n, g_n2)),
+        )
+        if p_c is not None:
+            row["node_vs_cpu_pressure"] = float(np.abs(p_n - p_c).max() / np.abs(p_c).max())
+            row["node_vs_cpu_gradient"] = float(np.abs(g_n - g_c).max() / np.abs(g_c).max())
+        rows.append(row)
+        print({k: (round(v, 4) if isinstance(v, float) and v > 1e-3 else v) for k, v in row.items()})
+
+    # Whole (shortened) runs: CPU field, current GPU kernel, node-thread kernel.
+    import h5py
+
+    from workflows.f10ag import run
+
+    runs = []
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, duration_s in (("protocol_formed32", 0.5), ("protocol_formed128", 0.3)):
+            cfg = json.loads((ROOT / f"evidence/pretrain_gpu_field_20261104/configs/{name}_direct.json").read_text())
+            cfg["duration_s"] = duration_s
+            cfg["control"]["segments"] = [dict(cfg["control"]["segments"][0], duration=duration_s)]
+            for repeat in range(2):
+                for variant, field in (("cpu", "direct"), ("gpu_loop", "direct_gpu"), ("gpu_node", "direct_gpu")):
+                    gpu.GPUWaterDiscs = NodeThreadDiscs if variant == "gpu_node" else GPU_LOOP
+                    label = f"{name}_{variant}_{repeat}"
+                    path = Path(tmp) / f"{label}.json"
+                    path.write_text(json.dumps(dict(cfg, field=field)))
+                    a = time.perf_counter()
+                    r = run(ROOT, path, Path(tmp) / label)
+                    wall = time.perf_counter() - a
+                    with h5py.File(Path(tmp) / label / "trajectory.h5") as h:
+                        final = h["positions_m"][-1]
+                    runs.append(dict(run=name, variant=variant, repeat=repeat, duration_s=duration_s,
+                                     wall_s=wall, steps=r["constrained_solves"], status=r["status"],
+                                     final_positions=final.tolist()))
+                    print(name, variant, repeat, r["status"], r["constrained_solves"], round(wall, 2))
+        gpu.GPUWaterDiscs = GPU_LOOP
+    for row in runs:
+        ref = next(q for q in runs if q["run"] == row["run"] and q["variant"] == "cpu" and q["repeat"] == 0)
+        row["final_diff_vs_cpu_m"] = float(np.abs(np.array(row["final_positions"]) - np.array(ref["final_positions"])).max())
+    for row in runs:
+        del row["final_positions"]
+    out = dict(device=f"{loop.device.alias} ({loop.device.name})", warp=wp.config.version, order=order,
+               node_kernel_first_load_s=load_s, block_dim=ORDER, kernel=rows, runs=runs,
+               note="kernel_*: launch + synchronize, back to back after warm-up; call_*: whole evaluate() "
+                    "incl. copies; runs: shortened protocol runs, wall time incl. start-up, one process, "
+                    "machine otherwise idle")
+    (out_dir / "NODE_THREADS.json").write_text(json.dumps(out, indent=1))
+
+
+GPU_LOOP = gpu.GPUWaterDiscs
+
+
+def figure(out_dir):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from pretrain_stability_figures import INK, setup_style
+
+    out_dir = Path(out_dir)
+    d = json.loads((out_dir / "NODE_THREADS.json").read_text())
+    blue, orange, green = "#2a78d6", "#eb6834", "#1baf7a"
+    footer = ("Exploratory · pretraining tier · FNM disc field, 2.5 MHz, 96 quadrature nodes · "
+              f"{d['device']} · Warp {d['warp']}")
+    with tempfile.TemporaryDirectory() as fonts:
+        setup_style(Path(fonts))
+        fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.5))
+        rows = d["kernel"]
+        n = [r["N"] for r in rows]
+        for ax, key, title in ((axes[0], "kernel", "a  Kernel only (launch + wait)"),
+                               (axes[1], "call", "b  Whole call (incl. copies)")):
+            ax.plot(n, [r[f"{key}_loop_ms"] for r in rows], "o-", color=blue, linewidth=2, markersize=6,
+                    label="Current: 1 thread per disc × point, loop over 96 nodes")
+            ax.plot(n, [r[f"{key}_node_ms"] for r in rows], "o-", color=orange, linewidth=2, markersize=6,
+                    label="Trial: 1 thread per disc × point × node, block sum")
+            for r in rows:
+                ratio = r[f"{key}_loop_ms"] / r[f"{key}_node_ms"]
+                top = max(r[f"{key}_loop_ms"], r[f"{key}_node_ms"])
+                ax.annotate(f"{ratio:.1f}×", (r["N"], top), textcoords="offset points",
+                            xytext=(0, 9), ha="center", fontsize=8.5, color=INK["secondary"])
+            ax.set_xscale("log")
+            ax.set_yscale("log")
+            values = [r[f"{key}_{m}_ms"] for r in rows for m in ("loop", "node")]
+            ax.set_xlim(15, 4e5)
+            ax.set_ylim(min(values) * 0.5, max(values) * 4)
+            ax.set_xlabel("Points per call")
+            ax.set_ylabel("Wall time per call (ms)")
+            ax.set_title(title)
+        axes[0].legend(frameon=False, loc="upper left", fontsize=8.5)
+        ax = axes[2]
+        groups = [("protocol_formed32", "32 bubbles\n0.5 s"), ("protocol_formed128", "128 bubbles\n0.3 s")]
+        variants = (("cpu", "CPU field", INK["muted"]), ("gpu_loop", "GPU, current kernel", blue),
+                    ("gpu_node", "GPU, node threads", orange))
+        y = np.arange(len(groups))
+        for k, (variant, label, color) in enumerate(variants):
+            v = [np.median([r["wall_s"] for r in d["runs"] if r["run"] == g and r["variant"] == variant])
+                 for g, _ in groups]
+            ax.barh(y + (k - 1) * 0.26, v, height=0.24, color=color, label=label)
+            for yy, vv in zip(y, v):
+                ax.text(vv, yy + (k - 1) * 0.26, f" {vv:.1f} s", va="center", fontsize=8.5, color=INK["secondary"])
+        ax.set_yticks(y, [g[1] for g in groups])
+        ax.invert_yaxis()
+        ax.set_xlim(0, max(r["wall_s"] for r in d["runs"]) * 1.3)
+        ax.set_xlabel("Wall time of the shortened run (s, median of 2)")
+        ax.set_title("c  Whole runs (same steps)")
+        ax.legend(frameon=False, loc="upper right", fontsize=8.5)
+        fig.suptitle("One GPU thread per quadrature node: 4–6× faster kernel for one cluster, about 2× slower for large batches",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer, ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(out_dir / "node_threads_speed.png", dpi=160)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    {"measure": measure, "figure": figure}[sys.argv[1]](sys.argv[2])

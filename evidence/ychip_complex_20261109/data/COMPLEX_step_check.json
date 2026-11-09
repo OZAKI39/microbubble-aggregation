@@ -1,0 +1,306 @@
+[
+ {
+  "name": "STEP_YCPX_flap_N250_9.375MHz_T2s_total32s_dt2.5ms",
+  "form": "flap",
+  "period_s": 2.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 670.294694198994,
+  "change_s": 8.0,
+  "step_max_displacement_max_m": 4.0348135637499224e-07,
+  "pieces_max": 1,
+  "share_min": 0.2,
+  "share_mean_during_change": 0.358,
+  "share_end": 0.792,
+  "direction_from_s": 1.9000000000000001,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 12.790912490003565,
+   "width": 1.249843216169152,
+   "height": 12.895533438596868
+  },
+  "bend_fit_from_s": 1.9000000000000001,
+  "bend_fit_frames": 245,
+  "bend_amplitude_ratio": 0.534103255458385,
+  "bend_line_amplitude_per_mm": 13.212470749160461,
+  "bend_phase_lag_deg": 48.95789192638546,
+  "bend_lag_s": 0.2719882884799192
+ },
+ {
+  "name": "STEP_YCPX_flap_N250_9.375MHz_T8s_total32s_dt2.5ms",
+  "form": "flap",
+  "period_s": 8.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 715.5949553051032,
+  "change_s": 16.0,
+  "step_max_displacement_max_m": 3.6379959524725323e-07,
+  "pieces_max": 1,
+  "share_min": 0.204,
+  "share_mean_during_change": 0.46020625,
+  "share_end": 0.792,
+  "direction_from_s": 2.725,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 11.972824539736715,
+   "width": 1.3585353464597534,
+   "height": 12.776506462270026
+  },
+  "bend_fit_from_s": 2.725,
+  "bend_fit_frames": 532,
+  "bend_amplitude_ratio": 1.0820850312056345,
+  "bend_line_amplitude_per_mm": 12.970185236865728,
+  "bend_phase_lag_deg": 21.531481163646788,
+  "bend_lag_s": 0.47847735919215084
+ },
+ {
+  "name": "STEP_YCPX_linecross_N250_9.375MHz_12.8s_each_way_dt2.5ms",
+  "form": "line_cross",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 37.6,
+  "wall_s": 672.8703002091497,
+  "change_s": 31.6,
+  "step_max_displacement_max_m": 2.607218870811525e-07,
+  "pieces_max": 1,
+  "share_min": 0.176,
+  "share_mean_during_change": 0.40141455696202527,
+  "share_end": 0.66,
+  "direction_from_s": 2.275,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 9.930826358587895,
+   "width": 1.8129015938863806,
+   "height": 11.995125885340988
+  },
+  "share_end_of_crossing_hold": 0.488,
+  "at_crossing_um": {
+   "length": 6.223618655941266,
+   "width": 4.473415513870337,
+   "height": 9.803021448602303
+  },
+  "crossing_hold_end_s": 18.8
+ },
+ {
+  "name": "STEP_YCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s_dt2.5ms",
+  "form": "pivot",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 641.8922582799569,
+  "change_s": 25.6,
+  "step_max_displacement_max_m": 3.5604011303077243e-07,
+  "pieces_max": 1,
+  "share_min": 0.0,
+  "share_mean_during_change": 0.30384375,
+  "share_end": 0.02,
+  "direction_from_s": 1.75,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 13.404993802873896,
+   "width": 4.617003100913092,
+   "height": 8.25710335759968
+  },
+  "lag_deg_max_with_direction": 49.63065707616701,
+  "lag_deg_mean_during_change_with_direction": 6.271225611565208,
+  "first_split_s": null,
+  "pieces_end": 1
+ },
+ {
+  "name": "STEP_YCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s_dt2.5ms",
+  "form": "spin",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 767.2974598819856,
+  "change_s": 25.6,
+  "step_max_displacement_max_m": 2.662041380639973e-07,
+  "pieces_max": 1,
+  "share_min": 0.2,
+  "share_mean_during_change": 0.47348828125,
+  "share_end": 0.704,
+  "direction_from_s": 2.15,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 11.429426003169198,
+   "width": 1.4875640214060863,
+   "height": 12.078576643018218
+  },
+  "lag_deg_max_with_direction": 9.825149977044276,
+  "lag_deg_mean_during_change_with_direction": 5.898620106351947,
+  "first_split_s": null,
+  "pieces_end": 1
+ },
+ {
+  "name": "YCPX_flap_N250_9.375MHz_T2s_total32s",
+  "form": "flap",
+  "period_s": 2.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 452.5000261950772,
+  "change_s": 8.0,
+  "step_max_displacement_max_m": 7.306069347921762e-07,
+  "pieces_max": 1,
+  "share_min": 0.2,
+  "share_mean_during_change": 0.35229999999999995,
+  "share_end": 0.756,
+  "direction_from_s": 2.05,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 11.809369029876047,
+   "width": 1.3711716499458382,
+   "height": 12.880848345586243
+  },
+  "bend_fit_from_s": 2.05,
+  "bend_fit_frames": 239,
+  "bend_amplitude_ratio": 0.5162745415586115,
+  "bend_line_amplitude_per_mm": 13.24001865511331,
+  "bend_phase_lag_deg": 52.361668870838,
+  "bend_lag_s": 0.29089816039354444
+ },
+ {
+  "name": "YCPX_flap_N250_9.375MHz_T8s_total32s",
+  "form": "flap",
+  "period_s": 8.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 480.8809911629651,
+  "change_s": 16.0,
+  "step_max_displacement_max_m": 6.712742917223974e-07,
+  "pieces_max": 1,
+  "share_min": 0.204,
+  "share_mean_during_change": 0.4874375000000001,
+  "share_end": 0.84,
+  "direction_from_s": 2.575,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 13.259308346658948,
+   "width": 1.1014704282525152,
+   "height": 13.24794523030667
+  },
+  "bend_fit_from_s": 2.575,
+  "bend_fit_frames": 538,
+  "bend_amplitude_ratio": 1.1443731280898468,
+  "bend_line_amplitude_per_mm": 12.865343847033712,
+  "bend_phase_lag_deg": 18.56492215999316,
+  "bend_lag_s": 0.4125538257776258
+ },
+ {
+  "name": "YCPX_linecross_N250_9.375MHz_12.8s_each_way",
+  "form": "line_cross",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 37.6,
+  "wall_s": 442.4105501831509,
+  "change_s": 31.6,
+  "step_max_displacement_max_m": 5.214437741623049e-07,
+  "pieces_max": 1,
+  "share_min": 0.164,
+  "share_mean_during_change": 0.4067911392405063,
+  "share_end": 0.676,
+  "direction_from_s": 2.2,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 10.652879468309438,
+   "width": 1.7171441326929882,
+   "height": 11.606851464133552
+  },
+  "share_end_of_crossing_hold": 0.476,
+  "at_crossing_um": {
+   "length": 6.3830893348080515,
+   "width": 4.699468054408802,
+   "height": 9.703894494422345
+  },
+  "crossing_hold_end_s": 18.8
+ },
+ {
+  "name": "YCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s",
+  "form": "pivot",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 470.5358621068299,
+  "change_s": 25.6,
+  "step_max_displacement_max_m": 6.577390919494635e-07,
+  "pieces_max": 1,
+  "share_min": 0.0,
+  "share_mean_during_change": 0.31333984375,
+  "share_end": 0.032,
+  "direction_from_s": 1.7,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 13.539809965367716,
+   "width": 4.477581637558352,
+   "height": 8.002632171260586
+  },
+  "lag_deg_max_with_direction": 49.153422942527186,
+  "lag_deg_mean_during_change_with_direction": 6.342866218103574,
+  "first_split_s": null,
+  "pieces_end": 1
+ },
+ {
+  "name": "YCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s",
+  "form": "spin",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 511.09963061707094,
+  "change_s": 25.6,
+  "step_max_displacement_max_m": 5.324082761279945e-07,
+  "pieces_max": 1,
+  "share_min": 0.2,
+  "share_mean_during_change": 0.47022265625000004,
+  "share_end": 0.704,
+  "direction_from_s": 2.15,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 11.169490252374574,
+   "width": 1.5481780882913296,
+   "height": 11.981543083498876
+  },
+  "lag_deg_max_with_direction": 9.26823110682696,
+  "lag_deg_mean_during_change_with_direction": 5.656611948914025,
+  "first_split_s": null,
+  "pieces_end": 1
+ }
+]

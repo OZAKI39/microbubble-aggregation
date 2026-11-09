@@ -1,0 +1,50 @@
+{
+ "runs": {
+  "protocol_formed32": {
+   "old_table_wall_s": 30.88280752999708,
+   "old_table_status": "PASS",
+   "old_apecss_wall_s": 56.63200811797287,
+   "old_apecss_status": "PASS",
+   "new_table_wall_s": 40.41550760999999,
+   "new_table_status": "PASS",
+   "new_apecss_wall_s": 45.59555057700001,
+   "new_apecss_status": "PASS",
+   "new_apecss_threads": 8,
+   "new_apecss_library_cached": true,
+   "new_apecss_seconds_in_apecss": 6.321465763999214,
+   "apecss_new_identical_to_old": true,
+   "table_new_identical_to_old": true
+  },
+  "protocol_formed128": {
+   "old_table_wall_s": 85.64005100997747,
+   "old_table_status": "PASS",
+   "old_apecss_wall_s": 129.6640276570106,
+   "old_apecss_status": "PASS",
+   "new_table_wall_s": 112.03174898700001,
+   "new_table_status": "PASS",
+   "new_apecss_wall_s": 124.92525284199996,
+   "new_apecss_status": "PASS",
+   "new_apecss_threads": 8,
+   "new_apecss_library_cached": true,
+   "new_apecss_seconds_in_apecss": 8.800518670001054,
+   "apecss_new_identical_to_old": true,
+   "table_new_identical_to_old": true
+  },
+  "random_offset_B_formed32": {
+   "old_table_wall_s": 21.747212492016843,
+   "old_table_status": "PASS",
+   "old_apecss_wall_s": 40.087589083006606,
+   "old_apecss_status": "PASS",
+   "new_table_wall_s": 29.523827354000048,
+   "new_table_status": "PASS",
+   "new_apecss_wall_s": 32.35524791,
+   "new_apecss_status": "PASS",
+   "new_apecss_threads": 8,
+   "new_apecss_library_cached": true,
+   "new_apecss_seconds_in_apecss": 4.338437443996838,
+   "apecss_new_identical_to_old": true,
+   "table_new_identical_to_old": true
+  }
+ },
+ "note": "old: 1 APECSS thread, library compiled at the start of every run; new: 8 threads, library from build/apecss/; table and apecss twin runs side by side in both"
+}

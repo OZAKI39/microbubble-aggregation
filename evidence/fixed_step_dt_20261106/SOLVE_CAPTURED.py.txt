@@ -1,0 +1,75 @@
+"""Solve the captured contact QPs (min 1/2 s'As - b's, B s + gap >= 0) with several solvers."""
+
+import sys
+import time
+
+import numpy as np
+from scipy import linalg, optimize
+
+import microbubble.contact as contact
+
+R = 1.78e-6
+data = np.load(sys.argv[1])
+count = len({k.split("_")[0] for k in data.files})
+
+
+class Rows:
+    def __init__(self, i, j, normals, n):
+        self.i, self.j, self.normals, self.n = i, j, normals, n
+
+    def __len__(self):
+        return len(self.i)
+
+    def matrix(self):
+        m = len(self.i)
+        M = np.zeros((m, 3 * self.n))
+        for k in range(m):
+            M[k, 3 * self.i[k]:3 * self.i[k] + 3] = -self.normals[k]
+            M[k, 3 * self.j[k]:3 * self.j[k] + 3] = self.normals[k]
+        return M
+
+
+def kkt(A, b, M, gap, s, lam):
+    slack = M @ s + gap
+    return dict(violation_nm=float(max(0, -slack.min())) * R * 1e9,
+                mobility_nm=float(np.abs(A @ s - b - M.T @ lam).max()) * R * 1e9,
+                compl_nm=float(np.abs(slack * (lam > 0)).max(initial=0)) * R * 1e9,
+                neg_lam=float(min(0, lam.min())))
+
+
+def ldp_nnls(A, b, M, gap):
+    """Lawson-Hanson least-distance programming through NNLS."""
+    L = linalg.cholesky(A, lower=True)
+    z0 = linalg.solve_triangular(L, b, lower=True)
+    G = linalg.solve_triangular(L, M.T, lower=True).T  # B L^-T
+    h = -gap - G @ z0
+    E = np.vstack([G.T, h[None, :]])
+    f = np.zeros(E.shape[0]); f[-1] = 1
+    u, _ = optimize.nnls(E, f, maxiter=50 * E.shape[1])
+    r = E @ u - f
+    w = -r[:-1] / r[-1]
+    z = w + z0
+    s = linalg.solve_triangular(L.T, z, lower=False)
+    lam = u / -r[-1]
+    return s, lam
+
+
+for k in ([int(sys.argv[2])] if len(sys.argv) > 2 else range(count)):
+    g = lambda key: data[f"qp{k}_{key}"]
+    A, b, gap = g("A"), g("b"), g("gap")
+    B = Rows(g("i"), g("j"), g("normals"), int(g("n")))
+    M = B.matrix()
+    print(f"QP {k}: {B.n} bubbles, {len(gap)} candidate pairs, recorded {g('status')}, rank(M) "
+          f"{np.linalg.matrix_rank(M)}")
+    for name, settings in [("osqp eps 1e-9 (policy)", dict(eps_abs=1e-9, eps_rel=1e-9, max_iter=50000, time_limit=1e10, polishing=True)),
+                           ("osqp eps 1e-7", dict(eps_abs=1e-7, eps_rel=1e-7, max_iter=50000, time_limit=1e10, polishing=True)),
+                           ("osqp eps 1e-6", dict(eps_abs=1e-6, eps_rel=1e-6, max_iter=50000, time_limit=1e10, polishing=True)),
+                           ("osqp eps 1e-5", dict(eps_abs=1e-5, eps_rel=1e-5, max_iter=50000, time_limit=1e10, polishing=True)),
+                           ("osqp 1e-7 iter 500000", dict(eps_abs=1e-7, eps_rel=1e-7, max_iter=500000, time_limit=1e10, polishing=True))]:
+        t = time.perf_counter()
+        s, lam, status = contact.osqp_qp(A, b, B, gap, dict(settings, verbose=False))
+        print(f"  {name:24s} {status:32s} {time.perf_counter() - t:6.3f} s", kkt(A, b, M, gap, s, lam))
+    t = time.perf_counter()
+    s, lam = ldp_nnls(A, b, M, gap)
+    print(f"  {'NNLS (Lawson-Hanson LDP)':24s} {'':32s} {time.perf_counter() - t:6.3f} s", kkt(A, b, M, gap, s, lam),
+          "active", int((lam > 0).sum()))

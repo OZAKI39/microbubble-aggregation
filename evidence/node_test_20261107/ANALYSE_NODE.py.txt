@@ -1,0 +1,97 @@
+"""Pieces, side split, contacts and shape change of the standing-wave runs (2026-11-07).
+
+usage (repository root):  PYTHONPATH=.:visualization python ANALYSE_NODE.py DATA_DIR OUT_JSON OUT_NPZ
+DATA_DIR: RUNS.json and <name>/compact.npz of NODE_RUNS.py. Pieces: bubbles whose surfaces are
+within 0.5 R belong together (as in the animations of evidence/soft3d_20261107/). Node plane: the
+plane x = x of the start centroid (the drive puts the pressure node there). Contacts: gap below
+0.01 R. Shape metric as in evidence/soft3d_20261107/ANALYSE.py.txt (top-view aspect change per
+0.1 s against the run's own rigid floor). Every quantity over the part of the run that completed.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from ab_protocol_figures import deformation_stats, frame_shapes, sim_windows, speed_px_s
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+from microbubble.parameters import Physics
+
+R = Physics().radius_m
+data, out_json, out_npz = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+runs = json.loads((data / "RUNS.json").read_text())
+
+
+def pieces(p):
+    pairs = np.array(sorted(cKDTree(p).query_pairs(2.5 * R)), dtype=int).reshape(-1, 2)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(p), len(p)))
+    return connected_components(graph, directed=False)
+
+
+def contacts(x):
+    return {tuple(p) for p in cKDTree(x).query_pairs(2 * R + 0.01 * R)}
+
+
+def shape_stats(t, positions, duration, amplitudes):
+    run = dict(times_s=t, positions_m=positions, segments=[dict(duration=duration, amplitudes=amplitudes)])
+    windows = sim_windows(run, frame_shapes(run, R), R)
+    d = deformation_stats(windows)
+    return dict(dln=d["dln_aspect_first_1s"].get("median"), aspect=d["aspect"].get("median"),
+                split=d["split_share"], speed=float(np.median([speed_px_s(w) for w in windows])),
+                windows=len(windows))
+
+
+result, series = {}, {}
+for name, r in runs.items():
+    c = np.load(data / name / "compact.npz")
+    n = r["bubbles"]
+    t10, p10 = c["t10"], c["positions10_m"]
+    node_x = r["centroid_m"][0]
+    count, largest, sides, separation = [], [], [], []
+    for p in p10:
+        k, labels = pieces(p)
+        count.append(k)
+        largest.append(np.bincount(labels).max() / n)
+        plus = p[:, 0] > node_x
+        sides.append(plus.mean())
+        separation.append(p[plus, 0].mean() - p[~plus, 0].mean() if 0 < plus.sum() < n else np.nan)
+    sets = [contacts(x) for x in p10]
+    broken = [len(sets[i] - sets[i + 10]) / n for i in range(len(sets) - 10)]
+    fs = dict(zip(c["force_summary_columns"], c["force_summary"].T))
+    cam_t, cam = c["camera_t"], c["camera_positions_m"]
+    sim = shape_stats(cam_t, cam, r["completed_s"], r["amplitudes_Pa_eq"])
+    x0 = cam[0]
+    rigid = np.array([x0 - x0.mean(0) + q.mean(0) for q in cam])
+    floor = shape_stats(cam_t, rigid, r["completed_s"], r["amplitudes_Pa_eq"])
+    result[name] = dict(
+        r, sim=sim, rigid_floor=floor,
+        pieces_end=int(count[-1]), largest_piece_share_end=float(largest[-1]),
+        largest_piece_share_min=float(min(largest)),
+        first_split_s=float(t10[np.argmax(np.array(count) > 1)]) if max(count) > 1 else None,
+        plus_side_share_start=float(sides[0]), plus_side_share_end=float(sides[-1]),
+        side_separation_end_um=float(separation[-1] * 1e6) if np.isfinite(separation[-1]) else None,
+        centroid_shift_x_um=float((p10[-1][:, 0].mean() - node_x) * 1e6),
+        contacts_per_bubble_start=len(sets[0]) / n, contacts_per_bubble_end=len(sets[-1]) / n,
+        broken_per_bubble_per_0p1s_median=float(np.median(broken)) if broken else None,
+        broken_per_bubble_per_0p1s_after_0p1s_max=float(max(broken[10:])) if len(broken) > 10 else None,
+        drive_per_bubble_N=float(np.median(fs["total_mean"])),
+        F2_spread_median_N=float(np.median(fs["F2_spread_median"])),
+        F1_spread_median_N=float(np.median(fs["F1_spread_median"])),
+        F2_spread_over_F1_spread=float(np.median(fs["F2_spread_median"] / fs["F1_spread_median"])),
+    )
+    series[f"{name}__t_s"] = t10
+    series[f"{name}__pieces"] = np.array(count)
+    series[f"{name}__largest_share"] = np.array(largest)
+    series[f"{name}__side_separation_m"] = np.array(separation)
+    series[f"{name}__centroid_x_m"] = p10[:, :, 0].mean(1) - node_x
+    s = result[name]
+    print(f"{name:28s} N{n:4d} {r['status']} {r['completed_s']:.3f}s  pieces {s['pieces_end']:3d} largest {s['largest_piece_share_end']:.2f} "
+          f"(min {s['largest_piece_share_min']:.2f}) first split {s['first_split_s']}  sep {s['side_separation_end_um']} um  "
+          f"shift {s['centroid_shift_x_um']:.1f} um  dln {sim['dln']} floor {floor['dln']}  split {sim['split']}  "
+          f"contacts {s['contacts_per_bubble_start']:.2f}->{s['contacts_per_bubble_end']:.2f}  broken/0.1s {s['broken_per_bubble_per_0p1s_median']}  "
+          f"F2/F1 spread {s['F2_spread_over_F1_spread']:.1f}")
+out_json.write_text(json.dumps(result, indent=1, default=float) + "\n")
+np.savez_compressed(out_npz, **series)

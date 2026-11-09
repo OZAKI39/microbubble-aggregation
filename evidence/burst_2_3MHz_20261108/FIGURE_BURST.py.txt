@@ -1,0 +1,188 @@
+"""Figures: why weakly held clusters burst at 2-3.3 MHz in the model (2026-11-08).
+
+usage (repository root):  PYTHONPATH=. python figure_burst.py RESPONSE_JSON SWEEP_JSON SPLIT_JSON RUNS_DIR OUT_DIR
+Writes OUT_DIR/fig1_bubble_response.png (one bubble at 20 kPa: size and phase of its volume oscillation per Pa
+against its radius at 2.0-9.4 MHz, the radius distribution of the starts shaded; F2 of two touching equal
+bubbles against the radius), fig2_cluster_forces.png (the 64-bubble start at 10 kPa: the speed the uneven
+force would give a free bubble against the frequency, with the resonant radius; the uneven force split into
+F1, F2 of touching neighbours and F2 of the others at 2.82 and 9.4 MHz) and fig3_controls.png (pieces against
+time and top views at 0, 0.5, 1 and 2 s of the bursting run and the two controls: equal radii, pairwise coupling).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, BLUE, ORANGE, GREEN, GREY = "#1f2328", "#5b6470", "#1f5a96", "#c2611f", "#2f7d4f", "#9aa5b1"
+RAMP = ["#08306b", "#2171b5", "#4292c6", "#6baed6", "#9ecae1", "#c6dbef"]  # dark (low f) to light (high f)
+R_REF = 1.78e-6
+response, sweep, split = (json.loads(Path(p).read_text()) for p in sys.argv[1:4])
+runs, out_dir = Path(sys.argv[4]), Path(sys.argv[5])
+RUNS = [("STEPFINE_N64_random_adh1e-12_dt0.25ms", "drawn radii, collective coupling (the run that bursts)", ORANGE),
+        ("BURST_N64_random_adh1e-12_dt0.25ms_equal_sizes", "all radii 1.78 um, collective coupling", BLUE),
+        ("BURST_N64_random_adh1e-12_dt0.25ms_pairwise", "drawn radii, pairwise coupling", GREEN)]
+
+
+def piece_labels(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R_REF)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    pairs = pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < 0.5 * R_REF]
+    return connected_components(coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x))),
+                                directed=False)
+
+
+def pieces(x, radii):
+    return piece_labels(x, radii)[0]
+
+
+with tempfile.TemporaryDirectory() as font_dir:
+    for font in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / font).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 8.5, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+
+    # ---- figure 1: one bubble, two bubbles ----
+    radii_um = np.array(response["radii_um"])
+    shown = [2e6, 2.5e6, 2.82e6, 3.25e6, 5e6, 9.4e6]
+    fig, axes = plt.subplots(1, 3, figsize=(15.0, 4.4), dpi=120)
+    fig.subplots_adjust(left=0.05, right=0.99, top=0.83, bottom=0.13, wspace=0.28)
+    # radius distribution of the starts: log-normal, median 1.78 um, sigma_g 1.25 (the middle of 1.0-1.5), 0.8-3.0 um
+    r = np.linspace(0.8, 3.0, 200)
+    density = np.exp(-np.log(r / 1.78) ** 2 / (2 * np.log(1.25) ** 2)) / r
+    for ax in axes[:2]:
+        twin = ax.twinx()
+        twin.fill_between(r, density / density.max(), color=GREY, alpha=0.18, lw=0)
+        twin.set_ylim(0, 1.05)
+        twin.set_yticks([])
+    for f, colour in zip(shown, RAMP):
+        s = response["single"][f"{f:g}_20000"]
+        axes[0].plot(radii_um, np.array(s["chi_abs"]) * 1e20, color=colour, lw=1.4, label=f"{f / 1e6:g} MHz")
+        axes[1].plot(radii_um, np.degrees(np.abs(s["chi_phase_rad"])), color=colour, lw=1.4)
+        pair = np.array(response["pair"][f"{f:g}_20000"]["force_N"])
+        axes[2].plot(radii_um, np.diag(pair), color=colour, lw=1.4)
+    axes[0].set_yscale("log")
+    axes[0].set_xlabel("bubble radius (um)")
+    axes[0].set_ylabel("|volume oscillation| per Pa (1e-20 m^3/Pa)")
+    axes[0].set_title("(a) how strongly one bubble pulsates, 20 kPa (grey: radii of the starts)", loc="left", fontsize=9, color=INK)
+    axes[0].legend(frameon=False, fontsize=7, loc="lower right")
+    axes[1].axhline(90, color=MUTED, lw=0.8, ls="--")
+    axes[1].set_xlabel("bubble radius (um)")
+    axes[1].set_ylabel("lag of the volume oscillation behind the pressure (deg)")
+    axes[1].set_title("(b) its timing: 180 deg below resonance, 0 above (dashed: resonance)", loc="left", fontsize=9, color=INK)
+    axes[2].axhline(1e-12, color=MUTED, lw=0.8, ls="--")
+    axes[2].axhline(5.04e-10, color=MUTED, lw=0.8, ls=":")
+    axes[2].text(3.0, 1.2e-12, "adhesion 1e-12 N", fontsize=7, color=MUTED, ha="right", va="bottom")
+    axes[2].text(3.0, 6e-10, "calibrated 5.04e-10 N", fontsize=7, color=MUTED, ha="right", va="bottom")
+    axes[2].set_yscale("log")
+    axes[2].set_xlabel("radius of both bubbles (um)")
+    axes[2].set_ylabel("F2 between two touching bubbles (N, attraction)")
+    axes[2].set_title("(c) two touching equal bubbles in 20 kPa: always attract here", loc="left", fontsize=9, color=INK)
+    fig.suptitle("The model's bubbles (carried APECSS, SonoVue shell by radius): near 2-3 MHz the resonant radius lies inside "
+                 "the radii of the starts", x=0.05, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig1_bubble_response.png")
+    plt.close(fig)
+
+    # ---- figure 2: the cluster ----
+    rows = sweep["rows"]
+    fig, axes = plt.subplots(1, 2, figsize=(13.5, 4.6), dpi=120, gridspec_kw=dict(width_ratios=[1.3, 1]))
+    fig.subplots_adjust(left=0.06, right=0.99, top=0.83, bottom=0.13, wspace=0.25)
+    f = np.array([row["frequency_Hz"] for row in rows]) / 1e6
+    ax = axes[0]
+    ax.plot(f, [row["free_speed_mm_s_median"] for row in rows], marker="o", color=ORANGE, lw=1.4, label="median over the bubbles")
+    ax.plot(f, [row["free_speed_mm_s_p90"] for row in rows], marker="o", color=ORANGE, lw=1.0, ls="--", label="90th percentile")
+    ax.set_yscale("log")
+    ax.set_xlabel("drive frequency (MHz)")
+    ax.set_ylabel("speed the uneven force gives a free bubble (mm/s)")
+    ax.axhline(1.78e-3 / 1e-3, color=MUTED, lw=0.8, ls=":")
+    ax.text(9.4, 1.9, "1 R per ms", fontsize=7, color=MUTED, ha="right")
+    for row in rows:
+        ax.annotate(f"{row['share_below_resonance']:.0%}", (row["frequency_Hz"] / 1e6, row["free_speed_mm_s_median"]), xytext=(0, -12),
+                    textcoords="offset points", fontsize=6.5, color=MUTED, ha="center")
+    ax.set_title("(a) the 64-bubble start at 10 kPa (numbers: share of bubbles below resonance)", loc="left", fontsize=9, color=INK)
+    ax.legend(frameon=False, fontsize=7, loc="upper right")
+    ax = axes[1]
+    labels = ("F1", "F2_touching", "F2_others")
+    names = ("F1 (sound field)", "F2, touching neighbours", "F2, other bubbles")
+    width = 0.38
+    for k, (key, colour) in enumerate((("2.81674e+06", ORANGE), ("9.4e+06", BLUE))):
+        row = split[key]
+        ax.bar(np.arange(3) + (k - 0.5) * width, [row[name]["uneven_N_median"] for name in labels], width, color=colour,
+               label=f"{row['frequency_Hz'] / 1e6:.2f} MHz")
+    ax.axhline(1e-12, color=MUTED, lw=0.8, ls="--")
+    ax.text(2.6, 1.15e-12, "adhesion 1e-12 N", fontsize=7, color=MUTED, ha="right")
+    ax.set_yscale("log")
+    ax.set_xticks(range(3), names)
+    ax.set_ylabel("uneven part, median over bubbles (N)")
+    ax.set_title("(b) where the uneven force comes from (10 kPa)", loc="left", fontsize=9, color=INK)
+    ax.legend(frameon=False, fontsize=7, loc="upper left")
+    fig.suptitle("Inside the cluster: the force on each bubble minus the cluster's mean (what tears it apart; hard contacts only "
+                 "push, so pulls must be held by adhesion)", x=0.06, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig2_cluster_forces.png")
+    plt.close(fig)
+
+    # ---- figure 3: controls ----
+    times = (0.0, 0.5, 1.0, 2.0)
+    fig = plt.figure(figsize=(14.0, 12.0), dpi=110)
+    gs = fig.add_gridspec(1 + len(RUNS), len(times), height_ratios=[0.9] + [1.2] * len(RUNS), hspace=0.42, wspace=0.22,
+                          left=0.07, right=0.99, top=0.93, bottom=0.05)
+    ax = fig.add_subplot(gs[0, :])
+    data = {}
+    for name, label, colour in RUNS:
+        with h5py.File(runs / name / "trajectory.h5") as h:
+            t, x, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+        data[name] = (t, x, radii)
+        ax.plot(t, [pieces(xi, radii) for xi in x], color=colour, lw=1.3, drawstyle="steps-post", label=label)
+    ax.set_xlabel("time (s)")
+    ax.set_ylabel("pieces")
+    ax.legend(frameon=False, fontsize=7.5, loc="upper left")
+    ax.set_title("64-bubble start, random actions at 2.82 MHz (first 0.1 s segment; then 2-3 MHz), adhesion 1e-12 N, 0.25 ms steps",
+                 loc="left", fontsize=9, color=INK)
+    for row, (name, label, colour) in enumerate(RUNS):
+        t, x, radii = data[name]
+        c0 = x[0].mean(axis=0)
+        for col, when in enumerate(times):
+            ax = fig.add_subplot(gs[1 + row, col])
+            j = int(np.argmin(np.abs(t - when)))
+            n_pieces, labels = piece_labels(x[j], radii)
+            main = labels == np.argmax(np.bincount(labels))
+            rel = (x[j] - x[j][main].mean(axis=0)) * 1e6  # centred on the largest piece
+            half = 60.0
+            order = np.argsort(rel[:, 2])
+            d = EllipseCollection(2 * radii[order] * 1e6, 2 * radii[order] * 1e6, 0, units="xy", offsets=rel[order, :2],
+                                  offset_transform=ax.transData, cmap="coolwarm", edgecolors="white", linewidths=0.15)
+            d.set_array(radii[order] * 1e6)
+            d.set_clim(0.8, 3.0)
+            ax.add_collection(d)
+            outside = int(np.sum(np.abs(rel[:, :2]).max(axis=1) > half))
+            moved = np.linalg.norm(x[j][main].mean(axis=0) - c0) * 1e6
+            ax.text(0.02, 0.97, f"t = {t[j]:.1f} s, pieces {n_pieces}, largest keeps {main.mean():.0%}\nit moved {moved:.0f} um"
+                    + (f"; {outside} bubbles outside" if outside else ""),
+                    transform=ax.transAxes, fontsize=7, color=INK, va="top", bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1))
+            ax.set_xlim(-half, half)
+            ax.set_ylim(-half, half)
+            ax.set_aspect("equal")
+            ax.tick_params(labelsize=6.5)
+            if col == 0:
+                ax.set_ylabel(label.replace(", ", ",\n"), fontsize=7.5)
+    bar = fig.colorbar(d, ax=fig.axes[-4:], shrink=0.8, pad=0.01)
+    bar.set_label("bubble radius (um; resonant radius at 2.82 MHz: 2.0 um)")
+    fig.suptitle("Controls: equal radii (no bubbles on both sides of resonance) and pairwise coupling (no collective shielding); "
+                 "top views centred on the largest piece (um)", x=0.07, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig3_controls.png")
+    plt.close(fig)

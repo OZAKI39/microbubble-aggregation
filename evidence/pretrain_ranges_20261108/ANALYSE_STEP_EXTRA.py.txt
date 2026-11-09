@@ -1,0 +1,52 @@
+"""Single-run numbers of the extra step runs (2026-11-08): the 64-bubble cases at 0.25 and 0.1 ms (STEPFINE_*) and
+the same random-action case at 1 ms with stronger adhesion (STEPREF_*).
+
+usage (repository root):  PYTHONPATH=. python analyse_step_extra.py OUT_DIR OUT_JSON
+Per run: status, wall time, steps, the largest bubble displacement of a step and the number of steps above
+0.1 R (R = 1.78 um), pieces (surfaces within 0.5 R) and the share of the largest piece at the end, and the
+centroid at the end (compared across steps in the README).
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+R = 1.78e-6
+out_dir, out_json = Path(sys.argv[1]), Path(sys.argv[2])
+
+
+def pieces(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    pairs = pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < 0.5 * R]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    n, labels = connected_components(graph, directed=False)
+    return n, np.bincount(labels).max() / len(x)
+
+
+result = {}
+for folder in sorted(p for p in out_dir.iterdir() if p.name.startswith(("STEPFINE_", "STEPREF_")) and (p / "SUMMARY.json").is_file()):
+    summary = json.loads((folder / "SUMMARY.json").read_text())
+    records = json.loads((folder / "STEP_RECORDS.json").read_text())
+    step = np.array([row.get("max_displacement_m", np.nan) for row in records])
+    with h5py.File(folder / "trajectory.h5") as h:
+        x, radii = h["positions_m"][()], h["radii_m"][()]
+    n, share = pieces(x[-1], radii)
+    result[folder.name] = dict(status=summary["status"], reason=summary["reason"], completed_s=summary["completed_s"],
+                               wall_s=summary["wall_s"], bubbles=int(len(radii)), action_kind=summary["task"]["action_kind"],
+                               adhesion_force_N=summary["task"]["adhesion_force_N"],
+                               frequency_Hz=summary["task"]["segments"][0]["frequency"],
+                               step_tag=folder.name.rsplit("_dt", 1)[1], steps=len(step),
+                               step_max_displacement_max_m=float(np.nanmax(step)), steps_above_0p1R=int(np.sum(step > 0.1 * R)),
+                               pieces_end=int(n), largest_share_end=float(share), centroid_end_m=x[-1].mean(axis=0).tolist())
+    s = result[folder.name]
+    print(f"{folder.name:44s} {s['status']} {s['bubbles']} bubbles {s['frequency_Hz'] / 1e6:.2f} MHz adhesion {s['adhesion_force_N']:.2e}: "
+          f"steps > 0.1R {s['steps_above_0p1R']}/{s['steps']}, step max {s['step_max_displacement_max_m'] * 1e6:.2f} um, pieces end "
+          f"{s['pieces_end']} (largest {s['largest_share_end']:.2f}), wall {s['wall_s']:.0f} s", flush=True)
+out_json.write_text(json.dumps(result, indent=1) + "\n")

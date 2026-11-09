@@ -1,0 +1,106 @@
+"""Spurious detachment at large fixed steps (2026-11-06): bubble 56 of seed 16 (76 bubbles).
+
+usage (repository root):  python fig_detachment.py PROBE_DIR OUT_DIR
+PROBE_DIR holds seed16_dt{2000,1000,100}us from probe_ejection.py (0.1 s, a frame every 2 ms).
+Writes fig5_detachment.png.
+"""
+
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.patches import Circle
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+R, DELTA, BUBBLE = 1.78e-6, 0.2e-6, 56
+RUNS = [(2000, "2 ms", "#d0812c"), (1000, "1 ms", "#2a6fb0"), (100, "0.1 ms", "#1f2328")]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def main():
+    probe, out = Path(sys.argv[1]), Path(sys.argv[2])
+    data = {}
+    for us, _, _ in RUNS:
+        with h5py.File(probe / f"seed16_dt{us}us" / "trajectory.h5") as h:
+            data[us] = h["positions_m"][()], h["time_s"][()]
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(1, 3, figsize=(12.5, 3.9), gridspec_kw=dict(width_ratios=[1, 1.15, 1.15]))
+
+        # (a) Why: a straight move along the contact tangent lifts the bubble off a sphere.
+        ax = axes[0]
+        s = 1.0  # tangential move in units of R, exaggerated for the sketch
+        ax.add_patch(Circle((0, 0), 1, facecolor="#d9dde2", edgecolor=MUTED))
+        ax.add_patch(Circle((0, 2), 1, facecolor="none", edgecolor=INK, linestyle="--"))
+        lifted = np.array([s, 2.0])
+        ax.add_patch(Circle(lifted, 1, facecolor="none", edgecolor="#d0812c", linewidth=1.6))
+        ax.annotate("", xy=lifted, xytext=(0, 2), arrowprops=dict(arrowstyle="->", color="#d0812c"))
+        ax.text(s / 2, 2.12, "step s along the\ncontact tangent", ha="center", va="bottom", fontsize=8,
+                color=INK)
+        gap = np.hypot(s, 2) - 2
+        direction = lifted / np.linalg.norm(lifted)
+        ax.plot(*np.array([direction * 1, direction * (1 + gap)]).T, color="#d0812c", linewidth=3)
+        ax.text(1.05, 0.62, f"gap opens by\n≈ s² / 4R", fontsize=8.5, color=INK)
+        ax.set_xlim(-1.3, 2.4)
+        ax.set_ylim(-1.2, 3.6)
+        ax.set_aspect("equal")
+        ax.axis("off")
+        ax.set_title("(a) One linearized step on a curved contact", loc="left", fontsize=9.5, color=INK)
+
+        # (b) Gap of the rolling bubble to its nearest neighbour.
+        ax = axes[1]
+        for us, label, colour in RUNS:
+            x, t = data[us]
+            d = np.linalg.norm(x - x[:, BUBBLE:BUBBLE + 1], axis=2) - 2 * R
+            d[:, BUBBLE] = np.inf
+            keep = t <= 0.024
+            ax.plot(t[keep] * 1e3, np.maximum(d[keep].min(1), 0) * 1e9, color=colour, linewidth=2,
+                    marker="o", markersize=3.5, label=label)
+        ax.axhline(DELTA * 1e9, color=MUTED, linestyle="--", linewidth=1)
+        ax.text(24.5, DELTA * 1e9 + 15, "adhesion range δ = 200 nm", color=MUTED, fontsize=8, ha="right")
+        ax.set_ylim(0, 800)
+        ax.set_xlabel("Time (ms)")
+        ax.set_ylabel("Gap to nearest neighbour (nm)")
+        ax.set_title("(b) Bubble 56 rolling on the 76-bubble cluster", loc="left", fontsize=9.5, color=INK)
+        ax.grid(color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.legend(frameon=False, fontsize=8, loc="upper left", bbox_to_anchor=(0, 0.9))
+
+        # (c) Distance from the cluster centre over the first 0.1 s.
+        ax = axes[2]
+        for us, label, colour in RUNS:
+            x, t = data[us]
+            r = np.linalg.norm(x[:, BUBBLE] - x.mean(1), axis=1) * 1e6
+            ax.plot(t * 1e3, r, color=colour, linewidth=2, label=label)
+        ax.text(101, r[-1] + 4, "1 ms and 0.1 ms\n(on top of each other)", color=INK, fontsize=8, ha="right")
+        ax.text(101, 115, "2 ms", color=INK, fontsize=8, va="center")
+        ax.set_xlim(0, 110)
+        ax.set_xlabel("Time (ms)")
+        ax.set_ylabel("Distance from cluster centre (µm)")
+        ax.set_title("(c) Same bubble: leaves the cluster only at 2 ms", loc="left", fontsize=9.5, color=INK)
+        ax.grid(color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        fig.tight_layout()
+        fig.savefig(out / "fig5_detachment.png", dpi=170)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

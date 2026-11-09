@@ -1,0 +1,23 @@
+"""Default runs (DAQP contact solver) (2026-11-06): random 3D start SEED, 0.5 s, 1 ms default.
+
+usage (repository root):  python run_default.py RESULTS_DIR SEED [SEED ...]
+"""
+
+import json
+import sys
+from pathlib import Path
+
+from workflows.f10ag import run
+
+results = Path(sys.argv[1])
+(results / "configs").mkdir(parents=True, exist_ok=True)
+for seed in map(int, sys.argv[2:]):
+    name = f"seed{seed}"
+    cfg = dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5, save_interval_s=0.01,
+               state_seed=seed, action_seed=seed)
+    path = results / "configs" / f"{name}.json"
+    path.write_text(json.dumps(cfg, indent=1) + "\n")
+    r = run(Path("."), path, results / name)
+    print(name, r["status"], r["reason"], r["accepted_steps"], round(r["wall_s"], 1),
+          "daqp iterations", r["daqp_iterations"],
+          flush=True)

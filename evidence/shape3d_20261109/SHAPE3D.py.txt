@@ -1,0 +1,146 @@
+"""Three-dimensional shape of the clusters: the top-view section and the height, per saved frame (2026-11-09).
+
+usage (repository root):  python shape3d.py SCRATCH OUT_DIR FIGURE [FIGURE ...]
+SCRATCH: the folder holding sculpt/out, rotate/out, morph/out_mov and ball3d/out; FIGURE: one of FIGURES.
+Measures of each frame (bubble centres, every bubble counted once):
+  section length, section width: the spreads (standard deviation) along the two principal axes of the
+    top-view positions (x, y); the four PZTs only shape the field in this plane;
+  height: the spread of z; no source acts along z, so it changes only as a consequence.
+A ball has all three about equal, a vertical sheet a width near 0, a vertical column a small length and width.
+Also the number of pieces (bubbles whose surfaces are within 0.5 R = 0.89 um belong to one piece, as before).
+Writes OUT_DIR/SHAPE3D_<FIGURE>.json (per run: start and end values, z range at the end, pieces at most and at the
+end), OUT_DIR/SHAPE3D_<FIGURE>.npz
+(the time series) and OUT_DIR/fig_<FIGURE>.png (rows: groups; panels: runs; dotted line: end of the change).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+R = 1.78e-6  # mean bubble radius, as in the earlier analyses
+SERIES = (("length", "Section length", "#2a78d6"), ("width", "Section width", "#eb6834"), ("height", "Height", "#1baf7a"))
+PATTERNS = (("lines_x", "Parallel lines"), ("cross", "Crossed lines"), ("wavy", "Wavy lines"), ("dots", "Dots"))
+CHANGES = (("ROT", "rotate/out", "Rotation 90°"), ("MOV_translate", "morph/out_mov", "Shift 20 µm"),
+           ("MOV_bend", "morph/out_mov", "Straight → wavy"), ("MOV_linedot", "morph/out_mov", "Line → dot"))
+SWEEPS = ("1.6", "6.4", "25.6")
+# FIGURE -> rows of (row title, [(folder, run name, panel title, end of the change [s] or None)])
+FIGURES = {
+    "ball_fixed": [
+        (f"Ball, {n} bubbles, {f} MHz", [("sculpt/out", f"L_N{n}_{f}MHz_{p}_adh0", title, None) for p, title in PATTERNS])
+        for n, f in (("250", "9.375"), ("800", "9.375"), ("800", "7.0"))],
+    "sheet_changes": [
+        (f"Sheet, {label}", [(folder, f"{prefix}_N250_9.375MHz_sweep{s}s_hold2s", f"in {s} s", float(s)) for s in SWEEPS]
+         + ([(folder, "MOV_linedot_N250_9.375MHz_to22.5deg_in3.2s_then_linesx5s", "stopped half way", 3.2)]
+            if prefix == "MOV_linedot" else []))
+        for prefix, folder, label in CHANGES],
+    "ball_changes": [
+        (f"Ball, {label}", [("ball3d/out", f"B{prefix}_N250_9.375MHz_sweep{s}s_total32s", f"in {s} s", float(s))
+                            for s in ("6.4", "25.6")])
+        for prefix, folder, label in CHANGES],
+}
+
+
+def section_and_height(positions_m):
+    """Per frame: spreads [um] along the two principal axes of the top-view section, and of z."""
+    x = positions_m * 1e6
+    xy = x[:, :, :2] - x[:, :, :2].mean(axis=1, keepdims=True)
+    covariance = np.einsum("fni,fnj->fij", xy, xy) / x.shape[1]
+    eigenvalues = np.linalg.eigvalsh(covariance)  # ascending
+    return dict(length=np.sqrt(eigenvalues[:, 1]), width=np.sqrt(eigenvalues[:, 0]), height=x[:, :, 2].std(axis=1))
+
+
+def piece_count(x, radii):
+    """Connected pieces: two bubbles touch when their surfaces are less than 0.5 R apart (as analyse_morph.py)."""
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    gap = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1) - radii[pairs[:, 0]] - radii[pairs[:, 1]]
+    pairs = pairs[gap < 0.5 * R]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    return connected_components(graph, directed=False)[0]
+
+
+def main():
+    scratch, out, figures = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3:]
+    with tempfile.TemporaryDirectory() as font_dir:
+        for font in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / font).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED, "axes.labelcolor": INK,
+                             "xtick.color": MUTED, "ytick.color": MUTED})
+        for figure in figures:
+            rows = FIGURES[figure]
+            columns = max(len(runs) for _, runs in rows)
+            height = 2.35 * len(rows) + 1.0
+            fig, axes = plt.subplots(len(rows), columns, figsize=(3.3 * columns, height), dpi=150, squeeze=False, sharey=True)
+            # the legend takes the top 0.35 in, above the first row title
+            fig.subplots_adjust(left=0.07, right=0.99, bottom=0.07, top=1 - 0.95 / height, wspace=0.08, hspace=0.55)
+            summary, series = [], {}
+            for r, (row_title, runs) in enumerate(rows):
+                for c in range(columns):
+                    ax = axes[r, c]
+                    if c >= len(runs):
+                        ax.axis("off")
+                        continue
+                    folder, name, panel_title, change_end_s = runs[c]
+                    data = np.load(scratch / folder / name / "compact.npz")
+                    t, x = data["times_s"], data["positions_m"]
+                    spreads = section_and_height(x)
+                    for key, label, colour in SERIES:
+                        ax.plot(t, spreads[key], color=colour, lw=1.6, label=label)
+                        series[f"{name}__{key}_um"] = spreads[key]
+                    series[f"{name}__t_s"] = t
+                    if change_end_s is not None:
+                        ax.axvline(change_end_s, color=MUTED, lw=0.8, ls=":", label="End of the change")
+                    ax.set_title(panel_title, loc="left", fontsize=9, color=INK)
+                    ax.set_xlim(0, t[-1])
+                    ax.grid(color=GRID, lw=0.6)
+                    ax.set_axisbelow(True)
+                    for side in ("top", "right"):
+                        ax.spines[side].set_visible(False)
+                    if r == len(rows) - 1 or c >= len(rows[r + 1][1]):
+                        ax.set_xlabel("Time (s)")
+                    if c == 0:
+                        ax.set_ylabel("Spread (µm)")
+                        ax.annotate(row_title, (0, 1), xytext=(0, 18), xycoords="axes fraction", textcoords="offset points",
+                                    fontsize=10, fontweight="bold", color=INK, va="bottom")
+                    pieces = np.array([piece_count(frame, data["radii_m"]) for frame in x])
+                    series[f"{name}__pieces"] = pieces
+                    z_end = x[-1, :, 2] * 1e6
+                    summary.append(dict(group=row_title, name=name, panel=panel_title, duration_s=float(t[-1]),
+                                        start={k: float(v[0]) for k, v in spreads.items()},
+                                        end={k: float(v[-1]) for k, v in spreads.items()},
+                                        z_range_end_um=[float(z_end.min()), float(z_end.max())],
+                                        pieces_max=int(pieces.max()), pieces_end=int(pieces[-1])))
+            handles, labels = axes[0, 0].get_legend_handles_labels()
+            for ax in axes.ravel():  # the dotted line is not in every first panel
+                for h, l in zip(*ax.get_legend_handles_labels()):
+                    if l not in labels:
+                        handles.append(h)
+                        labels.append(l)
+            fig.legend(handles, labels, loc="upper right", ncol=len(labels), frameon=False, fontsize=9)
+            axes[0, 0].set_ylim(bottom=0)
+            fig.savefig(out / f"fig_{figure}.png")
+            plt.close(fig)
+            (out / f"SHAPE3D_{figure}.json").write_text(json.dumps(summary, indent=1) + "\n")
+            np.savez_compressed(out / f"SHAPE3D_{figure}.npz", **series)
+            for row in summary:
+                print(f"{row['group']:34s} {row['panel']:18s} t {row['duration_s']:5.1f} s  length/width/height "
+                      f"{row['start']['length']:5.1f}/{row['start']['width']:5.1f}/{row['start']['height']:5.1f} -> "
+                      f"{row['end']['length']:5.1f}/{row['end']['width']:5.1f}/{row['end']['height']:5.1f} um  "
+                      f"z {row['z_range_end_um'][0]:.0f}..{row['z_range_end_um'][1]:.0f}  pieces max {row['pieces_max']} end {row['pieces_end']}")
+
+
+main()

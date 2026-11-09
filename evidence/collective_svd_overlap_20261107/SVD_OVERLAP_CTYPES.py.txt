@@ -1,0 +1,215 @@
+"""Second try of svd_overlap.py: the SVD on the second thread is called through ctypes.
+(2026-11-07, measurement only; the project code is not changed.)
+
+np.linalg.svd holds Python's lock while LAPACK works (gil_probe.py), so the first try could not
+overlap. Here the second thread calls the same LAPACK routine NumPy calls (zgesdd, values only,
+column-major copy of M, optimal workspace) in NumPy's own OpenBLAS through ctypes, which lets go
+of the lock during the call. Its values are checked bit for bit against np.linalg.svd.
+
+usage (repository root):  python svd_overlap_ctypes.py OUT_DIR
+The check stays the same LAPACK routine on the same M, compared with the same guard:
+  overlap: the SVD runs on a second thread (LAPACK runs without Python's lock) while the main
+           thread solves for u and computes F2, F1 and adhesion; the force evaluation waits for
+           it and applies the guard before returning, so a near-singular M stops the run in the
+           same force evaluation as now;
+A. Whole runs (122-bubble start, seed 7, 0.5 s, default settings): project code vs overlap, twice
+   each, alternating; time per force evaluation; trajectory and smallest singular value bit for bit.
+B. The inputs of the 250th force evaluation of the first run: sub-steps timed again
+   (median of 300, interleaved).
+"""
+
+import json
+import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+
+import ctypes
+import glob
+
+import h5py
+import numpy as np
+
+import microbubble.forces as forces
+from workflows.f10ag import run
+
+out = Path(sys.argv[1])
+out.mkdir(parents=True, exist_ok=True)
+POOL = ThreadPoolExecutor(1)
+OPENBLAS = ctypes.CDLL(glob.glob(str(Path(np.__file__).parents[1] / "numpy.libs" / "libscipy_openblas64_*.so"))[0])
+ZGESDD = OPENBLAS.scipy_LAPACKE_zgesdd64_  # 64-bit integers (ILP64 build)
+ZGESDD.restype = ctypes.c_int64
+ZGESDD.argtypes = [ctypes.c_int, ctypes.c_char, ctypes.c_int64, ctypes.c_int64, ctypes.c_void_p,
+                   ctypes.c_int64, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int64, ctypes.c_void_p,
+                   ctypes.c_int64]
+
+
+def lapack_svd(M, compute_uv=False):
+    # singular values of M by zgesdd, as np.linalg.svd(M, compute_uv=False)
+    a = np.array(M, dtype=complex, order="F")  # copy: zgesdd overwrites it
+    n = a.shape[0]
+    s = np.empty(n)
+    info = ZGESDD(102, b"N", n, n, a.ctypes.data, n, s.ctypes.data, None, 1, None, 1)  # 102: column-major
+    if info:
+        raise np.linalg.LinAlgError(f"zgesdd info {info}")
+    return s
+project_call = forces.CPUForces.__call__
+
+
+def collective_overlapped(x, harmonics, pressure, physics, chi_zero, wavenumber_rad_m):
+    # forces.collective_fundamental with the SVD handed to the second thread
+    x = np.asarray(x, dtype=float)
+    p = np.asarray(pressure)
+    n = len(x)
+    nz = np.abs(p) > 0
+    chi = np.where(nz, harmonics[:, 0] / np.where(nz, p, 1), chi_zero)
+    D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+    off = ~np.eye(n, dtype=bool)
+    if np.any(D[off] <= 0):
+        raise ValueError("Coincident bubbles")
+    rho_w2 = physics.density_kg_m3 * (2 * np.pi * physics.frequency_Hz) ** 2
+    K = np.where(off, rho_w2 / (4 * np.pi * np.where(off, D, 1)), 0.0)
+    if wavenumber_rad_m > 0:
+        K = K * np.exp(-1j * wavenumber_rad_m * D)
+    M = np.eye(n) + chi[:, None] * K
+    svd = POOL.submit(lapack_svd, M)
+    return np.linalg.solve(M, chi * p), svd
+
+
+def overlapped_call(self, x):
+    # forces.CPUForces.__call__ (collective coupling) with the guard applied at the end
+    h, g = self.discs.evaluate(x, self.direct_order)
+    self.calls += 1
+    P = self.u @ h
+    G = np.einsum("i,inj->nj", self.u, g)
+    H = self.response.query(P)
+    V1, svd = collective_overlapped(x, H, P, self.physics, self.chi_zero, self.wavenumber_rad_m)
+    pair = forces.pair_forces(x, H, P, self.physics, self.chi_zero, V1, self.wavenumber_rad_m)
+    primary = -0.5 * np.real(V1[:, None] * np.conj(G))
+    result = dict(pressure_Pa=P, primary_force_N=primary, secondary_force_N=pair,
+                  total_force_N=primary + pair)
+    if self.adhesion_force_N > 0:
+        adhesion = forces.adhesion_forces(x, self.physics.radius_m, self.adhesion_force_N,
+                                          self.adhesion_range_m)
+        result.update(adhesion_force_N=adhesion, total_force_N=primary + pair + adhesion)
+    smallest = float(svd.result()[-1])
+    if smallest < self.singular_guard:
+        raise ValueError("Near-singular collective response; no regularization")
+    self.min_singular_value = min(smallest, self.min_singular_value or np.inf)
+    return result
+
+
+kept, seconds = {}, []
+real_collective, real_f2 = forces.collective_fundamental, forces._pair_forces_delayed
+
+
+def timed(call):
+    def f(self, x):
+        t = time.perf_counter()
+        r = call(self, x)
+        seconds.append(time.perf_counter() - t)
+        return r
+    return f
+
+
+def keep(name, f):
+    count = [0]
+    def g(*a, **k):
+        count[0] += 1
+        if count[0] == 250:
+            kept[name] = a
+        return f(*a, **k)
+    return g
+
+
+# A. whole runs
+runs = {}
+for label in ("project_1", "overlap_1", "project_2", "overlap_2"):
+    seconds.clear()
+    first = label == "project_1"
+    forces.collective_fundamental = keep("collective", real_collective) if first else real_collective
+    forces._pair_forces_delayed = keep("f2", real_f2) if first else real_f2
+    forces.CPUForces.__call__ = timed(project_call if label.startswith("project") else overlapped_call)
+    cfg = out / f"cfg_{label}.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5,
+                                   save_interval_s=0.01, state_seed=7, action_seed=7)))
+    r = run(Path("."), cfg, out / label)
+    summary = json.loads((out / label / "SUMMARY.json").read_text())
+    runs[label] = dict(status=r["status"], wall_s=r["wall_s"], force_evaluations=len(seconds),
+                       force_ms_mean=1e3 * float(np.mean(seconds)),
+                       force_ms_median=1e3 * float(np.median(seconds)),
+                       min_collective_singular_value=summary["min_collective_singular_value"])
+forces.CPUForces.__call__ = project_call
+forces.collective_fundamental, forces._pair_forces_delayed = real_collective, real_f2
+positions = {k: h5py.File(out / k / "trajectory.h5")["positions_m"][()] for k in runs}
+for k in runs:
+    runs[k]["same_trajectory_as_project_1"] = bool(np.array_equal(positions[k], positions["project_1"]))
+    runs[k]["same_min_singular_value_as_project_1"] = (
+        runs[k]["min_collective_singular_value"] == runs["project_1"]["min_collective_singular_value"])
+
+# B. sub-steps on the kept inputs
+x, H, P, physics, chi_zero, guard, k = kept["collective"]
+nz = np.abs(P) > 0
+chi = np.where(nz, H[:, 0] / np.where(nz, P, 1), chi_zero)
+D = np.linalg.norm(x[:, None] - x[None], axis=-1)
+off = ~np.eye(len(x), dtype=bool)
+rho_w2 = physics.density_kg_m3 * (2 * np.pi * physics.frequency_Hz) ** 2
+M = np.eye(len(x)) + chi[:, None] * (np.where(off, rho_w2 / (4 * np.pi * np.where(off, D, 1)), 0.0)
+                                      * np.exp(-1j * k * D))
+np.save(out / "M.npy", M)
+f2_args = kept["f2"]
+reference = float(np.linalg.svd(M, compute_uv=False)[-1])
+
+
+def serial():
+    s = np.linalg.svd(M, compute_uv=False)[-1]
+    np.linalg.solve(M, chi * P)
+    real_f2(*f2_args)
+    return s
+
+
+def overlapped():
+    svd = POOL.submit(lapack_svd, M)
+    np.linalg.solve(M, chi * P)
+    real_f2(*f2_args)
+    return svd.result()[-1]
+
+
+all_values_same = bool(np.array_equal(lapack_svd(M), np.linalg.svd(M, compute_uv=False)))
+
+
+def python_loop():
+    s = 0
+    for i in range(60000):
+        s += i
+    return reference
+
+
+def python_loop_with_svd_thread():
+    svd = POOL.submit(lapack_svd, M)
+    python_loop()
+    return svd.result()[-1]
+
+
+ways = {"SVD alone": lambda: np.linalg.svd(M, compute_uv=False)[-1],
+        "SVD alone, through ctypes": lambda: lapack_svd(M)[-1],
+        "pure Python loop": python_loop,
+        "pure Python loop, ctypes SVD on a second thread": python_loop_with_svd_thread,
+        "solve + F2 (no SVD)": lambda: (np.linalg.solve(M, chi * P), real_f2(*f2_args)) and reference,
+        "SVD, solve, F2 one after another (as now)": serial,
+        "SVD on a second thread during solve + F2": overlapped}
+times = {name: [] for name in ways}
+same = {name: True for name in ways}
+for _ in range(300):
+    for name, f in ways.items():
+        t = time.perf_counter()
+        s = f()
+        times[name].append(time.perf_counter() - t)
+        same[name] &= float(s) == reference
+sub_steps = {name: dict(median_ms=1e3 * float(np.median(v)), same_smallest_singular_value=same[name])
+             for name, v in times.items()}
+
+result = dict(runs=runs, sub_steps_ms=sub_steps, ctypes_values_same_as_numpy=all_values_same,
+              smallest_singular_value=reference, bubbles=len(x))
+(out / "SVD_OVERLAP_CTYPES.json").write_text(json.dumps(result, indent=1) + "\n")
+print(json.dumps(result, indent=1))

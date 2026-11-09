@@ -1,0 +1,141 @@
+"""Singular value check: second thread starts at once, wait after the contact step (2026-11-07).
+
+usage (repository root):  python FIGURE_SCRIPT.py.txt EVIDENCE_DIR
+Reads EVIDENCE_DIR/data/{DEFER_RUNS,GUARD_before,GUARD_after}.json; writes fig1_svd_defer.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+BEFORE, BOTH, DEFER, FORCE, CONTACT, CHECK, WAIT = ("#5b6470", "#2a6fb0", "#8fb3d9", "#9fb3c8", "#c9d3dd",
+                                                   "#d08a1e", "#b8483b")
+SEEDS = ["23", "21", "16", "7"]
+GROUPS = [("before", "Before (wait inside the force evaluation)", BEFORE),
+          ("after", "Both changes (adopted)", BOTH),
+          ("deferonly", "Wait after the contact step only (np.linalg.solve)", DEFER)]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def title(ax, text):
+    ax.set_title(text, loc="left", fontsize=9.5, color=INK)
+
+
+def grid(ax, axis):
+    ax.grid(axis=axis, color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+
+
+def segment(ax, y, start, length, colour, text, h=0.32):
+    ax.barh(y, length, left=start, height=h, color=colour, edgecolor="white", linewidth=1.5)
+    if text:
+        ax.text(start + length / 2, y, text, ha="center", va="center", fontsize=7, color=INK)
+
+
+def main():
+    folder = Path(sys.argv[1])
+    read = lambda name: json.loads((folder / "data" / name).read_text())
+    runs, before, after = read("DEFER_RUNS.json"), read("GUARD_before.json"), read("GUARD_after.json")
+    rows = runs["runs"]
+    labels = [str(rows[s]["bubbles"]) for s in SEEDS]
+    mean = lambda seed, g, key: float(np.mean([v[key] for v in rows[seed][g]]))
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(1, 3, figsize=(17, 4.9), gridspec_kw=dict(wspace=0.32, width_ratios=[1.1, 1.25, 1]))
+
+        # (a) time per step
+        ax = axes[0]
+        width = 0.27
+        for k, (g, name, colour) in enumerate(GROUPS):
+            x = [i + (k - 1) * width for i in range(len(SEEDS))]
+            values = [[v["step_ms_median"] for v in rows[s][g]] for s in SEEDS]
+            means = [sum(v) / 2 for v in values]
+            ax.bar(x, means, width=width - 0.03, color=colour, label=name)
+            for xi, v, m in zip(x, values, means):
+                ax.scatter([xi, xi], v, s=9, color="white", edgecolor=INK, linewidth=0.6, zorder=3)
+                ax.text(xi, max(v) + 0.12, f"{m:.2f}", ha="center", va="bottom", fontsize=6.5, color=INK)
+        ax.set_xticks(range(len(SEEDS)), labels)
+        ax.set_xlabel("Bubbles")
+        ax.set_ylabel("Wall time per 1 ms step (ms, median over the run)")
+        ax.set_ylim(0, 9.5)
+        grid(ax, "y")
+        ax.legend(loc="upper left", fontsize=7, frameon=False)
+        same = all(v["same_trajectory_as_first_before"] and v["same_summary_as_first_before"]
+                   for s in SEEDS for g, _, _ in GROUPS for v in rows[s][g])
+        ax.text(0.02, 0.70, ("All 24 runs identical to the first one bit for bit\n(trajectory, smallest singular value,"
+                             "\nDAQP iterations, gate records)" if same else "SOME RUNS DIFFER"),
+                transform=ax.transAxes, fontsize=7, color=INK, va="top")
+        title(ax, "(a) Server, project code, 0.5 s runs (dots: runs)")
+
+        # (b) one 122-bubble step, before and after
+        ax = axes[1]
+        s = "7"
+        b_step, b_force, b_wait = mean(s, "before", "step_ms_median"), mean(s, "before", "force_ms_mean"), 0.66
+        a_step, a_force, a_wait = mean(s, "after", "step_ms_median"), mean(s, "after", "force_ms_mean"), mean(s, "after", "wait_ms_median")
+        segment(ax, 1.9, 0, b_force - b_wait, FORCE, "forces")
+        segment(ax, 1.9, b_force - b_wait, b_wait, WAIT, "")
+        ax.text(b_force - b_wait / 2, 2.1, f"wait {b_wait:.2f} ms", ha="center", va="bottom", fontsize=7, color=WAIT)
+        segment(ax, 1.9, b_force, b_step - b_force, CONTACT, "contact step and the rest")
+        # the check is handed over about 0.6 ms before the main thread waits and takes 1.25 ms
+        # (0.2 ms late start + zgesdd 1.04 ms, evidence/svd_wait_20261107/)
+        segment(ax, 1.5, b_force - b_wait - 0.6, 1.25, CHECK, "check")
+        segment(ax, 0.8, 0, a_force, FORCE, "forces")
+        segment(ax, 0.8, a_force, a_step - a_force, CONTACT, f"contact step and the rest; wait {a_wait:.3f} ms")
+        segment(ax, 0.4, a_force - 0.55, 1.25, CHECK, "check")
+        ax.text(b_step + 0.08, 1.9, f"{b_step:.2f} ms", va="center", fontsize=8, color=INK)
+        ax.text(a_step + 0.08, 0.8, f"{a_step:.2f} ms", va="center", fontsize=8, color=INK)
+        ax.set_yticks([1.9, 1.5, 0.8, 0.4], ["Before: main thread", "second thread", "After: main thread", "second thread"])
+        ax.axhline(1.15, color=GRID, linewidth=1)
+        ax.set_ylim(0.15, 2.3)
+        ax.set_xlim(0, 9)
+        ax.set_xlabel("ms within one 122-bubble step (step, forces, wait measured; check as in svd_wait_20261107)")
+        grid(ax, "x")
+        title(ax, "(b) The wait moves behind the contact step")
+
+        # (c) runs the check stops
+        ax = axes[2]
+        names = list(before)
+        for i, name in enumerate(names):
+            b, a = before[name], after[name]
+            ax.scatter(b["accepted_steps"], i, s=70, facecolor="white", edgecolor=BEFORE, linewidth=1.5, zorder=3,
+                       label="before" if i == 0 else None)
+            ax.scatter(a["accepted_steps"], i, s=18, color=BOTH, zorder=4, label="after" if i == 0 else None)
+            same = all(b[k] == a[k] for k in ("status", "reason", "completed_s", "accepted_steps", "step_records",
+                                                "saved_frames", "trajectory_sha256", "positions_sha256",
+                                                "exception_last_line"))
+            ax.text(b["accepted_steps"] + 6, i, f"{b['accepted_steps']} steps, {b['step_records']} records, "
+                    f"saved frames {b['saved_frames']}; {'same' if same else 'DIFFERENT'}", va="center", fontsize=7, color=INK)
+        ax.set_yticks(range(len(names)), [f"guard {before[n]['singular_guard']}, seed {before[n]['seed']}" for n in names])
+        ax.invert_yaxis()
+        ax.set_xlim(-5, 220)
+        ax.set_xlabel("Steps accepted before the check stopped the run")
+        grid(ax, "x")
+        ax.legend(loc="center right", fontsize=7, frameon=False)
+        ax.text(0.0, -0.22, "Same reason (Near-singular collective response), step records, saved trajectory",
+                transform=ax.transAxes, fontsize=7, color=MUTED)
+        title(ax, "(c) Runs the check stops: same stop as before")
+        fig.savefig(folder / "fig1_svd_defer.png", dpi=170, bbox_inches="tight")
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

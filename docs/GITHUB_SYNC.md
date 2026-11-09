@@ -85,3 +85,28 @@
   - 本次同步没有启动新仿真、远程计算或 GPU 性能测试。
 
 `EXPLORATORY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`
+
+## 2026-11-09 同步：预训练档 11-04 至 11-09 的改动（新分支 `pretrain-y-channel-chip`）
+
+根据用户明确请求，推送到**新分支** `pretrain-y-channel-chip`（用户选择"推送到新分支"；按 [GIT_WORKFLOW.md](GIT_WORKFLOW.md) 按内容命名，不用日期）。
+
+- **分支：** 从 `pretrain-softness-check` 的 `03e0701`（与 `origin/pretrain-softness-check` 一致）分出，直接在当前工作树中提交，分三个提交：代码与配置、文档与证据、运行记录。
+- **其他分支：** `main`（`22e8326`）和 `pretrain-softness-check` 本地、远程都没有改动；没有建立同步目录或 clone，没有 force-push，也没有重写历史。
+- **内容：** `03e0701` 之后的全部改动。
+  - 2026-11-04：GPU 声场、携带状态的 APECSS 泡、C++ 接触步设为默认。
+  - 2026-11-06：删除冻结的 HF/LF 路径和旧写法的配置；只用随机生成的三维不规则泡团；随机动作；固定步长；接触二次规划改用 DAQP（最小距离形式）；规则改为单个策略文件。
+  - 2026-11-07：DAQP 热启动整块装入；AVX2/FMA 编译；F2 编译；最小奇异值检查放到第二个线程；泡的大小分布；粘附与声场无关。
+  - 2026-11-08：频率扩到 10 MHz，修正 APECSS 稳定判据；图样族扫描动作；统一的弱粘附；64–255 泡。
+  - 2026-11-09：Y 形通道芯片（方片声场、Y 形通道几何）设为默认；频率范围放宽到 0.5 MHz；工程清理；README 和文档更新。
+  - 另外还有这些日期的证据目录，以及 `results/` 中各次运行的记录。
+- **随提交删除的已跟踪文件（共 90 个）：** 11-06 删除的 HF/LF 代码、测试和旧配置；2026-11-09 用户批准清理的证据目录和过时文档（`evidence/cleanup_20261109/`）。其中包括已被清空的 `HANDOFF_20261102.md`（上面 11-03 同步时"按原样保留"的那份交接快照）。它们仍在提交历史里。
+- **留在本地：**
+  - `results/` 中 177 个 `.npz`（逐帧位置序列 `compact.npz` 和两份声场网格），约 380 MB。用户决定只传运行记录，不传这些文件。它们的路径、大小、SHA-256 记在 `SYNC_CHECK.json`；另一份副本在租用服务器的 `/workspace/scratch/`，不保证长期存在。从 GitHub 拿到的工程不能直接重画用到它们的证据图。
+  - 按已有 `.gitignore` 规则，`trajectory.h5`、`STEP_RECORDS.json` 等逐步数据和 `results/retained_history/` 也照旧不进 Git。
+  - 未跟踪、已被清空的 `TODO.md` 不提交。
+- **验证：**
+  - 全部测试 62 项中 61 项通过（含 GPU 和 APECSS），未通过的是已知的不规则初态逐位复现（存储与重新生成相差 1e-20 m，与本次改动无关）；`python main.py check` PASS。
+  - 提交前的文件清单、大小、SHA-256、删除清单和常见凭据格式（令牌、私钥、密码、SSH 命令和密钥路径、IP 地址）检查见 [SYNC_CHECK.json](../evidence/github_sync_20261109/SYNC_CHECK.json)，没有命中；该检查不等于对任意未知格式秘密的完整保证。
+  - 本次同步没有启动新仿真、远程计算或 GPU 性能测试。
+
+`EXPLORATORY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`

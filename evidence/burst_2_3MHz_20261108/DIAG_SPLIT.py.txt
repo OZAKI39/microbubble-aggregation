@@ -1,0 +1,83 @@
+"""Why do weakly held clusters burst at 2-3.3 MHz? Step 5: where the uneven force comes from (2026-11-08).
+
+usage (repository root):  APECSS_DIR=... PYTHONPATH=. python diag_split.py RUN_DIR OUT_JSON
+The start of RUN_DIR (64 bubbles) with its first segment's channels at 2.82 MHz (the run) and 9.4 MHz, scaled
+to 10 kPa at the bubbles, the run's force model rebuilt as in diag_sweep.py. The force on each bubble minus the
+cluster's mean (what tears the cluster; the mean only moves it) is split into F1, F2 from touching neighbours
+(surface gap below 0.2 um) and F2 from all other bubbles (instantaneous formula of forces.pair_forces with the
+collective u; at these distances the propagation delay turns the phase by under 0.1 rad). Per part: the median
+over the bubbles of |part - <part>|, and of its component along the bubble's direction from the cluster's
+centroid (positive: outwards). The F2 of touching pairs is the model's least certain part: two point
+sources with a near-field closure and a soft core (Physics.force_model "f2_near_field_candidate") at a
+centre distance of R_i + R_j.
+"""
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+from microbubble.forces import CPUForces, cached_pair_forces_library, collective_fundamental
+from workflows.f10ag import carried_apecss_response, load_pretrain_policy, pretrain_context
+
+ROOT = Path(".")
+run, out = Path(sys.argv[1]), Path(sys.argv[2])
+policy = load_pretrain_policy(ROOT)
+task = json.loads((run / "EXECUTION.json").read_text())["task"]
+with h5py.File(run / "trajectory.h5") as h:
+    x, radii = h["positions_m"][0], h["radii_m"][()]
+segment = task["segments"][0]
+library = cached_pair_forces_library(ROOT / "build" / "pair_forces")["library"]
+result = {}
+with tempfile.TemporaryDirectory() as folder:
+    for f in (segment["frequency"], 9.4e6):
+        c = pretrain_context(ROOT, f)
+        response, _ = carried_apecss_response(ROOT, {}, policy, f, list(radii), folder)
+        forces = CPUForces(response, c.physics, c.discs, "collective", policy["singular_guard"], wavenumber_rad_m=c.discs.k,
+                           pair_library=library, radii_m=radii)
+        h, g = c.discs.evaluate(x, forces.direct_order)
+        forces.control(segment["amplitudes"], segment["phases"])
+        scale = 1e4 / np.median(np.abs(forces.u @ h))
+        forces.control(np.array(segment["amplitudes"]) * scale, segment["phases"])
+        total = forces(x)
+        P = forces.u @ h
+        H = response.query(P)
+        D = forces.pairs.distances(x)
+        u, _ = collective_fundamental(D, H, P, c.physics, forces.chi_zero, 0.0, c.discs.k)
+        response.close()
+        i, j = np.triu_indices(len(x), 1)
+        delta = x[j] - x[i]
+        d = np.linalg.norm(delta, axis=1)
+        corr = np.sum(np.arange(2, 9) ** 2 * np.real(H[i, 1:] * np.conj(H[j, 1:])), axis=1) + np.real(u[i] * np.conj(u[j]))
+        radius_sum = radii[i] + radii[j]
+        q = np.minimum(d / (c.physics.transition_over_sum * radius_sum), 1)
+        core = c.physics.soft_core_over_sum * radius_sum * (1 - q) ** 2
+        pair = (c.physics.density_kg_m3 * (2 * np.pi * f) ** 2 / (8 * np.pi) * corr[:, None] * delta
+                / ((d * d + core * core) ** 1.5)[:, None])
+        touch = d - radius_sum < 0.2e-6
+        parts = {}
+        for name, mask in (("F2_touching", touch), ("F2_others", ~touch)):
+            F = np.zeros_like(x)
+            np.add.at(F, i[mask], pair[mask])
+            np.add.at(F, j[mask], -pair[mask])
+            parts[name] = F
+        parts["F1"] = total["primary_force_N"]
+        outward = (x - x.mean(0)) / np.linalg.norm(x - x.mean(0), axis=1)[:, None]
+        drag = 6 * np.pi * 1e-3 * radii
+        row = dict(frequency_Hz=f, instantaneous_vs_model_F2_max_difference=float(
+            np.abs(parts["F2_touching"] + parts["F2_others"] - total["secondary_force_N"]).max()
+            / np.abs(total["secondary_force_N"]).max()))
+        for name, F in parts.items():
+            uneven = F - F.mean(0)
+            row[name] = dict(uneven_N_median=float(np.median(np.linalg.norm(uneven, axis=1))),
+                             uneven_speed_mm_s_median=float(np.median(np.linalg.norm(uneven, axis=1) / drag) * 1e3),
+                             outward_N_median=float(np.median(np.einsum("ij,ij->i", uneven, outward))))
+        result[f"{f:g}"] = row
+        print(f"{f / 1e6:.2f} MHz, 10 kPa (instantaneous F2 vs the run's delayed F2: largest difference "
+              f"{row['instantaneous_vs_model_F2_max_difference']:.1%} of the largest): " + "; ".join(
+                  f"{name}: uneven {row[name]['uneven_N_median']:.1e} N ({row[name]['uneven_speed_mm_s_median']:.2f} mm/s), "
+                  f"outward median {row[name]['outward_N_median']:+.1e} N" for name in ("F1", "F2_touching", "F2_others")), flush=True)
+out.write_text(json.dumps(result, indent=1) + "\n")

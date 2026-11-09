@@ -1,0 +1,178 @@
+[
+ {
+  "group": "Ball, Rotation 90\u00b0",
+  "name": "BROT_N250_9.375MHz_sweep6.4s_total32s",
+  "panel": "in 6.4 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 15.639619504764347,
+   "width": 5.45483898345697e-11,
+   "height": 15.868854511346322
+  },
+  "z_range_end_um": [
+   -32.33843086024502,
+   31.520299120705204
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, Rotation 90\u00b0",
+  "name": "BROT_N250_9.375MHz_sweep25.6s_total32s",
+  "panel": "in 25.6 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 15.480659884973454,
+   "width": 1.782098053881369e-09,
+   "height": 15.987873262827947
+  },
+  "z_range_end_um": [
+   -33.09568018480688,
+   31.231479262565756
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, Shift 20 \u00b5m",
+  "name": "BMOV_translate_N250_9.375MHz_sweep6.4s_total32s",
+  "panel": "in 6.4 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 15.80404833984325,
+   "width": 0.010353354682390868,
+   "height": 15.722836443804114
+  },
+  "z_range_end_um": [
+   -33.426079182695204,
+   29.887023227308045
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, Shift 20 \u00b5m",
+  "name": "BMOV_translate_N250_9.375MHz_sweep25.6s_total32s",
+  "panel": "in 25.6 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 15.79384047581545,
+   "width": 0.010727976589935889,
+   "height": 15.847097495144304
+  },
+  "z_range_end_um": [
+   -33.070311517217675,
+   30.392061272136228
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, Straight \u2192 wavy",
+  "name": "BMOV_bend_N250_9.375MHz_sweep6.4s_total32s",
+  "panel": "in 6.4 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 12.534469309074524,
+   "width": 2.8185799980425945,
+   "height": 14.241335159875733
+  },
+  "z_range_end_um": [
+   -30.91683768083229,
+   29.028189931702116
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, Straight \u2192 wavy",
+  "name": "BMOV_bend_N250_9.375MHz_sweep25.6s_total32s",
+  "panel": "in 25.6 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 13.398070813765719,
+   "width": 2.9609435188335316,
+   "height": 14.027142333519885
+  },
+  "z_range_end_um": [
+   -29.140126476096178,
+   28.64534253539948
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, Line \u2192 dot",
+  "name": "BMOV_linedot_N250_9.375MHz_sweep6.4s_total32s",
+  "panel": "in 6.4 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 4.011686894667778,
+   "width": 3.6757254066009564,
+   "height": 15.543631148012246
+  },
+  "z_range_end_um": [
+   -59.304065023546755,
+   45.443097399777805
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, Line \u2192 dot",
+  "name": "BMOV_linedot_N250_9.375MHz_sweep25.6s_total32s",
+  "panel": "in 25.6 s",
+  "duration_s": 32.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 3.857575300392954,
+   "width": 3.159450983312747,
+   "height": 18.193571621776634
+  },
+  "z_range_end_um": [
+   -60.445916411384154,
+   50.82127805974977
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ }
+]

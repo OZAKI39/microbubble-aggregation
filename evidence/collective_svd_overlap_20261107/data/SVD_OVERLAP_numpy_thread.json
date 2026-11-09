@@ -1,0 +1,82 @@
+{
+ "runs": {
+  "project_1": {
+   "status": "PASS",
+   "wall_s": 5.890817068982869,
+   "force_evaluations": 500,
+   "force_ms_mean": 6.818058072589338,
+   "force_ms_median": 6.76248234231025,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  },
+  "overlap_1": {
+   "status": "PASS",
+   "wall_s": 5.693165258970112,
+   "force_evaluations": 500,
+   "force_ms_mean": 7.223016424570233,
+   "force_ms_median": 7.09944439586252,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  },
+  "project_2": {
+   "status": "PASS",
+   "wall_s": 5.528549607843161,
+   "force_evaluations": 500,
+   "force_ms_mean": 6.894969548564404,
+   "force_ms_median": 6.816248060204089,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  },
+  "overlap_2": {
+   "status": "PASS",
+   "wall_s": 5.69564392301254,
+   "force_evaluations": 500,
+   "force_ms_mean": 7.1980603300035,
+   "force_ms_median": 7.14661309029907,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_project_1": true,
+   "same_min_singular_value_as_project_1": true
+  }
+ },
+ "sub_steps_ms": {
+  "SVD alone": {
+   "median_ms": 0.848587485961616,
+   "same_smallest_singular_value": true
+  },
+  "solve + F2 (no SVD)": {
+   "median_ms": 2.2303659934550524,
+   "same_smallest_singular_value": true
+  },
+  "SVD, solve, F2 one after another (as now)": {
+   "median_ms": 3.072482068091631,
+   "same_smallest_singular_value": true
+  },
+  "SVD on a second thread during solve + F2": {
+   "median_ms": 3.1311819329857826,
+   "same_smallest_singular_value": true
+  }
+ },
+ "svd_blas_threads": {
+  "1": {
+   "median_ms": 0.8188169449567795,
+   "same_smallest_singular_value": true
+  },
+  "2": {
+   "median_ms": 1.0390050010755658,
+   "same_smallest_singular_value": false
+  },
+  "4": {
+   "median_ms": 1.0397215373814106,
+   "same_smallest_singular_value": false
+  },
+  "8": {
+   "median_ms": 2.035264973528683,
+   "same_smallest_singular_value": true
+  }
+ },
+ "smallest_singular_value": 0.8536541712850318,
+ "bubbles": 122
+}

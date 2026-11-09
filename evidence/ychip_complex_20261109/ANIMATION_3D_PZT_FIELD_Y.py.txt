@@ -1,0 +1,311 @@
+"""Y-channel chip runs in 3d side by side (2026-11-09; animation_3d_pzt_field.py for the chip of the policy's
+apparatus): each column: bubbles, the four PZT states, the field over the channel.
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:ROTATE_SCRIPTS:MORPH_SCRIPTS python animation_3d_pzt_field.py DATA_DIR OUT_MP4 NAME [NAME ...]
+DATA_DIR: <name>/ROW.json and <name>/compact.npz of rotate_runs.py (pattern "rotating", value alpha_deg),
+morph_runs.py (pattern translate / bend / line_dot, value "value"), path_runs.py (pattern one of complex_paths.FORMS,
+value "value") or sculpt_runs.py (one fixed pattern of sculpt.PATTERNS from the centred three-dimensional cluster).
+Every saved frame at 20 frames/s (saved every 25 ms: half speed; every 50 ms: real time), the same time in all
+panels; each panel's clock stops when its run ends and the panel keeps its last frame. A frame shows the segment
+that acted up to it (a frame on a boundary belongs to the earlier segment). The start frame of a run that starts
+from the sheet made by lines_x shows that drive (value 0); a run that starts from the cluster shows its first segment.
+Row 1 (orthographic, true scale, seen from VIEW_ELEVATION_DEG above the horizontal; x, y +-45 um; z to the next
+5 um above the highest |z| of all runs, plus 5 um):
+bubbles at their radius, colour = height z; floor: |p| at z = 0 of that segment (dark = low, scaled per map);
+dashed: the zero set of the local form, which does not depend on z: a vertical surface drawn by its zero lines at
+the bottom and top of the box and the vertical edges at their ends (dots and line_dot with gamma > 0: the vertical
+line x = y = 0). The trunk walls (+-89.5 um) lie outside this box and are not drawn there.
+Row 2: one dial per PZT, placed on its side of the channel: circle = source cap, hand = amplitude and phase.
+Row 3: |p| at z = 0 over the Y channel near the reference point (trunk and the start of both branches); grey =
+outside the channel; dark lines = the channel's segment boxes (wall guard); white square = row-1 x, y range.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from contourpy import contour_generator
+from matplotlib import animation, font_manager
+from matplotlib.patches import Circle, Rectangle
+from mpl_toolkits.mplot3d import proj3d
+
+import complex_paths
+import morph
+import rotate
+import sculpt
+from matplotlib.patches import Polygon
+from workflows.f10ag import load_pretrain_policy, pretrain_context
+from y_paths import centre_fields, path_drive
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, ORANGE, WALL_FILL = "#1f2328", "#5b6470", "#c2611f", "#c9ced4"
+FREQUENCY_HZ = 9.375e6
+FPS = 20
+HALF_UM = 45  # row 1 half width in x and y
+HALF_MM = 1.0  # row 3 half width
+# row 1 looks down at 60 deg (was 18 deg until 2026-11-09): the shape in x, y, where the patterns act, reads almost
+# as from straight above, while the height stays visible
+VIEW_ELEVATION_DEG = 60
+CHANNELS = ("Y−", "Y+", "X−", "X+")  # order of amplitudes_Pa_eq / phases_rad
+DIAL_RADIUS = 0.2
+DIALS = ((0.0, -0.42), (0.0, 0.42), (-0.66, 0.0), (0.66, 0.0))  # Y- below, Y+ above, X- left, X+ right
+VALUE_SPOTS = ((0.26, -0.42, "left", "center"), (0.26, 0.42, "left", "center"),
+               (-0.9, 0.0, "right", "center"), (0.9, 0.0, "left", "center"))
+FIXED_TITLES = {"lines_x": "Parallel lines", "cross": "Crossed lines", "wavy": "Wavy lines", "dots": "Dots"}
+
+
+def kind(run):
+    return run["segments"][0]["pattern"]
+
+
+def starts_from_sheet(run):
+    """True for rotate_runs.py / morph_runs.py runs started from the end of the lines_x run (the sheet)."""
+    return "start" in run and run["start"]["source_time_s"] > 0
+
+
+def segment_value(run, segment):
+    """The value of the change in a segment; -1 (before the change, lines_x) is 0 for every kind."""
+    if kind(run) in FIXED_TITLES:
+        return None  # a fixed pattern has no value
+    if segment < 0:
+        return 0.0
+    return run["segments"][segment]["alpha_deg" if kind(run) == "rotating" else "value"]
+
+
+def title(run):
+    if kind(run) in FIXED_TITLES:
+        return FIXED_TITLES[kind(run)]
+    if kind(run) == "spin":
+        return "Spin 180\u00b0"
+    if kind(run) == "pivot":
+        return "Turn 60\u00b0 about one end"
+    if kind(run) == "line_cross":
+        return "Line \u2192 cross \u2192 line"
+    if kind(run) == "flap":
+        return f"Flap, period {run['period_s']:g} s"
+    if kind(run) == "rotating":
+        return f"90° in {run['sweep_s']:g} s"
+    if kind(run) == "translate":
+        return f"Shift {run['target']:g} µm in {run['sweep_s']:g} s"
+    if kind(run) == "bend":
+        return f"Straight → wavy in {run['sweep_s']:g} s"
+    if run["hold_value"] != run["target"]:
+        return "Line → dot, stopped half way"
+    return f"Line → dot in {run['sweep_s']:g} s"
+
+
+def drives(run, sources):
+    """Drive of each segment index: -1 (the start frame, lines_x = spin at 0 deg), then the run's segments."""
+    cap = run["segments"][0]["cap_Pa_eq"]
+    amplitudes, phases = path_drive(sources, FREQUENCY_HZ, "spin", [0.0], cap)[0]
+    before = dict(frequency_Hz=FREQUENCY_HZ, cap_Pa_eq=cap, amplitudes_Pa_eq=list(amplitudes), phases_rad=list(phases))
+    return {-1: before, **dict(enumerate(run["segments"]))}
+
+
+def magnitude(drive, disc_field):
+    u = np.array(drive["amplitudes_Pa_eq"]) * np.exp(1j * np.array(drive["phases_rad"]))
+    return np.abs(u @ disc_field)
+
+
+def lumen_outline(ax, lumen, scale):
+    """The Y channel's segment boxes (geometry.YChannel), seen from above."""
+    for s in lumen.segments:
+        normal = np.array([-s["axis"][1], s["axis"][0]])
+        a, b = s["port"], s["port"] + s["length_m"] * s["axis"]
+        w = s["width_m"] / 2
+        corners = np.array([a + w * normal, b + w * normal, b - w * normal, a - w * normal]) * scale
+        ax.add_patch(Polygon(corners, closed=True, fill=False, edgecolor=INK, linewidth=1.2, zorder=4))
+
+
+def points_per_um(ax):
+    """Screen length (points) of 1 um across the line of sight in an orthographic 3d view."""
+    azimuth = np.radians(ax.azim)
+    step = 10.0 * np.array([-np.sin(azimuth), np.cos(azimuth), 0.0])
+    ends = [proj3d.proj_transform(*p, ax.get_proj())[:2] for p in (np.zeros(3), step)]
+    pixels = np.linalg.norm(ax.transData.transform(ends[1]) - ax.transData.transform(ends[0]))
+    return pixels / 10.0 * 72.0 / ax.figure.dpi
+
+
+def main():
+    data, out, names = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3:]
+    context = pretrain_context(Path("."), FREQUENCY_HZ, load_pretrain_policy(".")["apparatus"])
+    sources, lumen = context.discs, context.cavity.lumen
+    _, kappa_x, kappa_y = centre_fields(sources, FREQUENCY_HZ)
+    discs, order = sources, sources.quadrature_order(FREQUENCY_HZ)
+    line_um = np.linspace(-HALF_UM, HALF_UM, 181)
+    gx, gy = np.meshgrid(line_um, line_um, indexing="xy")
+    near = np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)]) * 1e-6
+    near_field = discs.evaluate(near, order)[0]
+    line = np.linspace(-HALF_MM, HALF_MM, 301) * 1e-3
+    fx, fy = np.meshgrid(line, line, indexing="xy")
+    inside = lumen.gaps(np.column_stack([fx.ravel(), fy.ravel(), np.zeros(fx.size)])).reshape(fx.shape) >= 0
+    wide = np.column_stack([fx[inside], fy[inside], np.zeros(inside.sum())])
+    wide_field = np.concatenate([discs.evaluate(chunk, order)[0] for chunk in np.array_split(wide, 12)], axis=1)
+    with tempfile.TemporaryDirectory() as font_dir:
+        for font in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / font).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                             "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK,
+                             "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+        runs = [json.loads((data / n / "ROW.json").read_text()) for n in names]
+        compact = [np.load(data / n / "compact.npz") for n in names]
+        frames = max(len(c["times_s"]) for c in compact)
+        z_limit = 5 * np.ceil(max(np.abs(c["positions_m"][..., 2]).max() for c in compact) * 1e6 / 5)  # colour range
+        half_z = z_limit + 5  # box half height
+        run_drives = [drives(r, sources) for r in runs]
+        near_maps, wide_maps = [], []
+        for ds in run_drives:
+            maps = {}
+            for k, d in ds.items():
+                p = magnitude(d, near_field).reshape(gx.shape)
+                maps[k] = p / p.max()
+            near_maps.append(maps)
+            maps = {}
+            for k, d in ds.items():
+                p = np.full(fx.shape, np.nan)
+                p[inside] = magnitude(d, wide_field) / 1e3
+                maps[k] = p
+            wide_maps.append(maps)
+        p_max = max(np.nanmax(p) for maps in wide_maps for p in maps.values())
+
+        columns = len(names)
+        tall = half_z > HALF_UM
+        width, height = 3.2 * columns + 1.6, 10.6 if tall else 9.6
+        fig = plt.figure(figsize=(width, height), dpi=100)
+        grid = fig.add_gridspec(3, columns + 1, width_ratios=[1] * columns + [0.05], height_ratios=[1.3 if tall else 1, 0.47, 1],
+                                left=0.6 / width, right=1 - 0.75 / width, bottom=0.06, top=0.95, wspace=0.22, hspace=0.18)
+        cmap = plt.get_cmap("magma").copy()
+        cmap.set_bad(WALL_FILL)
+        state = []
+        for k, (r, c) in enumerate(zip(runs, compact)):
+            x0 = c["positions_m"][0] * 1e6
+            top = fig.add_subplot(grid[0, k], projection="3d")
+            top.set_proj_type("ortho")
+            # fixed drawing order floor < dashed zero set < bubbles: the view looks down, so the floor is always
+            # behind the bubbles (the automatic order by mean depth let the floor cover the lower bubbles)
+            top.computed_zorder = False
+            top.set_xlim(-HALF_UM, HALF_UM)
+            top.set_ylim(-HALF_UM, HALF_UM)
+            top.set_zlim(-half_z, half_z)
+            top.set_box_aspect((2 * HALF_UM, 2 * HALF_UM, 2 * half_z), zoom=1.1)
+            top.view_init(elev=VIEW_ELEVATION_DEG, azim=-60)
+            top.set_xticks([-40, 0, 40])
+            top.set_yticks([-40, 0, 40])
+            z_step = 40 if tall else 20
+            top.set_zticks(np.arange(-(half_z // z_step) * z_step, half_z + 1, z_step))
+            top.tick_params(labelsize=8, pad=0)
+            top.set_xlabel("x (µm)", labelpad=-2)
+            top.set_ylabel("y (µm)", labelpad=-2)
+            top.set_zlabel("z (µm)", labelpad=-2)
+            dots = top.scatter(x0[:, 0], x0[:, 1], x0[:, 2], c=x0[:, 2], cmap="viridis", vmin=-z_limit, vmax=z_limit,
+                               edgecolors="white", linewidths=0.2, depthshade=False, zorder=2)
+            top.set_title(title(r), loc="left", fontsize=10, color=INK, y=1.06)  # above the top corner of the box
+            clock = top.set_title("", loc="right", fontsize=10, color=INK, y=1.06)
+
+            dial = fig.add_subplot(grid[1, k])
+            dial.add_patch(Rectangle((-0.4, -0.05), 0.8, 0.1, facecolor=WALL_FILL, edgecolor=INK, linewidth=0.8))
+            hands, values = [], []
+            for (cx, cy), (tx, ty, ha, va) in zip(DIALS, VALUE_SPOTS):
+                dial.add_patch(Circle((cx, cy), DIAL_RADIUS, fill=False, edgecolor=MUTED, linewidth=0.8))
+                dial.plot([cx, cx + DIAL_RADIUS], [cy, cy], color=MUTED, linewidth=0.5, linestyle=":")
+                hands.append(dial.plot([], [], color=INK, linewidth=1.6, marker="o", markersize=3, markevery=[1])[0])
+                values.append(dial.text(tx, ty, "", ha=ha, va=va, fontsize=8, color=INK, linespacing=1.15))
+            dial.text(-1.43, 0.66, f"{FREQUENCY_HZ / 1e6:.3f} MHz", ha="left", va="top", fontsize=9, color=INK)
+            dial.set_xlim(-1.45, 1.45)
+            dial.set_ylim(-0.68, 0.68)
+            dial.set_aspect("equal")
+            dial.axis("off")
+
+            field = fig.add_subplot(grid[2, k])
+            wide_image = field.imshow(wide_maps[k][-1], origin="lower", extent=[-HALF_MM, HALF_MM, -HALF_MM, HALF_MM],
+                                      cmap=cmap, vmin=0, vmax=p_max, interpolation="nearest")
+            lumen_outline(field, lumen, 1e3)
+            field.add_patch(Rectangle((-HALF_UM * 1e-3, -HALF_UM * 1e-3), 2 * HALF_UM * 1e-3, 2 * HALF_UM * 1e-3,
+                                      fill=False, edgecolor="white", linewidth=0.9, zorder=5))
+            field.set_xlim(-HALF_MM, HALF_MM)
+            field.set_ylim(-HALF_MM, HALF_MM)
+            field.set_aspect("equal")
+            field.set_xlabel("x (mm)")
+            if k == 0:
+                field.set_ylabel("y (mm)")
+            starts = np.cumsum([0.0] + [g["duration_s"] for g in r["segments"]])[:-1]
+            state.append(dict(index=k, run=r, compact=c, starts=starts, top=top, dots=dots, radii=c["radii_m"] * 1e6,
+                              clock=clock, wide_image=wide_image, hands=hands, values=values, floor=None, zero_set=[],
+                              segment=None))
+        fig.colorbar(state[-1]["dots"], cax=fig.add_subplot(grid[0, columns]), label="z (µm)")
+        fig.colorbar(state[-1]["wide_image"], cax=fig.add_subplot(grid[2, columns]), label="|p| (kPa)")
+        fig.canvas.draw()  # the 3d projections are set at the first draw
+        for s in state:
+            s["sizes"] = (2 * s["radii"] * points_per_um(s["top"])) ** 2
+            s["dots"].set_sizes(s["sizes"])
+
+        def zero_set(top, run, value):
+            """Dashed outline of the zero set of the local form (see the module docstring)."""
+            style = dict(color=ORANGE, lw=1.0, ls="--", zorder=1)
+            if kind(run) == "dots" or (kind(run) == "line_dot" and value > 0):
+                return top.plot([0, 0], [0, 0], [-half_z, half_z], **style)
+            if kind(run) in FIXED_TITLES:
+                form = np.real(sculpt.ideal_pattern(FREQUENCY_HZ, kind(run), kappa_x, kappa_y)(gx * 1e-6, gy * 1e-6))
+            elif kind(run) in complex_paths.FORMS:
+                form = complex_paths.local_form(kind(run), value, kappa_x, kappa_y)(gx * 1e-6, gy * 1e-6)
+            elif kind(run) == "rotating":
+                form = rotate.local_pressure(np.radians(value), kappa_x, kappa_y)(gx * 1e-6, gy * 1e-6)
+            else:
+                form = np.real(morph.local_pressure(kind(run), value, kappa_x, kappa_y)(gx * 1e-6, gy * 1e-6))
+            artists = []
+            for curve in contour_generator(gx, gy, form).lines(0.0):
+                for z in (-half_z, half_z):
+                    artists += top.plot(curve[:, 0], curve[:, 1], z, **style)
+                for end in (curve[0], curve[-1]):
+                    artists += top.plot([end[0], end[0]], [end[1], end[1]], [-half_z, half_z], **style)
+            return artists
+
+        def show_segment(s, segment):
+            drive = run_drives[s["index"]][segment]
+            for (cx, cy), hand, text, channel, a, phase in zip(DIALS, s["hands"], s["values"], CHANNELS,
+                                                                drive["amplitudes_Pa_eq"], drive["phases_rad"]):
+                length = DIAL_RADIUS * a / drive["cap_Pa_eq"]
+                hand.set_data([cx, cx + length * np.cos(phase)], [cy, cy + length * np.sin(phase)])
+                text.set_text(f"{channel}\n{a / 1e3:.2f} kPa-eq\n{np.degrees(phase) % 360:.0f}°")
+            s["wide_image"].set_data(wide_maps[s["index"]][segment])
+            for artist in [s["floor"]] + s["zero_set"]:
+                if artist is not None:
+                    artist.remove()
+            s["floor"] = s["top"].contourf(gx, gy, near_maps[s["index"]][segment], levels=np.linspace(0, 1, 11), zdir="z",
+                                           offset=-half_z, cmap="Greys_r", vmin=0, vmax=1.6, zorder=0)
+            s["zero_set"] = zero_set(s["top"], s["run"], segment_value(s["run"], segment))
+            s["segment"] = segment
+
+        def draw(i):
+            for s in state:
+                c = s["compact"]
+                j = min(i, len(c["times_s"]) - 1)
+                t = c["times_s"][j]
+                x = c["positions_m"][j] * 1e6
+                s["dots"].set_offsets(x[:, :2])
+                s["dots"].set_sizes(s["sizes"])
+                s["dots"].set_3d_properties(x[:, 2], "z")
+                s["dots"].set_array(x[:, 2])
+                segment = int(np.searchsorted(s["starts"], t - 1e-9) - 1)  # the segment that acted up to this frame
+                if not starts_from_sheet(s["run"]):
+                    segment = max(segment, 0)  # no drive before the start of a run from the cluster
+                if segment != s["segment"]:
+                    show_segment(s, segment)
+                s["clock"].set_text(f"t = {t:.2f} s")
+            return []
+
+        writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+        animation.FuncAnimation(fig, draw, frames=frames, blit=False).save(out, writer=writer)
+        plt.close(fig)
+
+
+main()

@@ -1,0 +1,31 @@
+"""Relative noise of the cycle-to-cycle change vs frequency (2026-11-08, diagnosis): one bubble from
+rest at 1 kPa, exactly 300 cycles, median and max of d1 over cycles 150-300, ODE tolerance 1e-8 and 1e-10."""
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import apecss_options, shell_parameters
+from workflows.f10ag import load_pretrain_policy
+
+exe = sys.argv[1]
+s = load_pretrain_policy(Path("."))["apecss_response"]
+rows = {}
+with tempfile.TemporaryDirectory() as tmp:
+    for ode in (1e-8, 1e-10):
+        path = Path(tmp) / f"b{ode:g}.apecss"
+        path.write_text(apecss_options(shell_parameters(s["bubble"], 1.78e-6, s["shell_vs_radius"]), ode))
+        for f in [2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 7.5, 8.0, 8.5, 9.0, 9.375, 9.5, 9.75, 9.9, 10.0]:
+            out = []
+            for p in (1e3, 2e4):
+                r = subprocess.run([exe, "-options", str(path), "-freq", repr(f * 1e6), "-amp", repr(p), "-cycles", "300", "-history"],
+                                   capture_output=True, text=True)
+                d = json.loads([l for l in r.stdout.splitlines() if l.startswith("APECSS_HARMONICS_JSON ")][0].split(" ", 1)[1])
+                h = np.array(d["history"])
+                out.append((float(np.median(h[150:, 2])), float(h[150:, 2].max())))
+            rows[f"{ode:g}_{f}"] = out
+            print(f"ode {ode:g} f {f:6.3f} MHz relative noise 1 kPa median {out[0][0]:.1e} max {out[0][1]:.1e} | 20 kPa median {out[1][0]:.1e} max {out[1][1]:.1e}", flush=True)
+Path(sys.argv[2]).write_text(json.dumps(rows, indent=1))

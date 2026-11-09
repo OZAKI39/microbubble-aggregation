@@ -1,0 +1,71 @@
+"""Mark references to the paths deleted on 2026-11-09 (user approval) in code comments, the policy and docs.
+
+usage: python annotate_refs.py PROJECT_ROOT DELETE_LIST.json
+Appends a note right after each reference to a deleted path; the text before it is not changed.
+morph_sheet_20261108 lost only part 1 (the sheet changes): references to it as the sheet tests get a
+part note; references to it for the weak-adhesion part (still there) stay as they are.
+Prints every changed line.
+"""
+
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(sys.argv[1]).resolve()
+LISTS = json.loads(Path(sys.argv[2]).read_text())
+GROUPS = ("G1_user_named", "G3_superseded_unadopted_incomplete_evidence", "G6_outdated_docs")
+DELETED = sorted({r["path"] for g in GROUPS for r in LISTS[g] if r["path"].startswith(("evidence/", "docs/"))},
+                 key=len, reverse=True)
+NOTE = {".md": "（2026-11-09 按用户要求删除）", ".py": " (deleted 2026-11-09, user decision)",
+        ".json": " (deleted 2026-11-09, user decision)"}
+PART_NOTE = {".md": "（第 1 部分 2026-11-09 按用户要求删除）",
+             ".py": " (part 1, the sheet changes, deleted 2026-11-09, user decision)",
+             ".json": " (part 1, the sheet changes, deleted 2026-11-09, user decision)"}
+MORPH = "evidence/morph_sheet_20261108"
+# (file, text that identifies the line): references to morph_sheet as the sheet-change tests
+MORPH_SHEET_LINES = (("microbubble/control.py", "and in evidence/rotate_sheet_20261108/"),
+                     ("configs/pretrain_policy.json", "like a sheet of bubbles turning"),
+                     ("README.md", "其他连续变化与弱粘附"),
+                     ("docs/VALIDATION.md", "舍入误差被拒，改为精确缩放"))
+FILES = (sorted(str(p.relative_to(ROOT)) for p in (ROOT / "microbubble").glob("*.py"))
+         + ["configs/pretrain_policy.json", "README.md", "docs/VALIDATION.md", "docs/MODEL_AND_CALLFLOW.md",
+            "docs/PROGRESS_REPORT_20261108.md"])
+TAIL = r"[^\s`'\"()（）,，;；、。\]<]*"
+
+
+def annotate(line, path, note):
+    """Insert note after every reference to path (with any sub-path, closing backtick or markdown link)."""
+    out, start = [], 0
+    for m in re.finditer(re.escape(path) + r"(?![\w.-])(?:/" + TAIL + ")?", line):
+        end = m.end()
+        if end < len(line) and line[end] == "`":
+            end += 1
+        elif end < len(line) and line[end] == ")" and line[max(0, m.start() - 2):m.start()] == "](":
+            end += 1
+        if line.startswith(note, end) or line.startswith(NOTE[".md"], end) or line.startswith(PART_NOTE[".md"], end):
+            continue
+        out.append(line[start:end] + note)
+        start = end
+    return "".join(out) + line[start:]
+
+
+for rel in FILES:
+    f = ROOT / rel
+    suffix = f.suffix
+    lines = f.read_text().split("\n")
+    changed = False
+    for i, line in enumerate(lines):
+        new = line
+        for path in DELETED:
+            if path in new:
+                new = annotate(new, path, NOTE[suffix])
+        if any(rel == file and key in line for file, key in MORPH_SHEET_LINES) and MORPH in new:
+            new = annotate(new, MORPH, PART_NOTE[suffix])
+        if new != line:
+            lines[i] = new
+            changed = True
+            print(f"{rel}:{i + 1}: {new.strip()[:260]}")
+    if changed:
+        f.write_text("\n".join(lines))
+json.loads((ROOT / "configs/pretrain_policy.json").read_text())

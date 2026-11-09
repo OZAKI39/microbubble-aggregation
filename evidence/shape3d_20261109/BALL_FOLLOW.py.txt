@@ -1,0 +1,124 @@
+"""Does a cluster started as a ball follow a change as well as the sheet does? Share on the zero line (2026-11-09).
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:ROTATE_SCRIPTS:MORPH_SCRIPTS python ball_follow.py SCRATCH OUT_DIR
+SCRATCH: holds rotate/out and morph/out_mov (sheet starts, 2026-11-08) and ball3d/out (ball starts, 2026-11-09).
+At every saved frame: the share of bubbles whose centre lies within R = 1.78 um (the mean radius, as in the earlier
+analyses) of the zero line of the local form in effect, seen from above; the zero set does not depend on z, so this
+is the distance to the vertical zero surface. Field in effect: the segment that acted up to the frame (a frame on a
+boundary belongs to the earlier segment); the start frame of a sheet run belongs to lines_x (value 0), that of a
+ball run to its first segment. Rotation, shift and straight-to-wavy at 6.4 s and 25.6 s. Line-to-dot is left out:
+for gamma > 0 its zero set is the single vertical line x = y = 0, where the share has no meaning (its shape is in
+fig_ball_changes.png of shape3d.py).
+Writes OUT_DIR/FOLLOW.json (per run: share at the end of the change and at the end, first time at 0.8 or more),
+OUT_DIR/FOLLOW.npz (the time series) and OUT_DIR/fig_follow_ball_vs_sheet.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from scipy.spatial import cKDTree
+
+import morph
+import rotate
+from sculpt import centre_fields
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+BALL, SHEET = "#2a78d6", "#eb6834"
+R = 1.78e-6
+FREQUENCY_HZ = 9.375e6
+KINDS = (("ROT", "rotate/out", "Rotation 90°"), ("MOV_translate", "morph/out_mov", "Shift 20 µm"),
+         ("MOV_bend", "morph/out_mov", "Straight → wavy"))
+SWEEPS = ("6.4", "25.6")
+
+
+def main():
+    scratch, out = Path(sys.argv[1]), Path(sys.argv[2])
+    elements = pretrain_context(Path("."), FREQUENCY_HZ).discs.elements
+    _, kappa_x, kappa_y = centre_fields(elements, FREQUENCY_HZ)
+    trees = {}
+
+    def zero_tree(kind, value):
+        if (kind, value) not in trees:
+            if kind == "rotating":
+                points = rotate.zero_set(np.radians(value), kappa_x, kappa_y)
+            else:
+                points = morph.zero_set(morph.local_pressure(kind, value, kappa_x, kappa_y))
+            trees[kind, value] = cKDTree(points)
+        return trees[kind, value]
+
+    def share_on_line(folder, from_sheet):
+        run = json.loads((folder / "ROW.json").read_text())
+        data = np.load(folder / "compact.npz")
+        kind = run["segments"][0]["pattern"]
+        values = [s["alpha_deg" if kind == "rotating" else "value"] for s in run["segments"]]
+        starts = np.cumsum([0.0] + [s["duration_s"] for s in run["segments"]])[:-1]
+        share = []
+        for t, x in zip(data["times_s"], data["positions_m"]):
+            k = int(np.searchsorted(starts, t - 1e-9) - 1)  # -1 only at the start frame
+            if k < 0 and from_sheet:
+                value = 0.0  # the sheet was made by lines_x
+            else:
+                value = values[max(k, 0)]
+            share.append(np.mean(zero_tree(kind, value).query(x[:, :2])[0] < R))
+        return run, data["times_s"], np.array(share)
+
+    with tempfile.TemporaryDirectory() as font_dir:
+        for font in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / font).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED, "axes.labelcolor": INK,
+                             "xtick.color": MUTED, "ytick.color": MUTED})
+        fig, axes = plt.subplots(len(KINDS), len(SWEEPS), figsize=(9.6, 7.6), dpi=150, sharey=True)
+        fig.subplots_adjust(left=0.08, right=0.98, bottom=0.07, top=0.9, wspace=0.08, hspace=0.6)
+        summary, series = [], {}
+        for r, (prefix, folder, label) in enumerate(KINDS):
+            for c, sweep in enumerate(SWEEPS):
+                ax = axes[r, c]
+                for start, path, from_sheet, colour in (
+                        ("Ball start", scratch / "ball3d/out" / f"B{prefix}_N250_9.375MHz_sweep{sweep}s_total32s", False, BALL),
+                        ("Sheet start", scratch / folder / f"{prefix}_N250_9.375MHz_sweep{sweep}s_hold2s", True, SHEET)):
+                    run, t, share = share_on_line(path, from_sheet)
+                    ax.plot(t, share, color=colour, lw=1.6, label=start)
+                    series[f"{run['name']}__t_s"], series[f"{run['name']}__share_on_line"] = t, share
+                    end_of_change = int(np.argmin(np.abs(t - float(sweep))))
+                    reached = np.nonzero(share >= 0.8)[0]
+                    summary.append(dict(change=label, sweep_s=float(sweep), start=start, name=run["name"],
+                                        duration_s=float(t[-1]), share_end_of_change=float(share[end_of_change]),
+                                        share_end=float(share[-1]),
+                                        first_time_share_0_8_s=float(t[reached[0]]) if reached.size else None))
+                ax.axvline(float(sweep), color=MUTED, lw=0.8, ls=":", label="End of the change")
+                ax.set_title(f"{label}, in {sweep} s", loc="left", fontsize=9.5, color=INK)
+                ax.set_xlim(0, 32)
+                ax.set_ylim(0, 1.05)
+                ax.grid(color=GRID, lw=0.6)
+                ax.set_axisbelow(True)
+                for side in ("top", "right"):
+                    ax.spines[side].set_visible(False)
+                if r == len(KINDS) - 1:
+                    ax.set_xlabel("Time (s)")
+                if c == 0:
+                    ax.set_ylabel(f"Share within {R * 1e6:.2f} µm\nof the zero line")
+        handles, labels = axes[0, 0].get_legend_handles_labels()
+        fig.legend(handles, labels, loc="upper right", ncol=3, frameon=False, fontsize=9)
+        fig.savefig(out / "fig_follow_ball_vs_sheet.png")
+        plt.close(fig)
+    (out / "FOLLOW.json").write_text(json.dumps(summary, indent=1) + "\n")
+    np.savez_compressed(out / "FOLLOW.npz", **series)
+    for row in summary:
+        print(f"{row['change']:18s} {row['sweep_s']:5.1f} s  {row['start']:11s} share end of change "
+              f"{row['share_end_of_change']:.2f}  end ({row['duration_s']:.1f} s) {row['share_end']:.2f}  "
+              f"first >= 0.8 at {row['first_time_share_0_8_s']}")
+
+
+main()

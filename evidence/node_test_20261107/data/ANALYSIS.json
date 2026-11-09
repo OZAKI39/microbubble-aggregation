@@ -1,0 +1,1082 @@
+{
+ "seed23_node_adhesion_x1": {
+  "seed": 23,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.104455356951803,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   4415.836546035964
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.910208995755333
+  ],
+  "centroid_m": [
+   -0.009132210935302129,
+   0.0003241059125814863,
+   -4.3846184823669986e-05
+  ],
+  "pressure_at_centroid_Pa": 1.8349619983596342e-12,
+  "pressure_one_channel_at_centroid_Pa": 8174.450553715738,
+  "sim": {
+   "dln": 0.006300381569341,
+   "aspect": 1.1544047791080185,
+   "split": 0.0,
+   "speed": 0.18050922640657882,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0014349960870029704,
+   "aspect": 1.2474609215478873,
+   "split": 0.0,
+   "speed": 0.1805092264074657,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.5,
+  "side_separation_end_um": 3.3672819294006118,
+  "centroid_shift_x_um": -0.043356132208710596,
+  "contacts_per_bubble_start": 2.35,
+  "contacts_per_bubble_end": 2.7,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 3.664316170586169e-15,
+  "F2_spread_median_N": 9.98683564268012e-12,
+  "F1_spread_median_N": 2.0311423870351487e-12,
+  "F2_spread_over_F1_spread": 4.917090928635687
+ },
+ "seed23_node_adhesion_x0": {
+  "seed": 23,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 2.0355281641241163,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   4415.836546035964
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.910208995755333
+  ],
+  "centroid_m": [
+   -0.009132210935302129,
+   0.0003241059125814863,
+   -4.3846184823669986e-05
+  ],
+  "pressure_at_centroid_Pa": 1.8349619983596342e-12,
+  "pressure_one_channel_at_centroid_Pa": 8174.450553715738,
+  "sim": {
+   "dln": 0.06602757510706857,
+   "aspect": 1.223923930986622,
+   "split": 0.011764705882352941,
+   "speed": 2.341454908999016,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.009889393978336498,
+   "aspect": 1.2447502912819546,
+   "split": 0.0,
+   "speed": 2.3414549089712904,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 0.5,
+  "first_split_s": 0.08,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.7,
+  "side_separation_end_um": 6.629477630845648,
+  "centroid_shift_x_um": 0.6406360090471797,
+  "contacts_per_bubble_start": 2.35,
+  "contacts_per_bubble_end": 2.05,
+  "broken_per_bubble_per_0p1s_median": 0.4,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 1.15,
+  "drive_per_bubble_N": 6.817104135560568e-14,
+  "F2_spread_median_N": 8.785830098650435e-12,
+  "F1_spread_median_N": 4.32272883480883e-12,
+  "F2_spread_over_F1_spread": 2.087442473583783
+ },
+ "seed23_antinode_adhesion_x1": {
+  "seed": 23,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 1.814179957145825,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   4415.836546035964
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   2.76861634216554
+  ],
+  "centroid_m": [
+   -0.009132210935302129,
+   0.0003241059125814863,
+   -4.3846184823669986e-05
+  ],
+  "pressure_at_centroid_Pa": 16348.90110743148,
+  "pressure_one_channel_at_centroid_Pa": 8174.450553715738,
+  "sim": {
+   "dln": 0.01352809687405498,
+   "aspect": 1.257932435036829,
+   "split": 0.0,
+   "speed": 141.11222326395009,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.009325568649513068,
+   "aspect": 1.2449305310001397,
+   "split": 0.0,
+   "speed": 141.1122232639212,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 1.0,
+  "side_separation_end_um": null,
+  "centroid_shift_x_um": 145.55770285741045,
+  "contacts_per_bubble_start": 2.35,
+  "contacts_per_bubble_end": 2.7,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 2.6505979869966276e-12,
+  "F2_spread_median_N": 1.565373612362871e-10,
+  "F1_spread_median_N": 1.9506084530018807e-12,
+  "F2_spread_over_F1_spread": 38.56848976559612
+ },
+ "seed14_node_adhesion_x1": {
+  "seed": 14,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.1711585759185255,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   1265.6973862641134,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   6.165571507862718
+  ],
+  "centroid_m": [
+   0.00700564784708245,
+   -4.912998989764462e-05,
+   0.00010843045345404033
+  ],
+  "pressure_at_centroid_Pa": 4.0194366942304643e-13,
+  "pressure_one_channel_at_centroid_Pa": 2470.533334229143,
+  "sim": {
+   "dln": 0.004853098739175046,
+   "aspect": 1.074429250077033,
+   "split": 0.0,
+   "speed": 0.04395573818084699,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 7.081287424061795e-05,
+   "aspect": 1.0257522006168753,
+   "split": 0.0,
+   "speed": 0.04395573818084699,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.59375,
+  "plus_side_share_end": 0.5625,
+  "side_separation_end_um": 4.626969473233225,
+  "centroid_shift_x_um": 0.05690261886768383,
+  "contacts_per_bubble_start": 2.5,
+  "contacts_per_bubble_end": 2.8125,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 9.090058824962045e-16,
+  "F2_spread_median_N": 6.7104596782009e-13,
+  "F1_spread_median_N": 2.779424061604733e-13,
+  "F2_spread_over_F1_spread": 2.4317213905201607
+ },
+ "seed14_node_adhesion_x0": {
+  "seed": 14,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 2.0411300130654126,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   1265.6973862641134,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   6.165571507862718
+  ],
+  "centroid_m": [
+   0.00700564784708245,
+   -4.912998989764462e-05,
+   0.00010843045345404033
+  ],
+  "pressure_at_centroid_Pa": 4.0194366942304643e-13,
+  "pressure_one_channel_at_centroid_Pa": 2470.533334229143,
+  "sim": {
+   "dln": 0.008727774098747955,
+   "aspect": 1.0768408087551034,
+   "split": 0.0,
+   "speed": 0.03522351452930516,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0,
+   "aspect": 1.0257522006168753,
+   "split": 0.0,
+   "speed": 0.0352235145148629,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.59375,
+  "plus_side_share_end": 0.5625,
+  "side_separation_end_um": 5.606810558919477,
+  "centroid_shift_x_um": 0.0344730264664056,
+  "contacts_per_bubble_start": 2.5,
+  "contacts_per_bubble_end": 2.375,
+  "broken_per_bubble_per_0p1s_median": 0.03125,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.1875,
+  "drive_per_bubble_N": 7.325989935446822e-16,
+  "F2_spread_median_N": 5.167111949419336e-13,
+  "F1_spread_median_N": 2.7563999915754974e-13,
+  "F2_spread_over_F1_spread": 1.853876745040394
+ },
+ "seed14_antinode_adhesion_x1": {
+  "seed": 14,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.0808170661330223,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   1265.6973862641134,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   3.023978854272925
+  ],
+  "centroid_m": [
+   0.00700564784708245,
+   -4.912998989764462e-05,
+   0.00010843045345404033
+  ],
+  "pressure_at_centroid_Pa": 4941.066668458287,
+  "pressure_one_channel_at_centroid_Pa": 2470.533334229143,
+  "sim": {
+   "dln": 0.00930637221782972,
+   "aspect": 1.0270710556318807,
+   "split": 0.0,
+   "speed": 5.544266139965472,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.007542483763553242,
+   "aspect": 1.018049431370421,
+   "split": 0.0,
+   "speed": 5.544266139979734,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.59375,
+  "plus_side_share_end": 0.03125,
+  "side_separation_end_um": 5.213486294572759,
+  "centroid_shift_x_um": -4.974355971796782,
+  "contacts_per_bubble_start": 2.5,
+  "contacts_per_bubble_end": 2.78125,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 1.1812744805854724e-13,
+  "F2_spread_median_N": 1.602914631799401e-11,
+  "F1_spread_median_N": 1.4142293274596984e-13,
+  "F2_spread_over_F1_spread": 113.35839914522194
+ },
+ "seed21_node_adhesion_x1": {
+  "seed": 21,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 50,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.9231510050594807,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   3688.4324090690793
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   1.614208022502308
+  ],
+  "centroid_m": [
+   -0.012551712843716043,
+   0.0006857682395032614,
+   0.0002633467808042389
+  ],
+  "pressure_at_centroid_Pa": 4.547473508864641e-13,
+  "pressure_one_channel_at_centroid_Pa": 5923.945095621012,
+  "sim": {
+   "dln": 0.008630258589769894,
+   "aspect": 1.07106554276742,
+   "split": 0.0,
+   "speed": 0.07260221384260408,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.00047954129324824496,
+   "aspect": 1.0603091693157,
+   "split": 0.0,
+   "speed": 0.07260221384380926,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.48,
+  "plus_side_share_end": 0.54,
+  "side_separation_end_um": 5.281822642188086,
+  "centroid_shift_x_um": -0.0035224168633968267,
+  "contacts_per_bubble_start": 2.64,
+  "contacts_per_bubble_end": 2.9,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 1.5640539676098843e-15,
+  "F2_spread_median_N": 1.589995594369925e-12,
+  "F1_spread_median_N": 1.0395876400205719e-12,
+  "F2_spread_over_F1_spread": 1.5324363185894856
+ },
+ "seed21_node_adhesion_x0": {
+  "seed": 21,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 50,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_GUARD')",
+  "completed_s": 1.303,
+  "adhesion_force_N": 0.0,
+  "wall_s": 2.7018369738943875,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   3688.4324090690793
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   1.614208022502308
+  ],
+  "centroid_m": [
+   -0.012551712843716043,
+   0.0006857682395032614,
+   0.0002633467808042389
+  ],
+  "pressure_at_centroid_Pa": 4.547473508864641e-13,
+  "pressure_one_channel_at_centroid_Pa": 5923.945095621012,
+  "sim": {
+   "dln": 0.01987169915166707,
+   "aspect": 1.0753338104407364,
+   "split": 0.3287671232876712,
+   "speed": 2.2854046017872856,
+   "windows": 73
+  },
+  "rigid_floor": {
+   "dln": 0.0023974076705941282,
+   "aspect": 1.0580280887351272,
+   "split": 0.0,
+   "speed": 9.390192956093856,
+   "windows": 73
+  },
+  "pieces_end": 4,
+  "largest_piece_share_end": 0.92,
+  "largest_piece_share_min": 0.92,
+  "first_split_s": 0.5700000000000001,
+  "plus_side_share_start": 0.48,
+  "plus_side_share_end": 0.46,
+  "side_separation_end_um": 19.774678216351315,
+  "centroid_shift_x_um": 3.156978874988697,
+  "contacts_per_bubble_start": 2.64,
+  "contacts_per_bubble_end": 2.42,
+  "broken_per_bubble_per_0p1s_median": 0.1,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.38,
+  "drive_per_bubble_N": 1.417302066685389e-13,
+  "F2_spread_median_N": 1.6289150894776908e-12,
+  "F1_spread_median_N": 1.0555055816001118e-12,
+  "F2_spread_over_F1_spread": 1.518218489111952
+ },
+ "seed21_antinode_adhesion_x1": {
+  "seed": 21,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 50,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_GUARD')",
+  "completed_s": 0.097,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 0.205189798027277,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   3688.4324090690793
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   4.755800676092101
+  ],
+  "centroid_m": [
+   -0.012551712843716043,
+   0.0006857682395032614,
+   0.0002633467808042389
+  ],
+  "pressure_at_centroid_Pa": 11847.890191242024,
+  "pressure_one_channel_at_centroid_Pa": 5923.945095621012,
+  "sim": {
+   "dln": null,
+   "aspect": null,
+   "split": null,
+   "speed": NaN,
+   "windows": 0
+  },
+  "rigid_floor": {
+   "dln": null,
+   "aspect": null,
+   "split": null,
+   "speed": NaN,
+   "windows": 0
+  },
+  "pieces_end": 2,
+  "largest_piece_share_end": 0.98,
+  "largest_piece_share_min": 0.98,
+  "first_split_s": 0.01,
+  "plus_side_share_start": 0.48,
+  "plus_side_share_end": 0.4,
+  "side_separation_end_um": 6.035927893962775,
+  "centroid_shift_x_um": -0.5436475146100572,
+  "contacts_per_bubble_start": 2.64,
+  "contacts_per_bubble_end": 2.84,
+  "broken_per_bubble_per_0p1s_median": null,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": null,
+  "drive_per_bubble_N": 4.700801446240313e-13,
+  "F2_spread_median_N": 1.3958631161433104e-10,
+  "F1_spread_median_N": 1.0601423873997525e-12,
+  "F2_spread_over_F1_spread": 131.83297910192374
+ },
+ "seed16_node_adhesion_x1": {
+  "seed": 16,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 4.471000732155517,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   2833.970272645951,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.631008539223291
+  ],
+  "centroid_m": [
+   0.009792594404532921,
+   -0.0004716851285446203,
+   0.00029273945121085213
+  ],
+  "pressure_at_centroid_Pa": 2.4502110952567955e-12,
+  "pressure_one_channel_at_centroid_Pa": 4946.524865646237,
+  "sim": {
+   "dln": 0.0036002918873901746,
+   "aspect": 1.1404628102151275,
+   "split": 0.0,
+   "speed": 0.13456247386775058,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.00025171488239521294,
+   "aspect": 1.0635155948453356,
+   "split": 0.0,
+   "speed": 0.1345624738462403,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.47368421052631576,
+  "side_separation_end_um": 7.135805051388528,
+  "centroid_shift_x_um": -0.09613358323452836,
+  "contacts_per_bubble_start": 2.5789473684210527,
+  "contacts_per_bubble_end": 2.9473684210526314,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 2.9061575415142015e-15,
+  "F2_spread_median_N": 9.627822777827234e-13,
+  "F1_spread_median_N": 4.479403717279368e-13,
+  "F2_spread_over_F1_spread": 2.1351818269891547
+ },
+ "seed16_node_adhesion_x0": {
+  "seed": 16,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 4.594058533897623,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   2833.970272645951,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.631008539223291
+  ],
+  "centroid_m": [
+   0.009792594404532921,
+   -0.0004716851285446203,
+   0.00029273945121085213
+  ],
+  "pressure_at_centroid_Pa": 2.4502110952567955e-12,
+  "pressure_one_channel_at_centroid_Pa": 4946.524865646237,
+  "sim": {
+   "dln": 0.05205780195137438,
+   "aspect": 1.4842869143648465,
+   "split": 0.6235294117647059,
+   "speed": 3.7748420584048237,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.004363674037877334,
+   "aspect": 1.0709397128391551,
+   "split": 0.0,
+   "speed": 12.560356720082167,
+   "windows": 85
+  },
+  "pieces_end": 7,
+  "largest_piece_share_end": 0.881578947368421,
+  "largest_piece_share_min": 0.8421052631578947,
+  "first_split_s": 0.06,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.3157894736842105,
+  "side_separation_end_um": 23.030126154949606,
+  "centroid_shift_x_um": -6.269894149460789,
+  "contacts_per_bubble_start": 2.5789473684210527,
+  "contacts_per_bubble_end": 1.8421052631578947,
+  "broken_per_bubble_per_0p1s_median": 0.39473684210526316,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.5789473684210527,
+  "drive_per_bubble_N": 2.4157453632697413e-13,
+  "F2_spread_median_N": 1.820516251069688e-12,
+  "F1_spread_median_N": 9.618502019420814e-13,
+  "F2_spread_over_F1_spread": 2.0005861011981882
+ },
+ "seed16_antinode_adhesion_x1": {
+  "seed": 16,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 4.4015347571112216,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   2833.970272645951,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   2.4894158856334982
+  ],
+  "centroid_m": [
+   0.009792594404532921,
+   -0.0004716851285446203,
+   0.00029273945121085213
+  ],
+  "pressure_at_centroid_Pa": 9893.049731292474,
+  "pressure_one_channel_at_centroid_Pa": 4946.524865646237,
+  "sim": {
+   "dln": 0.005906864848565525,
+   "aspect": 1.1401190892554909,
+   "split": 0.0,
+   "speed": 17.598110423213672,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.00512203876675707,
+   "aspect": 1.0740530183891024,
+   "split": 0.0,
+   "speed": 17.598110423217133,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.6578947368421053,
+  "side_separation_end_um": 7.2523395160725,
+  "centroid_shift_x_um": 2.1286577179743804,
+  "contacts_per_bubble_start": 2.5789473684210527,
+  "contacts_per_bubble_end": 2.9210526315789473,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 4.160122561605455e-13,
+  "F2_spread_median_N": 5.028370825488722e-11,
+  "F1_spread_median_N": 4.992334729743894e-13,
+  "F2_spread_over_F1_spread": 101.44091706528056
+ },
+ "seed17_node_adhesion_x1": {
+  "seed": 17,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 6.422154989792034,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3367.7305167990658,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   0.25119508239997224
+  ],
+  "centroid_m": [
+   0.007653386707355319,
+   0.00015584802260364754,
+   -0.0006229130606023715
+  ],
+  "pressure_at_centroid_Pa": 9.374856803373542e-13,
+  "pressure_one_channel_at_centroid_Pa": 5811.202926726151,
+  "sim": {
+   "dln": 0.0027711723089038414,
+   "aspect": 1.1089424403190458,
+   "split": 0.0,
+   "speed": 0.22069371371200988,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0010882098933744989,
+   "aspect": 1.064696994059344,
+   "split": 0.0,
+   "speed": 0.2206937136975469,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.494949494949495,
+  "plus_side_share_end": 0.5252525252525253,
+  "side_separation_end_um": 7.653874881651326,
+  "centroid_shift_x_um": 0.20249723821277182,
+  "contacts_per_bubble_start": 2.5353535353535355,
+  "contacts_per_bubble_end": 2.909090909090909,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 4.363057903221345e-15,
+  "F2_spread_median_N": 1.367542147847687e-12,
+  "F1_spread_median_N": 6.60815948062364e-13,
+  "F2_spread_over_F1_spread": 2.079257170580349
+ },
+ "seed17_node_adhesion_x0": {
+  "seed": 17,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 6.443982541095465,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3367.7305167990658,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   0.25119508239997224
+  ],
+  "centroid_m": [
+   0.007653386707355319,
+   0.00015584802260364754,
+   -0.0006229130606023715
+  ],
+  "pressure_at_centroid_Pa": 9.374856803373542e-13,
+  "pressure_one_channel_at_centroid_Pa": 5811.202926726151,
+  "sim": {
+   "dln": 0.07246723436476879,
+   "aspect": 1.2858748546729766,
+   "split": 0.4470588235294118,
+   "speed": 1.8711622696939856,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.00301001098657666,
+   "aspect": 1.0636204364526505,
+   "split": 0.0,
+   "speed": 5.024408744569613,
+   "windows": 85
+  },
+  "pieces_end": 4,
+  "largest_piece_share_end": 0.9494949494949495,
+  "largest_piece_share_min": 0.9090909090909091,
+  "first_split_s": 0.02,
+  "plus_side_share_start": 0.494949494949495,
+  "plus_side_share_end": 0.46464646464646464,
+  "side_separation_end_um": 18.508867673003305,
+  "centroid_shift_x_um": -1.993709875324802,
+  "contacts_per_bubble_start": 2.5353535353535355,
+  "contacts_per_bubble_end": 2.0707070707070705,
+  "broken_per_bubble_per_0p1s_median": 0.45454545454545453,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.7171717171717171,
+  "drive_per_bubble_N": 1.472144835384719e-13,
+  "F2_spread_median_N": 2.963505038516911e-12,
+  "F1_spread_median_N": 1.2820332112907332e-12,
+  "F2_spread_over_F1_spread": 2.316157595357353
+ },
+ "seed17_antinode_adhesion_x1": {
+  "seed": 17,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 7.4630667108576745,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3367.7305167990658,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   3.3927877359897654
+  ],
+  "centroid_m": [
+   0.007653386707355319,
+   0.00015584802260364754,
+   -0.0006229130606023715
+  ],
+  "pressure_at_centroid_Pa": 11622.405853452305,
+  "pressure_one_channel_at_centroid_Pa": 5811.202926726151,
+  "sim": {
+   "dln": 0.0037258308803521127,
+   "aspect": 1.0420300213357507,
+   "split": 0.0,
+   "speed": 1.1063572870558316,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.003169111618099167,
+   "aspect": 1.0626780248562462,
+   "split": 0.0,
+   "speed": 1.1063572870221212,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.494949494949495,
+  "plus_side_share_end": 0.5353535353535354,
+  "side_separation_end_um": 7.265649363659421,
+  "centroid_shift_x_um": 0.8997868250143828,
+  "contacts_per_bubble_start": 2.5353535353535355,
+  "contacts_per_bubble_end": 2.9494949494949494,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 6.065263571831786e-14,
+  "F2_spread_median_N": 3.488564198457559e-11,
+  "F1_spread_median_N": 3.467668145484198e-13,
+  "F2_spread_over_F1_spread": 100.6648072489414
+ },
+ "seed7_node_adhesion_x1": {
+  "seed": 7,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 9.563602440059185,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3510.4299993260533,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.525793747799591
+  ],
+  "centroid_m": [
+   0.010401184393783236,
+   0.00044454657596171217,
+   -4.798341916654244e-05
+  ],
+  "pressure_at_centroid_Pa": 7.288603167730942e-12,
+  "pressure_one_channel_at_centroid_Pa": 6240.753903425897,
+  "sim": {
+   "dln": 0.002694458525762125,
+   "aspect": 1.1074678125073973,
+   "split": 0.0,
+   "speed": 0.05946586427532052,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0007476502125260972,
+   "aspect": 1.115792912044734,
+   "split": 0.0,
+   "speed": 0.05946586427532052,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.5081967213114754,
+  "side_separation_end_um": 6.868140330667377,
+  "centroid_shift_x_um": -0.04382437295870345,
+  "contacts_per_bubble_start": 2.6147540983606556,
+  "contacts_per_bubble_end": 2.9836065573770494,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.01639344262295082,
+  "drive_per_bubble_N": 1.1825281576791626e-15,
+  "F2_spread_median_N": 1.4572097719495173e-12,
+  "F1_spread_median_N": 8.372341396270735e-13,
+  "F2_spread_over_F1_spread": 1.7675089505546104
+ },
+ "seed7_node_adhesion_x0": {
+  "seed": 7,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 9.548304977826774,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3510.4299993260533,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.525793747799591
+  ],
+  "centroid_m": [
+   0.010401184393783236,
+   0.00044454657596171217,
+   -4.798341916654244e-05
+  ],
+  "pressure_at_centroid_Pa": 7.288603167730942e-12,
+  "pressure_one_channel_at_centroid_Pa": 6240.753903425897,
+  "sim": {
+   "dln": 0.055947611691703376,
+   "aspect": 1.1094727540508642,
+   "split": 0.4117647058823529,
+   "speed": 2.8889343953568223,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0046182736020275415,
+   "aspect": 1.112073780876298,
+   "split": 0.0,
+   "speed": 26.368163169750144,
+   "windows": 85
+  },
+  "pieces_end": 6,
+  "largest_piece_share_end": 0.9344262295081968,
+  "largest_piece_share_min": 0.9016393442622951,
+  "first_split_s": 0.03,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.4262295081967213,
+  "side_separation_end_um": 45.01026769630246,
+  "centroid_shift_x_um": -17.37061639239465,
+  "contacts_per_bubble_start": 2.6147540983606556,
+  "contacts_per_bubble_end": 2.0737704918032787,
+  "broken_per_bubble_per_0p1s_median": 0.4672131147540984,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.6885245901639344,
+  "drive_per_bubble_N": 5.102265439339986e-13,
+  "F2_spread_median_N": 2.9668123492952745e-12,
+  "F1_spread_median_N": 1.443906075741003e-12,
+  "F2_spread_over_F1_spread": 2.047069516967989
+ },
+ "seed7_antinode_adhesion_x1": {
+  "seed": 7,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 10.534852313809097,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3510.4299993260533,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   2.3842010942097986
+  ],
+  "centroid_m": [
+   0.010401184393783236,
+   0.00044454657596171217,
+   -4.798341916654244e-05
+  ],
+  "pressure_at_centroid_Pa": 12481.507806851794,
+  "pressure_one_channel_at_centroid_Pa": 6240.753903425897,
+  "sim": {
+   "dln": 0.005088702132529764,
+   "aspect": 1.1110860767028736,
+   "split": 0.0,
+   "speed": 12.926855174637177,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0027617903672026278,
+   "aspect": 1.1124040829318147,
+   "split": 0.0,
+   "speed": 12.92685517464671,
+   "windows": 85
+  },
+  "pieces_end": 1,
+  "largest_piece_share_end": 1.0,
+  "largest_piece_share_min": 1.0,
+  "first_split_s": null,
+  "plus_side_share_start": 0.5,
+  "plus_side_share_end": 0.7295081967213115,
+  "side_separation_end_um": 7.003500633297188,
+  "centroid_shift_x_um": 2.8194646956268556,
+  "contacts_per_bubble_start": 2.6147540983606556,
+  "contacts_per_bubble_end": 3.0245901639344264,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_after_0p1s_max": 0.0,
+  "drive_per_bubble_N": 2.617851522842544e-13,
+  "F2_spread_median_N": 3.757242451379433e-11,
+  "F1_spread_median_N": 5.22119465953716e-13,
+  "F2_spread_over_F1_spread": 71.85353637058628
+ }
+}

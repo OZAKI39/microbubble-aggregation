@@ -1,0 +1,24 @@
+"""Fixed-step convergence test (2026-11-06): one random 3D start + random actions, several dt.
+
+usage (repository root):  python run_seed.py RESULTS_DIR SEED [dt_s ...]
+Each run: RESULTS_DIR/seed<SEED>_dt<us>us/ from a config with state_seed = action_seed = SEED,
+0.5 s, save every 0.01 s, project defaults otherwise (GPU field, APECSS, compiled contact).
+"""
+
+import json
+import sys
+from pathlib import Path
+
+from workflows.f10ag import run
+
+results, seed = Path(sys.argv[1]), int(sys.argv[2])
+steps = [float(v) for v in sys.argv[3:]] or [5e-3, 2e-3, 1e-3, 5e-4, 2e-4, 1e-4]
+(results / "configs").mkdir(parents=True, exist_ok=True)
+for dt in steps:
+    name = f"seed{seed}_dt{round(dt * 1e6)}us"
+    cfg = dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5, save_interval_s=0.01,
+               state_seed=seed, action_seed=seed, fixed_step_s=dt)
+    path = results / "configs" / f"{name}.json"
+    path.write_text(json.dumps(cfg, indent=1) + "\n")
+    r = run(Path("."), path, results / name)
+    print(name, r["status"], r.get("reason"), r["accepted_steps"], round(r["wall_s"], 1), flush=True)

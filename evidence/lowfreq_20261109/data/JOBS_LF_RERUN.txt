@@ -1,0 +1,4 @@
+LF_x_pair_antinode_0.5MHz_1s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 x_pair_antinode 1.0 0.5 6000 0.0001 0.01
+LF_x_pair_antinode_1.0MHz_1s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 x_pair_antinode 1.0 1.0 6000 0.0001 0.01
+LF_x_pair_node_0.5MHz_1s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 x_pair_node 1.0 0.5 6000 0.0001 0.01
+LF_x_pair_node_1.0MHz_1s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 x_pair_node 1.0 1.0 6000 0.0001 0.01

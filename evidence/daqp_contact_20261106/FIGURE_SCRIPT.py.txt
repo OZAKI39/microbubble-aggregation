@@ -1,0 +1,63 @@
+"""Whole-run wall time with the three contact-QP set-ups (2026-11-06).
+
+usage (repository root):  python fig_daqp.py EVIDENCE_DIR
+Reads EVIDENCE_DIR/data/{RUNS_BASELINE_AND_QPOASES,DAQP_RUNS}.json; writes fig1_run_times.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEEDS = ["23", "21", "16", "7"]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def main():
+    folder = Path(sys.argv[1])
+    old = json.loads((folder / "data" / "RUNS_BASELINE_AND_QPOASES.json").read_text())
+    daqp = json.loads((folder / "data" / "DAQP_RUNS.json").read_text())
+    versions = [("active set first, qpOASES fallback", "#9aa3ad", [old["baseline"][s]["wall_s"] for s in SEEDS]),
+                ("qpOASES for every constrained step", "#2a6fb0", [old["direct"][s]["wall_s"] for s in SEEDS]),
+                ("DAQP for every constrained step (now)", "#d0812c", [daqp[s]["wall_s"] for s in SEEDS])]
+    bubbles = [daqp[s]["bubbles"] for s in SEEDS]
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, ax = plt.subplots(figsize=(7.2, 4.0))
+        width = 0.27
+        for j, (label, colour, walls) in enumerate(versions):
+            for i, w in enumerate(walls):
+                x = i + (j - 1) * width
+                ax.bar(x, w, width * 0.92, color=colour, label=label if i == 0 else None)
+                ax.text(x, w + 0.5, f"{w:.1f}", ha="center", fontsize=7.5, color=INK)
+        ax.set_xticks(range(len(SEEDS)), [f"{b} bubbles" for b in bubbles])
+        ax.set_ylabel("Wall time for 0.5 s at 1 ms (s)")
+        ax.set_title("Whole runs on the server (one run alone, same trajectories to 5e-15 m)",
+                     loc="left", fontsize=9.5, color=INK)
+        ax.legend(frameon=False, fontsize=8, loc="upper left")
+        ax.grid(axis="y", color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        fig.tight_layout()
+        fig.savefig(folder / "fig1_run_times.png", dpi=170)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

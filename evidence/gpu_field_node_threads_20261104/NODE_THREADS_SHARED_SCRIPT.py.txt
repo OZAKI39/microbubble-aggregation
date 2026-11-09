@@ -1,0 +1,329 @@
+"""Node-thread FNM kernel with per-point work done once per block (scratch test).
+
+V1  fnm_discs_node_threads (node_threads_test.py): every thread recomputes z, r and e0 = exp(-ikz).
+V2  e0 once per block: e0 enters p, pr, pz linearly, so the threads sum the e0-free terms
+    S1 = sum w W, S2 = sum w Wr, C1 = sum w W e, C2 = sum w (-Wr e + W (r - a cs)/d ik e),
+    C3 = sum w W (z/d) ik e   (e = exp(-ikd)), and thread 0 forms
+    p = e0 S1 - C1,  pr = e0 S2 + C2,  pz = C3 - k i e0 S1.
+V3  V2 plus z and r computed by thread 0 only and handed to the block through shared memory.
+
+usage (repository root, PYTHONPATH=.:visualization:<this folder>):
+  python node_threads_shared_test.py measure OUT_DIR
+  python node_threads_shared_test.py figure OUT_DIR
+Evidence script only; not imported by project code.
+"""
+
+import json
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+import numpy as np
+import warp as wp
+
+from microbubble import _warp_discs, gpu
+from microbubble._warp_discs import phasor, times_i
+from microbubble.acoustics import direct_quadrature_order
+from node_threads_test import ORDER, NodeThreadDiscs, fnm_discs_node_threads, median_ms
+
+ROOT = Path.cwd()
+vec8d = wp.types.vector(length=8, dtype=wp.float64)
+
+
+@wp.func
+def node_terms(cs: wp.float64, w: wp.float64, z: wp.float64, r: wp.float64, a: wp.float64,
+               k: wp.float64):
+    # e0-free part of one quadrature node: (S1, S2, C1, C2, C3) as 8 doubles.
+    two = wp.float64(2.0)
+    big_d = r * r + a * a - two * a * r * cs
+    big_n = a * (a - r * cs)
+    big_w = big_n / big_d
+    d = wp.sqrt(z * z + big_d)
+    wave = phasor(k * d)
+    big_wr = (-a * cs * big_d - big_n * (two * r - two * a * cs)) / (big_d * big_d)
+    ik_wave = k * times_i(wave)
+    s1 = w * big_w
+    s2 = w * big_wr
+    c1 = s1 * wave
+    c2 = w * (-big_wr * wave + (big_w * (r - a * cs) / d) * ik_wave)
+    c3 = s1 * (z / d) * ik_wave
+    return vec8d(s1, s2, c1[0], c1[1], c2[0], c2[1], c3[0], c3[1])
+
+
+@wp.func
+def write_point(e: int, i: int, total: vec8d, points: wp.array(dtype=wp.vec3d),
+                centers: wp.array(dtype=wp.vec3d), normals: wp.array(dtype=wp.vec3d),
+                k: wp.float64, pressure: wp.array2d(dtype=wp.vec2d),
+                gradient_real: wp.array2d(dtype=wp.vec3d), gradient_imag: wp.array2d(dtype=wp.vec3d)):
+    # Thread 0 of the block: put e0 back and assemble the 3D gradient, as in fnm_discs.
+    zero = wp.float64(0.0)
+    n = normals[e]
+    delta = points[i] - centers[e]
+    z = wp.dot(delta, n)
+    lateral = delta - z * n
+    r = wp.length(lateral)
+    e0 = phasor(k * z)
+    s1 = total[0]
+    s2 = total[1]
+    c1 = wp.vec2d(total[2], total[3])
+    c2 = wp.vec2d(total[4], total[5])
+    c3 = wp.vec2d(total[6], total[7])
+    p = s1 * e0 - c1
+    pr = s2 * e0 + c2
+    pz = c3 - (k * s1) * times_i(e0)
+    pressure[e, i] = p
+    direction = wp.vec3d(zero, zero, zero)
+    if r > zero:
+        direction = lateral / r
+    gradient_real[e, i] = pz[0] * n + pr[0] * direction
+    gradient_imag[e, i] = pz[1] * n + pr[1] * direction
+
+
+@wp.kernel
+def fnm_discs_e0_once(
+    points: wp.array(dtype=wp.vec3d),
+    centers: wp.array(dtype=wp.vec3d),
+    normals: wp.array(dtype=wp.vec3d),
+    radii: wp.array(dtype=wp.float64),
+    node_cos: wp.array(dtype=wp.float64),
+    node_weights: wp.array(dtype=wp.float64),
+    k: wp.float64,
+    pressure: wp.array2d(dtype=wp.vec2d),
+    gradient_real: wp.array2d(dtype=wp.vec3d),
+    gradient_imag: wp.array2d(dtype=wp.vec3d),
+):
+    e, i, j = wp.tid()
+    n = normals[e]
+    delta = points[i] - centers[e]
+    z = wp.dot(delta, n)
+    r = wp.length(delta - z * n)
+    term = node_terms(node_cos[j], node_weights[j], z, r, radii[e], k)
+    total = wp.tile_extract(wp.tile_sum(wp.tile(term, preserve_type=True)), 0)
+    if j == 0:
+        write_point(e, i, total, points, centers, normals, k, pressure, gradient_real, gradient_imag)
+
+
+@wp.kernel
+def fnm_discs_shared_geometry(
+    points: wp.array(dtype=wp.vec3d),
+    centers: wp.array(dtype=wp.vec3d),
+    normals: wp.array(dtype=wp.vec3d),
+    radii: wp.array(dtype=wp.float64),
+    node_cos: wp.array(dtype=wp.float64),
+    node_weights: wp.array(dtype=wp.float64),
+    k: wp.float64,
+    pressure: wp.array2d(dtype=wp.vec2d),
+    gradient_real: wp.array2d(dtype=wp.vec3d),
+    gradient_imag: wp.array2d(dtype=wp.vec3d),
+):
+    e, i, j = wp.tid()
+    zero = wp.float64(0.0)
+    geometry = wp.vec2d(zero, zero)
+    if j == 0:
+        n = normals[e]
+        delta = points[i] - centers[e]
+        z = wp.dot(delta, n)
+        geometry = wp.vec2d(z, wp.length(delta - z * n))
+    geometry = wp.tile_extract(wp.tile(geometry, preserve_type=True), 0)  # thread 0's z, r
+    term = node_terms(node_cos[j], node_weights[j], geometry[0], geometry[1], radii[e], k)
+    total = wp.tile_extract(wp.tile_sum(wp.tile(term, preserve_type=True)), 0)
+    if j == 0:
+        write_point(e, i, total, points, centers, normals, k, pressure, gradient_real, gradient_imag)
+
+
+KERNELS = {
+    "loop": None,  # _warp_discs.fnm_discs, plain launch
+    "V1": fnm_discs_node_threads,
+    "V2": fnm_discs_e0_once,
+    "V3": fnm_discs_shared_geometry,
+}
+
+
+class BlockDiscs(gpu.GPUWaterDiscs):
+    """GPUWaterDiscs with one of the node-thread kernels (same buffers and copies)."""
+
+    kernel = None
+
+    def evaluate(self, points, order=None):
+        x = np.atleast_2d(np.asarray(points, dtype=float))
+        in_front = np.einsum("dk,ndk->nd", self.normals, x[:, None, :] - self.centers_m)
+        if not np.isfinite(x).all() or np.any(in_front <= 0):
+            raise ValueError("Only finite points in front of each piston are admitted")
+        shape = (len(self.centers_m), len(x))
+        pressure = wp.zeros(shape, dtype=wp.vec2d, device=self.device)
+        gradient_real = wp.zeros(shape, dtype=wp.vec3d, device=self.device)
+        gradient_imag = wp.zeros(shape, dtype=wp.vec3d, device=self.device)
+        wp.launch_tiled(
+            self.kernel, dim=shape,
+            inputs=[wp.array(x, dtype=wp.vec3d, device=self.device), self.centers, self.normal_array,
+                    self.radii, self.node_cos, self.node_weights, float(self.discs.k),
+                    pressure, gradient_real, gradient_imag],
+            block_dim=self.order, device=self.device,
+        )
+        p = pressure.numpy()
+        gradient = gradient_real.numpy() + 1j * gradient_imag.numpy()
+        return p[..., 0] + 1j * p[..., 1], gradient
+
+
+def discs_class(variant):
+    if variant == "loop":
+        return GPU_LOOP
+    return type(f"Discs{variant}", (BlockDiscs,), {"kernel": KERNELS[variant]})
+
+
+GPU_LOOP = gpu.GPUWaterDiscs
+
+
+def measure(out_dir):
+    from workflows.f10ag import context
+
+    out_dir = Path(out_dir)
+    c = context(ROOT, device="cpu")
+    order = direct_quadrature_order(c.discs.frequency)
+    assert order == ORDER
+    objects = {v: discs_class(v)(c.discs, order) for v in KERNELS}
+    device = objects["loop"].device
+    for v in ("V2", "V3"):
+        wp.load_module(KERNELS[v].module, device=device)
+    rng = np.random.default_rng(3)
+    rows = []
+    for n in (32, 128, 1024, 16384, 131072):
+        x = rng.uniform([-3e-4, -1e-4, -1e-4], [3e-4, 1e-4, 1e-4], (n, 3))
+        shape = (4, n)
+        g = objects["loop"]
+        xs = wp.array(x, dtype=wp.vec3d, device=device)
+        bufs = [wp.zeros(shape, dtype=t, device=device) for t in (wp.vec2d, wp.vec3d, wp.vec3d)]
+        args = [xs, g.centers, g.normal_array, g.radii, g.node_cos, g.node_weights, float(g.discs.k), *bufs]
+        repeats = 300 if n <= 16384 else 30
+        p_c, g_c = c.discs.evaluate(x, order) if n <= 16384 else (None, None)
+        p_l, g_l = objects["loop"].evaluate(x, order)
+        row = dict(N=n)
+        for v, obj in objects.items():
+            if v == "loop":
+                def kernel(shape=shape):
+                    wp.launch(_warp_discs.fnm_discs, dim=shape, inputs=args, device=device)
+                    wp.synchronize_device(device)
+            else:
+                def kernel(shape=shape, kern=KERNELS[v]):
+                    wp.launch_tiled(kern, dim=shape, inputs=args, block_dim=ORDER, device=device)
+                    wp.synchronize_device(device)
+            row[f"kernel_{v}_ms"] = median_ms(kernel, repeats)
+            row[f"call_{v}_ms"] = median_ms(lambda obj=obj: obj.evaluate(x, order), repeats)
+            p_v, g_v = obj.evaluate(x, order)
+            p_v2, g_v2 = obj.evaluate(x, order)
+            row[f"{v}_vs_loop"] = float(max(np.abs(p_v - p_l).max() / np.abs(p_l).max(),
+                                            np.abs(g_v - g_l).max() / np.abs(g_l).max()))
+            row[f"{v}_repeat_identical"] = bool(np.array_equal(p_v, p_v2) and np.array_equal(g_v, g_v2))
+            if p_c is not None:
+                row[f"{v}_vs_cpu"] = float(max(np.abs(p_v - p_c).max() / np.abs(p_c).max(),
+                                               np.abs(g_v - g_c).max() / np.abs(g_c).max()))
+        rows.append(row)
+        print({k: (round(v, 4) if isinstance(v, float) and v > 1e-3 else v) for k, v in row.items()})
+
+    import h5py
+
+    from workflows.f10ag import run
+
+    runs = []
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, duration_s in (("protocol_formed32", 0.5), ("protocol_formed128", 0.3)):
+            cfg = json.loads((ROOT / f"evidence/pretrain_gpu_field_20261104/configs/{name}_direct.json").read_text())
+            cfg["duration_s"] = duration_s
+            cfg["control"]["segments"] = [dict(cfg["control"]["segments"][0], duration=duration_s)]
+            for repeat in range(2):
+                for variant in ("cpu", "loop", "V1", "V2", "V3"):
+                    field = "direct" if variant == "cpu" else "direct_gpu"
+                    gpu.GPUWaterDiscs = GPU_LOOP if variant == "cpu" else discs_class(variant)
+                    label = f"{name}_{variant}_{repeat}"
+                    path = Path(tmp) / f"{label}.json"
+                    path.write_text(json.dumps(dict(cfg, field=field)))
+                    a = time.perf_counter()
+                    r = run(ROOT, path, Path(tmp) / label)
+                    wall = time.perf_counter() - a
+                    with h5py.File(Path(tmp) / label / "trajectory.h5") as h:
+                        final = h["positions_m"][-1]
+                    runs.append(dict(run=name, variant=variant, repeat=repeat, duration_s=duration_s,
+                                     wall_s=wall, steps=r["constrained_solves"], status=r["status"],
+                                     final_positions=final.tolist()))
+                    print(name, variant, repeat, r["status"], r["constrained_solves"], round(wall, 2))
+        gpu.GPUWaterDiscs = GPU_LOOP
+    for row in runs:
+        ref = next(q for q in runs if q["run"] == row["run"] and q["variant"] == "cpu" and q["repeat"] == 0)
+        row["final_diff_vs_cpu_m"] = float(np.abs(np.array(row["final_positions"]) - np.array(ref["final_positions"])).max())
+    for row in runs:
+        del row["final_positions"]
+    out = dict(device=f"{device.alias} ({device.name})", warp=wp.config.version, order=order, block_dim=ORDER,
+               kernel=rows, runs=runs,
+               note="kernel_*: launch + synchronize, back to back after warm-up; call_*: whole evaluate() incl. "
+                    "copies; *_vs_loop / *_vs_cpu: max relative difference of P and gradient; runs: shortened "
+                    "protocol runs, wall time incl. start-up, one process, machine otherwise idle")
+    (out_dir / "NODE_THREADS_SHARED.json").write_text(json.dumps(out, indent=1))
+
+
+def figure(out_dir):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from pretrain_stability_figures import INK, setup_style
+
+    out_dir = Path(out_dir)
+    d = json.loads((out_dir / "NODE_THREADS_SHARED.json").read_text())
+    style = {
+        "loop": ("Current: loop over 96 nodes", "#2a78d6"),
+        "V1": ("V1: node threads, all recomputed", "#eb6834"),
+        "V2": ("V2: + exp(-ikz) once per block", "#1baf7a"),
+        "V3": ("V3: + z, r once per block (shared)", "#eda100"),
+    }
+    footer = ("Exploratory · pretraining tier · FNM disc field, 2.5 MHz, 96 quadrature nodes · "
+              f"{d['device']} · Warp {d['warp']}")
+    with tempfile.TemporaryDirectory() as fonts:
+        setup_style(Path(fonts))
+        fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.6))
+        rows = d["kernel"]
+        n = [r["N"] for r in rows]
+        for ax, key, title in ((axes[0], "kernel", "a  Kernel only, relative to the current loop"),
+                               (axes[1], "call", "b  Whole call (incl. copies), relative to the loop")):
+            for v, (label, color) in style.items():
+                speed = [r[f"{key}_loop_ms"] / r[f"{key}_{v}_ms"] for r in rows]
+                ax.plot(n, speed, "o-", color=color, linewidth=2, markersize=6, label=label)
+            ax.axhline(1, color=INK["muted"], linewidth=1, linestyle="--")
+            ax.set_xscale("log")
+            ax.set_yscale("log")
+            ax.set_xlabel("Points per call")
+            ax.set_ylabel("Speed-up over the current loop (×)")
+            ticks = [0.5, 0.7, 1, 1.5, 2, 3, 4, 6]
+            ax.set_yticks(ticks, [f"{t:g}" for t in ticks])
+            ax.minorticks_off()
+            ax.set_ylim(0.45, 7.5)
+            ax.set_title(title)
+        axes[0].legend(frameon=False, loc="upper right", fontsize=8.5)
+        ax = axes[2]
+        groups = [("protocol_formed32", "32 bubbles\n0.5 s"), ("protocol_formed128", "128 bubbles\n0.3 s")]
+        variants = [("cpu", "CPU field", INK["muted"])] + [(v, style[v][0].split(":")[0], style[v][1]) for v in style]
+        y = np.arange(len(groups))
+        h = 0.16
+        for k, (variant, label, color) in enumerate(variants):
+            v = [np.median([r["wall_s"] for r in d["runs"] if r["run"] == g and r["variant"] == variant])
+                 for g, _ in groups]
+            off = (k - 2) * (h + 0.01)
+            ax.barh(y + off, v, height=h, color=color, label=label)
+            for yy, vv in zip(y, v):
+                ax.text(vv, yy + off, f" {vv:.1f} s", va="center", fontsize=8, color=INK["secondary"])
+        ax.set_yticks(y, [g[1] for g in groups])
+        ax.invert_yaxis()
+        ax.set_xlim(0, max(r["wall_s"] for r in d["runs"]) * 1.35)
+        ax.set_xlabel("Wall time of the shortened run (s, median of 2)")
+        ax.set_title("c  Whole runs (same steps)")
+        ax.legend(frameon=False, loc="upper right", fontsize=8.5)
+        fig.suptitle("Doing the per-point work once per block (V2, V3) recovers only about 10% at large calls",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer, ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(out_dir / "node_threads_shared_speed.png", dpi=160)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    {"measure": measure, "figure": figure}[sys.argv[1]](sys.argv[2])

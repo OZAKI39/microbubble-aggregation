@@ -1,0 +1,103 @@
+"""Is the 1 ms step still good with the new pretraining ranges? Analysis of the step pairs (2026-11-08).
+
+usage (repository root):  PYTHONPATH=. python analyse_step_pairs.py OUT_DIR OUT_JSON OUT_NPZ
+OUT_DIR: ordinary workflows.f10ag runs named STEP_N<bubbles>_<kind>_adh<force>_dt1ms and ..._dt0.5ms (the same
+config apart from fixed_step_s): the ends of the new ranges, 64 and 251 bubbles, adhesion 1e-14 and 1e-12 N,
+random actions (2-3 MHz) and pattern actions (here 3.25 MHz), 2 s.
+Per run: status, the largest bubble displacement of a step and the number of steps above 0.1 R (R = 1.78 um),
+pieces (surfaces within 0.5 R) and the share of the largest piece at the end. Per pair, at every saved frame
+(10 ms): the distance between the two centroids, the difference of the top-view aspect (square root of the
+ratio of the eigenvalues of the x-y covariance of the centres), of the spread of the centres (largest axis)
+and of the bubble positions; the camera's pixel (0.6 um) is the scale of comparison, as for the choice of
+the 1 ms step (evidence/fixed_step_dt_20261106/).
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+R = 1.78e-6
+PIXEL_M = 0.6e-6
+out_dir, out_json, out_npz = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+
+
+def pieces(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    pairs = pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < 0.5 * R]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    n, labels = connected_components(graph, directed=False)
+    return n, np.bincount(labels).max() / len(x)
+
+
+def aspect(x):
+    w = np.linalg.eigvalsh(np.cov(x[:, :2].T))
+    return float(np.sqrt(w[1] / w[0]))
+
+
+def load(folder):
+    summary = json.loads((folder / "SUMMARY.json").read_text())
+    records = json.loads((folder / "STEP_RECORDS.json").read_text())
+    with h5py.File(folder / "trajectory.h5") as h:
+        t, x, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+    step = np.array([row.get("max_displacement_m", np.nan) for row in records])
+    return summary, t, x, radii, step
+
+
+result, series = {}, {}
+names = sorted({p.name.rsplit("_dt", 1)[0] for p in out_dir.iterdir() if p.name.startswith("STEP_")})
+for base in names:
+    runs = {}
+    for tag in ("1ms", "0.5ms"):
+        folder = out_dir / f"{base}_dt{tag}"
+        if not (folder / "SUMMARY.json").is_file():
+            continue
+        summary, t, x, radii, step = load(folder)
+        n_end, largest_end = pieces(x[-1], radii)
+        runs[tag] = dict(status=summary["status"], reason=summary["reason"], completed_s=summary["completed_s"],
+                         wall_s=summary["wall_s"], bubbles=int(len(radii)), adhesion_force_N=summary["task"]["adhesion_force_N"],
+                         frequency_Hz=summary["task"]["segments"][0]["frequency"], action_kind=summary["task"]["action_kind"],
+                         step_max_displacement_max_m=float(np.nanmax(step)),
+                         steps_above_0p1R=int(np.sum(step > 0.1 * R)), steps=len(step),
+                         pieces_end=int(n_end), largest_share_end=float(largest_end),
+                         _t=t, _x=x, _radii=radii)
+    if len(runs) < 2:
+        print(base, "incomplete:", list(runs), flush=True)
+        continue
+    a, b = runs["1ms"], runs["0.5ms"]
+    k = min(len(a["_t"]), len(b["_t"]))
+    assert np.allclose(a["_t"][:k], b["_t"][:k])
+    xa, xb = a["_x"][:k], b["_x"][:k]
+    centroid = np.linalg.norm(xa.mean(1) - xb.mean(1), axis=1)
+    aspects = np.array([[aspect(p), aspect(q)] for p, q in zip(xa, xb)])
+    spread = np.array([[np.sqrt(np.linalg.eigvalsh(np.cov(p.T))[-1]), np.sqrt(np.linalg.eigvalsh(np.cov(q.T))[-1])]
+                       for p, q in zip(xa, xb)])
+    position = np.linalg.norm(xa - xb, axis=2)
+    pair = dict(compared_until_s=float(a["_t"][k - 1]),
+                centroid_difference_um_max=float(centroid.max() * 1e6),
+                aspect_difference_max=float(np.abs(aspects[:, 0] - aspects[:, 1]).max()),
+                spread_difference_um_max=float(np.abs(spread[:, 0] - spread[:, 1]).max() * 1e6),
+                position_difference_um_median_end=float(np.median(position[-1]) * 1e6),
+                position_difference_um_max_end=float(position[-1].max() * 1e6),
+                centroid_within_one_pixel=bool(centroid.max() <= PIXEL_M))
+    for tag in runs:
+        for key in ("_t", "_x", "_radii"):
+            runs[tag].pop(key)
+    result[base] = dict(runs=runs, pair=pair)
+    series[f"{base}__t_s"] = a["_t"][:k] if "_t" in a else None
+    series[f"{base}__centroid_difference_m"] = centroid
+    series[f"{base}__aspect_1ms"], series[f"{base}__aspect_0p5ms"] = aspects[:, 0], aspects[:, 1]
+    print(f"{base:34s} {a['status']}/{b['status']} {a['bubbles']} bubbles {a['frequency_Hz'] / 1e6:.2f} MHz: step max "
+          f"{a['step_max_displacement_max_m'] * 1e6:.2f}/{b['step_max_displacement_max_m'] * 1e6:.2f} um, steps > 0.1R "
+          f"{a['steps_above_0p1R']}/{b['steps_above_0p1R']}; pieces end {a['pieces_end']}/{b['pieces_end']}; centroid diff max "
+          f"{pair['centroid_difference_um_max']:.3f} um, aspect diff max {pair['aspect_difference_max']:.3f}, spread diff max "
+          f"{pair['spread_difference_um_max']:.2f} um, position diff end median/max {pair['position_difference_um_median_end']:.2f}/"
+          f"{pair['position_difference_um_max_end']:.2f} um; wall {a['wall_s']:.0f}/{b['wall_s']:.0f} s", flush=True)
+out_json.write_text(json.dumps(result, indent=1) + "\n")
+np.savez_compressed(out_npz, **{k: v for k, v in series.items() if v is not None})

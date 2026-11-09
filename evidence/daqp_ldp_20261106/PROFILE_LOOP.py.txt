@@ -1,0 +1,54 @@
+"""Where the time of the integration loop goes (122 bubbles, seed 7, first 0.1 s, defaults).
+
+Wraps (in this process only) the parts of one step with timers; the project code is not changed.
+"""
+
+import json
+import sys
+import tempfile
+import time
+from collections import defaultdict
+from pathlib import Path
+
+import microbubble.contact as contact
+import microbubble.forces as forces
+import microbubble.integration as integration
+import microbubble.bubble_response as bubble_response
+import microbubble.gpu as gpu
+from workflows.f10ag import run
+
+spent, calls = defaultdict(float), defaultdict(int)
+
+
+def timed(name, f):
+    def g(*a, **k):
+        t = time.perf_counter()
+        try:
+            return f(*a, **k)
+        finally:
+            spent[name] += time.perf_counter() - t
+            calls[name] += 1
+    return g
+
+
+forces.CPUForces.__call__ = timed("forces, total", forces.CPUForces.__call__)
+gpu.GPUWaterDiscs.evaluate = timed("  sound field (GPU)", gpu.GPUWaterDiscs.evaluate)
+bubble_response.CarriedApecssResponse.query = timed("  bubble response (APECSS)", bubble_response.CarriedApecssResponse.query)
+forces.collective_fundamental = timed("  collective coupling solve", forces.collective_fundamental)
+forces._pair_forces_delayed = timed("  bubble-bubble force F2", forces._pair_forces_delayed)
+forces.adhesion_forces = timed("  adhesion", forces.adhesion_forces)
+contact.CompiledContactStep.__call__ = timed("contact step (C++ + DAQP)", contact.CompiledContactStep.__call__)
+seed = int(sys.argv[1]) if len(sys.argv) > 1 else 7
+with tempfile.TemporaryDirectory() as tmp:
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.1,
+                                   save_interval_s=0.01, state_seed=seed, action_seed=seed)))
+    t = time.perf_counter()
+    r = run(Path("."), cfg, Path(tmp) / "out")
+    total = time.perf_counter() - t
+steps = r["accepted_steps"]
+print(f"{r['N']} bubbles, {steps} steps, integration wall {r['wall_s']:.2f} s (run() total {total:.2f} s)")
+for name in spent:
+    print(f"  {name:34s} {spent[name]:6.2f} s  {spent[name] / steps * 1e3:7.2f} ms/step  ({100 * spent[name] / r['wall_s']:5.1f} %)")
+rest = r["wall_s"] - spent["forces, total"] - spent["contact step (C++ + DAQP)"]
+print(f"  {'rest of the loop (Python)':34s} {rest:6.2f} s  {rest / steps * 1e3:7.2f} ms/step  ({100 * rest / r['wall_s']:5.1f} %)")

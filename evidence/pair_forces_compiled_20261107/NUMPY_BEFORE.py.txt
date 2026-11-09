@@ -1,0 +1,109 @@
+"""The NumPy F2 with the propagation delay and the NumPy adhesion as they were before 2026-11-07
+(verbatim from microbubble/forces.py before native/pair_forces.cpp replaced them; kept only to
+compare against). The reference is evidence/pair_forces_compiled_20261107/."""
+
+import numpy as np
+
+
+def feedback_weight(d, radius, end=4.0):
+    s = np.clip((np.asarray(d) / (2 * radius) - 1) / (end - 1), 0, 1)
+    return 1 - s * s * (3 - 2 * s)
+
+
+def _pair_forces_delayed(x, harmonics, pressure, physics, chi_zero, fundamental, k):
+    """
+    带传播延迟的泡间二次声力 F2
+    """
+    x = np.asarray(x, dtype=float)
+    i, j = np.triu_indices(len(x), 1)
+    delta = x[j] - x[i]
+    d = np.linalg.norm(delta, axis=1)
+    if np.any(d <= 0):
+        raise ValueError("Coincident bubbles")
+    
+    # 声波从一个泡走到另一个泡要花时间，到达时相位落后 k·d
+    n = np.arange(1, 9)
+    kd = n[None, :] * k * d[:, None]
+
+    # 一个泡受的力取决于另一个泡的声场在它所在处的梯度
+    g = np.exp(1j * kd) * (1 - 1j * kd)  
+
+    if fundamental is None:
+        prod = harmonics[i] * np.conj(harmonics[j])
+    else:
+        u = np.asarray(fundamental)
+        prod = np.concatenate(
+            [(u[i] * np.conj(u[j]))[:, None], harmonics[i, 1:] * np.conj(harmonics[j, 1:])], axis=1
+        )
+
+    corr_i = np.sum(n**2 * np.real(prod * g), axis=1)
+    corr_j = np.sum(n**2 * np.real(np.conj(prod) * g), axis=1)
+
+    if fundamental is None and physics.force_model == "f2_near_field_candidate":
+        w = feedback_weight(d, physics.radius_m, physics.feedback_end_over_sum)
+        m = w > 0
+        if np.any(m):
+            vi, vj = harmonics[i[m], 0], harmonics[j[m], 0]
+            pi, pj = pressure[i[m]], pressure[j[m]]
+            ci = np.where(np.abs(pi) > 0, vi / np.where(np.abs(pi) > 0, pi, 1), chi_zero)
+            cj = np.where(np.abs(pj) > 0, vj / np.where(np.abs(pj) > 0, pj, 1), chi_zero)
+            kk = (
+                physics.density_kg_m3
+                * (2 * np.pi * physics.frequency_Hz) ** 2
+                / (4 * np.pi * d[m])
+                * np.exp(-1j * k * d[m])
+            )
+            a, b = kk * ci, kk * cj
+            determinant = 1 - a * b
+            if np.any(np.abs(determinant) < 1e-6):
+                raise ValueError("Singular pair closure; no force clipping")
+            ui, uj = (vi - a * vj) / determinant, (vj - b * vi) / determinant
+            g1 = g[m, 0]
+            change = ui * np.conj(uj) - vi * np.conj(vj)
+            corr_i[m] += w[m] * np.real(change * g1)
+            corr_j[m] += w[m] * np.real(np.conj(change) * g1)
+
+    radius = physics.radius_m
+    q = np.minimum(d / (physics.transition_over_sum * 2 * radius), 1)
+    core = physics.soft_core_over_sum * 2 * radius * (1 - q) ** 2
+    
+    scale = (
+        physics.density_kg_m3
+        * (2 * np.pi * physics.frequency_Hz) ** 2
+        / (8 * np.pi)
+        * delta
+        / ((d * d + core * core) ** 1.5)[:, None]
+    )
+    f = np.zeros_like(x)
+    np.add.at(f, i, corr_i[:, None] * scale)
+    np.add.at(f, j, -corr_j[:, None] * scale)
+    return f
+
+
+def adhesion_forces(x, radius_m, force_N, range_m):
+    """Phenomenological short-range adhesion between bubble surfaces (pretraining tier only).
+
+    Not a measured law. Lipid-shelled SonoVue clusters formed by ultrasound stay together for a
+    while after the ultrasound is switched off and translate with little deformation (user
+    observations, A/B tracking), which neither acoustic coupling model reproduces
+    (evidence/polydispersity_static_20261103/). A pair whose surface gap h = d - 2R is below
+    range_m attracts along the line of centres with F = force_N (1 - h / range_m)^2: force_N at
+    contact (h <= 0), smoothly zero at h = range_m, as in discrete-element adhesive contact
+    models. Work to separate a touching pair: force_N range_m / 3. Equal and opposite.
+    """
+    x = np.asarray(x, dtype=float)
+    f = np.zeros_like(x)
+    if force_N <= 0:
+        return f
+    i, j = np.triu_indices(len(x), 1)
+    delta = x[j] - x[i]
+    d = np.linalg.norm(delta, axis=1)
+    m = d - 2 * radius_m < range_m
+    if not np.any(m):
+        return f
+    i, j, delta, d = i[m], j[m], delta[m], d[m]
+    magnitude = force_N * np.clip(1 - (d - 2 * radius_m) / range_m, 0, 1) ** 2
+    pull = (magnitude / d)[:, None] * delta  # on i, towards j
+    np.add.at(f, i, pull)
+    np.add.at(f, j, -pull)
+    return f

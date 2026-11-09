@@ -1,0 +1,51 @@
+"""Capture the contact QPs that reach the OSQP fallback in one fixed-step run (2026-11-06).
+
+usage (repository root):  python capture_qp.py SEED DT_S DURATION_S OUT.npz
+Runs the project's run() unchanged; only wraps contact.active_set_qp and contact.osqp_qp to
+record their inputs and statuses. Saves every OSQP-fallback QP (A, b, B normals/pairs, gap).
+"""
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+import microbubble.contact as contact
+from workflows.f10ag import run
+
+seed, dt, duration, out = int(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]), Path(sys.argv[4])
+log = []
+active_set, osqp = contact.active_set_qp, contact.osqp_qp
+
+
+def wrapped_active_set(A, factor, b, B, gap_over_R, *args, **kw):
+    r = active_set(A, factor, b, B, gap_over_R, *args, **kw)
+    log.append(dict(kind="active_set", status=r[2], iterations=r[3], m=len(B)))
+    return r
+
+
+def wrapped_osqp(A, b, B, gap_over_R, settings):
+    r = osqp(A, b, B, gap_over_R, settings)
+    log.append(dict(kind="osqp", status=r[2], m=len(B), A=A.tocsr() if hasattr(A, "tocsr") else A,
+                    b=b.copy(), i=B.i.copy(), j=B.j.copy(), normals=B.normals.copy(), n=B.n,
+                    gap=gap_over_R.copy()))
+    return r
+
+
+contact.active_set_qp, contact.osqp_qp = wrapped_active_set, wrapped_osqp
+with tempfile.TemporaryDirectory() as tmp:
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=duration,
+                                   save_interval_s=0.01, state_seed=seed, action_seed=seed,
+                                   fixed_step_s=dt)))
+    r = run(Path("."), cfg, Path(tmp) / "out")
+print(r["status"], r["reason"], r["accepted_steps"])
+print("active-set statuses:", {s: sum(1 for e in log if e["kind"] == "active_set" and e["status"] == s)
+                               for s in {e["status"] for e in log if e["kind"] == "active_set"}})
+qps = [e for e in log if e["kind"] == "osqp"]
+print("osqp statuses:", [e["status"] for e in qps])
+from scipy import sparse
+np.savez(out, **{f"qp{k}_{key}": (v if key != "A" else sparse.csr_matrix(v).toarray())
+                 for k, e in enumerate(qps) for key, v in e.items() if key not in ("kind",)})

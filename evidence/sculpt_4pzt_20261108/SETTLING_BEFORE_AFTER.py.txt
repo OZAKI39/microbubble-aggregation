@@ -1,0 +1,54 @@
+"""Settling check before and after the fix of 2026-11-08, same drives through both libraries.
+
+usage (repository root):  APECSS_DIR=... python settling_before_after.py OLD_LIBRARY NEW_LIBRARY OUT_JSON
+One carried bubble (the policy's bubble, 1.78 um, ODE tolerance 1e-8, the policy's settling
+settings). (a) Node approach: drive 5 kPa x 0.7^k, k = 0..109 (down to 6e-14 Pa), at 2.5, 7.5 and
+10 MHz: cycles and status of every call. (b) Drift through a standing wave: |P| = P0 |cos phi|,
+phi advancing 0.02 rad per call, phase wobbling, 400 calls, P0 10-150 kPa, 2.5-10 MHz: the number
+of calls that did not settle (status other than CONVERGED/ZERO_DRIVE).
+"""
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import CarriedApecssResponse, apecss_options, shell_parameters
+from workflows.f10ag import load_pretrain_policy
+
+old, new, out = sys.argv[1], sys.argv[2], Path(sys.argv[3])
+s = load_pretrain_policy(Path("."))["apecss_response"]
+keys = ("tolerance", "min_cycles_warm", "min_cycles_cold", "max_cycles", "q_refresh")
+
+
+def advance(r, P):
+    H = np.zeros((1, 17)); cyc = np.zeros(1, np.int32); st = np.zeros(1, np.int32)
+    est = np.zeros(1); ext = np.zeros((1, 2))
+    r.lib.carried_advance(r.handles, 1, np.ascontiguousarray(P.real), np.ascontiguousarray(P.imag), s["tolerance"],
+                          s["min_cycles_warm"], s["min_cycles_cold"], s["max_cycles"], s["q_refresh"], 1, H, cyc, st, est, ext)
+    return int(cyc[0]), int(st[0])
+
+
+rows = dict(node={}, drift={})
+with tempfile.TemporaryDirectory() as tmp:
+    path = Path(tmp) / "b.apecss"
+    path.write_text(apecss_options(shell_parameters(s["bubble"], 1.78e-6, s["shell_vs_radius"]), s["ode_tolerance"]))
+    for label, library in (("before", old), ("after", new)):
+        for f in (2.5e6, 7.5e6, 10e6):
+            r = CarriedApecssResponse(library, [path], f, threads=1, **{k: s[k] for k in keys})
+            calls = [(5e3 * 0.7 ** k, *advance(r, np.array([5e3 * 0.7 ** k * np.exp(0.4j)]))) for k in range(110)]
+            r.close()
+            rows["node"][f"{label}_{f / 1e6:g}"] = calls
+            print(label, f / 1e6, "node: failing calls", sum(c[2] not in (0, 4) for c in calls), flush=True)
+        for f in (2.5e6, 3e6, 7e6, 8.5e6, 9.375e6, 10e6):
+            for p0 in (10e3, 25e3, 50e3, 100e3, 150e3):
+                r = CarriedApecssResponse(library, [path], f, threads=1, **{k: s[k] for k in keys})
+                fails = 0
+                for k in range(400):
+                    drift = np.exp(1j * (0.4 + 0.5 * np.sin(0.05 * k)))
+                    fails += advance(r, np.array([p0 * np.cos(0.3 + 0.02 * k) * drift]))[1] not in (0, 4)
+                r.close()
+                rows["drift"][f"{label}_{f / 1e6:g}_{p0 / 1e3:g}"] = fails
+            print(label, f / 1e6, "drift: failing calls per P0", [rows["drift"][f"{label}_{f / 1e6:g}_{p:g}"] for p in (10, 25, 50, 100, 150)], flush=True)
+out.write_text(json.dumps(rows, indent=1) + "\n")

@@ -1,0 +1,67 @@
+"""Why do weakly held clusters burst at 2-3.3 MHz? Step 1-2: one bubble's response and the force between two
+touching bubbles, from the model itself (2026-11-08).
+
+usage (repository root):  APECSS_DIR=... PYTHONPATH=. python diag_response.py OUT_JSON
+One carried APECSS bubble per radius 0.8-3.0 um (every 0.1 um, the radius range of the starts; shell
+parameters by radius as in every run, workflows.f10ag.carried_apecss_response), probed from rest
+(CarriedApecssResponse.probe) at 2.0-9.4 MHz and at 2 kPa and 20 kPa (the pressure the bubbles meet at the
+source cap is of order 10-30 kPa). Per radius: chi = V1 / P, the complex volume oscillation per Pa, its size
+and phase; the phase is pi (opposite to the pressure, a bubble below resonance, stiffness-ruled) for small
+bubbles and goes to 0 (in step with the pressure, mass-ruled, above resonance) for large ones; the resonant
+radius is where it passes pi/2.
+Two touching bubbles (surface gap 10 nm, the gap of the grown starts) in the same pressure P: F2 along the
+line of centres from forces.pair_forces (the pairwise form with the near-field two-bubble closure and the
+soft core, the instantaneous version; at these distances the propagation delay turns the phase by under 0.05
+rad), positive = attraction. Compared with the adhesion per contact: 1e-14 and 1e-12 N (the weak range), 1e-10
+N, 5.04e-10 N (calibrated).
+"""
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.forces import pair_forces
+from workflows.f10ag import carried_apecss_response, load_pretrain_policy, pretrain_context
+
+ROOT = Path(".")
+RADII_M = np.round(np.arange(0.8, 3.01, 0.1), 2) * 1e-6
+FREQUENCIES_HZ = (2.0e6, 2.5e6, 2.82e6, 3.25e6, 4.0e6, 5.0e6, 6.0e6, 7.5e6, 9.4e6)
+PRESSURES_PA = (2e3, 2e4)
+GAP_M = 1e-8
+policy = load_pretrain_policy(ROOT)
+result = dict(radii_um=(RADII_M * 1e6).tolist(), frequencies_Hz=list(FREQUENCIES_HZ), pressures_Pa=list(PRESSURES_PA),
+              gap_m=GAP_M, single={}, pair={})
+with tempfile.TemporaryDirectory() as folder:
+    for f in FREQUENCIES_HZ:
+        physics = pretrain_context(ROOT, f).physics
+        response, _ = carried_apecss_response(ROOT, {}, policy, f, list(RADII_M), folder)
+        chi_zero = response.probe(np.full(len(RADII_M), response.knots[0] + 0j))[:, 0] / response.knots[0]
+        for pressure in PRESSURES_PA:
+            H = response.probe(np.full(len(RADII_M), pressure + 0j))
+            chi = H[:, 0] / pressure
+            phase = np.angle(chi)  # in (-pi, pi]; small bubbles near +-pi, large ones near 0
+            size = np.abs(chi)
+            # resonant radius: where |phase| passes pi/2 (first crossing from the small side)
+            crossing = np.nonzero(np.abs(phase) < np.pi / 2)[0]
+            resonant = float(RADII_M[crossing[0]] * 1e6) if len(crossing) and crossing[0] > 0 else None
+            key = f"{f:g}_{pressure:g}"
+            result["single"][key] = dict(chi_abs=size.tolist(), chi_phase_rad=phase.tolist(), resonant_radius_um=resonant,
+                                         chi_abs_peak_radius_um=float(RADII_M[np.argmax(size)] * 1e6))
+            # pair force at contact for every pair of radii, same pressure at both
+            F = np.zeros((len(RADII_M), len(RADII_M)))
+            for a, ra in enumerate(RADII_M):
+                for b, rb in enumerate(RADII_M):
+                    x = np.array([[0.0, 0.0, 0.0], [ra + rb + GAP_M, 0.0, 0.0]])
+                    f2 = pair_forces(x, np.array([ra, rb]), H[[a, b]], np.array([pressure, pressure], complex), physics,
+                                     chi_zero[[a, b]])
+                    F[a, b] = f2[0, 0]  # on bubble 0 along +x (towards bubble 1): > 0 attraction
+            result["pair"][key] = dict(force_N=F.tolist())
+            print(f"{f / 1e6:5.2f} MHz {pressure / 1e3:4.0f} kPa: resonant radius {resonant} um (|chi| peak at "
+                  f"{RADII_M[np.argmax(size)] * 1e6:.1f} um); pair force at contact: min {F.min():.2e} N (repulsion), max "
+                  f"{F.max():.2e} N; repulsive pairs {np.mean(F < 0):.0%}; |F| > 1e-12 N: {np.mean(np.abs(F) > 1e-12):.0%}, "
+                  f"> 1e-10 N: {np.mean(np.abs(F) > 1e-10):.0%}", flush=True)
+        response.close()
+Path(sys.argv[1]).write_text(json.dumps(result) + "\n")

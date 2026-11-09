@@ -1,0 +1,95 @@
+"""Contact-step time before/after the least-distance form (2026-11-06).
+
+usage (repository root):  python fig.py EVIDENCE_DIR
+"""
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEEDS = [23, 21, 16, 7]
+PARTS = [("transform", "least-distance transform (our C++)", "#3a9a5b"),
+         ("setup", "DAQP set-up (before: dense factor + transform; both: warm-start activation)", "#d0812c"),
+         ("solve", "DAQP solve (iterations)", "#2a6fb0"), ("other", "rest of the contact step", "#9aa3ad")]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def parts(folder, seed):
+    b = json.loads((folder / "data" / f"before_seed{seed}.json").read_text())
+    a = json.loads((folder / "data" / f"after_seed{seed}.json").read_text())
+    tb, ta = b["timing_s"], a["timing_s"]
+    nb, na = tb[15], ta[15]
+    total_b = sum(tb[:10])
+    before = dict(transform=0.0, setup=tb[11], solve=tb[12])
+    before["other"] = total_b - tb[10] - tb[11] - tb[12] - tb[13] + tb[10] + tb[13]
+    after = dict(transform=ta[0] + ta[1] + ta[2] + ta[4], setup=ta[5], solve=ta[6])
+    after["other"] = ta[13] - sum(after.values())
+    return b["bubbles"], {k: 1e3 * v / nb for k, v in before.items()}, {k: 1e3 * v / na for k, v in after.items()}
+
+
+def main():
+    folder = Path(sys.argv[1])
+    runs = json.loads((folder / "data" / "DAQP_LDP_RUNS.json").read_text())
+    rows = [parts(folder, s) for s in SEEDS]
+    summary = {str(s): dict(bubbles=n, before_ms_per_step=b, after_ms_per_step=a) for s, (n, b, a) in zip(SEEDS, rows)}
+    (folder / "data" / "CONTACT_STEP_BREAKDOWN.json").write_text(json.dumps(summary, indent=1) + "\n")
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(1, 2, figsize=(12.5, 4.2), gridspec_kw=dict(width_ratios=[1.35, 1]))
+        ax = axes[0]
+        width = 0.36
+        for i, (n, before, after) in enumerate(rows):
+            for j, values in enumerate((before, after)):
+                x, bottom = i + (j - 0.5) * width * 1.08, 0.0
+                for key, label, colour in PARTS:
+                    ax.bar(x, values[key], width, bottom=bottom, color=colour,
+                           label=label if i == 0 and j == 1 else None, edgecolor="white", linewidth=0.6)
+                    bottom += values[key]
+                ax.text(x, bottom + 0.25, f"{bottom:.1f}", ha="center", fontsize=7.5, color=INK)
+                ax.text(x, -1.1, "before" if j == 0 else "after", ha="center", fontsize=7, color=MUTED)
+        ax.set_xticks(range(len(rows)), [f"{n} bubbles" for n, _, _ in rows])
+        ax.tick_params(axis="x", pad=14)
+        ax.set_ylabel("Contact step per step (ms, laptop)")
+        ax.set_title("(a) Contact step, first 0.1 s: QP handed to DAQP (before) vs least-distance form (after)",
+                     loc="left", fontsize=9.5, color=INK)
+        ax.legend(frameon=False, fontsize=7.5, loc="upper left")
+        ax.set_ylim(-1.5, 25)
+        ax = axes[1]
+        for j, (key, label, colour) in enumerate((("wall_s_before", "before", "#9aa3ad"), ("wall_s", "after (now)", "#d0812c"))):
+            for i, s in enumerate(SEEDS):
+                v = runs[str(s)][key]
+                x = i + (j - 0.5) * 0.38
+                ax.bar(x, v, 0.36, color=colour, label=label if i == 0 else None)
+                ax.text(x, v + 0.15, f"{v:.1f}", ha="center", fontsize=7.5, color=INK)
+        ax.set_xticks(range(len(SEEDS)), [f"{runs[str(s)]['bubbles']} bubbles" for s in SEEDS])
+        ax.set_ylabel("Wall time for 0.5 s at 1 ms (s, server, one run alone)")
+        ax.set_title("(b) Whole runs: same trajectories (<= 5.5e-15 m), same gates", loc="left", fontsize=9.5, color=INK)
+        ax.legend(frameon=False, fontsize=8, loc="upper left")
+        for ax in axes:
+            ax.grid(axis="y", color=GRID, linewidth=0.8)
+            ax.set_axisbelow(True)
+        fig.tight_layout()
+        fig.savefig(folder / "fig1_contact_step_time.png", dpi=170)
+        plt.close(fig)
+    print(json.dumps(summary, indent=1))
+
+
+if __name__ == "__main__":
+    main()

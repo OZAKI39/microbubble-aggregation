@@ -1,0 +1,160 @@
+"""Singular value check of the collective solve on a second thread (2026-11-07).
+
+usage (repository root):  python FIGURE_SCRIPT.py.txt EVIDENCE_DIR
+Reads EVIDENCE_DIR/data/{SVD_RUNS,SVD_OVERLAP_CTYPES,SVD_OVERLAP_numpy_thread,GIL_PROBE}.json;
+writes fig1_svd_overlap.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+BEFORE, AFTER, SVD, WORK, WORSE = "#5b6470", "#2a6fb0", "#d08a1e", "#9fb3c8", "#b8483b"
+SEEDS = ["23", "21", "16", "7"]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def title(ax, text):
+    ax.set_title(text, loc="left", fontsize=9.5, color=INK)
+
+
+def timeline(ax, sub):
+    svd = sub["SVD alone"]["median_ms"]
+    work = sub["solve + F2 (no SVD)"]["median_ms"]
+    serial = sub["SVD, solve, F2 one after another (as now)"]["median_ms"]
+    overlapped = sub["SVD on a second thread during solve + F2"]["median_ms"]
+    h = 0.32
+    # before: one thread, SVD then solve + F2
+    ax.barh(2.0, svd, left=0, height=h, color=SVD, edgecolor="white", linewidth=2)
+    ax.barh(2.0, work, left=svd, height=h, color=WORK, edgecolor="white", linewidth=2)
+    ax.text(svd / 2, 2.0, "SVD", ha="center", va="center", fontsize=8, color=INK)
+    ax.text(svd + work / 2, 2.0, "solve for u, F2", ha="center", va="center", fontsize=8, color=INK)
+    ax.text(serial + 0.06, 2.0, f"{serial:.2f} ms", va="center", fontsize=8, color=INK)
+    # after: main thread solve + F2, second thread SVD at the same time
+    ax.barh(0.9, work, left=0, height=h, color=WORK, edgecolor="white", linewidth=2)
+    ax.barh(0.5, svd, left=0, height=h, color=SVD, edgecolor="white", linewidth=2)
+    ax.text(work / 2, 0.9, "solve for u, F2", ha="center", va="center", fontsize=8, color=INK)
+    ax.text(svd / 2, 0.5, "SVD", ha="center", va="center", fontsize=8, color=INK)
+    ax.text(overlapped + 0.06, 0.9, f"{overlapped:.2f} ms", va="center", fontsize=8, color=INK)
+    ax.axvline(overlapped, ymin=0.08, ymax=0.47, color=INK, linewidth=1, linestyle="--")
+    ax.text(overlapped - 0.05, 0.18, "wait for the SVD, check,\nthen hand out the forces", ha="right",
+            va="center", fontsize=7, color=MUTED)
+    ax.set_yticks([2.0, 0.9, 0.5], ["Before: one thread", "After: main thread", "second thread"])
+    ax.set_ylim(0, 2.45)
+    ax.set_xlim(0, 3.8)
+    ax.set_xlabel("Time within one force evaluation (ms; 122 bubbles, median of 300)")
+    ax.grid(axis="x", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+    title(ax, "(a) What changed (bars: sub-steps timed alone; numbers: measured totals)")
+
+
+def per_evaluation(ax, runs):
+    width = 0.36
+    labels = [str(runs[s]["bubbles"]) for s in SEEDS]
+    for k, (group, name, colour) in enumerate((("before", "Before", BEFORE),
+                                               ("after", "After (adopted)", AFTER))):
+        x = [i + (k - 0.5) * width for i in range(len(SEEDS))]
+        values = [[runs[s][f"{group}_{n}"]["force_ms_mean"] for n in (1, 2)] for s in SEEDS]
+        means = [sum(v) / 2 for v in values]
+        ax.bar(x, means, width=width - 0.04, color=colour, label=name)
+        for xi, v, m in zip(x, values, means):
+            ax.scatter([xi, xi], v, s=10, color="white", edgecolor=INK, linewidth=0.6, zorder=3)
+            ax.text(xi, max(v) * 1.03, f"{m:.2f}", ha="center", va="bottom", fontsize=7, color=INK)
+    ax.set_xticks(range(len(SEEDS)), labels)
+    ax.set_xlabel("Bubbles")
+    ax.set_ylabel("Wall time per force evaluation (ms)")
+    ax.set_ylim(0, 8.4)
+    ax.grid(axis="y", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+    ax.legend(loc="upper left", fontsize=7.5, frameon=False)
+    same = all(runs[s][f"{g}_{n}"]["same_trajectory_as_before_1"]
+               and runs[s][f"{g}_{n}"]["same_singular_value_iterations_gates_as_before_1"]
+               for s in SEEDS for g in ("before", "after") for n in (1, 2))
+    ax.text(0.02, 0.80, ("All 16 runs identical to the first one bit for bit: trajectory,\n"
+                         "smallest singular value, DAQP iterations, gate records"
+                         if same else "SOME RUNS DIFFER"), transform=ax.transAxes, fontsize=7,
+            color=INK, va="top")
+    title(ax, "(b) Project code, server, 0.5 s runs (bars: mean of 2; dots: runs)")
+
+
+def second_thread(ax, numpy_thread, ctypes_thread, gil):
+    rows = [("Now", [numpy_thread["runs"]["project_1"], numpy_thread["runs"]["project_2"],
+                     ctypes_thread["runs"]["project_1"], ctypes_thread["runs"]["project_2"]], BEFORE),
+            ("np.linalg.svd on a second thread", [numpy_thread["runs"]["overlap_1"],
+                                                  numpy_thread["runs"]["overlap_2"]], WORSE),
+            ("zgesdd via ctypes on a second thread\n(adopted)", [ctypes_thread["runs"]["overlap_1"],
+                                                                ctypes_thread["runs"]["overlap_2"]], AFTER)]
+    for y, (name, runs, colour) in enumerate(rows):
+        values = [r["force_ms_mean"] for r in runs]
+        mean = sum(values) / len(values)
+        ax.barh(y, mean, height=0.5, color=colour)
+        ax.scatter(values, [y] * len(values), s=10, color="white", edgecolor=INK, linewidth=0.6, zorder=3)
+        ax.text(max(values) + 0.3, y, f"{mean:.2f} ms", va="center", fontsize=8, color=INK)
+    ax.set_yticks(range(len(rows)), [r[0] for r in rows])
+    ax.invert_yaxis()
+    ax.set_xlim(0, 9)
+    ax.set_xlabel("Wall time per force evaluation (ms; 122 bubbles, 0.5 s runs)")
+    ax.grid(axis="x", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+    ax.text(0.0, -0.17, (f"np.linalg.svd keeps Python's lock while it works: NumPy work on the main thread took "
+                          f"{gil['numpy elementwise alone']:.2f} -> {gil['numpy elementwise + numpy svd on thread']:.2f} ms\n"
+                          "while it ran on another thread. Through ctypes the same LAPACK routine runs without the lock."),
+            transform=ax.transAxes, fontsize=7, color=MUTED, va="top")
+    title(ax, "(c) Prototype: which call can run beside the main thread")
+
+
+def blas_threads(ax, blas):
+    threads = list(blas)
+    values = [blas[t]["median_ms"] for t in threads]
+    colours = [BEFORE if blas[t]["same_smallest_singular_value"] else WORSE for t in threads]
+    ax.bar(range(len(threads)), values, width=0.6, color=colours)
+    for i, t in enumerate(threads):
+        note = "same value" if blas[t]["same_smallest_singular_value"] else "last digits differ"
+        ax.text(i, values[i] * 1.03, f"{values[i]:.2f}\n{note}", ha="center", va="bottom", fontsize=7,
+                color=INK)
+    ax.set_xticks(range(len(threads)), threads)
+    ax.set_xlabel("OpenBLAS threads (not adopted)")
+    ax.set_ylabel("SVD alone, 122 x 122 (ms, median of 300)")
+    ax.set_ylim(0, 2.8)
+    ax.grid(axis="y", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+    title(ax, "(d) Multithreaded OpenBLAS for the SVD itself")
+
+
+def main():
+    folder = Path(sys.argv[1])
+    read = lambda name: json.loads((folder / "data" / name).read_text())
+    runs, ctypes_thread = read("SVD_RUNS.json"), read("SVD_OVERLAP_CTYPES.json")
+    numpy_thread, gil = read("SVD_OVERLAP_numpy_thread.json"), read("GIL_PROBE.json")
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(2, 2, figsize=(13, 8.6),
+                                 gridspec_kw=dict(wspace=0.45, hspace=0.5, width_ratios=[1.25, 1]))
+        timeline(axes[0, 0], ctypes_thread["sub_steps_ms"])
+        per_evaluation(axes[0, 1], runs)
+        second_thread(axes[1, 0], numpy_thread, ctypes_thread, gil)
+        blas_threads(axes[1, 1], numpy_thread["svd_blas_threads"])
+        fig.savefig(folder / "fig1_svd_overlap.png", dpi=170, bbox_inches="tight")
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

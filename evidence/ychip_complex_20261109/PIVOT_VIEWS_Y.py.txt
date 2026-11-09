@@ -1,0 +1,81 @@
+"""Top views of the pivot run over the real field |p| at z = 0 (2026-11-09), to see where the bubbles go.
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:MORPH_SCRIPTS:SCRATCH python pivot_views.py RUN_DIR OUT_PNG T1 [T2 ...]
+Per time: the real |p| of the segment that acted up to that frame (grey, dark = low, scaled per panel), the zero line
+of the local form (dashed), the pivot (+), the bubbles coloured by piece.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+from complex_paths import PIVOT_Y_M, local_form
+from workflows.f10ag import load_pretrain_policy, pretrain_context
+from y_paths import centre_fields
+
+R = 1.78e-6
+HALF_UM = 70
+
+
+def pieces(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    gap = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1) - radii[pairs[:, 0]] - radii[pairs[:, 1]]
+    pairs = pairs[gap < 0.5 * R]
+    return connected_components(coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x))),
+                                directed=False)[1]
+
+
+def main():
+    folder, out, times = Path(sys.argv[1]), Path(sys.argv[2]), [float(v) for v in sys.argv[3:]]
+    run = json.loads((folder / "ROW.json").read_text())
+    data = np.load(folder / "compact.npz")
+    # Y-channel chip (2026-11-09): the chip's own sources (policy apparatus)
+    discs = pretrain_context(Path("."), 9.375e6, load_pretrain_policy(".")["apparatus"]).discs
+    _, kappa_x, kappa_y = centre_fields(discs, 9.375e6)
+    side = np.linspace(-HALF_UM, HALF_UM, 141)
+    gx, gy = np.meshgrid(side, side, indexing="xy")
+    field = discs.evaluate(np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)]) * 1e-6,
+                           discs.quadrature_order(9.375e6))[0]
+    starts = np.cumsum([0.0] + [s["duration_s"] for s in run["segments"]])[:-1]
+    with tempfile.TemporaryDirectory() as font_dir:
+        font_manager.fontManager.addfont(str(shutil.copy("/mnt/c/Windows/Fonts/arial.ttf", Path(font_dir) / "arial.ttf")))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9})
+        fig, axes = plt.subplots(1, len(times), figsize=(3.2 * len(times), 3.6), dpi=150)
+        for ax, time in zip(axes, times):
+            j = int(np.argmin(np.abs(data["times_s"] - time)))
+            k = int(np.searchsorted(starts, data["times_s"][j] - 1e-9) - 1)
+            segment = run["segments"][max(k, 0)]
+            value = segment["value"] if k >= 0 else 0.0
+            u = np.array(segment["amplitudes_Pa_eq"]) * np.exp(1j * np.array(segment["phases_rad"]))
+            if k < 0:
+                u = np.array([0, 0, 6000, 6000]) * np.exp(1j * np.array(segment["phases_rad"]))
+            p = np.abs(u @ field).reshape(gx.shape)
+            ax.imshow(p / p.max(), origin="lower", extent=[-HALF_UM, HALF_UM, -HALF_UM, HALF_UM], cmap="Greys_r", vmin=0, vmax=1.4)
+            ax.contour(gx, gy, local_form("pivot", value, kappa_x, kappa_y)(gx * 1e-6, gy * 1e-6), levels=[0],
+                       colors="#c2611f", linewidths=0.9, linestyles="--")
+            x = data["positions_m"][j]
+            labels = pieces(x, data["radii_m"])
+            ax.scatter(x[:, 0] * 1e6, x[:, 1] * 1e6, s=4, c=labels % 10, cmap="tab10", vmin=0, vmax=9)
+            ax.plot([0], [PIVOT_Y_M * 1e6], marker="+", color="#c2611f", ms=10, mew=1.5)
+            ax.set_title(f"t = {data['times_s'][j]:.1f} s, alpha = {value:.1f} deg, {labels.max() + 1} pieces", fontsize=8.5, loc="left")
+            ax.set_xlim(-HALF_UM, HALF_UM)
+            ax.set_ylim(-HALF_UM, HALF_UM)
+            ax.set_xlabel("x (µm)")
+        axes[0].set_ylabel("y (µm)")
+        fig.tight_layout()
+        fig.savefig(out)
+
+
+main()

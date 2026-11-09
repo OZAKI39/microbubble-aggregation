@@ -1,0 +1,122 @@
+"""Low-frequency runs on the Y-channel chip (2026-11-09): shape, motion and pieces of the cluster over time.
+
+usage (repository root):  python analyse_lowfreq.py DATA_DIR OUT_DIR
+DATA_DIR/<name>/{ROW.json, compact.npz} of lowfreq_runs.py: LF_<action>_<f>MHz_1s (0.1 ms steps) and
+STEP_LF_<action>_<f>MHz_0.2s_dt0.05ms (0.05 ms steps, the first 0.2 s).
+Per saved frame: the centre, the three principal extents (square roots of the eigenvalues of the position covariance,
+largest first), the horizontal angle of the longest axis, the pieces (bubbles closer than the sum of their radii plus
+0.5 um are connected). Per run: how it ended, the displacement of the centre, the speed of the centre over the first
+50 ms, the extents and pieces at the start, at 0.1 s and at the end, the largest step over R (R = 1.78 um). Step
+check: each run against its 0.05 ms twin at 0.1 s and 0.2 s (centre, extents, pieces, same-bubble rms distance).
+Writes OUT_DIR/LOWFREQ.json, OUT_DIR/LOWFREQ.npz (series), OUT_DIR/STEP_CHECK_LOWFREQ.json.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+R_UM = 1.78
+ACTIONS = ("x_minus", "y_minus", "x_pair_antinode", "x_pair_node", "y_pair_antinode", "y_pair_node")
+FREQUENCIES = ("0.5", "0.75", "1.0", "1.5", "2.0")
+
+
+def pieces(p, r):
+    pairs = cKDTree(p).query_pairs(2 * r.max() + 0.5, output_type="ndarray")
+    if len(pairs):
+        close = np.linalg.norm(p[pairs[:, 0]] - p[pairs[:, 1]], axis=1) <= r[pairs[:, 0]] + r[pairs[:, 1]] + 0.5
+        pairs = pairs[close]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(p), len(p)))
+    return int(connected_components(graph, directed=False)[0])
+
+
+def frame_metrics(p, r):
+    centre = p.mean(axis=0)
+    values, vectors = np.linalg.eigh(np.cov((p - centre).T))
+    extents = np.sqrt(np.maximum(values[::-1], 0))
+    longest = vectors[:, -1]
+    angle = float(np.degrees(np.arctan2(longest[1], longest[0])) % 180)
+    return centre, extents, angle, pieces(p, r)
+
+
+def series(folder):
+    c = np.load(folder / "compact.npz")
+    t, x, r = c["times_s"], c["positions_m"] * 1e6, c["radii_m"] * 1e6
+    rows = [frame_metrics(p, r) for p in x]
+    return dict(t=t, x=x, r=r, centre=np.array([m[0] for m in rows]), extents=np.array([m[1] for m in rows]),
+                angle=np.array([m[2] for m in rows]), pieces=np.array([m[3] for m in rows]),
+                step_max_over_R=float(np.nanmax(c["step_max_displacement_m"]) * 1e6 / R_UM),
+                step_median_over_R=float(np.nanmedian(c["step_max_displacement_m"]) * 1e6 / R_UM))
+
+
+def at(s, time_s):
+    k = int(np.argmin(np.abs(s["t"] - time_s)))
+    return k if abs(s["t"][k] - time_s) < 1e-9 else None
+
+
+def main():
+    data, out = Path(sys.argv[1]), Path(sys.argv[2])
+    out.mkdir(parents=True, exist_ok=True)
+    summary, arrays, checks = [], {}, []
+    for action in ACTIONS:
+        for f in FREQUENCIES:
+            name = f"LF_{action}_{f}MHz_1s"
+            row = json.loads((data / name / "ROW.json").read_text())
+            s = series(data / name)
+            end = len(s["t"]) - 1
+            k50 = at(s, 0.05)
+            entry = dict(name=name, action=action, frequency_MHz=float(f), status=row["status"], reason=row["reason"],
+                         completed_s=row["completed_s"], wall_s=row["wall_s"],
+                         amplitudes_Pa_eq=row["segments"][0]["amplitudes_Pa_eq"],
+                         centre_end_um=s["centre"][end].tolist(),
+                         displacement_end_um=float(np.linalg.norm(s["centre"][end] - s["centre"][0])),
+                         speed_first_50ms_um_s=float(np.linalg.norm(s["centre"][k50] - s["centre"][0]) / 0.05)
+                         if k50 is not None else None,
+                         extents_start_um=s["extents"][0].tolist(), extents_end_um=s["extents"][end].tolist(),
+                         pieces_max=int(s["pieces"].max()), pieces_end=int(s["pieces"][end]),
+                         angle_end_deg=float(s["angle"][end]), step_max_over_R=s["step_max_over_R"],
+                         step_median_over_R=s["step_median_over_R"])
+            k100 = at(s, 0.1)
+            if k100 is not None:
+                entry.update(extents_0p1s_um=s["extents"][k100].tolist(), pieces_0p1s=int(s["pieces"][k100]),
+                             displacement_0p1s_um=float(np.linalg.norm(s["centre"][k100] - s["centre"][0])))
+            summary.append(entry)
+            for key in ("t", "centre", "extents", "angle", "pieces"):
+                arrays[f"{name}__{key}"] = s[key]
+            arrays[f"{name}__x_end"] = s["x"][end]
+            arrays[f"{name}__x_start"] = s["x"][0]
+            fine_name = f"STEP_LF_{action}_{f}MHz_0.2s_dt0.05ms"
+            if (data / fine_name / "ROW.json").is_file():
+                fine_row = json.loads((data / fine_name / "ROW.json").read_text())
+                fine = series(data / fine_name)
+                for key in ("t", "centre", "extents", "pieces"):
+                    arrays[f"{fine_name}__{key}"] = fine[key]
+                check = dict(coarse=name, fine=fine_name, fine_status=fine_row["status"], fine_reason=fine_row["reason"],
+                             fine_completed_s=fine_row["completed_s"], coarse_step_max_over_R=s["step_max_over_R"],
+                             fine_step_max_over_R=fine["step_max_over_R"])
+                for time_s in (0.1, 0.2):
+                    kc, kf = at(s, time_s), at(fine, time_s)
+                    if kc is None or kf is None:
+                        continue
+                    check[f"t{time_s:g}"] = dict(
+                        centre_difference_um=float(np.linalg.norm(s["centre"][kc] - fine["centre"][kf])),
+                        displacement_um=[float(np.linalg.norm(s["centre"][kc] - s["centre"][0])),
+                                         float(np.linalg.norm(fine["centre"][kf] - fine["centre"][0]))],
+                        extents_um=[s["extents"][kc].tolist(), fine["extents"][kf].tolist()],
+                        pieces=[int(s["pieces"][kc]), int(fine["pieces"][kf])],
+                        same_bubble_rms_um=float(np.sqrt(((s["x"][kc] - fine["x"][kf]) ** 2).sum(axis=1).mean())))
+                checks.append(check)
+    (out / "LOWFREQ.json").write_text(json.dumps(summary, indent=1) + "\n")
+    np.savez_compressed(out / "LOWFREQ.npz", **arrays)
+    (out / "STEP_CHECK_LOWFREQ.json").write_text(json.dumps(checks, indent=1) + "\n")
+    for e in summary:
+        print(f"{e['name']:32s} {e['status']} {str(e['reason'])[:28]:28s} {e['completed_s']:.3f}s  disp {e['displacement_end_um']:7.1f}um"
+              f"  v50 {e['speed_first_50ms_um_s'] or float('nan'):8.0f}um/s  ext {np.round(e['extents_start_um'], 1)}->{np.round(e['extents_end_um'], 1)}"
+              f"  pieces max/end {e['pieces_max']}/{e['pieces_end']}  step/R {e['step_max_over_R']:.2f}")
+
+
+main()

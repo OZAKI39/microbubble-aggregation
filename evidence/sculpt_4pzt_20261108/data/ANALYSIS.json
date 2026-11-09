@@ -1,0 +1,3486 @@
+{
+ "HALF_Q3_N250_2.5MHz_pushmatched_adh1": {
+  "name": "HALF_Q3_N250_2.5MHz_pushmatched_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 2500000.0,
+    "pattern": "x_minus",
+    "duration_s": 1.5,
+    "cap_Pa_eq": 14200.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     14200.0,
+     0.0
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.0005,
+  "duration_s": 1.5,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "wall_s": 1402.8694000430405,
+  "step_max_displacement_median_m": 4.660772921875581e-08,
+  "step_max_displacement_max_m": 1.5562048659129395e-06,
+  "frames": 1501,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   6.264086646753749,
+   6.0484679771434235,
+   6.007481854632805
+  ],
+  "pressure_median_start": 0.9971657615429564,
+  "pressure_median_end": 1.0027767623504542,
+  "share_near_zero_set_start": 0.0,
+  "share_near_zero_set_end": 0.0,
+  "zero_set_distance_median_um_start": NaN,
+  "zero_set_distance_median_um_end": NaN,
+  "share_within_R_of_zero_set_start": NaN,
+  "share_within_R_of_zero_set_end": NaN,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9111969111969113,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.1413886024449305,
+  "centroid_shift_um": [
+   122.41445429017007,
+   -1.4268188579079553,
+   3.2866914628762482
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.09951845906902086,
+  "largest_displacement_um": 138.3274696480802,
+  "median_displacement_um": 123.09642949511628
+ },
+ "L_N250_9.375MHz_cross_adh0": {
+  "name": "L_N250_9.375MHz_cross_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "cross",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.9442131358217916,
+     3.9442131358217916,
+     2.997279862035681,
+     2.997279862035681
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 1821.1387589001097,
+  "step_max_displacement_median_m": 5.674843633203469e-09,
+  "step_max_displacement_max_m": 3.2272069478923306e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   5.279106540506932,
+   5.357699925639329,
+   9.738758836444063
+  ],
+  "pressure_median_start": 0.016403225002888433,
+  "pressure_median_end": 0.006178131617893438,
+  "share_near_zero_set_start": 1.0,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 2.7420372703595555,
+  "zero_set_distance_median_um_end": 1.3253406865426247,
+  "share_within_R_of_zero_set_start": 0.352,
+  "share_within_R_of_zero_set_end": 0.62,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.6739904988123516,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.055022942208641,
+  "centroid_shift_um": [
+   0.14918777792093096,
+   -0.0723433851388136,
+   0.20271091191678584
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.5762439807383628,
+  "largest_displacement_um": 9.646575902773483,
+  "median_displacement_um": 4.455256743285538
+ },
+ "L_N250_9.375MHz_dots_adh0": {
+  "name": "L_N250_9.375MHz_dots_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "dots",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     3.9442131358217916,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 2500.7024053379428,
+  "step_max_displacement_median_m": 1.3142343856681948e-08,
+  "step_max_displacement_max_m": 1.737536147637308e-06,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   3.9052140843390046,
+   4.156330076884071,
+   12.981630132768558
+  ],
+  "pressure_median_start": 0.23799823080758262,
+  "pressure_median_end": 0.1515829986254174,
+  "share_near_zero_set_start": 0.088,
+  "share_near_zero_set_end": 0.24,
+  "zero_set_distance_median_um_start": 8.592454255201353,
+  "zero_set_distance_median_um_end": 5.509475501695487,
+  "share_within_R_of_zero_set_start": 0.028,
+  "share_within_R_of_zero_set_end": 0.056,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9342177998894415,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0595553678258958,
+  "centroid_shift_um": [
+   0.12199767576945894,
+   -0.24889326787873875,
+   -0.03569193236288493
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.6179775280898876,
+  "largest_displacement_um": 26.780297149387895,
+  "median_displacement_um": 9.159547891287273
+ },
+ "L_N250_9.375MHz_lines_x_adh0": {
+  "name": "L_N250_9.375MHz_lines_x_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 2471.997214338975,
+  "step_max_displacement_median_m": 3.455766746686666e-08,
+  "step_max_displacement_max_m": 1.6295788793877285e-06,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   4.381884275177952e-06,
+   15.992035288060931,
+   15.707140740371303
+  ],
+  "pressure_median_start": 0.1829085522797283,
+  "pressure_median_end": 8.869837089180247e-07,
+  "share_near_zero_set_start": 0.296,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 4.739148199836707,
+  "zero_set_distance_median_um_end": 0.02417016649469161,
+  "share_within_R_of_zero_set_start": 0.204,
+  "share_within_R_of_zero_set_end": 1.0,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.8080072793448589,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 13.48441920972409,
+  "centroid_shift_um": [
+   -2.3119481174557423e-05,
+   -0.022782952658032093,
+   0.2925681290613322
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.8378812199036918,
+  "largest_displacement_um": 22.297481267090017,
+  "median_displacement_um": 15.239791677059609
+ },
+ "L_N250_9.375MHz_wavy_adh0": {
+  "name": "L_N250_9.375MHz_wavy_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "wavy",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3609.348112252747,
+     3609.348112252747,
+     6000.0,
+     5999.999999999999
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     0.8026204822319988,
+     0.651086038630031,
+     5.343473685441331
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 1871.1753810690716,
+  "step_max_displacement_median_m": 1.6201353610360637e-08,
+  "step_max_displacement_max_m": 9.94239617130894e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   3.2918335971423907,
+   10.173851669313617,
+   11.331327702037322
+  ],
+  "pressure_median_start": 0.08661086554021889,
+  "pressure_median_end": 0.024159589033055352,
+  "share_near_zero_set_start": 0.568,
+  "share_near_zero_set_end": 0.928,
+  "zero_set_distance_median_um_start": 4.645810486791793,
+  "zero_set_distance_median_um_end": 1.097605075663224,
+  "share_within_R_of_zero_set_start": 0.196,
+  "share_within_R_of_zero_set_end": 0.652,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.6729559748427671,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 2.7154296135344,
+  "centroid_shift_um": [
+   0.4757115736480267,
+   -0.5500014365172091,
+   0.22042122664368652
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.7319422150882825,
+  "largest_displacement_um": 15.306342742660116,
+  "median_displacement_um": 7.971452870253348
+ },
+ "L_N800_7.0MHz_cross_adh0": {
+  "name": "L_N800_7.0MHz_cross_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "cross",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.4686112503452717,
+     3.4686112503452717,
+     5.98693619693718,
+     5.98693619693718
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 7989.617535763886,
+  "step_max_displacement_median_m": 6.125301205392922e-09,
+  "step_max_displacement_max_m": 2.777362490733473e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   7.775621112916644,
+   8.048242894129807,
+   12.832943708961505
+  ],
+  "pressure_median_start": 0.02991948413679818,
+  "pressure_median_end": 0.0159267521634238,
+  "share_near_zero_set_start": 0.9125,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 3.964135659959997,
+  "zero_set_distance_median_um_end": 2.4158084091527625,
+  "share_within_R_of_zero_set_start": 0.23875,
+  "share_within_R_of_zero_set_end": 0.39,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.777730070130242,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0638348053251037,
+  "centroid_shift_um": [
+   -0.013404800295114113,
+   0.005221487591635438,
+   -0.041004975684771676
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.47339901477832513,
+  "largest_displacement_um": 10.22661874091515,
+  "median_displacement_um": 4.755569282091838
+ },
+ "L_N800_7.0MHz_dots_adh0": {
+  "name": "L_N800_7.0MHz_dots_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "dots",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.32701859675547906,
+     3.4686112503452717,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 9409.205307008,
+  "step_max_displacement_median_m": 1.6705725377156917e-08,
+  "step_max_displacement_max_m": 9.954886917513665e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   6.498542839147338,
+   6.426195610138332,
+   16.634342219796967
+  ],
+  "pressure_median_start": 0.26539897116540623,
+  "pressure_median_end": 0.1774827809866467,
+  "share_near_zero_set_start": 0.09375,
+  "share_near_zero_set_end": 0.18625,
+  "zero_set_distance_median_um_start": 13.093327566742449,
+  "zero_set_distance_median_um_end": 8.81586820936867,
+  "share_within_R_of_zero_set_start": 0.0125,
+  "share_within_R_of_zero_set_end": 0.02625,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9536662168241116,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0484715736272072,
+  "centroid_shift_um": [
+   0.0438572300389095,
+   -0.04956708363990033,
+   -0.03347386083790489
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.5876847290640395,
+  "largest_displacement_um": 28.03380234078396,
+  "median_displacement_um": 17.015350236744688
+ },
+ "L_N800_7.0MHz_lines_x_adh0": {
+  "name": "L_N800_7.0MHz_lines_x_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "lines_x",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 8466.268556059804,
+  "step_max_displacement_median_m": 2.1628320300696927e-08,
+  "step_max_displacement_max_m": 7.78171312328599e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   2.9530091204176405,
+   15.750024443832812,
+   15.591997138191454
+  ],
+  "pressure_median_start": 0.21244349297229498,
+  "pressure_median_end": 0.053460841526119005,
+  "share_near_zero_set_start": 0.2575,
+  "share_near_zero_set_end": 0.72125,
+  "zero_set_distance_median_um_start": 7.391101021291428,
+  "zero_set_distance_median_um_end": 1.8499083061019703,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.4825,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.8807573275077373,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 4.713127378174003,
+  "centroid_shift_um": [
+   0.059845634568865234,
+   -0.06819522965782647,
+   -0.058516911587431955
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.719704433497537,
+  "largest_displacement_um": 24.004019696830593,
+  "median_displacement_um": 10.442616563655081
+ },
+ "L_N800_7.0MHz_wavy_adh0": {
+  "name": "L_N800_7.0MHz_wavy_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "wavy",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3242.199412650844,
+     3242.199412650844,
+     5999.999999999998,
+     5999.999999999998
+    ],
+    "phases_rad": [
+     0.327018596755479,
+     0.327018596755479,
+     3.6407423735315305,
+     2.049944713163244
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 8598.729804267874,
+  "step_max_displacement_median_m": 9.717349232466471e-09,
+  "step_max_displacement_max_m": 7.399308768462144e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   6.142815896499239,
+   10.157272218,
+   13.108120290086783
+  ],
+  "pressure_median_start": 0.10939006865318718,
+  "pressure_median_end": 0.09583563648506413,
+  "share_near_zero_set_start": 0.4525,
+  "share_near_zero_set_end": 0.52875,
+  "zero_set_distance_median_um_start": 7.410936503828833,
+  "zero_set_distance_median_um_end": 6.599160801449269,
+  "share_within_R_of_zero_set_start": 0.12875,
+  "share_within_R_of_zero_set_end": 0.14625,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.8776258752917642,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.5766851691024044,
+  "centroid_shift_um": [
+   6.498319574880409,
+   -0.04302208702023895,
+   -0.10809085615604914
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.5315270935960591,
+  "largest_displacement_um": 18.8398985869837,
+  "median_displacement_um": 7.924444889832582
+ },
+ "L_N800_9.375MHz_cross_adh0": {
+  "name": "L_N800_9.375MHz_cross_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "cross",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.9442131358217916,
+     3.9442131358217916,
+     2.997279862035681,
+     2.997279862035681
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 8057.270008980995,
+  "step_max_displacement_median_m": 1.0080123949045452e-08,
+  "step_max_displacement_max_m": 5.807509363728285e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   7.5596642453277765,
+   7.780551371206947,
+   15.11570042508935
+  ],
+  "pressure_median_start": 0.03726116573717493,
+  "pressure_median_end": 0.016064424346759372,
+  "share_near_zero_set_start": 0.83875,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 3.964136092323405,
+  "zero_set_distance_median_um_end": 2.0471383298815065,
+  "share_within_R_of_zero_set_start": 0.23875,
+  "share_within_R_of_zero_set_end": 0.45875,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.5982153770932649,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.081050030175209,
+  "centroid_shift_um": [
+   -0.11355170356928351,
+   0.01086737476205479,
+   -0.10373184486694285
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.5783251231527093,
+  "largest_displacement_um": 13.510636789299728,
+  "median_displacement_um": 7.040080639412113
+ },
+ "L_N800_9.375MHz_dots_adh0": {
+  "name": "L_N800_9.375MHz_dots_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "dots",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     3.9442131358217916,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 9435.890392308822,
+  "step_max_displacement_median_m": 1.1995763586327278e-08,
+  "step_max_displacement_max_m": 1.101180714140845e-06,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   6.353825772256904,
+   6.755692530078181,
+   16.333266357323545
+  ],
+  "pressure_median_start": 0.35214840865123553,
+  "pressure_median_end": 0.24000583176263535,
+  "share_near_zero_set_start": 0.04875,
+  "share_near_zero_set_end": 0.1075,
+  "zero_set_distance_median_um_start": 13.093327566742449,
+  "zero_set_distance_median_um_end": 8.795583199481928,
+  "share_within_R_of_zero_set_start": 0.0125,
+  "share_within_R_of_zero_set_end": 0.025,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9556496545576109,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0248079372555428,
+  "centroid_shift_um": [
+   0.06415470489448898,
+   -0.04370659443190663,
+   0.07896332177317095
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.5783251231527093,
+  "largest_displacement_um": 21.230774909885007,
+  "median_displacement_um": 8.498547373142406
+ },
+ "L_N800_9.375MHz_lines_x_adh0": {
+  "name": "L_N800_9.375MHz_lines_x_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 8590.650626452174,
+  "step_max_displacement_median_m": 2.693903515106107e-08,
+  "step_max_displacement_max_m": 8.025517412135911e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   2.720016120947463,
+   16.88465688312389,
+   16.544275193508096
+  ],
+  "pressure_median_start": 0.2825085682941366,
+  "pressure_median_end": 0.06307923532093553,
+  "share_near_zero_set_start": 0.19375,
+  "share_near_zero_set_end": 0.645,
+  "zero_set_distance_median_um_start": 7.3911010212914325,
+  "zero_set_distance_median_um_end": 1.6278732667125304,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.52125,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.8487439871726351,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 5.329117908817877,
+  "centroid_shift_um": [
+   0.04812115385837713,
+   -0.05080615745301322,
+   -0.08835511944724479
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.7655172413793103,
+  "largest_displacement_um": 24.04073038936888,
+  "median_displacement_um": 11.509706495477626
+ },
+ "L_N800_9.375MHz_wavy_adh0": {
+  "name": "L_N800_9.375MHz_wavy_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "wavy",
+    "duration_s": 20.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3609.348112252747,
+     3609.348112252747,
+     6000.0,
+     5999.999999999999
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     0.8026204822319988,
+     0.651086038630031,
+     5.343473685441331
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 8609.771576793864,
+  "step_max_displacement_median_m": 1.1166896254153731e-08,
+  "step_max_displacement_max_m": 8.730364794045525e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   8.705160592691985,
+   8.788631555446411,
+   12.447861861165078
+  ],
+  "pressure_median_start": 0.13740374489235208,
+  "pressure_median_end": 0.17109877878041435,
+  "share_near_zero_set_start": 0.3725,
+  "share_near_zero_set_end": 0.195,
+  "zero_set_distance_median_um_start": 7.329689996428412,
+  "zero_set_distance_median_um_end": 10.867658617457545,
+  "share_within_R_of_zero_set_start": 0.1275,
+  "share_within_R_of_zero_set_end": 0.0,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.7515695067264575,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0367208145110711,
+  "centroid_shift_um": [
+   12.37918031966133,
+   -0.21627699479306867,
+   -0.03737562320121003
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.5458128078817734,
+  "largest_displacement_um": 24.794389838779697,
+  "median_displacement_um": 13.013703267728557
+ },
+ "Q1_N250_7.0MHz_cross_adh0": {
+  "name": "Q1_N250_7.0MHz_cross_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.4686112503452717,
+     3.4686112503452717,
+     5.98693619693718,
+     5.98693619693718
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 150.024219277082,
+  "step_max_displacement_median_m": 4.1290152990440506e-09,
+  "step_max_displacement_max_m": 2.8712305023019408e-08,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   5.854949159174555,
+   6.274685637514423,
+   6.800122233822462
+  ],
+  "pressure_median_start": 0.013054744635750388,
+  "pressure_median_end": 0.011434060453521615,
+  "share_near_zero_set_start": 1.0,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 2.742036799192241,
+  "zero_set_distance_median_um_end": 2.48104035099778,
+  "share_within_R_of_zero_set_start": 0.352,
+  "share_within_R_of_zero_set_end": 0.4,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9292084726867336,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0304641732265098,
+  "centroid_shift_um": [
+   0.02527242701445825,
+   0.028050899846285615,
+   0.00940011852223941
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.09149277688603531,
+  "largest_displacement_um": 4.851586513721836,
+  "median_displacement_um": 0.6535458700970804
+ },
+ "Q1_N250_7.0MHz_cross_adh1": {
+  "name": "Q1_N250_7.0MHz_cross_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.4686112503452717,
+     3.4686112503452717,
+     5.98693619693718,
+     5.98693619693718
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 275.540107706096,
+  "step_max_displacement_median_m": 4.6971266508822275e-09,
+  "step_max_displacement_max_m": 3.192564769629989e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   6.205281833570512,
+   6.431931703553111,
+   6.490171177382283
+  ],
+  "pressure_median_start": 0.013054744635750388,
+  "pressure_median_end": 0.012783124626524017,
+  "share_near_zero_set_start": 1.0,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 2.742036799192241,
+  "zero_set_distance_median_um_end": 2.6574940537596587,
+  "share_within_R_of_zero_set_start": 0.352,
+  "share_within_R_of_zero_set_end": 0.356,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9120039438008379,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0839163057044332,
+  "centroid_shift_um": [
+   -0.008107755498992841,
+   0.0155615933271547,
+   -0.0031165335073870095
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.2775250956098563,
+  "median_displacement_um": 0.4407173892734545
+ },
+ "Q1_N250_7.0MHz_dots_adh0": {
+  "name": "Q1_N250_7.0MHz_dots_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.32701859675547906,
+     3.4686112503452717,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 188.0544252358377,
+  "step_max_displacement_median_m": 1.4997198341214963e-08,
+  "step_max_displacement_max_m": 3.0972824356034643e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   5.0247423024305515,
+   5.415108360738894,
+   7.941279376129755
+  ],
+  "pressure_median_start": 0.1768132631881954,
+  "pressure_median_end": 0.14554894518773226,
+  "share_near_zero_set_start": 0.184,
+  "share_near_zero_set_end": 0.244,
+  "zero_set_distance_median_um_start": 8.592454255201353,
+  "zero_set_distance_median_um_end": 7.153844311675881,
+  "share_within_R_of_zero_set_start": 0.028,
+  "share_within_R_of_zero_set_end": 0.028,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9330007127583753,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0805874816108252,
+  "centroid_shift_um": [
+   0.23862599538565096,
+   0.0014631733618880362,
+   0.06550179531936161
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.3306581059390048,
+  "largest_displacement_um": 8.359774094154599,
+  "median_displacement_um": 3.1739542929389666
+ },
+ "Q1_N250_7.0MHz_dots_adh1": {
+  "name": "Q1_N250_7.0MHz_dots_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.32701859675547906,
+     3.4686112503452717,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 252.87992006586865,
+  "step_max_displacement_median_m": 3.248453679417683e-09,
+  "step_max_displacement_max_m": 3.2899136611638674e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   6.251163165123868,
+   6.227013294076084,
+   6.5308711620721125
+  ],
+  "pressure_median_start": 0.1768132631881954,
+  "pressure_median_end": 0.17382815993121084,
+  "share_near_zero_set_start": 0.184,
+  "share_near_zero_set_end": 0.184,
+  "zero_set_distance_median_um_start": 8.592454255201353,
+  "zero_set_distance_median_um_end": 8.50740936278732,
+  "share_within_R_of_zero_set_start": 0.028,
+  "share_within_R_of_zero_set_end": 0.028,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9132977370963642,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0798920461360724,
+  "centroid_shift_um": [
+   0.146640450348233,
+   0.012513170017625619,
+   -0.006505489920526701
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 5.179209319653005,
+  "median_displacement_um": 1.971656694348368
+ },
+ "Q1_N250_7.0MHz_lines_x_adh0": {
+  "name": "Q1_N250_7.0MHz_lines_x_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 298.4222012849059,
+  "step_max_displacement_median_m": 1.3367351690015481e-08,
+  "step_max_displacement_max_m": 3.0041859726924825e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   3.68420176385115,
+   7.585324440695083,
+   7.752885694849596
+  ],
+  "pressure_median_start": 0.13695266119033894,
+  "pressure_median_end": 0.08765688257907753,
+  "share_near_zero_set_start": 0.372,
+  "share_near_zero_set_end": 0.588,
+  "zero_set_distance_median_um_start": 4.739148199836707,
+  "zero_set_distance_median_um_end": 3.027811188826782,
+  "share_within_R_of_zero_set_start": 0.204,
+  "share_within_R_of_zero_set_end": 0.328,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9233344492802142,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.9440835537056091,
+  "centroid_shift_um": [
+   0.1704631330092456,
+   0.0073628958174608685,
+   0.05253494687717884
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.4044943820224719,
+  "largest_displacement_um": 8.79622824164502,
+  "median_displacement_um": 3.193202601183397
+ },
+ "Q1_N250_7.0MHz_lines_x_adh1": {
+  "name": "Q1_N250_7.0MHz_lines_x_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 370.7391142088454,
+  "step_max_displacement_median_m": 1.4779798027110074e-09,
+  "step_max_displacement_max_m": 3.278884966468822e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   5.99153712275944,
+   6.53087474805225,
+   6.482469415681665
+  ],
+  "pressure_median_start": 0.13695266119033894,
+  "pressure_median_end": 0.12889582522069154,
+  "share_near_zero_set_start": 0.372,
+  "share_near_zero_set_end": 0.372,
+  "zero_set_distance_median_um_start": 4.739148199836707,
+  "zero_set_distance_median_um_end": 4.458151774824729,
+  "share_within_R_of_zero_set_start": 0.204,
+  "share_within_R_of_zero_set_end": 0.22,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.919056077137782,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0689901878830677,
+  "centroid_shift_um": [
+   0.14066198374996536,
+   0.011927379732247981,
+   -0.0064671619242162815
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.159087611815457,
+  "median_displacement_um": 0.9218695830790653
+ },
+ "Q1_N250_7.0MHz_wavy_adh0": {
+  "name": "Q1_N250_7.0MHz_wavy_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3242.199412650844,
+     3242.199412650844,
+     5999.999999999998,
+     5999.999999999998
+    ],
+    "phases_rad": [
+     0.327018596755479,
+     0.327018596755479,
+     3.6407423735315305,
+     2.049944713163244
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 208.38267395505682,
+  "step_max_displacement_median_m": 9.401509191157743e-09,
+  "step_max_displacement_max_m": 2.598569259050239e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   4.292103016380428,
+   7.105755596580457,
+   7.378848009688173
+  ],
+  "pressure_median_start": 0.07055240373710048,
+  "pressure_median_end": 0.04786458499355935,
+  "share_near_zero_set_start": 0.688,
+  "share_near_zero_set_end": 0.892,
+  "zero_set_distance_median_um_start": 4.707369083066873,
+  "zero_set_distance_median_um_end": 3.235689351112321,
+  "share_within_R_of_zero_set_start": 0.208,
+  "share_within_R_of_zero_set_end": 0.252,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.932852931542745,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.577412949258671,
+  "centroid_shift_um": [
+   1.5230223772207498,
+   -0.02247079753964806,
+   0.04521419152093694
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.29373996789727125,
+  "largest_displacement_um": 8.437935913930053,
+  "median_displacement_um": 2.723583272804338
+ },
+ "Q1_N250_7.0MHz_wavy_adh1": {
+  "name": "Q1_N250_7.0MHz_wavy_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3242.199412650844,
+     3242.199412650844,
+     5999.999999999998,
+     5999.999999999998
+    ],
+    "phases_rad": [
+     0.327018596755479,
+     0.327018596755479,
+     3.6407423735315305,
+     2.049944713163244
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 304.7847816341091,
+  "step_max_displacement_median_m": 2.9911473737678387e-09,
+  "step_max_displacement_max_m": 3.5423986629516787e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   6.097711096315558,
+   6.435687231464813,
+   6.484487422463712
+  ],
+  "pressure_median_start": 0.07055240373710048,
+  "pressure_median_end": 0.07164832727923884,
+  "share_near_zero_set_start": 0.688,
+  "share_near_zero_set_end": 0.672,
+  "zero_set_distance_median_um_start": 4.707369083066873,
+  "zero_set_distance_median_um_end": 4.929790198571559,
+  "share_within_R_of_zero_set_start": 0.208,
+  "share_within_R_of_zero_set_end": 0.168,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9200710479573714,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0608206627570875,
+  "centroid_shift_um": [
+   2.400570379683441,
+   -0.06279658966754041,
+   -0.0025539653276854873
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 4.710598000771703,
+  "median_displacement_um": 2.4866232034914555
+ },
+ "Q1_N250_9.375MHz_cross_adh0": {
+  "name": "Q1_N250_9.375MHz_cross_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.9442131358217916,
+     3.9442131358217916,
+     2.997279862035681,
+     2.997279862035681
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 437.0312474060338,
+  "step_max_displacement_median_m": 6.9900543462174065e-09,
+  "step_max_displacement_max_m": 6.454413895784661e-08,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   5.7011064277498,
+   6.084621554634333,
+   6.971947710492938
+  ],
+  "pressure_median_start": 0.016403225002888433,
+  "pressure_median_end": 0.012957745072977554,
+  "share_near_zero_set_start": 1.0,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 2.7420372703595555,
+  "zero_set_distance_median_um_end": 2.292835469427798,
+  "share_within_R_of_zero_set_start": 0.352,
+  "share_within_R_of_zero_set_end": 0.42,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9173772419876508,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.03697155660556,
+  "centroid_shift_um": [
+   0.07886237951891896,
+   0.03519406829478117,
+   0.016129744846495608
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.1492776886035313,
+  "largest_displacement_um": 5.0862851802010365,
+  "median_displacement_um": 1.057556735029094
+ },
+ "Q1_N250_9.375MHz_cross_adh1": {
+  "name": "Q1_N250_9.375MHz_cross_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.9442131358217916,
+     3.9442131358217916,
+     2.997279862035681,
+     2.997279862035681
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 582.4896046798676,
+  "step_max_displacement_median_m": 2.7733796946847844e-09,
+  "step_max_displacement_max_m": 3.3581200978519766e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   6.193819028366588,
+   6.425323213106314,
+   6.504882152590415
+  ],
+  "pressure_median_start": 0.016403225002888433,
+  "pressure_median_end": 0.015832958356094155,
+  "share_near_zero_set_start": 1.0,
+  "share_near_zero_set_end": 1.0,
+  "zero_set_distance_median_um_start": 2.7420372703595555,
+  "zero_set_distance_median_um_end": 2.626808420479508,
+  "share_within_R_of_zero_set_start": 0.352,
+  "share_within_R_of_zero_set_end": 0.356,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9179677819083023,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0823792851724292,
+  "centroid_shift_um": [
+   -0.010194193889106272,
+   0.02506862408674082,
+   -0.0042742050744254394
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.6034954582702645,
+  "median_displacement_um": 0.4393791210466308
+ },
+ "Q1_N250_9.375MHz_dots_adh0": {
+  "name": "Q1_N250_9.375MHz_dots_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     3.9442131358217916,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 456.9949719069991,
+  "step_max_displacement_median_m": 1.103301068196277e-08,
+  "step_max_displacement_max_m": 3.687265640981051e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   4.963667002881004,
+   5.339556579274424,
+   8.217173747375117
+  ],
+  "pressure_median_start": 0.23799823080758262,
+  "pressure_median_end": 0.19205512705289673,
+  "share_near_zero_set_start": 0.088,
+  "share_near_zero_set_end": 0.136,
+  "zero_set_distance_median_um_start": 8.592454255201353,
+  "zero_set_distance_median_um_end": 6.871354841095091,
+  "share_within_R_of_zero_set_start": 0.028,
+  "share_within_R_of_zero_set_end": 0.032,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.922852983988355,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.030485854076101,
+  "centroid_shift_um": [
+   0.18786423263294424,
+   0.060790301678805315,
+   0.04018314746362814
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.3467094703049759,
+  "largest_displacement_um": 7.255841366888226,
+  "median_displacement_um": 2.995330286788784
+ },
+ "Q1_N250_9.375MHz_dots_adh1": {
+  "name": "Q1_N250_9.375MHz_dots_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     3.9442131358217916,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 649.819493436953,
+  "step_max_displacement_median_m": 7.882962614158393e-10,
+  "step_max_displacement_max_m": 4.098063436327154e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   6.135276233876777,
+   6.336763882104026,
+   6.518358289654935
+  ],
+  "pressure_median_start": 0.23799823080758262,
+  "pressure_median_end": 0.23137588758725475,
+  "share_near_zero_set_start": 0.088,
+  "share_near_zero_set_end": 0.088,
+  "zero_set_distance_median_um_start": 8.592454255201353,
+  "zero_set_distance_median_um_end": 8.477094479504993,
+  "share_within_R_of_zero_set_start": 0.028,
+  "share_within_R_of_zero_set_end": 0.028,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.922282468370772,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.091614609954722,
+  "centroid_shift_um": [
+   0.14093112554925769,
+   0.023999398280559452,
+   -0.016502723126546652
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.1690949557519277,
+  "median_displacement_um": 0.6163903939550279
+ },
+ "Q1_N250_9.375MHz_lines_x_adh0": {
+  "name": "Q1_N250_9.375MHz_lines_x_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 486.2024245550856,
+  "step_max_displacement_median_m": 1.5963260108923076e-08,
+  "step_max_displacement_max_m": 3.493836308178305e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   3.4306812275753806,
+   7.817178185679172,
+   8.088788453650892
+  ],
+  "pressure_median_start": 0.1829085522797283,
+  "pressure_median_end": 0.10603992237763125,
+  "share_near_zero_set_start": 0.296,
+  "share_near_zero_set_end": 0.468,
+  "zero_set_distance_median_um_start": 4.739148199836707,
+  "zero_set_distance_median_um_end": 2.737927355377996,
+  "share_within_R_of_zero_set_start": 0.204,
+  "share_within_R_of_zero_set_end": 0.344,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9235029421945309,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 2.1689459387084415,
+  "centroid_shift_um": [
+   0.16820232765268742,
+   0.011008461603684738,
+   0.03832925033638859
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.45585874799357945,
+  "largest_displacement_um": 8.54189916690927,
+  "median_displacement_um": 3.615934227243235
+ },
+ "Q1_N250_9.375MHz_lines_x_adh1": {
+  "name": "Q1_N250_9.375MHz_lines_x_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 692.5231934771873,
+  "step_max_displacement_median_m": 1.6908493763659819e-09,
+  "step_max_displacement_max_m": 3.379640711859323e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   5.979216028228297,
+   6.554886864881811,
+   6.494849057911285
+  ],
+  "pressure_median_start": 0.1829085522797283,
+  "pressure_median_end": 0.17546274527645334,
+  "share_near_zero_set_start": 0.296,
+  "share_near_zero_set_end": 0.284,
+  "zero_set_distance_median_um_start": 4.739148199836707,
+  "zero_set_distance_median_um_end": 4.544984027449904,
+  "share_within_R_of_zero_set_start": 0.204,
+  "share_within_R_of_zero_set_end": 0.212,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9195813122287466,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0639515582118064,
+  "centroid_shift_um": [
+   0.15950848833278702,
+   0.014276943936765494,
+   -0.005182347717714514
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.3749723283631523,
+  "median_displacement_um": 1.0353199074124018
+ },
+ "Q1_N250_9.375MHz_wavy_adh0": {
+  "name": "Q1_N250_9.375MHz_wavy_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3609.348112252747,
+     3609.348112252747,
+     6000.0,
+     5999.999999999999
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     0.8026204822319988,
+     0.651086038630031,
+     5.343473685441331
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 564.4795522519853,
+  "step_max_displacement_median_m": 1.2118485816195974e-08,
+  "step_max_displacement_max_m": 3.591648160738274e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   4.29581041663525,
+   7.099398748068419,
+   7.548192155445965
+  ],
+  "pressure_median_start": 0.08661086554021889,
+  "pressure_median_end": 0.061901120173319,
+  "share_near_zero_set_start": 0.568,
+  "share_near_zero_set_end": 0.74,
+  "zero_set_distance_median_um_start": 4.645810486791793,
+  "zero_set_distance_median_um_end": 3.4752625810988547,
+  "share_within_R_of_zero_set_start": 0.196,
+  "share_within_R_of_zero_set_end": 0.308,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9192307692307692,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.5839052531429247,
+  "centroid_shift_um": [
+   2.2692894021776597,
+   -0.013782272170849385,
+   0.04635067428689984
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.33226324237560195,
+  "largest_displacement_um": 9.837905867132582,
+  "median_displacement_um": 3.1374035167484604
+ },
+ "Q1_N250_9.375MHz_wavy_adh1": {
+  "name": "Q1_N250_9.375MHz_wavy_adh1",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3609.348112252747,
+     3609.348112252747,
+     6000.0,
+     5999.999999999999
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     0.8026204822319988,
+     0.651086038630031,
+     5.343473685441331
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 755.8592321311589,
+  "step_max_displacement_median_m": 4.235492831371998e-09,
+  "step_max_displacement_max_m": 3.4904660204347394e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   6.089759568006517,
+   6.471361126218932,
+   6.47937723169718
+  ],
+  "pressure_median_start": 0.08661086554021889,
+  "pressure_median_end": 0.08986322882588854,
+  "share_near_zero_set_start": 0.568,
+  "share_near_zero_set_end": 0.532,
+  "zero_set_distance_median_um_start": 4.645810486791793,
+  "zero_set_distance_median_um_end": 5.110310982162434,
+  "share_within_R_of_zero_set_start": 0.196,
+  "share_within_R_of_zero_set_end": 0.184,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.9193105171121658,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 1.0730077965498732,
+  "centroid_shift_um": [
+   3.6492670430144987,
+   -0.12091170777178809,
+   -0.003358034094647631
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 5.987144905876546,
+  "median_displacement_um": 3.705929893246492
+ },
+ "Q1_N800_7.0MHz_cross_adh0": {
+  "name": "Q1_N800_7.0MHz_cross_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.4686112503452717,
+     3.4686112503452717,
+     5.98693619693718,
+     5.98693619693718
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 1090.8257365389727,
+  "step_max_displacement_median_m": 7.643935433406107e-09,
+  "step_max_displacement_max_m": 5.554724565552724e-08,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   8.853362693440165,
+   9.14684773656329,
+   9.881759664096096
+  ],
+  "pressure_median_start": 0.02991948413679818,
+  "pressure_median_end": 0.024163696146008114,
+  "share_near_zero_set_start": 0.9125,
+  "share_near_zero_set_end": 0.99375,
+  "zero_set_distance_median_um_start": 3.964135659959997,
+  "zero_set_distance_median_um_end": 3.3875038818886742,
+  "share_within_R_of_zero_set_start": 0.23875,
+  "share_within_R_of_zero_set_end": 0.27875,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9471639471639473,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0369569245468222,
+  "centroid_shift_um": [
+   -0.02119238623480041,
+   0.0038073338187313305,
+   -0.004233746471320396
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.1315270935960591,
+  "largest_displacement_um": 5.481594146798892,
+  "median_displacement_um": 1.117179682532852
+ },
+ "Q1_N800_7.0MHz_cross_adh1": {
+  "name": "Q1_N800_7.0MHz_cross_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.4686112503452717,
+     3.4686112503452717,
+     5.98693619693718,
+     5.98693619693718
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.491,
+  "wall_s": 3608.0595043748617,
+  "step_max_displacement_median_m": 1.5238202588735053e-07,
+  "step_max_displacement_max_m": 6.352532827452621e-07,
+  "frames": 100,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.385018616262679,
+   9.549948045140617,
+   9.568281651396969
+  ],
+  "pressure_median_start": 0.02991948413679818,
+  "pressure_median_end": 0.02883419450511709,
+  "share_near_zero_set_start": 0.9125,
+  "share_near_zero_set_end": 0.92875,
+  "zero_set_distance_median_um_start": 3.964135659959997,
+  "zero_set_distance_median_um_end": 3.8964435416700396,
+  "share_within_R_of_zero_set_start": 0.23875,
+  "share_within_R_of_zero_set_end": 0.25375,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9414689265536723,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0359803135028065,
+  "centroid_shift_um": [
+   -0.024227094870642268,
+   -0.006439880466383156,
+   0.00263707631795481
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.40775684805724,
+  "median_displacement_um": 0.436694764441331
+ },
+ "Q1_N800_7.0MHz_dots_adh0": {
+  "name": "Q1_N800_7.0MHz_dots_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.32701859675547906,
+     3.4686112503452717,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.651,
+  "wall_s": 3600.4736148668453,
+  "step_max_displacement_median_m": 1.9014167230939286e-08,
+  "step_max_displacement_max_m": 2.923732798942404e-07,
+  "frames": 132,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   8.039576088485592,
+   8.413193073933707,
+   10.672646259809369
+  ],
+  "pressure_median_start": 0.26539897116540623,
+  "pressure_median_end": 0.22572162469498475,
+  "share_near_zero_set_start": 0.09375,
+  "share_near_zero_set_end": 0.11125,
+  "zero_set_distance_median_um_start": 13.093327566742449,
+  "zero_set_distance_median_um_end": 11.164756894492921,
+  "share_within_R_of_zero_set_start": 0.0125,
+  "share_within_R_of_zero_set_end": 0.02,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9513163700544199,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0233947263439906,
+  "centroid_shift_um": [
+   -0.0059180127671455696,
+   0.004076398074414201,
+   -0.026159277664335692
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.29211822660098524,
+  "largest_displacement_um": 6.293293113618762,
+  "median_displacement_um": 2.638990552463252
+ },
+ "Q1_N800_7.0MHz_dots_adh1": {
+  "name": "Q1_N800_7.0MHz_dots_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     4631.713446644066,
+     4631.713446644066,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.32701859675547906,
+     3.4686112503452717,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.373,
+  "wall_s": 3602.305109974928,
+  "step_max_displacement_median_m": 3.955189309400213e-08,
+  "step_max_displacement_max_m": 4.766758396430851e-07,
+  "frames": 76,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.316356174156537,
+   9.615824444263803,
+   9.461099743718252
+  ],
+  "pressure_median_start": 0.26539897116540623,
+  "pressure_median_end": 0.26068252170826084,
+  "share_near_zero_set_start": 0.09375,
+  "share_near_zero_set_end": 0.0975,
+  "zero_set_distance_median_um_start": 13.093327566742449,
+  "zero_set_distance_median_um_end": 12.876094815360778,
+  "share_within_R_of_zero_set_start": 0.0125,
+  "share_within_R_of_zero_set_end": 0.01375,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9351115095819792,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0478344786850575,
+  "centroid_shift_um": [
+   -0.004423728486336896,
+   -0.011351407056569696,
+   -0.002538800483146345
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.5475135563706788,
+  "median_displacement_um": 0.5499068747069122
+ },
+ "Q1_N800_7.0MHz_lines_x_adh0": {
+  "name": "Q1_N800_7.0MHz_lines_x_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 1977.5065396779682,
+  "step_max_displacement_median_m": 1.2724107536931396e-08,
+  "step_max_displacement_max_m": 2.1008312914087853e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   6.407591285041648,
+   10.748087598995863,
+   10.685925512694748
+  ],
+  "pressure_median_start": 0.21244349297229498,
+  "pressure_median_end": 0.14182297053737491,
+  "share_near_zero_set_start": 0.2575,
+  "share_near_zero_set_end": 0.3725,
+  "zero_set_distance_median_um_start": 7.391101021291428,
+  "zero_set_distance_median_um_end": 4.913516397728681,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.1925,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9427502876869965,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.6426962395074407,
+  "centroid_shift_um": [
+   0.021530145245978242,
+   -0.003012666456305955,
+   -0.020148548010600686
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.3536945812807882,
+  "largest_displacement_um": 8.542749204775134,
+  "median_displacement_um": 3.6438019834385544
+ },
+ "Q1_N800_7.0MHz_lines_x_adh1": {
+  "name": "Q1_N800_7.0MHz_lines_x_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     4.416139870142284,
+     1.2745472165524905
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.462,
+  "wall_s": 3623.598633270012,
+  "step_max_displacement_median_m": 1.8154976570079777e-07,
+  "step_max_displacement_max_m": 4.553005280943931e-07,
+  "frames": 94,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.258167845477484,
+   9.697451736007041,
+   9.466061608140292
+  ],
+  "pressure_median_start": 0.21244349297229498,
+  "pressure_median_end": 0.20755015922350933,
+  "share_near_zero_set_start": 0.2575,
+  "share_near_zero_set_end": 0.2675,
+  "zero_set_distance_median_um_start": 7.391101021291428,
+  "zero_set_distance_median_um_end": 7.219739622284792,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.13625,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9322071571460324,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.072058715504482,
+  "centroid_shift_um": [
+   -0.01377225607319314,
+   -0.0011293151462761625,
+   0.0007279591231970597
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0004926108374384236,
+  "largest_displacement_um": 3.781008386013356,
+  "median_displacement_um": 0.4664248567363784
+ },
+ "Q1_N800_7.0MHz_wavy_adh0": {
+  "name": "Q1_N800_7.0MHz_wavy_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3242.199412650844,
+     3242.199412650844,
+     5999.999999999998,
+     5999.999999999998
+    ],
+    "phases_rad": [
+     0.327018596755479,
+     0.327018596755479,
+     3.6407423735315305,
+     2.049944713163244
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 1289.6882297841366,
+  "step_max_displacement_median_m": 1.0629861709013424e-08,
+  "step_max_displacement_max_m": 1.7567567074370193e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   7.526316505766712,
+   9.952804885952679,
+   10.198876807094322
+  ],
+  "pressure_median_start": 0.10939006865318718,
+  "pressure_median_end": 0.08078674130625105,
+  "share_near_zero_set_start": 0.4525,
+  "share_near_zero_set_end": 0.59875,
+  "zero_set_distance_median_um_start": 7.410936503828833,
+  "zero_set_distance_median_um_end": 5.4148169080826625,
+  "share_within_R_of_zero_set_start": 0.12875,
+  "share_within_R_of_zero_set_end": 0.1725,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9466230936819174,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.2750393742794688,
+  "centroid_shift_um": [
+   1.948800844481664,
+   0.005510950088553568,
+   -0.011319733707889626
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.2630541871921182,
+  "largest_displacement_um": 8.944167747706143,
+  "median_displacement_um": 2.4886122143631635
+ },
+ "Q1_N800_7.0MHz_wavy_adh1": {
+  "name": "Q1_N800_7.0MHz_wavy_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 7000000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3242.199412650844,
+     3242.199412650844,
+     5999.999999999998,
+     5999.999999999998
+    ],
+    "phases_rad": [
+     0.327018596755479,
+     0.327018596755479,
+     3.6407423735315305,
+     2.049944713163244
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.5760000000000001,
+  "wall_s": 3611.610502392985,
+  "step_max_displacement_median_m": 9.606801880953106e-08,
+  "step_max_displacement_max_m": 4.5132581848519093e-07,
+  "frames": 117,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.333840348807552,
+   9.611937086094906,
+   9.510443842886577
+  ],
+  "pressure_median_start": 0.10939006865318718,
+  "pressure_median_end": 0.10807456677821112,
+  "share_near_zero_set_start": 0.4525,
+  "share_near_zero_set_end": 0.4575,
+  "zero_set_distance_median_um_start": 7.410936503828833,
+  "zero_set_distance_median_um_end": 7.051180545879819,
+  "share_within_R_of_zero_set_start": 0.12875,
+  "share_within_R_of_zero_set_end": 0.1275,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9362267493356953,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.065085451648849,
+  "centroid_shift_um": [
+   1.53061590501019,
+   0.015562234002908978,
+   -0.0036550365247437727
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 4.1207392135968535,
+  "median_displacement_um": 1.638484481658171
+ },
+ "Q1_N800_9.375MHz_cross_adh0": {
+  "name": "Q1_N800_9.375MHz_cross_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.9442131358217916,
+     3.9442131358217916,
+     2.997279862035681,
+     2.997279862035681
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 1174.9022969040088,
+  "step_max_displacement_median_m": 9.943089210548949e-09,
+  "step_max_displacement_max_m": 1.1615059733015473e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   8.557217589117776,
+   8.894845954578116,
+   10.193526165924752
+  ],
+  "pressure_median_start": 0.03726116573717493,
+  "pressure_median_end": 0.027658476794352144,
+  "share_near_zero_set_start": 0.83875,
+  "share_near_zero_set_end": 0.965,
+  "zero_set_distance_median_um_start": 3.964136092323405,
+  "zero_set_distance_median_um_end": 3.187363732944736,
+  "share_within_R_of_zero_set_start": 0.23875,
+  "share_within_R_of_zero_set_end": 0.3025,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9537115438893594,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0437455447536137,
+  "centroid_shift_um": [
+   -0.021720631005762676,
+   0.016469253689494857,
+   -0.0066248474315395095
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.21428571428571427,
+  "largest_displacement_um": 6.851378620442329,
+  "median_displacement_um": 1.7122536347326773
+ },
+ "Q1_N800_9.375MHz_cross_adh1": {
+  "name": "Q1_N800_9.375MHz_cross_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "cross",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     3.9442131358217916,
+     3.9442131358217916,
+     2.997279862035681,
+     2.997279862035681
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.4,
+  "wall_s": 3603.580455101095,
+  "step_max_displacement_median_m": 1.9825170058778916e-07,
+  "step_max_displacement_max_m": 8.843047185484964e-07,
+  "frames": 81,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.364484485607568,
+   9.588941808904663,
+   9.522545514366747
+  ],
+  "pressure_median_start": 0.03726116573717493,
+  "pressure_median_end": 0.03614637061011304,
+  "share_near_zero_set_start": 0.83875,
+  "share_near_zero_set_end": 0.86125,
+  "zero_set_distance_median_um_start": 3.964136092323405,
+  "zero_set_distance_median_um_end": 3.868075840005553,
+  "share_within_R_of_zero_set_start": 0.23875,
+  "share_within_R_of_zero_set_end": 0.25125,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9346654692411314,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0366336877117477,
+  "centroid_shift_um": [
+   -0.03092423693593997,
+   -0.014945746516101624,
+   -0.00021794706433816405
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0004926108374384236,
+  "largest_displacement_um": 3.448233753317606,
+  "median_displacement_um": 0.45321692246728723
+ },
+ "Q1_N800_9.375MHz_dots_adh0": {
+  "name": "Q1_N800_9.375MHz_dots_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     3.9442131358217916,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.9590000000000001,
+  "wall_s": 3604.4961566329002,
+  "step_max_displacement_median_m": 1.3723271905895965e-08,
+  "step_max_displacement_max_m": 3.163157661400474e-07,
+  "frames": 193,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   7.818944127909984,
+   8.271812198639159,
+   11.099847139260405
+  ],
+  "pressure_median_start": 0.35214840865123553,
+  "pressure_median_end": 0.29223737556936646,
+  "share_near_zero_set_start": 0.04875,
+  "share_near_zero_set_end": 0.06875,
+  "zero_set_distance_median_um_start": 13.093327566742449,
+  "zero_set_distance_median_um_end": 10.922294660611437,
+  "share_within_R_of_zero_set_start": 0.0125,
+  "share_within_R_of_zero_set_end": 0.0225,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9560659781100663,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0318514140380084,
+  "centroid_shift_um": [
+   -0.0035865078816137955,
+   0.0005364676199882127,
+   -0.019998456592248096
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.341871921182266,
+  "largest_displacement_um": 6.805855579853452,
+  "median_displacement_um": 3.0794080648104436
+ },
+ "Q1_N800_9.375MHz_dots_adh1": {
+  "name": "Q1_N800_9.375MHz_dots_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "dots",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     5156.211588932498,
+     5156.211588932498,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     3.9442131358217916,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.541,
+  "wall_s": 3612.723997763125,
+  "step_max_displacement_median_m": 6.885098108123975e-10,
+  "step_max_displacement_max_m": 4.865154638540444e-07,
+  "frames": 110,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.301193915272261,
+   9.526667206509606,
+   9.49287101380318
+  ],
+  "pressure_median_start": 0.35214840865123553,
+  "pressure_median_end": 0.34615059982550656,
+  "share_near_zero_set_start": 0.04875,
+  "share_near_zero_set_end": 0.0525,
+  "zero_set_distance_median_um_start": 13.093327566742449,
+  "zero_set_distance_median_um_end": 12.749318174420669,
+  "share_within_R_of_zero_set_start": 0.0125,
+  "share_within_R_of_zero_set_end": 0.01375,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9386044404168556,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0475232898999312,
+  "centroid_shift_um": [
+   0.0010581826032742701,
+   -0.015412372640044606,
+   -0.0012443629645976248
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 3.5674281446958265,
+  "median_displacement_um": 0.46227469295386253
+ },
+ "Q1_N800_9.375MHz_lines_x_adh0": {
+  "name": "Q1_N800_9.375MHz_lines_x_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 2107.8375913749915,
+  "step_max_displacement_median_m": 1.380914806061013e-08,
+  "step_max_displacement_max_m": 2.306123337959354e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   6.306555192602469,
+   10.808811022215165,
+   10.803080634631671
+  ],
+  "pressure_median_start": 0.2825085682941366,
+  "pressure_median_end": 0.17860415083497083,
+  "share_near_zero_set_start": 0.19375,
+  "share_near_zero_set_end": 0.3,
+  "zero_set_distance_median_um_start": 7.3911010212914325,
+  "zero_set_distance_median_um_end": 4.628417090606514,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.2025,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.947831184056272,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.6865218167514442,
+  "centroid_shift_um": [
+   0.021892120039676916,
+   -0.005538876162094465,
+   -0.015421011185263189
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.3847290640394089,
+  "largest_displacement_um": 8.625634098192883,
+  "median_displacement_um": 3.797997708848236
+ },
+ "Q1_N800_9.375MHz_lines_x_adh1": {
+  "name": "Q1_N800_9.375MHz_lines_x_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.40700000000000003,
+  "wall_s": 3608.6930706808344,
+  "step_max_displacement_median_m": 2.702644349551334e-07,
+  "step_max_displacement_max_m": 6.908075750362738e-07,
+  "frames": 83,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.247213385932774,
+   9.685736653319996,
+   9.459743825264576
+  ],
+  "pressure_median_start": 0.2825085682941366,
+  "pressure_median_end": 0.27421477966290464,
+  "share_near_zero_set_start": 0.19375,
+  "share_near_zero_set_end": 0.19625,
+  "zero_set_distance_median_um_start": 7.3911010212914325,
+  "zero_set_distance_median_um_end": 7.169446617953029,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.13375,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9326528347941866,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.0727010831829844,
+  "centroid_shift_um": [
+   -0.009766703877209362,
+   -0.0029755052012184,
+   0.004486015773044452
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0004926108374384236,
+  "largest_displacement_um": 4.049785851426545,
+  "median_displacement_um": 0.48265859629340374
+ },
+ "Q1_N800_9.375MHz_wavy_adh0": {
+  "name": "Q1_N800_9.375MHz_wavy_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3609.348112252747,
+     3609.348112252747,
+     6000.0,
+     5999.999999999999
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     0.8026204822319988,
+     0.651086038630031,
+     5.343473685441331
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.0,
+  "wall_s": 1577.5798410980497,
+  "step_max_displacement_median_m": 1.3472561286217004e-08,
+  "step_max_displacement_max_m": 2.2664681685546212e-07,
+  "frames": 201,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   7.653121433721444,
+   9.770644663657837,
+   10.35810970140836
+  ],
+  "pressure_median_start": 0.13740374489235208,
+  "pressure_median_end": 0.10244436450322925,
+  "share_near_zero_set_start": 0.3725,
+  "share_near_zero_set_end": 0.48875,
+  "zero_set_distance_median_um_start": 7.329689996428412,
+  "zero_set_distance_median_um_end": 5.336012183186841,
+  "share_within_R_of_zero_set_start": 0.1275,
+  "share_within_R_of_zero_set_end": 0.18625,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9421074552269885,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.2043447343096547,
+  "centroid_shift_um": [
+   2.8607351904358085,
+   0.009733872518297642,
+   -0.006027612852549923
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.3083743842364532,
+  "largest_displacement_um": 10.408726282187173,
+  "median_displacement_um": 3.046064162937274
+ },
+ "Q1_N800_9.375MHz_wavy_adh1": {
+  "name": "Q1_N800_9.375MHz_wavy_adh1",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "wavy",
+    "duration_s": 1.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     3609.348112252747,
+     3609.348112252747,
+     6000.0,
+     5999.999999999999
+    ],
+    "phases_rad": [
+     0.8026204822319988,
+     0.8026204822319988,
+     0.651086038630031,
+     5.343473685441331
+    ]
+   }
+  ],
+  "adhesion_force_N": 5.04e-10,
+  "fixed_step_s": 0.001,
+  "duration_s": 1.0,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_BUDGET')",
+  "completed_s": 0.578,
+  "wall_s": 3603.9731356890406,
+  "step_max_displacement_median_m": 2.647921636412488e-08,
+  "step_max_displacement_max_m": 4.928690339897535e-07,
+  "frames": 117,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   9.324170366183381,
+   9.623483889687455,
+   9.49873573534558
+  ],
+  "pressure_median_start": 0.13740374489235208,
+  "pressure_median_end": 0.13605334794664709,
+  "share_near_zero_set_start": 0.3725,
+  "share_near_zero_set_end": 0.36875,
+  "zero_set_distance_median_um_start": 7.329689996428412,
+  "zero_set_distance_median_um_end": 7.266757433634704,
+  "share_within_R_of_zero_set_start": 0.1275,
+  "share_within_R_of_zero_set_end": 0.13375,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9336283185840706,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 1.070834491381179,
+  "centroid_shift_um": [
+   2.2447488304151784,
+   0.015073512677699772,
+   -0.0030997708327838774
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.0,
+  "largest_displacement_um": 4.747475259752614,
+  "median_displacement_um": 2.335434897983331
+ },
+ "Q2L_N250_9.375MHz_linesx_then_linesy_adh0": {
+  "name": "Q2L_N250_9.375MHz_linesx_then_linesy_adh0",
+  "seed": 3,
+  "bubbles": 250,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 10.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   },
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_y",
+    "duration_s": 10.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     6000.0,
+     6000.0,
+     0.0,
+     0.0
+    ],
+    "phases_rad": [
+     5.515009462616688,
+     2.3734168090268954,
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 2578.067575652851,
+  "step_max_displacement_median_m": 3.9771006943874404e-08,
+  "step_max_displacement_max_m": 1.6295788793877285e-06,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   6.292348013086991,
+   6.536189259097494,
+   6.60005182358516
+  ],
+  "thickness_um_end": [
+   10.90488029110445,
+   1.1210032000096708,
+   15.778569918930755
+  ],
+  "pressure_median_start": 0.1829085522797283,
+  "pressure_median_end": 0.0015272828435576357,
+  "share_near_zero_set_start": 0.296,
+  "share_near_zero_set_end": 0.956,
+  "zero_set_distance_median_um_start": 4.739148199836707,
+  "zero_set_distance_median_um_end": 0.05071931904820312,
+  "share_within_R_of_zero_set_start": 0.204,
+  "share_within_R_of_zero_set_end": 0.844,
+  "solidity_start": 0.9311780553514573,
+  "solidity_end": 0.8182973316391358,
+  "aspect_start": 1.0645439826022498,
+  "aspect_end": 6.688659858142116,
+  "centroid_shift_um": [
+   0.1480364637855608,
+   -0.011053731512456035,
+   0.12792340497512802
+  ],
+  "contacts_per_bubble_start": 2.492,
+  "share_of_start_contacts_open_end": 0.9101123595505618,
+  "largest_displacement_um": 27.086966853170065,
+  "median_displacement_um": 13.713079826194017
+ },
+ "Q2L_N800_9.375MHz_linesx_then_linesy_adh0": {
+  "name": "Q2L_N800_9.375MHz_linesx_then_linesy_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 10.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   },
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_y",
+    "duration_s": 10.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     6000.0,
+     6000.0,
+     0.0,
+     0.0
+    ],
+    "phases_rad": [
+     5.515009462616688,
+     2.3734168090268954,
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 8981.970586651005,
+  "step_max_displacement_median_m": 3.365515147568961e-08,
+  "step_max_displacement_max_m": 1.4459736716628915e-06,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   12.907538482333463,
+   3.0494706772239257,
+   18.171901259567772
+  ],
+  "pressure_median_start": 0.2825085682941366,
+  "pressure_median_end": 0.07373793694102627,
+  "share_near_zero_set_start": 0.19375,
+  "share_near_zero_set_end": 0.62375,
+  "zero_set_distance_median_um_start": 7.3911010212914325,
+  "zero_set_distance_median_um_end": 2.119575104022642,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.44375,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.8808634288086344,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 3.8182109432008184,
+  "centroid_shift_um": [
+   0.14198013231740625,
+   0.0536502925064167,
+   -0.05687400539133482
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.8512315270935961,
+  "largest_displacement_um": 29.700312647226852,
+  "median_displacement_um": 11.969965925373446
+ },
+ "Q2L_N800_9.375MHz_linesx_then_off_adh0": {
+  "name": "Q2L_N800_9.375MHz_linesx_then_off_adh0",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 10.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   },
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "off",
+    "duration_s": 10.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.005,
+  "duration_s": 20.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 20.0,
+  "wall_s": 7764.506661602063,
+  "step_max_displacement_median_m": 6.225744697394627e-09,
+  "step_max_displacement_max_m": 8.025517412135911e-07,
+  "frames": 401,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   3.5129206101726873,
+   14.592101000250453,
+   14.144188468664165
+  ],
+  "pressure_median_start": 0.2825085682941366,
+  "pressure_median_end": NaN,
+  "share_near_zero_set_start": 0.19375,
+  "share_near_zero_set_end": NaN,
+  "zero_set_distance_median_um_start": 7.3911010212914325,
+  "zero_set_distance_median_um_end": NaN,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": NaN,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.8863675434072545,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 3.8223331907159426,
+  "centroid_shift_um": [
+   0.09804196815823231,
+   -0.03346938956397225,
+   -0.05965490994449588
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.6724137931034483,
+  "largest_displacement_um": 17.237656186402944,
+  "median_displacement_um": 9.141496591974871
+ },
+ "STEP_N800_9.375MHz_lines_x_adh0_dt2.5ms": {
+  "name": "STEP_N800_9.375MHz_lines_x_adh0_dt2.5ms",
+  "seed": 5,
+  "bubbles": 800,
+  "radius_sigma_g": 1.25,
+  "segments": [
+   {
+    "frequency_Hz": 9375000.0,
+    "pattern": "lines_x",
+    "duration_s": 5.0,
+    "cap_Pa_eq": 6000.0,
+    "amplitudes_Pa_eq": [
+     0.0,
+     0.0,
+     6000.000000000001,
+     6000.000000000001
+    ],
+    "phases_rad": [
+     0.0,
+     0.0,
+     1.4264835352407843,
+     4.568076188830577
+    ]
+   }
+  ],
+  "adhesion_force_N": 0.0,
+  "fixed_step_s": 0.0025,
+  "duration_s": 5.0,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 5.0,
+  "wall_s": 6170.276610928122,
+  "step_max_displacement_median_m": 1.9555465882988468e-08,
+  "step_max_displacement_max_m": 4.900279864813513e-07,
+  "frames": 101,
+  "pieces_end": 1,
+  "largest_share_end": 1.0,
+  "largest_share_min": 1.0,
+  "thickness_um_start": [
+   9.56736869181499,
+   9.78667898481067,
+   9.625854958841312
+  ],
+  "thickness_um_end": [
+   4.1681337536854555,
+   13.03599889859851,
+   13.136571901737486
+  ],
+  "pressure_median_start": 0.2825085682941366,
+  "pressure_median_end": 0.119603147315205,
+  "share_near_zero_set_start": 0.19375,
+  "share_near_zero_set_end": 0.425,
+  "zero_set_distance_median_um_start": 7.3911010212914325,
+  "zero_set_distance_median_um_end": 3.0937233905233557,
+  "share_within_R_of_zero_set_start": 0.13625,
+  "share_within_R_of_zero_set_end": 0.32,
+  "solidity_start": 0.936802973977695,
+  "solidity_end": 0.9220151828847484,
+  "aspect_start": 1.043706457103591,
+  "aspect_end": 3.021009212131257,
+  "centroid_shift_um": [
+   0.060749090420928215,
+   -0.019431049008296352,
+   -0.03236674363986562
+  ],
+  "contacts_per_bubble_start": 2.5375,
+  "share_of_start_contacts_open_end": 0.5852216748768473,
+  "largest_displacement_um": 13.284980837217018,
+  "median_displacement_um": 7.50534124219296
+ }
+}

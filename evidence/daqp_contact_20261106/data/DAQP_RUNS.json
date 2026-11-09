@@ -1,0 +1,74 @@
+{
+ "23": {
+  "bubbles": 20,
+  "status": "PASS",
+  "steps": 500,
+  "wall_s": 0.9719753230456263,
+  "daqp_iterations": 554,
+  "max_diff_from_qpoases_m": 8.460949833596377e-17,
+  "max_diff_from_baseline_m": 9.139824314052802e-17,
+  "gates_same_as_qpoases": true,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 0,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+   "TRUE_GEOMETRY_PASS": 0
+  }
+ },
+ "21": {
+  "bubbles": 50,
+  "status": "PASS",
+  "steps": 500,
+  "wall_s": 1.4855627559591085,
+  "daqp_iterations": 644,
+  "max_diff_from_qpoases_m": 4.919659600888225e-15,
+  "max_diff_from_baseline_m": 3.257485427232698e-15,
+  "gates_same_as_qpoases": true,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 4,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+   "TRUE_GEOMETRY_PASS": 0
+  }
+ },
+ "16": {
+  "bubbles": 76,
+  "status": "PASS",
+  "steps": 500,
+  "wall_s": 3.4550089929252863,
+  "daqp_iterations": 741,
+  "max_diff_from_qpoases_m": 1.9090559841719027e-16,
+  "max_diff_from_baseline_m": 2.3592239273284576e-16,
+  "gates_same_as_qpoases": true,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 11,
+   "CONTACT_REACTION_BALANCE_PASS": 404,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+   "TRUE_GEOMETRY_PASS": 0
+  }
+ },
+ "7": {
+  "bubbles": 122,
+  "status": "PASS",
+  "steps": 500,
+  "wall_s": 13.121686112135649,
+  "daqp_iterations": 1034,
+  "max_diff_from_qpoases_m": 5.475071583146705e-15,
+  "max_diff_from_baseline_m": 4.8191295788993505e-15,
+  "gates_same_as_qpoases": true,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 12,
+   "CONTACT_REACTION_BALANCE_PASS": 200,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+   "TRUE_GEOMETRY_PASS": 0
+  }
+ }
+}

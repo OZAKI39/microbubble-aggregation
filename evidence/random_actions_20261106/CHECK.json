@@ -1,0 +1,26 @@
+{
+ "font": "Arial",
+ "statistics": {
+  "segments": 20000,
+  "open_fraction": 0.4993875,
+  "open_channel_counts": [
+   0.06305,
+   0.24525,
+   0.3821,
+   0.2503,
+   0.0593
+  ],
+  "expected": [
+   0.0625,
+   0.25,
+   0.375,
+   0.25,
+   0.0625
+  ],
+  "open_amplitude_mean": 2983.4354570164237,
+  "frequency_mean_Hz": 2497176.8995322953
+ },
+ "runs": {
+  "seed0_twice_identical": true
+ }
+}

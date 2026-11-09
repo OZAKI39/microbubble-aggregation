@@ -1,0 +1,133 @@
+"""Starting states of the pretraining tier since 2026-11-06: accepted irregular clusters, rejected rest.
+
+usage (repository root):  python FIGURE_SCRIPT.py OUT_DIR
+Writes fig1_rejected_states.png, fig2_accepted_irregular_states.png and STATES.json.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+
+from microbubble.initial_conditions import bond_order, list_states, load_state
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+R_M = 1.78e-6
+ACCEPTED, REJECTED = "#2a6fb0", "#b5523b"  # categorical: accepted (blue), rejected (rust)
+INK, MUTED = "#1f2328", "#5b6470"
+IRREGULAR = Path("inputs/pretrain_irregular_states.h5")
+REJECTED_STATES = (
+    ("inputs/pretrain_formed_states.h5", "FORMED_N32_a1.0_s0", "Formed hexagonal, 32"),
+    ("inputs/pretrain_formed_states.h5", "FORMED_N128_a1.4_s0", "Formed hexagonal, 128"),
+    ("inputs/initial_states.h5", "AG32_local", "Registered AG32_local\n(gapped 4x4x2 array, top view)"),
+    ("inputs/initial_states.h5", "AG32_random_0", "Registered AG32_random_0\n(dispersed)"),
+    ("inputs/initial_states.h5", "N64_wide_r0", "Registered N64_wide_r0\n(dispersed)"),
+)
+
+
+def setup_style(font_dir):
+    family = "DejaVu Sans"
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+            family = "Arial"
+    plt.rcParams.update({"font.family": family, "font.size": 9, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED})
+    return family
+
+
+def draw(ax, x, color, enlarge_to=None):
+    """Bubbles as discs at the true radius (or enlarged so a dispersed state stays visible)."""
+    p = (x[:, :2] - x[:, :2].mean(0)) * 1e6
+    span = np.abs(p).max() + 2 * R_M * 1e6
+    d = 2 * R_M * 1e6 if enlarge_to is None else max(2 * R_M * 1e6, span / enlarge_to)
+    ax.add_collection(EllipseCollection(d, d, 0, units="xy", offsets=p, offset_transform=ax.transData,
+                                        facecolors=color, edgecolors="white", linewidths=0.4))
+    ax.set_xlim(-span, span)
+    ax.set_ylim(-span, span)
+    ax.set_aspect("equal")
+    return span, d
+
+
+def fig_rejected(out):
+    fig, axes = plt.subplots(1, len(REJECTED_STATES), figsize=(13, 3.4))
+    rows = []
+    for ax, (path, name, label) in zip(axes, REJECTED_STATES):
+        x, _ = load_state(path, name)
+        dispersed = "dispersed" in label
+        span, d = draw(ax, x, REJECTED, enlarge_to=40 if dispersed else None)
+        size = f"{2 * span:.0f} µm across" + (" (discs enlarged)" if d > 2 * R_M * 1e6 else "")
+        ax.set_title(f"{label}\n{size}", fontsize=8.5, color=INK, loc="left")
+        ax.set_xticks([])
+        ax.set_yticks([])
+        rows.append(dict(file=path, state=name, n=len(x), extent_um=round(2 * span, 1),
+                         bond_order_psi6=bond_order(x, R_M)))
+    fig.suptitle("Rejected as starting states since 2026-11-06 (kept as data)",
+                 x=0.01, ha="left", fontsize=11, color=REJECTED)
+    fig.tight_layout()
+    fig.savefig(out / "fig1_rejected_states.png", dpi=170)
+    plt.close(fig)
+    return rows
+
+
+def fig_accepted(out):
+    names = list_states(IRREGULAR)
+    sizes, aspects, seeds = (16, 32, 64, 128), (1.0, 1.2, 1.4), (0, 1, 2)
+    fig, axes = plt.subplots(len(sizes), 9, figsize=(13, 6.4))
+    rows = []
+    for r, n in enumerate(sizes):
+        span_row = max(
+            np.abs(load_state(IRREGULAR, f"IRREGULAR_N{n}_a{a:.1f}_s{s}")[0][:, :2]).max()
+            for a in aspects for s in seeds
+        ) * 1e6 + 2 * R_M * 1e6
+        for c, (a, s) in enumerate((a, s) for a in aspects for s in seeds):
+            name = f"IRREGULAR_N{n}_a{a:.1f}_s{s}"
+            assert name in names
+            x, _ = load_state(IRREGULAR, name)
+            ax = axes[r, c]
+            draw(ax, x, ACCEPTED)
+            ax.set_xlim(-span_row, span_row)
+            ax.set_ylim(-span_row, span_row)
+            ax.set_xticks([])
+            ax.set_yticks([])
+            psi6 = bond_order(x, R_M)
+            ax.text(0.03, 0.03, f"ψ6 {psi6:.2f}", transform=ax.transAxes, fontsize=7, color=MUTED)
+            if r == 0:
+                ax.set_title(f"aspect {a:.1f}, seed {s}", fontsize=8, color=INK)
+            if c == 0:
+                ax.set_ylabel(f"N = {n}\n{2 * span_row:.0f} µm", fontsize=8.5, color=INK)
+            rows.append(dict(state=name, n=n, aspect_requested=a, seed=s, bond_order_psi6=psi6))
+    fig.suptitle(
+        "Accepted starting states: the 36 irregular clusters (inputs/pretrain_irregular_states.h5), "
+        "discs at the true radius; ψ6 = 1 for a hexagonal lattice",
+        x=0.01, ha="left", fontsize=10.5, color=INK,
+    )
+    fig.tight_layout()
+    fig.savefig(out / "fig2_accepted_irregular_states.png", dpi=170)
+    plt.close(fig)
+    return rows
+
+
+def main():
+    out = Path(sys.argv[1])
+    out.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory() as font_dir:
+        font = setup_style(Path(font_dir))
+        rejected = fig_rejected(out)
+        accepted = fig_accepted(out)
+    (out / "STATES.json").write_text(
+        json.dumps(dict(font=font, accepted=accepted, rejected_examples=rejected), indent=1) + "\n"
+    )
+
+
+if __name__ == "__main__":
+    main()

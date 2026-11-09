@@ -1,0 +1,36 @@
+"""Probe 2: drive relaxing onto a node, P_k = 5 kPa x 0.7^k (2026-11-08). Prints the first failures."""
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import CarriedApecssResponse, apecss_options, cached_apecss_library, shell_parameters
+from workflows.f10ag import load_pretrain_policy
+
+root = Path(".")
+s = load_pretrain_policy(root)["apecss_response"]
+build = cached_apecss_library(os.environ["APECSS_DIR"], root / "build" / "apecss")
+ode_tol = float(sys.argv[1]) if len(sys.argv) > 1 else s["ode_tolerance"]
+with tempfile.TemporaryDirectory() as tmp:
+    path = Path(tmp) / "b.apecss"
+    path.write_text(apecss_options(shell_parameters(s["bubble"], 1.78e-6, s["shell_vs_radius"]), ode_tol))
+    for f in (2.5e6, 7.5e6, 10e6):
+        r = CarriedApecssResponse(build["library"], [path], f, threads=1,
+                                  **{k: s[k] for k in ("tolerance", "min_cycles_warm", "min_cycles_cold", "max_cycles", "q_refresh")})
+        line = []
+        for k in range(0, 110):
+            P = np.array([5e3 * 0.7 ** k * np.exp(0.4j) ])
+            H = np.zeros((1, 17)); cyc = np.zeros(1, np.int32); st = np.zeros(1, np.int32)
+            est = np.zeros(1); ext = np.zeros((1, 2))
+            r.lib.carried_advance(r.handles, 1, np.ascontiguousarray(P.real), np.ascontiguousarray(P.imag),
+                                  s["tolerance"], s["min_cycles_warm"], s["min_cycles_cold"], s["max_cycles"],
+                                  s["q_refresh"], 1, H, cyc, st, est, ext)
+            line.append((abs(P[0]), int(cyc[0]), int(st[0]), float(est[0])))
+        r.close()
+        fails = [x for x in line if x[2] != 0]
+        print(f"f {f/1e6:g} MHz ode_tol {ode_tol:g}: failures {len(fails)} of {len(line)}; first failure at |P| "
+              + (f"{fails[0][0]:.3g} Pa" if fails else "none"))
+        for x in line[::6]:
+            print("   |P| %9.3g Pa cycles %3d status %d est %.3g" % x)

@@ -1,0 +1,142 @@
+{
+ "23": {
+  "bubbles": 20,
+  "before_1": {
+   "status": "PASS",
+   "wall_s": 0.9728065871167928,
+   "force_ms_mean": 0.8792832288891077,
+   "min_collective_singular_value": 0.3782620305539847,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "before_2": {
+   "status": "PASS",
+   "wall_s": 0.9530235840938985,
+   "force_ms_mean": 0.8834624425508082,
+   "min_collective_singular_value": 0.3782620305539847,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_1": {
+   "status": "PASS",
+   "wall_s": 1.0173402968794107,
+   "force_ms_mean": 0.9213720895349979,
+   "min_collective_singular_value": 0.3782620305539847,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_2": {
+   "status": "PASS",
+   "wall_s": 0.9499444761313498,
+   "force_ms_mean": 0.8772460073232651,
+   "min_collective_singular_value": 0.3782620305539847,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  }
+ },
+ "21": {
+  "bubbles": 50,
+  "before_1": {
+   "status": "PASS",
+   "wall_s": 1.1441157239023596,
+   "force_ms_mean": 1.730246849823743,
+   "min_collective_singular_value": 0.5144438032091551,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "before_2": {
+   "status": "PASS",
+   "wall_s": 1.1394049760419875,
+   "force_ms_mean": 1.727566631976515,
+   "min_collective_singular_value": 0.5144438032091551,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_1": {
+   "status": "PASS",
+   "wall_s": 1.10635916586034,
+   "force_ms_mean": 1.6545603978447616,
+   "min_collective_singular_value": 0.5144438032091551,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_2": {
+   "status": "PASS",
+   "wall_s": 1.1097269719466567,
+   "force_ms_mean": 1.6662871618755162,
+   "min_collective_singular_value": 0.5144438032091551,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  }
+ },
+ "16": {
+  "bubbles": 76,
+  "before_1": {
+   "status": "PASS",
+   "wall_s": 2.0223737719934434,
+   "force_ms_mean": 2.8343843524344265,
+   "min_collective_singular_value": 0.39491765574202287,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "before_2": {
+   "status": "PASS",
+   "wall_s": 2.025810116203502,
+   "force_ms_mean": 2.837717902380973,
+   "min_collective_singular_value": 0.39491765574202287,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_1": {
+   "status": "PASS",
+   "wall_s": 1.9123759209178388,
+   "force_ms_mean": 2.5985791543498635,
+   "min_collective_singular_value": 0.39491765574202287,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_2": {
+   "status": "PASS",
+   "wall_s": 1.9164565119426697,
+   "force_ms_mean": 2.5968458335846663,
+   "min_collective_singular_value": 0.39491765574202287,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  }
+ },
+ "7": {
+  "bubbles": 122,
+  "before_1": {
+   "status": "PASS",
+   "wall_s": 5.587992531014606,
+   "force_ms_mean": 7.055371521040797,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "before_2": {
+   "status": "PASS",
+   "wall_s": 5.377917918143794,
+   "force_ms_mean": 6.688493138644844,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_1": {
+   "status": "PASS",
+   "wall_s": 5.219408041099086,
+   "force_ms_mean": 6.268091922160238,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  },
+  "after_2": {
+   "status": "PASS",
+   "wall_s": 5.201566180912778,
+   "force_ms_mean": 6.20003685541451,
+   "min_collective_singular_value": 0.44307847560717506,
+   "same_trajectory_as_before_1": true,
+   "same_singular_value_iterations_gates_as_before_1": true
+  }
+ }
+}

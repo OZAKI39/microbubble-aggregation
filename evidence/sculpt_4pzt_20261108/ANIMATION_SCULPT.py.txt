@@ -1,0 +1,119 @@
+"""Four-panel top-view animation of sculpting runs (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:SCRATCH python animation_sculpt.py DATA_DIR OUT_MP4 TITLE NAME1 NAME2 NAME3 NAME4
+DATA_DIR: <name>/ROW.json and <name>/compact.npz of sculpt_runs.py; every saved frame at 20 frames/s
+(the 1 s runs save every 5 ms: 1 s of simulation takes 10 s; the 20 s runs every 50 ms: 1 s takes
+1 s). Background: |p| of the
+segment in effect at z = 0 (dark = low; blank while the drive is off); bubbles at their radius,
+colour = height z; grey line: start outline.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import ConvexHull, cKDTree
+
+from microbubble.acoustics import WaterDiscs
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED = "#1f2328", "#5b6470"
+R = 1.78e-6
+FPS = 20
+HALF_UM = 45
+
+
+def pieces(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    pairs = pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < 0.5 * R]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    return connected_components(graph, directed=False)[0]
+
+
+def main():
+    data, out, heading, names = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.argv[4:8]
+    elements = pretrain_context(Path("."), 2.5e6).discs.elements
+    line = np.linspace(-HALF_UM, HALF_UM, 181) * 1e-6
+    gx, gy = np.meshgrid(line, line, indexing="xy")
+    grid = np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)])
+    with tempfile.TemporaryDirectory() as font_dir:
+        for name in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / name).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, Path(font_dir) / name)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                             "xtick.color": MUTED, "ytick.color": MUTED,
+                             "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+        runs = [json.loads((data / n / "ROW.json").read_text()) for n in names]
+        compact = [np.load(data / n / "compact.npz") for n in names]
+        frames = max(len(c["times_s"]) for c in compact)
+        fig, axes = plt.subplots(1, 4, figsize=(14.4, 4.4), dpi=100)
+        fig.subplots_adjust(left=0.04, right=0.99, bottom=0.12, top=0.80, wspace=0.18)
+        fig.suptitle(heading, x=0.04, ha="left", fontsize=10, color=INK)
+        state = []
+        for ax, r, c in zip(axes, runs, compact):
+            maps, starts = [], np.cumsum([0.0] + [s["duration_s"] for s in r["segments"]])[:-1]
+            for s in r["segments"]:
+                u = np.array(s["amplitudes_Pa_eq"]) * np.exp(1j * np.array(s["phases_rad"]))
+                p = np.abs(u @ WaterDiscs(elements, s["frequency_Hz"]).evaluate(grid, 192)[0]).reshape(gx.shape)
+                maps.append(p / p.max() if p.max() > 0 else np.ones_like(p))
+            background = ax.imshow(maps[0], origin="lower", extent=[-HALF_UM, HALF_UM, -HALF_UM, HALF_UM],
+                                   cmap="Greys_r", vmin=0, vmax=1.6)
+            x0, radii = c["positions_m"][0] * 1e6, c["radii_m"] * 1e6
+            hull = ConvexHull(x0[:, :2])
+            ax.plot(*np.vstack([x0[hull.vertices, :2], x0[hull.vertices[:1], :2]]).T, color="#9aa5b1", lw=0.8)
+            dots = EllipseCollection(2 * radii, 2 * radii, 0, units="xy", offsets=x0[:, :2], offset_transform=ax.transData,
+                                     cmap="viridis", edgecolors="white", linewidths=0.15)
+            dots.set_array(x0[:, 2])
+            dots.set_clim(-22, 22)
+            ax.add_collection(dots)
+            adhesion = "adhesion" if r["adhesion_force_N"] > 0 else "no adhesion"
+            patterns = " -> ".join(s["pattern"] for s in r["segments"])
+            ax.set_title(f"{r['bubbles']} bubbles, {adhesion}\n{patterns}", loc="left", fontsize=9, color=INK)
+            label = ax.text(-HALF_UM + 2, HALF_UM - 2, "", fontsize=8.5, color=INK, va="top",
+                            bbox=dict(facecolor="white", edgecolor="none", alpha=0.8, pad=1.5))
+            ax.set_xlim(-HALF_UM, HALF_UM)
+            ax.set_ylim(-HALF_UM, HALF_UM)
+            ax.set_aspect("equal")
+            ax.set_xlabel("x (um)")
+            state.append((dots, label, background, maps, starts, r, c))
+        axes[0].set_ylabel("y (um)")
+
+        def draw(i):
+            artists = []
+            for dots, label, background, maps, starts, r, c in state:
+                j = min(i, len(c["times_s"]) - 1)
+                t = c["times_s"][j]
+                x = c["positions_m"][j] * 1e6
+                order = np.argsort(x[:, 2])
+                dots.set_offsets(x[order, :2])
+                dots.set_array(x[order, 2])
+                dots.set_widths(2 * c["radii_m"][order] * 1e6)
+                dots.set_heights(2 * c["radii_m"][order] * 1e6)
+                segment = int(np.searchsorted(starts, t + 1e-9) - 1)
+                background.set_data(maps[segment])
+                stopped = " (run stopped)" if j < i else ""
+                label.set_text(f"t = {t * 1e3:.0f} ms, {r['segments'][segment]['pattern']}, "
+                               f"pieces {pieces(c['positions_m'][j], c['radii_m'])}{stopped}")
+                artists += [dots, label, background]
+            return artists
+
+        writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+        animation.FuncAnimation(fig, draw, frames=frames, blit=False).save(out, writer=writer)
+        plt.close(fig)
+
+
+main()

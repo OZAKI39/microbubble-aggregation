@@ -1,0 +1,94 @@
+"""AVX2/FMA build of the contact library (2026-11-07): time and results against the default build.
+
+usage (repository root):  python FIGURE_SCRIPT.py.txt EVIDENCE_DIR
+Reads EVIDENCE_DIR/data/AVX2_FMA_RUNS.json and the per-step bills of
+evidence/daqp_block_warm_start_20261107/data/ (timed copies of the same code, both builds);
+writes fig1_avx2_fma.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEEDS = [23, 21, 16, 7]
+BILLS = Path("evidence/daqp_block_warm_start_20261107/data")
+BUILDS = {"sse2": ("Default build (-O3, SSE2)", "#5b6470"), "avx2": ("-O3 -mavx2 -mfma (adopted)", "#2a6fb0")}
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def grouped(ax, values, labels, fmt):
+    """Two bars per bubble count (default build, AVX2/FMA) with their values above."""
+    width = 0.36
+    for k, (build, (name, colour)) in enumerate(BUILDS.items()):
+        x = [i + (k - 0.5) * width for i in range(len(labels))]
+        ax.bar(x, values[build], width=width - 0.04, color=colour, label=name)
+        for xi, yi in zip(x, values[build]):
+            ax.text(xi, yi * 1.02, fmt.format(yi), ha="center", va="bottom", fontsize=7, color=INK)
+    ax.set_xticks(range(len(labels)), labels)
+    ax.set_xlabel("Bubbles")
+    ax.grid(axis="y", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+    ax.legend(loc="upper left", fontsize=7.5, frameon=False)
+
+
+def main():
+    folder = Path(sys.argv[1])
+    runs = json.loads((folder / "data" / "AVX2_FMA_RUNS.json").read_text())
+    bill = lambda name: json.loads((BILLS / name).read_text())["per_step_total_ms"]
+    labels = [str(runs[str(s)]["bubbles"]) for s in SEEDS]
+    per_step = {"sse2": [bill(f"bill_block_seed{s}.json") for s in SEEDS],
+                "avx2": [bill(f"bill_block_avx2_seed{s}.json") for s in SEEDS]}
+    wall = {"sse2": [runs[str(s)]["wall_s_sse2"] for s in SEEDS], "avx2": [runs[str(s)]["wall_s"] for s in SEEDS]}
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(1, 3, figsize=(14, 4.4), gridspec_kw=dict(wspace=0.32))
+        grouped(axes[0], per_step, labels, "{:.2f}")
+        axes[0].set_ylabel("Wall time per 1 ms step (ms)")
+        axes[0].set_ylim(0, 14)
+        axes[0].set_title("(a) Time per step (timed copies, server, 0.5 s)", loc="left", fontsize=9.5,
+                          color=INK)
+        grouped(axes[1], wall, labels, "{:.2f}")
+        axes[1].set_ylabel("Wall time of the 0.5 s run (s)")
+        axes[1].set_ylim(0, 7)
+        axes[1].set_title("(b) Whole runs (project code, server)", loc="left", fontsize=9.5, color=INK)
+        ax = axes[2]
+        y = range(len(SEEDS))
+        diff = [runs[str(s)]["max_position_difference_vs_sse2_m"] for s in SEEDS]
+        ax.scatter(diff, y, s=40, color="#2a6fb0", zorder=3)
+        for yi, s, dv in zip(y, SEEDS, diff):
+            r = runs[str(s)]
+            ax.text(dv * 1.6, yi, f"{dv:.1e} m; iterations {r['daqp_iterations_sse2']} / {r['daqp_iterations']}; "
+                    f"gates {'same' if r['gates_same'] else 'DIFFERENT'}", va="center", fontsize=7, color=INK)
+        ax.set_yticks(list(y), [f"{l} bubbles" for l in labels])
+        ax.invert_yaxis()
+        ax.set_xscale("log")
+        ax.set_xlim(1e-17, 1e-8)
+        ax.grid(axis="x", color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.set_xlabel("Largest position difference over 0.5 s (m; radius 1.78e-6 m)")
+        ax.set_title("(c) Whole runs: AVX2/FMA vs default build", loc="left", fontsize=9.5, color=INK)
+        fig.savefig(folder / "fig1_avx2_fma.png", dpi=170, bbox_inches="tight")
+        plt.close(fig)
+    print(json.dumps(dict(per_step_ms=per_step, wall_s=wall), indent=1))
+
+
+if __name__ == "__main__":
+    main()

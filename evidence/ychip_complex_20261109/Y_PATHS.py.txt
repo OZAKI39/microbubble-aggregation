@@ -1,0 +1,38 @@
+"""The complex continuous changes of complex_paths.py on the Y-channel chip (2026-11-09).
+
+Same forms, schedules and local forms (complex_paths.FORMS, schedule, local_terms); only the drive design changes:
+it uses the chip's own sources (workflows.f10ag.pretrain_context with the policy's apparatus: the four square
+plates of inputs/apparatus_y_channel.json) at the reference point (0, 0, 0), which is on the trunk, 0.875 mm before
+the branch point. Channel order Y-, Y+, X-, X+ (PZT1, PZT3, PZT2, PZT4).
+"""
+
+import numpy as np
+
+from complex_paths import local_terms
+
+Y_MINUS, Y_PLUS, X_MINUS, X_PLUS = 0, 1, 2, 3
+
+
+def centre_fields(sources, frequency_Hz):
+    """Pressure per Pa-eq of each source at the reference point and the local wavenumbers along x and y."""
+    p, g = sources.evaluate(np.zeros((1, 3)), sources.quadrature_order(frequency_Hz))
+    h = p[:, 0]
+    kappa_x = abs((g[X_PLUS, 0, 0] / (1j * h[X_PLUS])).real)
+    kappa_y = abs((g[Y_PLUS, 0, 1] / (1j * h[Y_PLUS])).real)
+    return h, kappa_x, kappa_y
+
+
+def path_drive(sources, frequency_Hz, form, values, cap_Pa_eq):
+    """Channel amplitudes [Pa-eq] and phases [rad] of every value, scaled together: the largest is the cap
+    (complex_paths.path_drive with the chip's sources)."""
+    h, kappa_x, kappa_y = centre_fields(sources, frequency_Hz)
+    weights = []
+    for value in values:
+        s_x, beta_x, s_y, beta_y = local_terms(form, value, kappa_x, kappa_y)
+        u = np.zeros(4, complex)
+        for a, b, size, beta in ((X_MINUS, X_PLUS, s_x, beta_x), (Y_MINUS, Y_PLUS, s_y, beta_y)):
+            u[a] = size / 2 * np.exp(-1j * (beta + np.angle(h[a]))) / abs(h[a])
+            u[b] = size / 2 * np.exp(1j * (beta - np.angle(h[b]))) / abs(h[b])
+        weights.append(u)
+    largest = max(np.abs(u).max() for u in weights)
+    return [(cap_Pa_eq * np.abs(u) / largest, np.mod(np.angle(u), 2 * np.pi)) for u in weights]

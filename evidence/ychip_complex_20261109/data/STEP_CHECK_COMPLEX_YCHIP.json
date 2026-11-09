@@ -1,0 +1,308 @@
+[
+ {
+  "coarse": "YCPX_flap_N250_9.375MHz_T2s_total32s",
+  "fine": "STEP_YCPX_flap_N250_9.375MHz_T2s_total32s_dt2.5ms",
+  "share_max_difference": 0.06400000000000006,
+  "summary": {
+   "share_min": [
+    0.2,
+    0.2
+   ],
+   "share_mean_during_change": [
+    0.35229999999999995,
+    0.358
+   ],
+   "share_end": [
+    0.756,
+    0.792
+   ],
+   "end_um": [
+    {
+     "length": 11.809369029876047,
+     "width": 1.3711716499458382,
+     "height": 12.880848345586243
+    },
+    {
+     "length": 12.790912490003565,
+     "width": 1.249843216169152,
+     "height": 12.895533438596868
+    }
+   ],
+   "bend_amplitude_ratio": [
+    0.5162745415586115,
+    0.534103255458385
+   ],
+   "bend_phase_lag_deg": [
+    52.361668870838,
+    48.95789192638546
+   ],
+   "bend_lag_s": [
+    0.29089816039354444,
+    0.2719882884799192
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    2.05,
+    1.9000000000000001
+   ]
+  },
+  "end_rms_distance_um": 5.297866584927363,
+  "steps": {
+   "YCPX_flap_N250_9.375MHz_T2s_total32s": {
+    "share_above_0_1R": 0.00109375,
+    "max_over_R": 0.410453334152908
+   },
+   "STEP_YCPX_flap_N250_9.375MHz_T2s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.000546875,
+    "max_over_R": 0.2266749193117934
+   }
+  }
+ },
+ {
+  "coarse": "YCPX_flap_N250_9.375MHz_T8s_total32s",
+  "fine": "STEP_YCPX_flap_N250_9.375MHz_T8s_total32s_dt2.5ms",
+  "share_max_difference": 0.11199999999999999,
+  "summary": {
+   "share_min": [
+    0.204,
+    0.204
+   ],
+   "share_mean_during_change": [
+    0.4874375000000001,
+    0.46020625
+   ],
+   "share_end": [
+    0.84,
+    0.792
+   ],
+   "end_um": [
+    {
+     "length": 13.259308346658948,
+     "width": 1.1014704282525152,
+     "height": 13.24794523030667
+    },
+    {
+     "length": 11.972824539736715,
+     "width": 1.3585353464597534,
+     "height": 12.776506462270026
+    }
+   ],
+   "bend_amplitude_ratio": [
+    1.1443731280898468,
+    1.0820850312056345
+   ],
+   "bend_phase_lag_deg": [
+    18.56492215999316,
+    21.531481163646788
+   ],
+   "bend_lag_s": [
+    0.4125538257776258,
+    0.47847735919215084
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    2.575,
+    2.725
+   ]
+  },
+  "end_rms_distance_um": 5.693745942241768,
+  "steps": {
+   "YCPX_flap_N250_9.375MHz_T8s_total32s": {
+    "share_above_0_1R": 0.00125,
+    "max_over_R": 0.37712038860808844
+   },
+   "STEP_YCPX_flap_N250_9.375MHz_T8s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.000546875,
+    "max_over_R": 0.20438179508272655
+   }
+  }
+ },
+ {
+  "coarse": "YCPX_linecross_N250_9.375MHz_12.8s_each_way",
+  "fine": "STEP_YCPX_linecross_N250_9.375MHz_12.8s_each_way_dt2.5ms",
+  "share_max_difference": 0.04400000000000004,
+  "summary": {
+   "share_min": [
+    0.164,
+    0.176
+   ],
+   "share_mean_during_change": [
+    0.4067911392405063,
+    0.40141455696202527
+   ],
+   "share_end": [
+    0.676,
+    0.66
+   ],
+   "share_end_of_crossing_hold": [
+    0.476,
+    0.488
+   ],
+   "at_crossing_um": [
+    {
+     "length": 6.3830893348080515,
+     "width": 4.699468054408802,
+     "height": 9.703894494422345
+    },
+    {
+     "length": 6.223618655941266,
+     "width": 4.473415513870337,
+     "height": 9.803021448602303
+    }
+   ],
+   "end_um": [
+    {
+     "length": 10.652879468309438,
+     "width": 1.7171441326929882,
+     "height": 11.606851464133552
+    },
+    {
+     "length": 9.930826358587895,
+     "width": 1.8129015938863806,
+     "height": 11.995125885340988
+    }
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    2.2,
+    2.275
+   ]
+  },
+  "end_rms_distance_um": 4.42623114279923,
+  "steps": {
+   "YCPX_linecross_N250_9.375MHz_12.8s_each_way": {
+    "share_above_0_1R": 0.0010638297872340426,
+    "max_over_R": 0.2929459405406208
+   },
+   "STEP_YCPX_linecross_N250_9.375MHz_12.8s_each_way_dt2.5ms": {
+    "share_above_0_1R": 0.00026595744680851064,
+    "max_over_R": 0.14647297027031042
+   }
+  }
+ },
+ {
+  "coarse": "YCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s",
+  "fine": "STEP_YCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s_dt2.5ms",
+  "share_max_difference": 0.09600000000000003,
+  "summary": {
+   "share_min": [
+    0.0,
+    0.0
+   ],
+   "share_mean_during_change": [
+    0.31333984375,
+    0.30384375
+   ],
+   "share_end": [
+    0.032,
+    0.02
+   ],
+   "end_um": [
+    {
+     "length": 13.539809965367716,
+     "width": 4.477581637558352,
+     "height": 8.002632171260586
+    },
+    {
+     "length": 13.404993802873896,
+     "width": 4.617003100913092,
+     "height": 8.25710335759968
+    }
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    1.7,
+    1.75
+   ],
+   "lag_deg_max_with_direction": [
+    49.153422942527186,
+    49.63065707616701
+   ],
+   "lag_deg_mean_during_change_with_direction": [
+    6.342866218103574,
+    6.271225611565208
+   ]
+  },
+  "end_rms_distance_um": 4.915675538009543,
+  "steps": {
+   "YCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s": {
+    "share_above_0_1R": 0.0021875,
+    "max_over_R": 0.36951634379183346
+   },
+   "STEP_YCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.000546875,
+    "max_over_R": 0.20002253541054632
+   }
+  }
+ },
+ {
+  "coarse": "YCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s",
+  "fine": "STEP_YCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s_dt2.5ms",
+  "share_max_difference": 0.06,
+  "summary": {
+   "share_min": [
+    0.2,
+    0.2
+   ],
+   "share_mean_during_change": [
+    0.47022265625000004,
+    0.47348828125
+   ],
+   "share_end": [
+    0.704,
+    0.704
+   ],
+   "end_um": [
+    {
+     "length": 11.169490252374574,
+     "width": 1.5481780882913296,
+     "height": 11.981543083498876
+    },
+    {
+     "length": 11.429426003169198,
+     "width": 1.4875640214060863,
+     "height": 12.078576643018218
+    }
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    2.15,
+    2.15
+   ],
+   "lag_deg_max_with_direction": [
+    9.26823110682696,
+    9.825149977044276
+   ],
+   "lag_deg_mean_during_change_with_direction": [
+    5.656611948914025,
+    5.898620106351947
+   ]
+  },
+  "end_rms_distance_um": 4.563148789225499,
+  "steps": {
+   "YCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s": {
+    "share_above_0_1R": 0.00109375,
+    "max_over_R": 0.2991057731056149
+   },
+   "STEP_YCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.0003125,
+    "max_over_R": 0.14955288655280746
+   }
+  }
+ }
+]

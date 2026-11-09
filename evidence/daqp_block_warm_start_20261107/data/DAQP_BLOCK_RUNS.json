@@ -1,0 +1,106 @@
+{
+ "23": {
+  "bubbles": 20,
+  "status": "PASS",
+  "wall_s_before": 0.9506635318975896,
+  "wall_s": 0.9553702180273831,
+  "daqp_iterations_before": 554,
+  "daqp_iterations": 554,
+  "max_position_difference_m": 4.683753385137379e-17,
+  "steps_failing_gates_before": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 0,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 0,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "gates_same": true
+ },
+ "21": {
+  "bubbles": 50,
+  "status": "PASS",
+  "wall_s_before": 1.2685490620788187,
+  "wall_s": 1.1947717189323157,
+  "daqp_iterations_before": 644,
+  "daqp_iterations": 644,
+  "max_position_difference_m": 4.04342358206744e-15,
+  "steps_failing_gates_before": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 4,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 4,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "gates_same": true
+ },
+ "16": {
+  "bubbles": 76,
+  "status": "PASS",
+  "wall_s_before": 2.665389711037278,
+  "wall_s": 2.1895373491570354,
+  "daqp_iterations_before": 741,
+  "daqp_iterations": 741,
+  "max_position_difference_m": 7.632783294297951e-17,
+  "steps_failing_gates_before": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 11,
+   "CONTACT_REACTION_BALANCE_PASS": 404,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 11,
+   "CONTACT_REACTION_BALANCE_PASS": 404,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "gates_same": true
+ },
+ "7": {
+  "bubbles": 122,
+  "status": "PASS",
+  "wall_s_before": 8.474899244029075,
+  "wall_s": 6.1198384701274335,
+  "daqp_iterations_before": 1034,
+  "daqp_iterations": 1034,
+  "max_position_difference_m": 3.488528910189359e-15,
+  "steps_failing_gates_before": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 12,
+   "CONTACT_REACTION_BALANCE_PASS": 200,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 12,
+   "CONTACT_REACTION_BALANCE_PASS": 200,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "gates_same": true
+ }
+}

@@ -1,0 +1,122 @@
+[
+ {
+  "change": "Rotation 90\u00b0",
+  "sweep_s": 6.4,
+  "start": "Ball start",
+  "name": "BROT_N250_9.375MHz_sweep6.4s_total32s",
+  "duration_s": 32.0,
+  "share_end_of_change": 0.64,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 11.125
+ },
+ {
+  "change": "Rotation 90\u00b0",
+  "sweep_s": 6.4,
+  "start": "Sheet start",
+  "name": "ROT_N250_9.375MHz_sweep6.4s_hold2s",
+  "duration_s": 8.4,
+  "share_end_of_change": 1.0,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 0.0
+ },
+ {
+  "change": "Rotation 90\u00b0",
+  "sweep_s": 25.6,
+  "start": "Ball start",
+  "name": "BROT_N250_9.375MHz_sweep25.6s_total32s",
+  "duration_s": 32.0,
+  "share_end_of_change": 1.0,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 11.175
+ },
+ {
+  "change": "Rotation 90\u00b0",
+  "sweep_s": 25.6,
+  "start": "Sheet start",
+  "name": "ROT_N250_9.375MHz_sweep25.6s_hold2s",
+  "duration_s": 27.6,
+  "share_end_of_change": 1.0,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 0.0
+ },
+ {
+  "change": "Shift 20 \u00b5m",
+  "sweep_s": 6.4,
+  "start": "Ball start",
+  "name": "BMOV_translate_N250_9.375MHz_sweep6.4s_total32s",
+  "duration_s": 32.0,
+  "share_end_of_change": 0.54,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 12.075000000000001
+ },
+ {
+  "change": "Shift 20 \u00b5m",
+  "sweep_s": 6.4,
+  "start": "Sheet start",
+  "name": "MOV_translate_N250_9.375MHz_sweep6.4s_hold2s",
+  "duration_s": 8.4,
+  "share_end_of_change": 0.86,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 0.0
+ },
+ {
+  "change": "Shift 20 \u00b5m",
+  "sweep_s": 25.6,
+  "start": "Ball start",
+  "name": "BMOV_translate_N250_9.375MHz_sweep25.6s_total32s",
+  "duration_s": 32.0,
+  "share_end_of_change": 1.0,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 11.675
+ },
+ {
+  "change": "Shift 20 \u00b5m",
+  "sweep_s": 25.6,
+  "start": "Sheet start",
+  "name": "MOV_translate_N250_9.375MHz_sweep25.6s_hold2s",
+  "duration_s": 27.6,
+  "share_end_of_change": 1.0,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 0.0
+ },
+ {
+  "change": "Straight \u2192 wavy",
+  "sweep_s": 6.4,
+  "start": "Ball start",
+  "name": "BMOV_bend_N250_9.375MHz_sweep6.4s_total32s",
+  "duration_s": 32.0,
+  "share_end_of_change": 0.464,
+  "share_end": 0.872,
+  "first_time_share_0_8_s": 26.25
+ },
+ {
+  "change": "Straight \u2192 wavy",
+  "sweep_s": 6.4,
+  "start": "Sheet start",
+  "name": "MOV_bend_N250_9.375MHz_sweep6.4s_hold2s",
+  "duration_s": 8.4,
+  "share_end_of_change": 1.0,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 0.0
+ },
+ {
+  "change": "Straight \u2192 wavy",
+  "sweep_s": 25.6,
+  "start": "Ball start",
+  "name": "BMOV_bend_N250_9.375MHz_sweep25.6s_total32s",
+  "duration_s": 32.0,
+  "share_end_of_change": 0.792,
+  "share_end": 0.908,
+  "first_time_share_0_8_s": 26.2
+ },
+ {
+  "change": "Straight \u2192 wavy",
+  "sweep_s": 25.6,
+  "start": "Sheet start",
+  "name": "MOV_bend_N250_9.375MHz_sweep25.6s_hold2s",
+  "duration_s": 27.6,
+  "share_end_of_change": 1.0,
+  "share_end": 1.0,
+  "first_time_share_0_8_s": 0.0
+ }
+]

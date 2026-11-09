@@ -1,0 +1,48 @@
+"""Probe: one carried APECSS bubble whose drive falls toward a pressure node (2026-11-08).
+
+usage (repository root): APECSS_DIR=... python node_probe.py
+Settles at 5 kPa, then moves the drive P = P0 sin(phi) with phi stepping to and through 0, as a
+bubble crossing a node does. Prints cycles, status and the final estimate of every call.
+"""
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import CarriedApecssResponse, apecss_options, cached_apecss_library, shell_parameters
+from workflows.f10ag import load_pretrain_policy
+
+root = Path(".")
+policy = load_pretrain_policy(root)
+s = policy["apecss_response"]
+build = cached_apecss_library(__import__("os").environ["APECSS_DIR"], root / "build" / "apecss")
+ode_tol = float(sys.argv[1]) if len(sys.argv) > 1 else s["ode_tolerance"]
+out = {}
+with tempfile.TemporaryDirectory() as tmp:
+    path = Path(tmp) / "b.apecss"
+    path.write_text(apecss_options(shell_parameters(s["bubble"], 1.78e-6, s["shell_vs_radius"]), ode_tol))
+    for f in (2.5e6, 7.5e6, 10e6):
+        r = CarriedApecssResponse(build["library"], [path], f, threads=1,
+                                  **{k: s[k] for k in ("tolerance", "min_cycles_warm", "min_cycles_cold", "max_cycles", "q_refresh")})
+        rows = []
+        # settle, then approach the node: phi from 0.3 rad down through 0 in steps of 0.01 rad
+        phis = [0.3] * 3 + list(np.arange(0.29, -0.0501, -0.01))
+        for phi in phis:
+            P = np.array([5e3 * np.sin(phi) + 0j])
+            H = np.zeros((1, 17)); cyc = np.zeros(1, np.int32); st = np.zeros(1, np.int32)
+            est = np.zeros(1); ext = np.zeros((1, 2))
+            r.lib.carried_advance(r.handles, 1, np.ascontiguousarray(P.real), np.ascontiguousarray(P.imag),
+                                  s["tolerance"], s["min_cycles_warm"], s["min_cycles_cold"], s["max_cycles"],
+                                  s["q_refresh"], 1, H, cyc, st, est, ext)
+            fund = np.hypot(H[0, 1], H[0, 2])
+            rows.append([round(float(phi), 3), float(P.real[0]), int(cyc[0]), int(st[0]), float(est[0]), float(fund)])
+        r.close()
+        out[f] = rows
+        bad = [x for x in rows if x[3] not in (0, 4)]
+        print(f"f {f/1e6:g} MHz ode_tol {ode_tol:g}: calls {len(rows)}, not converged {len(bad)}")
+        for x in rows:
+            if x[3] not in (0, 4) or abs(x[1]) < 60:
+                print("   phi %6.3f P %9.3g Pa cycles %3d status %d est %.3g fund %.3g" % tuple(x))
+Path(f"node_probe_{ode_tol:g}.json").write_text(json.dumps(out))

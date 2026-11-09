@@ -1,0 +1,60 @@
+"""Figure of the 2026-11-09 cleanup: space removed per approved group, space kept per declined group.
+
+usage: python figure_cleanup.py DELETE_LIST.json DELETED_FILES.json OUT_PNG
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+REMOVED, KEPT = "#2a78d6", "#b9c0c8"
+LABELS = {
+    "G1_user_named": "G1 Sheet, switching and softness runs (named by the user)",
+    "G2_regenerable_and_strays": "G2 Caches, results/_scratch, stray files",
+    "G3_superseded_unadopted_incomplete_evidence": "G3 Superseded, unadopted or incomplete diagnostics",
+    "G6_outdated_docs": "G6 Outdated docs",
+    "G4_old_path_results_kept_on_1106": "G4 Old-path results (kept, user decision)",
+    "G5_failed_first_attempts": "G5 Failed first attempts (kept, project rule)",
+    "G7_historical_audit_docs": "G7 Audit records (kept)",
+}
+
+lists = json.loads(Path(sys.argv[1]).read_text())
+deleted = json.loads(Path(sys.argv[2]).read_text())
+with tempfile.TemporaryDirectory() as font_dir:
+    font_manager.fontManager.addfont(str(shutil.copy("/mnt/c/Windows/Fonts/arial.ttf", Path(font_dir) / "arial.ttf")))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED, "text.color": INK,
+                         "xtick.color": MUTED, "ytick.color": INK})
+    rows = []
+    for g in LABELS:
+        if g in deleted:
+            files = [f for r in deleted[g] for f in r["files"]]
+            rows.append((LABELS[g], sum(f["bytes"] for f in files) / 1e6, len(files), REMOVED))
+        else:
+            rows.append((LABELS[g], sum(r["bytes"] for r in lists[g]) / 1e6, len(lists[g]), KEPT))
+    fig, ax = plt.subplots(figsize=(9.5, 3.6), dpi=150)
+    fig.subplots_adjust(left=0.42, right=0.88, top=0.82, bottom=0.14)
+    y = range(len(rows))[::-1]
+    for yi, (label, mb, n, colour) in zip(y, rows):
+        ax.barh(yi, max(mb, 0.4), height=0.55, color=colour)
+        unit = "files" if colour == REMOVED else "paths"
+        ax.text(max(mb, 0.4) + 6, yi, f"{mb:.1f} MB · {n} {unit}", va="center", fontsize=8.5, color=INK)
+    ax.set_yticks(list(y), [r[0] for r in rows])
+    ax.set_xlabel("Size (MB)")
+    ax.set_xlim(0, 600)
+    ax.grid(axis="x", color=GRID, lw=0.6)
+    ax.set_axisbelow(True)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    total = sum(r[1] for r in rows if r[3] == REMOVED)
+    fig.text(0.02, 0.93, f"Project cleanup 2026-11-09: {total:.0f} MB removed (blue), declined groups kept (grey)",
+             fontsize=11, ha="left")
+    fig.savefig(sys.argv[3])

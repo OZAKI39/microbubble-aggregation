@@ -1,5 +1,9 @@
 # APECSS 稳定响应驱动（2026-11-03）
 
+> **状态（2026-11-09 核对）：** 现行（驱动本身）。文中复现冻结响应表用的 `main.py response-check`、`response-grid` 命令已随 HF/LF 路径于 2026-11-06 删除；同一源码的共享库版本用于携带状态的 APECSS 泡。
+
+> **2026-11-09（用户决定）：** 已标为过时的子目录 `superseded/` 已删除；清理记录见 `evidence/cleanup_20261109/`。
+
 新增 `native/apecss_harmonics.c`、`bubble_response.py` 中的编译/运行/网格函数、`main.py response-check` / `response-grid`。APECSS 方程、壳模型和积分器本身没有改动；冻结表和仿真读取路径没有改动。
 
 环境：云端会话，仅 CPU（2 核）；Python 3.12.3、NumPy 2.2.6、h5py 3.16.0；gcc；APECSS 源码为官方仓库 `a0ee071`（与冻结表 `apecss_commit` 相同，用 `git archive a0ee071` 导出，因此构建记录里 `apecss_commit` 为空，可用 `apecss_source_sha256 = be87a0c0…` 核对）。代码在未提交的工作树上运行，`identity.git_status` 如实记录。

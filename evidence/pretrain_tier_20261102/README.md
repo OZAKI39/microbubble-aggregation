@@ -1,5 +1,7 @@
 # 预训练档（PRETRAIN）准入证据，2026-11-02
 
+> **状态（2026-11-09 核对）：** 部分过时。预训练档本身仍在用；文中的响应表、声场缓存、登记初态、自适应步长和 OSQP 兜底都已被取代（现行做法见根目录 README 的“预训练档”和“日常修改去哪里”）。
+
 先读 [ADMISSION.json](ADMISSION.json)。本目录记录为世界模型生成预训练数据而加入的 CPU 计算档：稀疏接触求解、OSQP 兜底、按位移调节步长，以及可选的全体泡耦合（collective coupling）。它是与冻结 F10AG HF/LF 并列的独立档位，不改变也不扩展任何冻结结果、Gate 或准入范围。
 
 `EXPLORATORY / HOMOGENEOUS_WATER_CONTROL_PROXY / PHYSICS_UNCALIBRATED / ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`

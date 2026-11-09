@@ -1,0 +1,434 @@
+{
+ "OSQP fallback, eps 1e-9, 1 s limit": {
+  "seed16_dt1000us": {
+   "status": "FAIL",
+   "completed_s": 0.013000000000000001,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 76
+  },
+  "seed16_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed16_dt2000us": {
+   "status": "FAIL",
+   "completed_s": 0.024,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_run time limit reached')",
+   "bubbles": 76
+  },
+  "seed16_dt200us": {
+   "status": "FAIL",
+   "completed_s": 0.011000000000000001,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 76
+  },
+  "seed16_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.035,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_run time limit reached')",
+   "bubbles": 76
+  },
+  "seed16_dt500us": {
+   "status": "FAIL",
+   "completed_s": 0.0115,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 76
+  },
+  "seed21_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt2000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.0,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_run time limit reached')",
+   "bubbles": 50
+  },
+  "seed21_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed23_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt2000us": {
+   "status": "FAIL",
+   "completed_s": 0.404,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 20
+  },
+  "seed23_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.19,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 20
+  },
+  "seed23_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed7_dt1000us": {
+   "status": "FAIL",
+   "completed_s": 0.025,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_solved inaccurate')",
+   "bubbles": 122
+  },
+  "seed7_dt2000us": {
+   "status": "FAIL",
+   "completed_s": 0.012,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_run time limit reached')",
+   "bubbles": 122
+  },
+  "seed7_dt200us": {
+   "status": "FAIL",
+   "completed_s": 0.1,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 122
+  },
+  "seed7_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.0,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_run time limit reached')",
+   "bubbles": 122
+  },
+  "seed7_dt500us": {
+   "status": "FAIL",
+   "completed_s": 0.0485,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_run time limit reached')",
+   "bubbles": 122
+  }
+ },
+ "OSQP fallback, eps 1e-7, no limit": {
+  "seed16_dt1000us": {
+   "status": "FAIL",
+   "completed_s": 0.013000000000000001,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 76
+  },
+  "seed16_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed16_dt2000us": {
+   "status": "FAIL",
+   "completed_s": 0.024,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_solved inaccurate')",
+   "bubbles": 76
+  },
+  "seed16_dt200us": {
+   "status": "FAIL",
+   "completed_s": 0.011000000000000001,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 76
+  },
+  "seed16_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.06,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 76
+  },
+  "seed16_dt500us": {
+   "status": "FAIL",
+   "completed_s": 0.012,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 76
+  },
+  "seed21_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt2000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.215,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 50
+  },
+  "seed21_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed23_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt2000us": {
+   "status": "FAIL",
+   "completed_s": 0.41200000000000003,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 20
+  },
+  "seed23_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.19,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 20
+  },
+  "seed23_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed7_dt1000us": {
+   "status": "FAIL",
+   "completed_s": 0.069,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 122
+  },
+  "seed7_dt100us": {
+   "status": "FAIL",
+   "completed_s": 0.4141,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 122
+  },
+  "seed7_dt2000us": {
+   "status": "FAIL",
+   "completed_s": 0.07,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 122
+  },
+  "seed7_dt200us": {
+   "status": "FAIL",
+   "completed_s": 0.1,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 122
+  },
+  "seed7_dt5000us": {
+   "status": "FAIL",
+   "completed_s": 0.015,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 122
+  },
+  "seed7_dt500us": {
+   "status": "FAIL",
+   "completed_s": 0.0485,
+   "reason": "RuntimeError('PRETRAIN_CONTACT_UNSOLVED:osqp_maximum iterations reached')",
+   "bubbles": 122
+  }
+ },
+ "NNLS fallback (test patch)": {
+  "seed16_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed16_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed16_dt2000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed16_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed16_dt5000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed16_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 76
+  },
+  "seed21_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt2000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt5000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed21_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 50
+  },
+  "seed23_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt2000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt5000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed23_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 20
+  },
+  "seed7_dt1000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 122
+  },
+  "seed7_dt100us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 122
+  },
+  "seed7_dt2000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 122
+  },
+  "seed7_dt200us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 122
+  },
+  "seed7_dt5000us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 122
+  },
+  "seed7_dt500us": {
+   "status": "PASS",
+   "completed_s": 0.5,
+   "reason": null,
+   "bubbles": 122
+  }
+ }
+}

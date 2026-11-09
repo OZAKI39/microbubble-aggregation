@@ -1,0 +1,40 @@
+{
+ "font": "Arial",
+ "distribution": {
+  "starts": 1000,
+  "bubble_count_min": 16,
+  "bubble_count_max": 128,
+  "bubble_count_mean": 73.542,
+  "distinct_bubble_counts": 113,
+  "aspect_range": [
+   1.0001248140684014,
+   1.3999303740762874
+  ],
+  "long_axis_dot_x_mean": 0.022112759826587582,
+  "min_wall_gap_um": 50.25674673121488,
+  "centre_x_range_mm": [
+   -16.17331408120601,
+   16.15626888298296
+  ]
+ },
+ "runs": [
+  {
+   "run": "start3d_seed0",
+   "state": "IRREGULAR3D_N112_a1.108",
+   "status": "PASS",
+   "completed_s": 0.3,
+   "accepted_steps": 2494,
+   "wall_s": 173.87422367901308,
+   "travel_um": 1.4231254533684055
+  },
+  {
+   "run": "start3d_seed11",
+   "state": "IRREGULAR3D_N31_a1.200",
+   "status": "PASS",
+   "completed_s": 0.3,
+   "accepted_steps": 2633,
+   "wall_s": 10.447419866017299,
+   "travel_um": 3.8782248446156626
+  }
+ ]
+}

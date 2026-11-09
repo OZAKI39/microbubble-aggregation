@@ -1,0 +1,105 @@
+"""Figure: the APECSS settling check before and after the fix of 2026-11-08.
+
+usage (repository root):  python figure_tools.py NOISE_SCAN_JSON SETTLING_BEFORE_AFTER_JSON OUT_PNG
+(a) The noise of the cycle-to-cycle change, relative to the bubble's own fundamental, after the
+ringing has died (NOISE_SCAN.py: one bubble from rest, 300 fixed cycles, median and max over cycles
+150-300), against frequency, ODE tolerance 1e-8 (the policy's) and 1e-10, at 1 and 20 kPa; the
+level the check waited for when the decay rate could not be measured (1e-3 tol, before) and the
+level accepted now (tol (1 - 0.99) / 0.99). (b) A bubble relaxing onto a node: cycles per call
+against the drive (SETTLING_BEFORE_AFTER.py), before and after; a call that did not settle ran to
+400 cycles. (c) Calls that did not settle, before and after.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, BLUE, ORANGE, RED, GREEN = "#1f2328", "#5b6470", "#1f5a96", "#c2611f", "#b42318", "#2f7d4f"
+noise = json.loads(Path(sys.argv[1]).read_text())
+ba = json.loads(Path(sys.argv[2]).read_text())
+TOL = 1e-3
+
+with tempfile.TemporaryDirectory() as font_dir:
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, Path(font_dir) / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+    fig, axes = plt.subplots(1, 3, figsize=(15.0, 4.6), dpi=130, gridspec_kw=dict(width_ratios=[1.25, 1.1, 0.8]))
+    fig.subplots_adjust(left=0.055, right=0.985, top=0.83, bottom=0.14, wspace=0.3)
+
+    ax = axes[0]
+    for ode, color in (("1e-08", ORANGE), ("1e-10", BLUE)):
+        keys = sorted((k for k in noise if k.startswith(ode + "_")), key=lambda k: float(k.split("_")[1]))
+        f = np.array([float(k.split("_")[1]) for k in keys])
+        for i, marker in ((0, "o"), (1, "s")):
+            median = np.array([noise[k][i][0] for k in keys])
+            peak = np.array([noise[k][i][1] for k in keys])
+            ax.plot(f, peak, marker=marker, ms=4, lw=1.0, color=color, mfc="white",
+                    label=f"ODE tol {float(ode):g}, {'1' if i == 0 else '20'} kPa (max)")
+            ax.plot(f, median, marker=marker, ms=3, lw=0, color=color, alpha=0.6)
+    ax.axhline(1e-3 * TOL, color=RED, lw=1.0, ls="--")
+    ax.text(2.05, 1.25e-6, "level waited for before (1e-3 tol)", color=RED, fontsize=8)
+    ax.axhline(TOL * 0.01 / 0.99, color=GREEN, lw=1.0, ls="--")
+    ax.text(2.05, 1.3e-5, "level accepted now (tol x 0.01/0.99)", color=GREEN, fontsize=8)
+    ax.set_yscale("log")
+    ax.set_ylim(1e-13, 1e-2)
+    ax.set_xlabel("frequency (MHz)")
+    ax.set_ylabel("cycle-to-cycle change / own fundamental\n(noise after the ringing)")
+    ax.set_title("(a) integration noise of the settling check (open: max, filled: median)", loc="left", fontsize=9, color=INK)
+    ax.legend(frameon=False, fontsize=7, loc="upper left", ncol=2)
+
+    ax = axes[1]
+    for label, color in (("before", RED), ("after", GREEN)):
+        for f, marker in (("2.5", "o"), ("10", "s")):
+            calls = np.array(ba["node"][f"{label}_{f}"])
+            p, cycles, status = calls[:, 0], calls[:, 1], calls[:, 2]
+            ok = (status == 0) | (status == 4)
+            ax.plot(p[ok], cycles[ok], marker=marker, ms=3.5, lw=0, color=color, mfc="white" if label == "after" else color,
+                    label=f"{label}, {f} MHz, settled")
+            if (~ok).any():
+                ax.plot(p[~ok], np.full((~ok).sum(), 400), marker="x", ms=5, lw=0, color=color,
+                        label=f"{label}, {f} MHz, not settled ({(~ok).sum()} calls)")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.invert_xaxis()
+    ax.set_ylim(0.8, 700)
+    ax.set_xlabel("|p| at the bubble (Pa), bubble moving onto the node ->")
+    ax.set_ylabel("cycles in the call")
+    ax.set_title("(b) a bubble relaxing onto a pressure node (5 kPa x 0.7^k)", loc="left", fontsize=9, color=INK)
+    ax.legend(frameon=False, fontsize=7, loc="upper left")
+
+    ax = axes[2]
+    groups = [("node, 2.5 MHz", "node", "2.5"), ("node, 7.5 MHz", "node", "7.5"), ("node, 10 MHz", "node", "10"),
+              ("drift, 10 MHz", "drift", "10")]
+    y = np.arange(len(groups))
+    for k, (label, color) in enumerate((("before", RED), ("after", GREEN))):
+        values = []
+        for _, kind, f in groups:
+            if kind == "node":
+                calls = np.array(ba["node"][f"{label}_{f}"])
+                values.append(int(np.sum((calls[:, 2] != 0) & (calls[:, 2] != 4))))
+            else:
+                values.append(sum(v for key, v in ba["drift"].items() if key.startswith(f"{label}_{f}_")))
+        ax.barh(y + (0.2 if k == 0 else -0.2), values, height=0.36, color=color, label=label)
+        for yy, v in zip(y, values):
+            ax.text(v + 0.8, yy + (0.2 if k == 0 else -0.2), str(v), va="center", fontsize=8, color=INK)
+    ax.set_yticks(y, [g[0] for g in groups])
+    ax.invert_yaxis()
+    ax.set_xlim(0, 62)
+    ax.set_xlabel("calls that did not settle")
+    ax.set_title("(c) node: 110 calls; drift: 2000 calls\n(10-150 kPa); other drifts: 0 before and after", loc="left", fontsize=9, color=INK)
+    ax.legend(frameon=False, fontsize=8, loc="lower right")
+    fig.suptitle("APECSS settling check (native/apecss_harmonics.c), one bubble, ODE tolerance 1e-8: before and after the fix of 2026-11-08",
+                 x=0.055, ha="left", fontsize=10, color=INK)
+    fig.savefig(sys.argv[3])

@@ -1,0 +1,197 @@
+"""Figures for the removal of the frozen HF/LF path (2026-11-06).
+
+usage (repository root):
+  python FIGURE_SCRIPT.py BEFORE_SOURCE_DIR RESULTS_DIR OUT_DIR
+
+BEFORE_SOURCE_DIR: copy of main.py, microbubble/, workflows/, tests/ taken before the removal.
+RESULTS_DIR: results/_scratch/hf_lf_removal_20261106 with before/<run> and after/<run>.
+Writes fig1_removed_code.png, fig2_runs_before_after.png and COMPARISON.json.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+from matplotlib.lines import Line2D
+
+ROOT = Path.cwd()
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+RUNS = {
+    "formed32_default": "32 bubbles, formed cluster\nGPU field, compiled contact, 0.1 s",
+    "irregular64_switching": "64 bubbles, irregular cluster\n2.2/2.8/2.5 MHz segments, 0.09 s",
+    "formed32_cpu_python": "32 bubbles, formed cluster\nCPU field, Python contact, 0.03 s",
+}
+KEPT, REMOVED = "#2a6fb0", "#c9d6e3"  # categorical pair: kept (dark blue), removed (light)
+INK, MUTED = "#1f2328", "#5b6470"
+R_M = 1.78e-6
+
+
+def setup_style(font_dir):
+    family = "DejaVu Sans"
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+            family = "Arial"
+    plt.rcParams.update(
+        {
+            "font.family": family,
+            "font.size": 9.5,
+            "axes.edgecolor": MUTED,
+            "axes.labelcolor": INK,
+            "xtick.color": MUTED,
+            "ytick.color": MUTED,
+            "axes.spines.top": False,
+            "axes.spines.right": False,
+        }
+    )
+    return family
+
+
+def code_lines(path):
+    return sum(1 for line in path.read_text().splitlines() if line.strip()) if path.is_file() else 0
+
+
+def fig_code(before_dir, out):
+    names = sorted(
+        str(p.relative_to(before_dir))
+        for pattern in ("main.py", "microbubble/*.py", "workflows/*.py", "tests/*.py")
+        for p in before_dir.glob(pattern)
+    )
+    rows = []
+    for name in names:
+        before, after = code_lines(before_dir / name), code_lines(ROOT / name)
+        if before != after:
+            rows.append(dict(file=name, before=before, after=after, removed=before - after))
+    rows.sort(key=lambda r: r["before"])
+    fig, ax = plt.subplots(figsize=(8.2, 0.34 * len(rows) + 1.6))
+    y = np.arange(len(rows))
+    # A file that grew (tests moved in, a longer docstring) shows its new size as kept.
+    kept = np.array([min(r["before"], r["after"]) for r in rows])
+    removed = np.array([max(r["removed"], 0) for r in rows])
+    ax.barh(y, kept, height=0.62, color=KEPT, label="Kept")
+    ax.barh(y, removed, left=kept, height=0.62, color=REMOVED, label="Removed",
+            edgecolor="white", linewidth=2)
+    for k, r in enumerate(rows):
+        if r["after"] == 0:
+            tag = "file deleted"
+        elif r["removed"] < 0:
+            tag = f"+{-r['removed']}"
+        else:
+            tag = f"-{r['removed']}"
+        ax.text(max(r["before"], r["after"]) + 12, k, tag, va="center", fontsize=8.5, color=INK)
+    ax.set_yticks(y, [r["file"] for r in rows])
+    ax.set_xlabel("Non-empty lines")
+    total_b, total_a = sum(r["before"] for r in rows), sum(r["after"] for r in rows)
+    ax.set_title(
+        f"Code removed with the frozen HF/LF path\n{total_b} -> {total_a} non-empty lines "
+        f"in {len(rows)} changed files (net -{total_b - total_a})",
+        loc="left", fontsize=10.5, color=INK,
+    )
+    ax.legend(loc="lower right", frameon=False)
+    ax.set_xlim(0, max(r["before"] for r in rows) * 1.12)
+    ax.grid(axis="x", color="#e6e8eb", linewidth=0.8)
+    ax.set_axisbelow(True)
+    fig.tight_layout()
+    fig.savefig(out / "fig1_removed_code.png", dpi=180)
+    plt.close(fig)
+    return rows
+
+
+def load(results, side, name):
+    with h5py.File(results / side / name / "trajectory.h5") as h:
+        data = {k: h[k][:] for k in h.keys()}
+    data["summary"] = json.loads((results / side / name / "SUMMARY.json").read_text())
+    data["steps"] = [r["dt_s"] for r in json.loads((results / side / name / "STEP_RECORDS.json").read_text())]
+    return data
+
+
+def fig_runs(results, out):
+    fig, axes = plt.subplots(2, 3, figsize=(11.5, 6.6), gridspec_kw=dict(height_ratios=[1.25, 1]))
+    report = {}
+    for col, (name, label) in enumerate(RUNS.items()):
+        a, b = load(results, "before", name), load(results, "after", name)
+        same = {k: bool(np.array_equal(a[k], b[k])) for k in a if k not in ("summary", "steps")}
+        dx = float(np.abs(a["positions_m"] - b["positions_m"]).max())
+        report[name] = dict(
+            status=[a["summary"]["status"], b["summary"]["status"]],
+            accepted_steps=[a["summary"]["accepted_steps"], b["summary"]["accepted_steps"]],
+            step_sizes_identical=a["steps"] == b["steps"],
+            datasets_identical=same,
+            max_position_difference_m=dx,
+            frequency_switches=[a["summary"].get("frequency_switches"), b["summary"].get("frequency_switches")],
+        )
+        # Top: last saved frame, before (filled discs at the true radius) and after (outlines).
+        ax = axes[0, col]
+        xa, xb = a["positions_m"][-1, :, :2] * 1e6, b["positions_m"][-1, :, :2] * 1e6
+        centre = xa.mean(0)
+        d = 2 * R_M * 1e6
+        ax.add_collection(EllipseCollection(d, d, 0, units="xy", offsets=xa - centre,
+                                            offset_transform=ax.transData, facecolors=REMOVED,
+                                            edgecolors="none"))
+        ax.add_collection(EllipseCollection(d, d, 0, units="xy", offsets=xb - centre,
+                                            offset_transform=ax.transData, facecolors="none",
+                                            edgecolors=KEPT, linewidths=1.0))
+        span = np.abs(xa - centre).max() + d
+        ax.set_xlim(-span, span)
+        ax.set_ylim(-span, span)
+        ax.set_aspect("equal")
+        ax.set_title(label, fontsize=9.5, color=INK, loc="left")
+        ax.set_xlabel("x - cluster centre (µm)")
+        if col == 0:
+            ax.set_ylabel("y - cluster centre (µm)")
+            handles = [  # proxies: a legend cannot draw EllipseCollection entries
+                Line2D([], [], ls="", marker="o", ms=8, mfc=REMOVED, mec="none", label="Before"),
+                Line2D([], [], ls="", marker="o", ms=8, mfc="none", mec=KEPT, label="After"),
+            ]
+            ax.legend(handles=handles, loc="upper left", frameon=False, fontsize=8.5)
+        ax.text(0.02, 0.02, f"t = {a['time_s'][-1] * 1e3:.0f} ms", transform=ax.transAxes,
+                fontsize=8.5, color=MUTED)
+        # Bottom: cluster-centre travel along x over time, before and after.
+        ax = axes[1, col]
+        t = a["time_s"] * 1e3
+        com_a = (a["positions_m"][:, :, 0].mean(1) - a["positions_m"][0, :, 0].mean()) * 1e6
+        com_b = (b["positions_m"][:, :, 0].mean(1) - b["positions_m"][0, :, 0].mean()) * 1e6
+        ax.plot(t, com_a, color=REMOVED, linewidth=5, solid_capstyle="round", label="Before")
+        ax.plot(t, com_b, color=KEPT, linewidth=2, label="After")
+        ax.set_xlabel("Time (ms)")
+        if col == 0:
+            ax.set_ylabel("Cluster-centre travel in x (µm)")
+            ax.legend(loc="best", frameon=False, fontsize=8.5)
+        ax.grid(color="#e6e8eb", linewidth=0.8)
+        steps = report[name]["accepted_steps"]
+        ax.set_title(f"steps {steps[0]} / {steps[1]}, step sizes identical\n"
+                     f"max position difference {dx:g} m (bitwise equal)",
+                     loc="left", fontsize=8.5, color=INK)
+    fig.suptitle("Pretraining runs before and after removing the HF/LF path: identical",
+                 x=0.01, ha="left", fontsize=11, color=INK)
+    fig.tight_layout()
+    fig.savefig(out / "fig2_runs_before_after.png", dpi=180)
+    plt.close(fig)
+    return report
+
+
+def main():
+    before_dir, results, out = (Path(a) for a in sys.argv[1:4])
+    out.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory() as font_dir:
+        font = setup_style(Path(font_dir))
+        rows = fig_code(before_dir, out)
+        report = fig_runs(results, out)
+    (out / "COMPARISON.json").write_text(
+        json.dumps(dict(font=font, code_lines=rows, runs=report), indent=1) + "\n"
+    )
+    print(json.dumps(report, indent=1))
+
+
+if __name__ == "__main__":
+    main()

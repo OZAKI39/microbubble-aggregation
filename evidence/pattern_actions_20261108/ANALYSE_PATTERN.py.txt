@@ -1,0 +1,134 @@
+"""Ordinary pretraining runs with pattern actions: how the start cluster responds, and how exact the zero line is (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:SCRATCH python analyse_pattern.py DEMO_DIR OUT_JSON OUT_NPZ
+DEMO_DIR: <name>/EXECUTION.json, SUMMARY.json, trajectory.h5 of runs of workflows.f10ag.run (names starting with PAT).
+Per segment, from the run's pattern_path (control.pattern_actions): a, phi, the node offsets s_x, s_y and the
+local form p = -[cos a sin(kx (x - cx - sx)) + (kx / ky) sin a e^{i phi} sin(ky (y - cy - sy))] around the
+start centre c. Line quality, for segments with phi = 0 (a zero line): the largest |p| of the disc field
+itself (plane z = c_z) on the local form's zero line within 20 um of the zero point (c_x + s_x, c_y + s_y),
+over the largest |p| within 20 um of it; 0 means the disc field has the same zero line there.
+At every saved frame (10 ms), against the segment that acted up to it: the share of bubbles within R of the
+zero set seen from above (the local form's line for phi = 0; the point for phi > 0, i.e. the vertical line
+through it), the top-view distance of the cluster's centroid from the zero set, and pieces (surfaces within
+0.5 R).
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from morph import zero_set
+from workflows.f10ag import pretrain_context
+
+R = 1.78e-6
+QUALITY_RADIUS_M = 20e-6
+demo, out_json, out_npz = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+elements = pretrain_context(Path("."), 3e6).discs.elements
+
+
+def piece_count(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    pairs = pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < 0.5 * R]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    return connected_components(graph, directed=False)[0]
+
+
+def segment_paths(task):
+    """a, phi [rad] and the node offsets s_x, s_y [m] of every segment (values at its start, as pattern_actions)."""
+    path = task["pattern_path"]
+    starts = np.cumsum([0.0] + [s["duration"] for s in task["segments"]])[:-1]
+    a = np.radians(np.interp(starts, path["knot_times_s"], path["direction_a_deg"]))
+    phi = np.radians(np.interp(starts, path["knot_times_s"], path["phi_deg"]))
+    sx = np.interp(starts, path["knot_times_s"], path["node_offset_x_m"])
+    sy = np.interp(starts, path["knot_times_s"], path["node_offset_y_m"])
+    return a, phi, sx, sy
+
+
+def local_line(a, sx, sy, kx, ky, half_m):
+    """Zero line (phi = 0) of the local form around c, in coordinates from c [m]."""
+    return zero_set(lambda x, y: -(np.cos(a) * np.sin(kx * (x - sx)) + kx / ky * np.sin(a) * np.sin(ky * (y - sy))),
+                    half_m=half_m, spacing_m=0.2e-6)
+
+
+result, series = {}, {}
+for folder in sorted(p for p in demo.iterdir() if (p / "SUMMARY.json").is_file() and p.name.startswith("PAT")):
+    e = json.loads((folder / "EXECUTION.json").read_text())
+    task, summary = e["task"], json.loads((folder / "SUMMARY.json").read_text())
+    path = task["pattern_path"]
+    c = np.array(path["centre_m"])
+    kx, ky = path["kappa_x_per_m"], path["kappa_y_per_m"]
+    f = task["segments"][0]["frequency"]
+    a, phi, sx, sy = segment_paths(task)
+    with h5py.File(folder / "trajectory.h5") as h:
+        t, positions, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+        in_effect = h["action_segment"][()]
+    rel = positions[:, :, :2] - c[:2]
+    # the window holds the cluster over the run and every zero point (nodes up to a quarter wavelength away)
+    half = max(40e-6, float(np.abs(rel).max()) + 10e-6, float(np.abs(sx).max()) + 25e-6, float(np.abs(sy).max()) + 25e-6)
+    discs = WaterDiscs(elements, f)
+    order = direct_quadrature_order(f)
+    lines, quality = {}, []
+    for k, s in enumerate(task["segments"]):
+        if phi[k] != 0.0:
+            continue
+        points = local_line(a[k], sx[k], sy[k], kx, ky, half)
+        lines[k] = cKDTree(points)
+        near = np.hypot(points[:, 0] - sx[k], points[:, 1] - sy[k]) <= QUALITY_RADIUS_M
+        u = np.array(s["amplitudes"]) * np.exp(1j * np.array(s["phases"]))
+        on = np.column_stack([points[near] + c[:2], np.full(near.sum(), c[2])])
+        ring = np.linspace(-QUALITY_RADIUS_M, QUALITY_RADIUS_M, 41)
+        gxx, gyy = np.meshgrid(ring + sx[k], ring + sy[k])
+        disc_area = np.hypot(gxx - sx[k], gyy - sy[k]) <= QUALITY_RADIUS_M
+        area = np.column_stack([gxx[disc_area] + c[0], gyy[disc_area] + c[1], np.full(disc_area.sum(), c[2])])
+        p_area = np.abs(u @ discs.evaluate(area, order)[0]).max()
+        quality.append(float(np.abs(u @ discs.evaluate(on, order)[0]).max() / p_area))
+    rows = {k: [] for k in ("segment", "line", "share_on_zero_set", "centroid_distance_m", "pieces")}
+    for j, (ti, x) in enumerate(zip(t, rel)):
+        k = int(in_effect[j - 1]) if j > 0 else 0  # the segment that acted up to this frame
+        rows["segment"].append(k)
+        if k in lines:
+            d = lines[k].query(x)[0]
+            centroid = lines[k].query(x.mean(0))[0]
+            rows["line"].append(1)
+        else:
+            point = np.array([sx[k], sy[k]])
+            d = np.linalg.norm(x - point, axis=1)
+            centroid = np.linalg.norm(x.mean(0) - point)
+            rows["line"].append(0)
+        rows["share_on_zero_set"].append(np.mean(d < R))
+        rows["centroid_distance_m"].append(centroid)
+        rows["pieces"].append(piece_count(positions[j], radii))
+    rows = {k: np.asarray(v, float) for k, v in rows.items()}
+    name = folder.name
+    result[name] = dict(status=summary["status"], completed_s=summary["completed_s"], wall_s=summary["wall_s"],
+                        bubbles=int(len(radii)), frequency_Hz=f, adhesion_force_N=task["adhesion_force_N"],
+                        centre_m=path["centre_m"], kappa_x_over_k=kx / (2 * np.pi * f / 1500.0),
+                        kappa_y_over_k=ky / (2 * np.pi * f / 1500.0), knots=len(path["knot_times_s"]),
+                        segments_with_line=len(lines), line_quality_median=float(np.median(quality)) if quality else None,
+                        line_quality_max=float(np.max(quality)) if quality else None,
+                        share_on_zero_set_median=float(np.median(rows["share_on_zero_set"])),
+                        centroid_distance_um_median=float(np.median(rows["centroid_distance_m"]) * 1e6),
+                        centroid_distance_um_max=float(rows["centroid_distance_m"].max() * 1e6),
+                        pieces_max=int(rows["pieces"].max()), pattern_path=path)
+    for key, v in rows.items():
+        series[f"{name}__{key}"] = v
+    series[f"{name}__t_s"] = t
+    series[f"{name}__a_deg"], series[f"{name}__phi_deg"] = np.degrees(a), np.degrees(phi)
+    series[f"{name}__sx_m"], series[f"{name}__sy_m"] = sx, sy
+    s = result[name]
+    print(f"{name}: {s['status']} {s['bubbles']} bubbles, {f / 1e6:.3f} MHz, adhesion {s['adhesion_force_N']:.2e} N, "
+          f"centre {np.round(np.array(path['centre_m']) * 1e3, 3).tolist()} mm, kx/k {s['kappa_x_over_k']:.3f} ky/k "
+          f"{s['kappa_y_over_k']:.3f}; {len(lines)} of {len(task['segments'])} segments a line, line quality median "
+          f"{s['line_quality_median']} max {s['line_quality_max']}; share on zero set median {s['share_on_zero_set_median']:.2f}; "
+          f"centroid distance median/max {s['centroid_distance_um_median']:.1f}/{s['centroid_distance_um_max']:.1f} um; "
+          f"pieces max {s['pieces_max']}", flush=True)
+out_json.write_text(json.dumps(result, indent=1) + "\n")
+np.savez_compressed(out_npz, **series)

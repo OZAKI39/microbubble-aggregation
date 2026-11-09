@@ -1,0 +1,32 @@
+"""Does np.linalg.svd let the main thread run while it works on another thread? (measurement only)
+usage: python gil_probe.py M.npy"""
+import json, sys, threading, time
+import numpy as np
+import scipy.linalg
+
+M = np.load(sys.argv[1])
+A = np.random.default_rng(0).normal(size=(7381, 8)) + 1j  # elementwise work like F2's
+def py_loop():  # pure Python: needs the lock all the time
+    s = 0
+    for i in range(60000): s += i
+def np_work():  # NumPy elementwise: releases the lock inside each operation
+    for _ in range(4): np.exp(1j * A.real) * (1 - 1j * A.real)
+def median_ms(f, n=200):
+    t = []
+    for _ in range(n):
+        a = time.perf_counter(); f(); t.append(time.perf_counter() - a)
+    return 1e3 * float(np.median(t))
+def with_svd_thread(work, svd):
+    def f():
+        th = threading.Thread(target=svd); th.start(); work(); th.join()
+    return f
+np_svd = lambda: np.linalg.svd(M, compute_uv=False)
+sp_svd = lambda: scipy.linalg.svd(M, compute_uv=False, check_finite=False)
+out = {"svd numpy alone": median_ms(np_svd), "svd scipy alone": median_ms(sp_svd),
+       "same value numpy/scipy": float(np_svd()[-1]) == float(sp_svd()[-1])}
+for name, work in (("python loop", py_loop), ("numpy elementwise", np_work)):
+    out[name + " alone"] = median_ms(work)
+    out[name + " + numpy svd on thread"] = median_ms(with_svd_thread(work, np_svd))
+    out[name + " + scipy svd on thread"] = median_ms(with_svd_thread(work, sp_svd))
+out["thread start/join only"] = median_ms(with_svd_thread(lambda: None, lambda: None))
+print(json.dumps(out, indent=1))

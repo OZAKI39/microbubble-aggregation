@@ -1,5 +1,7 @@
 # F10AG evidence entry point
 
+> **状态（2026-11-09 核对）：** 历史。F10AG 基线（HF/LF 路径时期）的证据。HF/LF 路径已于 2026-11-06 删除，最后一版代码在提交 `03e0701`。
+
 Start with `F10AG_DEVELOPMENT_REPORT.md`, `FINAL_GATE.json`, `figures/` and `videos/`. Scientific task source snapshots are immutable and individual result identities are authoritative. Source: `scripts/straight_tube_exp1/f10ag/`.
 
 | Run | T / ms | Rg change / µm | COM / µm | Max displacement / µm | Peak S | Order gain | Held <20 µm |

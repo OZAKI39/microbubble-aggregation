@@ -1,0 +1,12 @@
+{
+ "svd numpy alone": 0.8082315325737,
+ "svd scipy alone": 0.8121440187096596,
+ "same value numpy/scipy": true,
+ "python loop alone": 1.2914889957755804,
+ "python loop + numpy svd on thread": 2.1091479575261474,
+ "python loop + scipy svd on thread": 2.1525349002331495,
+ "numpy elementwise alone": 6.6835840698331594,
+ "numpy elementwise + numpy svd on thread": 7.660001399926841,
+ "numpy elementwise + scipy svd on thread": 7.411195081658661,
+ "thread start/join only": 0.05092599894851446
+}

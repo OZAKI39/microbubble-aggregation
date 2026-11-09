@@ -1,0 +1,47 @@
+.........................................F....................           [100%]
+=================================== FAILURES ===================================
+____ test_irregular_clusters_are_connected_disordered_and_never_overwritten ____
+
+tmp_path = PosixPath('/tmp/pytest-of-lzy/pytest-65/test_irregular_clusters_are_co0')
+
+    def test_irregular_clusters_are_connected_disordered_and_never_overwritten(tmp_path):
+        R = 1.78e-6
+        for n, aspect in ((16, 1.0), (64, 1.4), (128, 1.2)):
+            x = irregular_cluster(n, R, aspect, seed=2)
+            gap = np.linalg.norm(x[:, None] - x[None], axis=-1) + np.eye(n) - 2 * R
+            assert gap.min() >= 1e-8 * (1 - 1e-6) and np.all(x[:, 2] == 0)
+            np.testing.assert_allclose(x.mean(0), 0, atol=1e-18)
+            np.testing.assert_array_equal(x, irregular_cluster(n, R, aspect, seed=2))
+            touching = gap < 1.5e-8
+            seen, todo = {0}, [0]
+            while todo:
+                new = set(np.flatnonzero(touching[todo.pop()]).tolist()) - seen
+                seen |= new
+                todo += list(new)
+            assert len(seen) == n  # one cluster, every bubble touching at least one other
+            if n >= 64:  # no lattice order beyond a few bubbles (hexagonal: 1)
+                assert bond_order(x, R) < 0.85
+        # A hexagonal patch at the same spacing has order 1 (every neighbour angle a multiple of 60).
+        hexagonal = [[i + 0.5 * j, np.sqrt(3) / 2 * j, 0.0] for i in range(10) for j in range(10)]
+        assert bond_order(np.array(hexagonal) * (2 * R + 1e-8), R) > 0.99
+        small, large = np.linalg.eigvalsh(np.cov(irregular_cluster(128, R, 1.4, 0)[:, :2].T))
+        assert 1.25 < np.sqrt(large / small) < 1.6
+        meta = read(ROOT / "inputs/pretrain_irregular_states.json")
+        assert meta["h5_sha256"] == sha(ROOT / "inputs/pretrain_irregular_states.h5")
+        x, _ = load_state(ROOT / "inputs/pretrain_irregular_states.h5", "IRREGULAR_N32_a1.0_s0")
+>       np.testing.assert_array_equal(x, irregular_cluster(32, R, 1.0, 0))
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 56 / 96 (58.3%)
+E       Max absolute difference among violations: 1.18584613e-20
+E       Max relative difference among violations: 1.25305465e-14
+E        ACTUAL: array([[ 1.086874e-06, -5.102237e-07,  0.000000e+00],
+E              [-2.483125e-06, -5.076204e-07,  0.000000e+00],
+E              [ 2.061595e-06,  2.924135e-06,  0.000000e+00],...
+E        DESIRED: array([[ 1.086874e-06, -5.102237e-07,  0.000000e+00],
+E              [-2.483125e-06, -5.076204e-07,  0.000000e+00],
+E              [ 2.061595e-06,  2.924135e-06,  0.000000e+00],...
+
+tests/test_pretrain.py:958: AssertionError
+1 failed, 61 passed in 104.28s (0:01:44)

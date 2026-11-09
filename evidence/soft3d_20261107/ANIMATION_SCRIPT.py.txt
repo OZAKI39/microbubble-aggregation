@@ -1,0 +1,116 @@
+"""Animations of the 3D softness runs (2026-11-07): one start, adhesion x1 / x0.1 / none side by side.
+
+usage (repository root):  python ANIMATION_SCRIPT.py.txt DATA_DIR EVIDENCE_DIR SEED [SEED ...]
+DATA_DIR: <name>/compact.npz of SOFT3D_RUNS.py.txt. Writes EVIDENCE_DIR/anim_seed<SEED>_N<n>.mp4:
+positions every 10 ms seen from above (x right, y up), discs of radius R coloured by height, the
+view following the centre of the largest piece (bubbles within 0.5 R of a neighbour belong
+together), 25 frames/s, so 4x slower than real time. Each panel: contacts per bubble (gap below
+0.01 R), contacts broken since the start, number of pieces.
+"""
+
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED = "#1f2328", "#5b6470"
+R = 1.78e-6
+LEVELS = [("x1", "Adhesion x1 (default)"), ("x0.1", "Adhesion x0.1"), ("x0", "No adhesion")]
+FPS = 25
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED,
+                         "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+
+
+def pieces(p):
+    pairs = np.array(sorted(cKDTree(p).query_pairs(2.5 * R)), dtype=int).reshape(-1, 2)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(p), len(p)))
+    n, labels = connected_components(graph, directed=False)
+    return n, labels == np.bincount(labels).argmax()
+
+
+def contacts(p):
+    return {tuple(q) for q in cKDTree(p).query_pairs(2 * R + 0.01 * R)}
+
+
+def main():
+    data, folder, seeds = Path(sys.argv[1]), Path(sys.argv[2]), [int(s) for s in sys.argv[3:]]
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        for seed in seeds:
+            runs = {level: np.load(data / f"seed{seed}_adhesion_{level}" / "compact.npz") for level, _ in LEVELS}
+            t = runs["x1"]["t10"]
+            frames = {level: runs[level]["positions10_m"] for level, _ in LEVELS}
+            n = frames["x1"].shape[1]
+            z0 = np.median(frames["x1"][0][:, 2])
+            first = frames["x1"][0] - np.median(frames["x1"][0], 0)
+            half = 1.35 * np.abs(first[:, :2]).max() * 1e6 + 6  # um
+            zlim = 1.1 * np.abs(first[:, 2]).max() * 1e6
+            start_contacts = {level: contacts(frames[level][0]) for level, _ in LEVELS}
+            ever_broken = {level: set() for level, _ in LEVELS}
+
+            fig, axes = plt.subplots(1, 3, figsize=(12.6, 4.9))
+            fig.subplots_adjust(left=0.04, right=0.9, top=0.84, bottom=0.1, wspace=0.12)
+            collections, notes = {}, {}
+            for ax, (level, label) in zip(axes, LEVELS):
+                col = EllipseCollection(2 * R * 1e6, 2 * R * 1e6, 0, units="xy", offsets=np.zeros((n, 2)),
+                                        offset_transform=ax.transData, array=np.zeros(n), cmap="viridis",
+                                        clim=(-zlim, zlim), edgecolor="white", linewidth=0.3)
+                ax.add_collection(col)
+                ax.set_xlim(-half, half)
+                ax.set_ylim(-half, half)
+                ax.set_aspect("equal")
+                ax.set_title(label, fontsize=10, color=INK)
+                ax.set_xlabel("x (um, following the largest piece)", fontsize=8, color=MUTED)
+                collections[level] = col
+                notes[level] = ax.text(0.02, 0.02, "", transform=ax.transAxes, fontsize=8, color=INK, va="bottom")
+            bar = fig.colorbar(collections["x1"], ax=axes, fraction=0.025, pad=0.02)
+            bar.set_label("Height relative to the start (um)", fontsize=8)
+            header = fig.suptitle("", fontsize=10.5, color=INK, x=0.47)
+
+            def draw(i):
+                for level, _ in LEVELS:
+                    p = frames[level][i]
+                    count, main = pieces(p)
+                    centre = p[main].mean(0)
+                    q = (p - centre) * 1e6
+                    order = np.argsort(q[:, 2])
+                    collections[level].set_offsets(q[order, :2])
+                    collections[level].set_array((p[order, 2] - z0) * 1e6)
+                    now = contacts(p)
+                    ever_broken[level] |= start_contacts[level] - now
+                    notes[level].set_text(f"contacts per bubble {len(now) / n:.2f}\n"
+                                          f"start contacts broken so far {len(ever_broken[level])}\n"
+                                          f"pieces {count}")
+                header.set_text(f"{n}-bubble 3D start seen from above, channel X- 6000 Pa-eq, 2.5 MHz;  "
+                                f"t = {t[i]:.2f} s  (4x slower than real time)")
+                return list(collections.values())
+
+            writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+            out = folder / f"anim_seed{seed}_N{n}.mp4"
+            animation.FuncAnimation(fig, draw, frames=len(t), blit=False).save(out, writer=writer, dpi=100)  # 1260 x 490 px: libx264 with yuv420p needs even sizes
+            plt.close(fig)
+            print(out, out.stat().st_size // 1024, "KiB")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,160 @@
+"""Shape, pieces and pressure of the sculpting runs Q1/Q2 (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:visualization:SCRATCH python analyse_sculpt.py DATA_DIR OUT_JSON OUT_NPZ
+DATA_DIR: <name>/ROW.json and <name>/compact.npz of sculpt_runs.py (runs whose name starts with Q1,
+Q2 or HALF). At every saved frame (5 ms):
+  pieces: bubble surfaces within 0.5 R belong together (R = 1.78 um), and the share of the largest;
+  thickness: the standard deviation of the bubble centres along x, along y and along z (a sheet on
+    the node plane x = 0 has a small x thickness; the column of the dot pattern small x and y);
+  pressure: |p| of the segment's incident field at every bubble over the largest |p| of that field
+    within 60 um of the centre (plane z = 0); its median and the share below 0.1 (on or next to
+    the zero set: 0.1 is 2.5 um from the node plane of lines_x at 9.375 MHz, 3.4 um at 7 MHz);
+  zero-set distance: in the top view, from each bubble centre to the zero set of the pattern's
+    local form (sculpt.ideal_pattern, z-independent; for "dots" the vertical line x = y = 0), its
+    median and the share within R;
+  outline: solidity of the largest top-view region (visualization/ab_protocol_figures.py, discs at
+    0.6 um/px; region area over its convex hull) and its aspect.
+Contacts: surface gap below 0.01 R at the start; the share of them open by more than the adhesion
+range (0.2 um) at the end.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from ab_protocol_figures import raster_regions, region_shape
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import ConvexHull, cKDTree
+
+from microbubble.acoustics import WaterDiscs
+from sculpt import centre_fields, ideal_pattern
+from workflows.f10ag import pretrain_context
+
+R = 1.78e-6
+data, out_json, out_npz = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+elements = pretrain_context(Path("."), 2.5e6).discs.elements
+line = np.linspace(-60e-6, 60e-6, 121)
+gx, gy = np.meshgrid(line, line, indexing="xy")
+box = np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)])
+
+
+def pairs_with_gap_below(x, radii, gap_m):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + gap_m)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    return pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < gap_m]
+
+
+def pieces(x, radii):
+    pairs = pairs_with_gap_below(x, radii, 0.5 * R)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    n, labels = connected_components(graph, directed=False)
+    return n, np.bincount(labels).max() / len(x)
+
+
+def zero_set(frequency_Hz, pattern, half_m=60e-6, spacing_m=0.1e-6):
+    """Points of the zero set of the pattern's local form in the top view [m] (sign changes of its
+    real form on a fine grid; the origin for "dots", whose zero set is the vertical line x = y = 0)."""
+    if pattern == "dots":
+        return np.zeros((1, 2))
+    _, kx, ky = centre_fields(elements, frequency_Hz)
+    grid = np.arange(-half_m, half_m + 1e-12, spacing_m)
+    ux, uy = np.meshgrid(grid, grid, indexing="ij")
+    p = ideal_pattern(frequency_Hz, pattern, kx, ky)(ux, uy).real
+    points = []
+    for axis in (0, 1):
+        a = np.take(p, range(p.shape[axis] - 1), axis)
+        b = np.take(p, range(1, p.shape[axis]), axis)
+        i, j = np.nonzero(np.sign(a) != np.sign(b))
+        w = a[i, j] / (a[i, j] - b[i, j])
+        if axis == 0:
+            points.append(np.column_stack([grid[i] + w * spacing_m, grid[j]]))
+        else:
+            points.append(np.column_stack([grid[i], grid[j] + w * spacing_m]))
+    return np.concatenate(points)
+
+
+def outline(x, radii):
+    labels, n, _, _ = raster_regions(x[:, :2], radii)
+    areas = np.bincount(labels.ravel())[1:]
+    main = int(np.argmax(areas)) + 1
+    ys, xs = np.nonzero(labels == main)
+    corners = np.concatenate([np.column_stack([xs + a, ys + b]) for a in (0, 1) for b in (0, 1)])
+    return len(xs) / ConvexHull(corners).volume, region_shape(labels, main)[1]
+
+
+result, series = {}, {}
+for folder in sorted(p for p in data.iterdir() if (p / "ROW.json").is_file() and p.name.split("_")[0] in ("Q1", "Q2", "HALF", "L", "Q2L", "STEP")):
+    r = json.loads((folder / "ROW.json").read_text())
+    c = np.load(folder / "compact.npz")
+    t, positions, radii = c["times_s"], c["positions_m"], c["radii_m"]
+    starts = np.cumsum([0.0] + [s["duration_s"] for s in r["segments"]])[:-1]
+    fields = []
+    for s in r["segments"]:
+        u = np.array(s["amplitudes_Pa_eq"]) * np.exp(1j * np.array(s["phases_rad"]))
+        discs = WaterDiscs(elements, s["frequency_Hz"])
+        reference = np.abs(u @ discs.evaluate(box, 192)[0]).max()
+        tree = None if s["pattern"] in ("off", "x_minus") else cKDTree(zero_set(s["frequency_Hz"], s["pattern"]))
+        fields.append((discs, u, reference, tree))
+    rows = {k: [] for k in ("pieces", "largest", "sx", "sy", "sz", "p_median", "near", "zero_median", "zero_within_R",
+                            "solidity", "aspect")}
+    for ti, x in zip(t, positions):
+        k, share = pieces(x, radii)
+        rows["pieces"].append(k)
+        rows["largest"].append(share)
+        rows["sx"].append(x[:, 0].std())
+        rows["sy"].append(x[:, 1].std())
+        rows["sz"].append(x[:, 2].std())
+        discs, u, reference, tree = fields[int(np.searchsorted(starts, ti + 1e-9) - 1)]
+        if tree is not None:
+            d = tree.query(x[:, :2])[0]
+            rows["zero_median"].append(np.median(d))
+            rows["zero_within_R"].append(np.mean(d < R))
+        else:
+            rows["zero_median"].append(np.nan)
+            rows["zero_within_R"].append(np.nan)
+        if reference > 0:
+            p = np.abs(u @ discs.evaluate(x, 192)[0]) / reference
+            rows["p_median"].append(np.median(p))
+            rows["near"].append(np.mean(p < 0.1))
+        else:  # field off: no zero set
+            rows["p_median"].append(np.nan)
+            rows["near"].append(np.nan)
+        solid, aspect = outline(x, radii)
+        rows["solidity"].append(solid)
+        rows["aspect"].append(aspect)
+    first, last = positions[0], positions[-1]
+    contacts = pairs_with_gap_below(first, radii, 0.01 * R)
+    gap_end = np.linalg.norm(last[contacts[:, 1]] - last[contacts[:, 0]], axis=1) - radii[contacts[:, 0]] - radii[contacts[:, 1]]
+    s = dict(r, frames=len(t), pieces_end=int(rows["pieces"][-1]), largest_share_end=float(rows["largest"][-1]),
+             largest_share_min=float(min(rows["largest"])),
+             thickness_um_start=[float(rows[a][0] * 1e6) for a in ("sx", "sy", "sz")],
+             thickness_um_end=[float(rows[a][-1] * 1e6) for a in ("sx", "sy", "sz")],
+             pressure_median_start=float(rows["p_median"][0]), pressure_median_end=float(rows["p_median"][-1]),
+             share_near_zero_set_start=float(rows["near"][0]), share_near_zero_set_end=float(rows["near"][-1]),
+             zero_set_distance_median_um_start=float(rows["zero_median"][0] * 1e6),
+             zero_set_distance_median_um_end=float(rows["zero_median"][-1] * 1e6),
+             share_within_R_of_zero_set_start=float(rows["zero_within_R"][0]),
+             share_within_R_of_zero_set_end=float(rows["zero_within_R"][-1]),
+             solidity_start=float(rows["solidity"][0]), solidity_end=float(rows["solidity"][-1]),
+             aspect_start=float(rows["aspect"][0]), aspect_end=float(rows["aspect"][-1]),
+             centroid_shift_um=((last.mean(0) - first.mean(0)) * 1e6).tolist(),
+             contacts_per_bubble_start=len(contacts) / len(first),
+             share_of_start_contacts_open_end=float(np.mean(gap_end > 0.2e-6)) if len(contacts) else None,
+             largest_displacement_um=float(np.linalg.norm(last - first, axis=1).max() * 1e6),
+             median_displacement_um=float(np.median(np.linalg.norm(last - first, axis=1)) * 1e6))
+    result[r["name"]] = s
+    for key, values in rows.items():
+        series[f"{r['name']}__{key}"] = np.asarray(values, float)
+    series[f"{r['name']}__t_s"] = t
+    print(f"{r['name']:46s} {r['status']} {r['completed_s']:.3g}s pieces {s['pieces_end']:3d} largest {s['largest_share_end']:.2f} "
+          f"thick x/y/z {s['thickness_um_start'][0]:.1f}/{s['thickness_um_start'][1]:.1f}/{s['thickness_um_start'][2]:.1f}->"
+          f"{s['thickness_um_end'][0]:.1f}/{s['thickness_um_end'][1]:.1f}/{s['thickness_um_end'][2]:.1f} um  "
+          f"near {s['share_near_zero_set_start']:.2f}->{s['share_near_zero_set_end']:.2f}  "
+          f"zero-set within R {s['share_within_R_of_zero_set_start']:.2f}->{s['share_within_R_of_zero_set_end']:.2f} "
+          f"median {s['zero_set_distance_median_um_start']:.1f}->{s['zero_set_distance_median_um_end']:.1f} um  "
+          f"|p| med {s['pressure_median_start']:.2f}->{s['pressure_median_end']:.2f}  open {s['share_of_start_contacts_open_end']:.2f}  "
+          f"disp med/max {s['median_displacement_um']:.2f}/{s['largest_displacement_um']:.1f} um", flush=True)
+out_json.write_text(json.dumps(result, indent=1) + "\n")
+np.savez_compressed(out_npz, **series)

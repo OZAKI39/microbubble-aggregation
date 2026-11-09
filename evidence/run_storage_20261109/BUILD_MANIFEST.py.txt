@@ -1,0 +1,67 @@
+"""Manifest of the simulation outputs kept in results/ (2026-11-09, user decision: keep them long term).
+
+usage (repository root):  python build_manifest.py SERVER_SHA256_FILE OUT_JSON FOLDER=EVIDENCE[+EVIDENCE] ...
+FOLDER: a folder copied unchanged from the server's /workspace/scratch/FOLDER into results/FOLDER; EVIDENCE: the
+evidence folder(s) that analyse it. SERVER_SHA256_FILE: sha256sum output computed on the server, paths relative to
+/workspace/scratch. Every file of every FOLDER is listed with its size and SHA-256 and whether the server's copy has
+the same SHA-256. Per folder: the runs (the folders holding a run's SUMMARY.json) and where the generating code
+is recorded.
+"""
+
+import hashlib
+import json
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+SERVER_ROOT = "/workspace/scratch"
+
+
+def sha256(path):
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def main():
+    server = dict(line.split(maxsplit=1)[::-1] for line in Path(sys.argv[1]).read_text().splitlines())
+    server = {path.strip(): digest for path, digest in server.items()}
+    batches, files = [], []
+    for spec in sys.argv[3:]:
+        folder, evidence = spec.split("=")
+        root = Path("results") / folder
+        listed = sorted(p for p in root.rglob("*") if p.is_file())
+        rows = []
+        for path in listed:
+            relative = path.relative_to("results").as_posix()
+            digest = sha256(path)
+            rows.append(dict(path=f"results/{relative}", bytes=path.stat().st_size, sha256=digest,
+                             server_copy_same_sha256=server.get(relative) == digest))
+        files += rows
+        batches.append(dict(
+            folder=f"results/{folder}", server_copy=f"{SERVER_ROOT}/{folder}", evidence=evidence.split("+"),
+            files=len(rows), bytes=sum(r["bytes"] for r in rows),
+            runs=sorted(p.parent.relative_to(root).as_posix() for p in root.rglob("SUMMARY.json")),
+            all_server_copies_verified=all(r["server_copy_same_sha256"] for r in rows),
+            generator=("the scripts in scripts/ of the folder (copies in the evidence folders); every run's "
+                       "SUMMARY.json holds identity.source_sha256 of the project code that ran it (commit "
+                       "NOT_COMMITTED) and trajectory_sha256")))
+    manifest = dict(
+        created_utc=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        purpose="Long-term local copy of the simulation outputs of 2026-11-08/09 (user decision 2026-11-09).",
+        git=("results/**/trajectory.h5 and STEP_RECORDS.json are ignored by .gitignore (kept locally, not in Git); "
+             "the other files are untracked until reviewed; nothing committed."),
+        second_copy=(f"rented vast.ai server, {SERVER_ROOT}/<folder>; every file compared by SHA-256 when this manifest "
+                     "was made; the machine may be stopped or destroyed, so this copy is not guaranteed to last."),
+        recovery=("rsync -a -e 'ssh -p <port> -i <key>' root@<host>:/workspace/scratch/<folder> results/ while the "
+                  "server exists; otherwise only the local copy remains (check it against this manifest)."),
+        batches=batches, files=files)
+    Path(sys.argv[2]).write_text(json.dumps(manifest, indent=1) + "\n")
+    for b in batches:
+        print(b["folder"], b["files"], "files", round(b["bytes"] / 1e6, 1), "MB", len(b["runs"]), "runs",
+              "server copies verified" if b["all_server_copies_verified"] else "NOT ALL VERIFIED")
+
+
+main()

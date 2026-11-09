@@ -1,0 +1,38 @@
+"""Smallest singular value of every force evaluation (measurement only), for choosing guards that
+stop a run partway. usage (repository root): python SIGMA_SERIES.py OUT_DIR"""
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+import microbubble.forces as forces
+from workflows.f10ag import run
+
+out = Path(sys.argv[1])
+out.mkdir(parents=True)
+series = []
+real = forces.smallest_singular_value
+
+
+def record(M, guard):
+    s = real(M, guard)
+    series.append(s)
+    return s
+
+
+forces.smallest_singular_value = record
+result = {}
+for seed in (23, 21, 16, 7):
+    series.clear()
+    cfg = out / f"cfg_seed{seed}.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5,
+                                   save_interval_s=0.01, state_seed=seed, action_seed=seed)))
+    run(Path("."), cfg, out / f"seed{seed}")
+    s = np.array(series)
+    after = s[50:]
+    result[seed] = dict(first=float(s[0]), min=float(s.min()), argmin=int(s.argmin()),
+                        min_after_step_50=float(after.min()), argmin_after_step_50=50 + int(after.argmin()),
+                        min_of_first_50=float(s[:50].min()))
+    print(seed, result[seed], flush=True)
+(out / "SIGMA_SERIES.json").write_text(json.dumps(result, indent=1) + "\n")

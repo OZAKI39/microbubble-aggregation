@@ -1,0 +1,128 @@
+"""Animation of ordinary pretraining runs with pattern actions (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:SCRATCH python animation_pattern.py DEMO_DIR PATTERN_JSON PATTERN_NPZ OUT_MP4
+One panel per run (as in analyse_pattern.py), top view around the start centre c, every second saved frame
+(20 ms) at 25 frames/s: half speed, the same time in every panel. Background: |p| of the segment that acted
+up to the frame at the start height (dark = low); dashed: the local form's zero line (phi = 0), +: the zero
+point (phi > 0); bubbles at their radius, colour = height. Text: time, a, phi, share within R of the zero
+set, pieces.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, ORANGE = "#1f2328", "#5b6470", "#c2611f"
+FPS = 25
+EVERY = 2
+
+
+def main():
+    demo, result, series, out = Path(sys.argv[1]), json.loads(Path(sys.argv[2]).read_text()), np.load(sys.argv[3]), Path(sys.argv[4])
+    names = sorted(result, key=lambda n: result[n]["frequency_Hz"])
+    elements = pretrain_context(Path("."), 3e6).discs.elements
+    with tempfile.TemporaryDirectory() as font_dir:
+        for font in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / font).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                             "xtick.color": MUTED, "ytick.color": MUTED,
+                             "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+        fig, axes = plt.subplots(1, len(names), figsize=(4.4 * len(names), 5.0), dpi=100)
+        fig.subplots_adjust(left=0.04, right=0.99, bottom=0.1, top=0.8, wspace=0.22)
+        fig.suptitle("Ordinary pretraining runs with pattern actions (only the seeds and 6.4 s in the config), top view "
+                     "around the start centre (half speed)", x=0.04, ha="left", fontsize=10, color=INK)
+        state = []
+        for ax, n in zip(axes, names):
+            s = result[n]
+            task = json.loads((demo / n / "EXECUTION.json").read_text())["task"]
+            with h5py.File(demo / n / "trajectory.h5") as h:
+                t, positions, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+            c = np.array(s["centre_m"])
+            sx, sy = series[f"{n}__sx_m"], series[f"{n}__sy_m"]
+            half = max(40e-6, float(np.abs(positions[:, :, :2] - c[:2]).max()) + 10e-6, float(np.abs(sx).max()) + 25e-6,
+                       float(np.abs(sy).max()) + 25e-6)
+            line = np.linspace(-half, half, 161)
+            gx, gy = np.meshgrid(line, line, indexing="xy")
+            f = s["frequency_Hz"]
+            field = WaterDiscs(elements, f).evaluate(np.column_stack([gx.ravel() + c[0], gy.ravel() + c[1], np.full(gx.size, c[2])]),
+                                                      direct_quadrature_order(f))[0]
+            maps = []
+            for g in task["segments"]:
+                p = np.abs((np.array(g["amplitudes"]) * np.exp(1j * np.array(g["phases"]))) @ field).reshape(gx.shape)
+                maps.append(p / p.max())
+            extent = np.array([-half, half, -half, half]) * 1e6
+            background = ax.imshow(maps[0], origin="lower", extent=extent, cmap="Greys_r", vmin=0, vmax=1.6)
+            dots = EllipseCollection(2 * radii * 1e6, 2 * radii * 1e6, 0, units="xy", offsets=(positions[0] - c)[:, :2] * 1e6,
+                                     offset_transform=ax.transData, cmap="viridis", edgecolors="white", linewidths=0.15)
+            dots.set_clim(-15, 15)
+            ax.add_collection(dots)
+            marker, = ax.plot([], [], marker="+", ms=12, mew=1.6, color=ORANGE, lw=0)
+            label = ax.text(0.02, 0.98, "", transform=ax.transAxes, fontsize=8, color=INK, va="top",
+                            bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1.5))
+            ax.set_title(f"{s['bubbles']} bubbles, {f / 1e6:.2f} MHz, adhesion {s['adhesion_force_N']:.1e} N\n"
+                         f"start x = {c[0] * 1e3:.1f} mm, line quality {s['line_quality_median'] if s['line_quality_median'] is None else round(s['line_quality_median'], 3)}",
+                         loc="left", fontsize=8.5, color=INK)
+            ax.set_xlim(extent[0], extent[1])
+            ax.set_ylim(extent[2], extent[3])
+            ax.set_aspect("equal")
+            ax.set_xlabel("x - c_x (um)")
+            state.append(dict(ax=ax, name=n, t=t, positions=positions, radii=radii, c=c, maps=maps, background=background, dots=dots,
+                              marker=marker, label=label, gx=gx, gy=gy, s=s, contour=None, segment=None))
+        axes[0].set_ylabel("y - c_y (um)")
+        frames = max(len(st["t"]) for st in state) // EVERY + 1
+
+        def draw(i):
+            for st in state:
+                n = st["name"]
+                j = min(i * EVERY, len(st["t"]) - 1)
+                x = (st["positions"][j] - st["c"]) * 1e6
+                order = np.argsort(x[:, 2])
+                st["dots"].set_offsets(x[order, :2])
+                st["dots"].set_array(x[order, 2])
+                st["dots"].set_widths(2 * st["radii"][order] * 1e6)
+                st["dots"].set_heights(2 * st["radii"][order] * 1e6)
+                k = int(series[f"{n}__segment"][j])
+                a, phi = series[f"{n}__a_deg"][k], series[f"{n}__phi_deg"][k]
+                if k != st["segment"]:
+                    st["background"].set_data(st["maps"][k])
+                    if st["contour"] is not None:
+                        st["contour"].remove()
+                        st["contour"] = None
+                    sx, sy = series[f"{n}__sx_m"][k], series[f"{n}__sy_m"][k]
+                    if phi == 0.0:
+                        st["marker"].set_data([], [])
+                        kx, ky = st["s"]["pattern_path"]["kappa_x_per_m"], st["s"]["pattern_path"]["kappa_y_per_m"]
+                        form = -(np.cos(np.radians(a)) * np.sin(kx * (st["gx"] - sx))
+                                 + kx / ky * np.sin(np.radians(a)) * np.sin(ky * (st["gy"] - sy)))
+                        st["contour"] = st["ax"].contour(st["gx"] * 1e6, st["gy"] * 1e6, form, levels=[0], colors=ORANGE,
+                                                         linewidths=0.9, linestyles="--")
+                    else:
+                        st["marker"].set_data([sx * 1e6], [sy * 1e6])
+                    st["segment"] = k
+                st["label"].set_text(f"t = {st['t'][j]:.2f} s, a {a:.0f} deg, phi {phi:.0f} deg\n"
+                                     f"on zero set {series[f'{n}__share_on_zero_set'][j]:.2f}, pieces {int(series[f'{n}__pieces'][j])}")
+            return []
+
+        writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+        animation.FuncAnimation(fig, draw, frames=frames, blit=False).save(out, writer=writer)
+        plt.close(fig)
+
+
+main()

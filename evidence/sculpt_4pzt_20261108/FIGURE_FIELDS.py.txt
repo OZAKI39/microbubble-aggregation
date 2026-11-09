@@ -1,0 +1,104 @@
+"""Figure: the drive patterns of the sculpting test (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:SCRATCH python figure_fields.py OUT_PNG
+Top view (plane z = 0) of |p| of the four discs with the drive of each pattern (largest channel
+6000 Pa-eq), 7.0 and 9.375 MHz, +-60 um around the channel centre; the outlines of the two start
+clusters (250 and 800 bubbles) and the zero set of the pattern's local form (dashed). Bottom row:
+|p| per Pa-eq of each disc at the centre over 2-10 MHz (the side discs fall to zero every 1.25 MHz
+there, the end discs at 4 and 8 MHz).
+"""
+
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from scipy.spatial import ConvexHull
+
+from microbubble.acoustics import WaterDiscs
+from sculpt import PATTERNS, centre_fields, centred_start, drive, ideal_pattern
+from workflows.f10ag import load_pretrain_policy, pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, BLUE, ORANGE, GREEN = "#1f2328", "#5b6470", "#1f5a96", "#c2611f", "#2f7d4f"
+ORDER = ["lines_x", "lines_y", "cross", "wavy", "dots"]
+TITLE = {"lines_x": "one pair (X): lines", "lines_y": "one pair (Y): lines", "cross": "both, equal, opposite: diagonal cross",
+         "wavy": "both in phase, A_y = 0.7 A_x: wavy", "dots": "both, 90 deg apart: dot"}
+
+root = Path(".")
+elements = pretrain_context(root, 2.5e6).discs.elements
+radius = load_pretrain_policy(root)["random_state"]["radius"]
+starts = {n: centred_start(n, 1.25, seed, radius)[0] for n, seed in ((250, 3), (800, 5))}
+line = np.linspace(-60e-6, 60e-6, 241)
+gx, gy = np.meshgrid(line, line, indexing="xy")
+grid = np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)])
+
+with tempfile.TemporaryDirectory() as font_dir:
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, Path(font_dir) / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 8.5, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+    fig = plt.figure(figsize=(15.0, 8.6), dpi=130)
+    gs = fig.add_gridspec(3, 5, height_ratios=[1, 1, 0.75], hspace=0.55, wspace=0.28,
+                          left=0.05, right=0.985, top=0.93, bottom=0.07)
+    for row, f in enumerate((7.0e6, 9.375e6)):
+        discs = WaterDiscs(elements, f)
+        P, _ = discs.evaluate(grid, 192)
+        _, kx, ky = centre_fields(elements, f)
+        for col, pattern in enumerate(ORDER):
+            ax = fig.add_subplot(gs[row, col])
+            a, ph = drive(elements, f, pattern, 6000.0)
+            p = np.abs((a * np.exp(1j * ph)) @ P).reshape(gx.shape)
+            im = ax.imshow(p / 1e3, origin="lower", extent=[-60, 60, -60, 60], cmap="Greys_r", vmin=0)
+            ax.contour(line * 1e6, line * 1e6, ideal_pattern(f, pattern, kx, ky)(gx, gy).real if pattern != "dots"
+                       else np.abs(ideal_pattern(f, pattern, kx, ky)(gx, gy)), levels=[0.0] if pattern != "dots" else [0.05],
+                       colors=ORANGE, linewidths=0.9, linestyles="--")
+            for n, color in ((250, GREEN), (800, BLUE)):
+                xy = starts[n][:, :2] * 1e6
+                hull = ConvexHull(xy)
+                ax.plot(*np.vstack([xy[hull.vertices], xy[hull.vertices[:1]]]).T, color=color, lw=1.0)
+            ax.set_xlim(-60, 60)
+            ax.set_ylim(-60, 60)
+            ax.set_aspect("equal")
+            ax.set_title(f"{f / 1e6:g} MHz, {TITLE[pattern]}", loc="left", fontsize=8.5, color=INK)
+            ax.text(-57, -57, "Y-/Y+/X-/X+ " + "/".join(f"{v:.0f}" for v in a) + " Pa-eq", fontsize=7, color=INK,
+                    bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1.5))
+            cb = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.02)
+            cb.ax.tick_params(labelsize=7)
+            if col == 0:
+                ax.set_ylabel("y (um)")
+            ax.set_xlabel("x (um)")
+            if col == 4:
+                cb.set_label("|p| (kPa)", fontsize=7.5)
+    ax = fig.add_subplot(gs[2, :3])
+    freqs = np.linspace(2e6, 10e6, 321)
+    centre = np.array([np.abs(WaterDiscs(elements, f).evaluate(np.zeros((1, 3)), 192)[0][:, 0]) for f in freqs])
+    ax.plot(freqs / 1e6, centre[:, 0], color=GREEN, lw=1.3, label="side discs Y-, Y+ (4.5 mm away)")
+    ax.plot(freqs / 1e6, centre[:, 2], color=BLUE, lw=1.3, label="end discs X-, X+ (16.25 mm away)")
+    for f in (7.0, 9.375):
+        ax.axvline(f, color=ORANGE, lw=0.8, ls="--")
+    ax.text(7.05, 2.3, "7.0", color=ORANGE, fontsize=7.5)
+    ax.text(9.425, 2.3, "9.375 MHz (used)", color=ORANGE, fontsize=7.5)
+    ax.set_xlabel("frequency (MHz)")
+    ax.set_ylabel("|p| at the channel centre\nper Pa-eq")
+    ax.set_ylim(0, 2.75)
+    ax.legend(frameon=False, fontsize=7.5, loc="upper left", ncol=2)
+    ax.set_title("Homogeneous-water disc model: the side discs have a pressure null at the centre every 1.25 MHz (2.5, 3.75, ..., 10 MHz)",
+                 loc="left", fontsize=8.5, color=INK)
+    ax = fig.add_subplot(gs[2, 3:])
+    ax.axis("off")
+    ax.text(0, 0.9, "Start clusters (outline seen from above):", color=INK, fontsize=8.5)
+    ax.text(0, 0.72, "blue: 800 bubbles, about 43 um across", color=BLUE, fontsize=8.5)
+    ax.text(0, 0.56, "green: 250 bubbles, about 28 um across", color=GREEN, fontsize=8.5)
+    ax.text(0, 0.36, "orange dashed: zero set of the pattern's local form", color=ORANGE, fontsize=8.5)
+    ax.text(0, 0.2, "quarter wavelength: 53.6 um at 7.0 MHz, 40 um at 9.375 MHz", color=INK, fontsize=8.5)
+    fig.suptitle("Four PZT, at most 10 MHz, no phased array: the drive patterns at the cap (6000 Pa-eq on the largest channel)",
+                 x=0.05, ha="left", fontsize=10, color=INK)
+    fig.savefig(sys.argv[1])

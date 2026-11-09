@@ -1,0 +1,24 @@
+{
+ "bubbles": 122,
+ "pairs": 7381,
+ "F2, collective": {
+  "max_difference_over_max_force": 1.5185888938390116e-15,
+  "numpy_ms": 2.0106571028009057,
+  "compiled_ms": 0.24001195561140776
+ },
+ "F2, pairwise (two-bubble feedback)": {
+  "max_difference_over_max_force": 7.829038299544446e-16,
+  "numpy_ms": 2.330973627977073,
+  "compiled_ms": 0.5201380699872971
+ },
+ "pair distances": {
+  "bit_identical": true,
+  "numpy_ms": 0.3043864853680134,
+  "compiled_ms": 0.00899704173207283
+ },
+ "adhesion": {
+  "bit_identical": true,
+  "numpy_before_ms": 0.2724019577726722,
+  "shared_distances_ms": 0.0694239279255271
+ }
+}

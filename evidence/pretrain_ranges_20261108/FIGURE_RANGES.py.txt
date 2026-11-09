@@ -1,0 +1,203 @@
+"""Figures of the pretraining-range checks (2026-11-08).
+
+usage (repository root):  PYTHONPATH=. python figure_ranges.py ADHESION_JSON STEP_JSON STEP_EXTRA_JSON DEMO_JSON DEMO_NPZ OUT_DIR OUT_ROOT
+Writes OUT_DIR/fig1_adhesion_sizes.png (how far a centred start flattens onto the node plane in 6.4 s relative
+to no adhesion, against adhesion, for 64, 128 and 255 bubbles at 6.0 and 9.375 MHz; at 3.4 MHz the pieces and
+the spread across the plane instead), fig2_step_check.png (per case: the share of steps that move a bubble by
+more than 0.1 R and the largest such displacement against the step, and the centroid distance between the 1 ms
+and 0.5 ms runs; the stronger-adhesion runs at 1 ms for comparison) and fig3_demo_runs.png (the ordinary runs:
+|p| the bubbles meet over the local largest, top-view aspect, pieces; top views at 0, 3.2 and 6.4 s with |p|
+of the field in effect around the cluster). OUT_ROOT: the run folders (trajectory.h5, EXECUTION.json).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, BLUE, ORANGE, GREEN, GREY = "#1f2328", "#5b6470", "#1f5a96", "#c2611f", "#2f7d4f", "#9aa5b1"
+SIZE_COLOUR = {64: GREEN, 128: BLUE, 251: ORANGE, 255: ORANGE}
+R = 1.78e-6
+adhesion = json.loads(Path(sys.argv[1]).read_text())
+steps, extra = json.loads(Path(sys.argv[2]).read_text()), json.loads(Path(sys.argv[3]).read_text())
+demo, demo_series = json.loads(Path(sys.argv[4]).read_text()), np.load(sys.argv[5])
+out_dir, root = Path(sys.argv[6]), Path(sys.argv[7])
+elements = pretrain_context(Path("."), 3e6).discs.elements
+
+with tempfile.TemporaryDirectory() as font_dir:
+    for font in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / font).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 8.5, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+
+    # ---- figure 1: adhesion at the size ends ----
+    fig, axes = plt.subplots(1, 4, figsize=(15.5, 4.2), dpi=120, gridspec_kw=dict(width_ratios=[1, 1, 1, 1]))
+    fig.subplots_adjust(left=0.05, right=0.99, top=0.82, bottom=0.14, wspace=0.3)
+    groups = adhesion["groups"]
+    for ax, f in zip(axes[:2], ("6e+06", "9.375e+06")):
+        for key, g in sorted(groups.items()):
+            if key.split("_")[1] != f:
+                continue
+            rows = [r for r in g["rows"] if r["adhesion_force_N"] > 0]
+            ax.plot([r["adhesion_force_N"] for r in rows], [r["spread_drop_vs_free"] for r in rows], marker="o", lw=1.2,
+                    color=SIZE_COLOUR[g["bubbles"]], label=f"{g['bubbles']} bubbles")
+        ax.axvspan(1e-14, 1e-12, color=GREEN, alpha=0.1, lw=0)
+        ax.axhline(0.5, color=MUTED, lw=0.8, ls="--")
+        ax.set_xscale("log")
+        ax.set_ylim(0, 1.3)
+        ax.set_xlabel("adhesion per contact (N)")
+        ax.set_title(f"{float(f) / 1e6:g} MHz: flattening / without adhesion", loc="left", fontsize=9, color=INK)
+    axes[0].set_ylabel("flattening onto the node plane, 6.4 s")
+    axes[0].legend(frameon=False, fontsize=7, loc="lower left")
+    axes[0].text(1.2e-14, 1.2, "range now used by every run", fontsize=7, color=GREEN)
+    for ax, key, label in ((axes[2], "pieces_max", "largest piece count during 6.4 s"),
+                           (axes[3], "spread_x_um_end", "spread across the plane at 6.4 s (um)")):
+        for bubbles in (64, 128, 255):
+            g = groups[f"{bubbles}_3.4e+06"]
+            xs = [max(r["adhesion_force_N"], 3e-15) for r in g["rows"]]
+            ys = [adhesion["runs"][r["name"]][key] for r in g["rows"]]
+            ax.plot(xs, ys, marker="o", lw=1.2, color=SIZE_COLOUR[bubbles], label=f"{bubbles} bubbles")
+        ax.set_xscale("log")
+        ax.set_xlabel("adhesion per contact (N; no adhesion drawn at 3e-15)")
+        ax.set_title(f"3.4 MHz: {label}", loc="left", fontsize=9, color=INK)
+        if key == "spread_x_um_end":
+            ax.set_yscale("log")
+    axes[2].legend(frameon=False, fontsize=7, loc="upper right")
+    fig.suptitle("Do the ends of the adhesion range (1e-14, 1e-12 N) still let 64-255-bubble starts take a shape? Centred start, "
+                 "X pair alone at 6000 Pa-eq, 1 ms steps", x=0.05, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig1_adhesion_sizes.png")
+    plt.close(fig)
+
+    # ---- figure 2: step check ----
+    fig, axes = plt.subplots(1, 3, figsize=(15.5, 5.0), dpi=120)
+    fig.subplots_adjust(left=0.05, right=0.99, top=0.83, bottom=0.2, wspace=0.3)
+    marker = {"random": "o", "pattern": "s"}
+    style = {1e-14: "--", 1e-12: "-"}
+    for base, case in sorted(steps.items()):
+        runs = dict(case["runs"])
+        for name, row in extra.items():
+            if name.startswith("STEPFINE_" + base[len("STEP_"):]):
+                runs[row["step_tag"]] = row
+        order = sorted(runs.items(), key=lambda item: -float(item[0].rstrip("ms")))
+        dt = [float(tag.rstrip("ms")) for tag, _ in order]
+        share = [row["steps_above_0p1R"] / row["steps"] for _, row in order]
+        biggest = [row["step_max_displacement_max_m"] / R for _, row in order]
+        first = order[0][1]
+        label = f"{first['bubbles']}, {first['action_kind']}, {first['adhesion_force_N']:.0e} N"
+        colour = SIZE_COLOUR[first["bubbles"]]
+        axes[0].plot(dt, share, marker=marker[first["action_kind"]], ls=style[first["adhesion_force_N"]], color=colour, label=label)
+        axes[1].plot(dt, biggest, marker=marker[first["action_kind"]], ls=style[first["adhesion_force_N"]], color=colour, label=label)
+        axes[2].bar(len(axes[2].patches), case["pair"]["centroid_difference_um_max"], color=colour,
+                    hatch="//" if first["action_kind"] == "pattern" else None, edgecolor="white")
+    references = sorted((row for name, row in extra.items() if name.startswith("STEPREF_")), key=lambda row: row["adhesion_force_N"])
+    for k, row in enumerate(references):
+        axes[0].plot(1.0, row["steps_above_0p1R"] / row["steps"], marker="*", ms=11, color=INK, lw=0)
+        axes[0].annotate(f"{row['adhesion_force_N']:.2g} N: {row['steps_above_0p1R'] / row['steps']:.1%}",
+                         (1.0, row["steps_above_0p1R"] / row["steps"]), xytext=(8, 10 * (1 - k) + 4), textcoords="offset points",
+                         fontsize=7, color=INK, va="center")
+        axes[1].plot(1.0, row["step_max_displacement_max_m"] / R, marker="*", ms=11, color=INK, lw=0)
+    for ax in axes[:2]:
+        ax.set_xscale("log")
+        ax.set_xlabel("fixed step (ms)")
+        ax.invert_xaxis()
+    axes[0].set_ylabel("share of steps moving a bubble by more than 0.1 R")
+    axes[0].set_title("(a) steps with large moves (stars: 64, random, stronger adhesion, 1 ms)", loc="left", fontsize=9, color=INK)
+    axes[1].axhline(0.1, color=MUTED, lw=0.8, ls="--")
+    axes[1].set_yscale("log")
+    axes[1].set_ylabel("largest move of a bubble in one step (R)")
+    axes[1].set_title("(b) largest move in one step (dashed: 0.1 R)", loc="left", fontsize=9, color=INK)
+    axes[0].legend(frameon=False, fontsize=6.5, loc="upper right", title="bubbles, actions, adhesion", title_fontsize=6.5)
+    axes[2].axhline(0.6, color=MUTED, lw=0.8, ls="--")
+    axes[2].set_yscale("log")
+    axes[2].set_xticks(range(len(steps)), [b.replace("STEP_N", "").replace("_adh", "\n").replace("_", " ") for b in sorted(steps)],
+                       fontsize=6.5, rotation=45, ha="right")
+    axes[2].set_ylabel("largest centroid distance, 1 ms vs 0.5 ms (um)")
+    axes[2].set_title("(c) 1 ms against 0.5 ms (dashed: one camera pixel)", loc="left", fontsize=9, color=INK)
+    fig.suptitle("Is the 1 ms step good at the ends of the new ranges? Ordinary 2 s runs (64 and 251 bubbles; random actions at "
+                 "2.82 MHz, pattern actions at 3.25 MHz)", x=0.05, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig2_step_check.png")
+    plt.close(fig)
+
+    # ---- figure 3: ordinary runs ----
+    names = sorted(demo, key=lambda n: (demo[n]["action_kind"] != "pattern", demo[n]["frequency_Hz"]))
+    times = (0.0, 3.2, 6.4)
+    fig = plt.figure(figsize=(17.0, 12.5), dpi=105)
+    gs = fig.add_gridspec(3 + len(times), len(names), height_ratios=[1, 1, 1] + [1.7] * len(times), hspace=0.5, wspace=0.28,
+                          left=0.05, right=0.99, top=0.93, bottom=0.03)
+    for col, n in enumerate(names):
+        s = demo[n]
+        t = demo_series[f"{n}__t_s"]
+        ax = fig.add_subplot(gs[0, col])
+        ax.plot(t, demo_series[f"{n}__p_ratio_median"], color=BLUE, lw=1.1)
+        ax.set_ylim(0, 1.05)
+        ax.set_title(f"{n}\n{s['action_kind']}, {s['bubbles']} bubbles, {s['frequency_Hz'] / 1e6:.2f} MHz, "
+                     f"adhesion {s['adhesion_force_N']:.1e} N,\nstart {s['start_distance_from_reference_mm']:.1f} mm from the "
+                     f"reference point", loc="left", fontsize=7.5, color=INK)
+        ax = fig.add_subplot(gs[1, col])
+        ax.plot(t, demo_series[f"{n}__aspect"], color=ORANGE, lw=1.1)
+        ax = fig.add_subplot(gs[2, col])
+        ax.plot(t, demo_series[f"{n}__pieces"], color=INK, lw=1.1, drawstyle="steps-post")
+        ax.set_xlabel("time (s)")
+        if col == 0:
+            fig.axes[-3].set_ylabel("median |p| at bubbles\n/ local largest")
+            fig.axes[-2].set_ylabel("top-view aspect")
+            fig.axes[-1].set_ylabel("pieces")
+        task = json.loads((root / n / "EXECUTION.json").read_text())["task"]
+        with h5py.File(root / n / "trajectory.h5") as h:
+            th, positions, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+            in_effect = h["action_segment"][()]
+        f = s["frequency_Hz"]
+        discs = WaterDiscs(elements, f)
+        for row, when in enumerate(times):
+            ax = fig.add_subplot(gs[3 + row, col])
+            j = int(np.argmin(np.abs(th - when)))
+            k = int(in_effect[j - 1]) if j > 0 else 0
+            x = positions[j]
+            c = x.mean(axis=0)
+            # window: the bubbles plus 10 um, at most 150 um (bubbles thrown farther are counted, not drawn)
+            half = min(150e-6, max(40e-6, float(np.abs(x[:, :2] - c[:2]).max()) + 10e-6))
+            outside = int(np.sum(np.abs(x[:, :2] - c[:2]).max(axis=1) > half))
+            line = np.linspace(-half, half, 121)
+            gx, gy = np.meshgrid(line, line, indexing="xy")
+            u = np.array(task["segments"][k]["amplitudes"]) * np.exp(1j * np.array(task["segments"][k]["phases"]))
+            p = np.abs(u @ discs.evaluate(np.column_stack([gx.ravel() + c[0], gy.ravel() + c[1], np.full(gx.size, c[2])]),
+                                          direct_quadrature_order(f))[0]).reshape(gx.shape)
+            ax.imshow(p / p.max(), origin="lower", extent=np.array([-half, half, -half, half]) * 1e6, cmap="Greys_r", vmin=0, vmax=1.6)
+            rel = (x - c) * 1e6
+            order = np.argsort(rel[:, 2])
+            d = EllipseCollection(2 * radii[order] * 1e6, 2 * radii[order] * 1e6, 0, units="xy", offsets=rel[order, :2],
+                                  offset_transform=ax.transData, cmap="viridis", edgecolors="white", linewidths=0.15)
+            d.set_array(rel[order, 2])
+            d.set_clim(-20, 20)
+            ax.add_collection(d)
+            ax.set_xlim(-half * 1e6, half * 1e6)
+            ax.set_ylim(-half * 1e6, half * 1e6)
+            ax.set_aspect("equal")
+            ax.tick_params(labelsize=6.5)
+            ax.text(0.02, 0.97, f"t = {th[j]:.1f} s, centre x = {c[0] * 1e3:.2f} mm"
+                    + (f"\n{outside} bubbles outside the window" if outside else ""), transform=ax.transAxes, fontsize=6.5,
+                    color=INK, va="top", bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1.0))
+            if col == 0:
+                ax.set_ylabel("y - centroid (um)", fontsize=7)
+            if row == len(times) - 1:
+                ax.set_xlabel("x - centroid (um)", fontsize=7)
+    fig.suptitle("Ordinary runs with the new ranges: pattern actions designed at the channel centre, and one at the cluster "
+                 "(pattern_local); top views around the centroid, background |p| (dark = low)", x=0.05, ha="left", fontsize=9.5,
+                 color=INK)
+    fig.savefig(out_dir / "fig3_demo_runs.png")
+    plt.close(fig)

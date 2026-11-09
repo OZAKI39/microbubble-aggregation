@@ -1,0 +1,5 @@
+Q3_N250_2.5MHz_pushmatched_adh1 250 3 1.25 1 0.001 0.001 2.5:x_minus:1.5:14200
+Q3_N250_2.5MHz_pushmatched_adh0 250 3 1.25 0 0.001 0.001 2.5:x_minus:1.5:14200
+Q3_N120_2.5MHz_pushmatched_adh1 120 2 1.25 1 0.001 0.001 2.5:x_minus:1.5:12700
+Q3_N120_2.5MHz_pushmatched_adh0 120 2 1.25 0 0.001 0.001 2.5:x_minus:1.5:12700
+HALF_Q3_N250_2.5MHz_pushmatched_adh1 250 3 1.25 1 0.0005 0.001 2.5:x_minus:1.5:14200

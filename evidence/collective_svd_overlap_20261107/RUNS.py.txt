@@ -1,0 +1,80 @@
+"""Whole runs for the singular value check on a second thread (2026-11-07).
+
+usage (repository root):
+  python RUNS.py OUT_DIR LABEL      runs the four 3D random starts used before (seeds 23, 21, 16,
+                                    7: 20, 50, 76, 122 bubbles; 1 ms, 0.5 s, default settings) with
+                                    the code in the working tree, timing every force evaluation;
+                                    writes OUT_DIR/LABEL/RUNS.json
+  python RUNS.py OUT_DIR --compare  compares every LABEL with before_1 (trajectory bit for bit,
+                                    smallest singular value, DAQP iterations, gate records);
+                                    writes OUT_DIR/SVD_RUNS.json
+Labels: before_1, before_2 on the code before the change; after_1, after_2 after it.
+"""
+
+import json
+import sys
+import time
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+SEEDS = [23, 21, 16, 7]
+out = Path(sys.argv[1])
+
+if sys.argv[2] != "--compare":
+    import microbubble.forces as forces
+    from workflows.f10ag import run
+
+    label = sys.argv[2]
+    folder = out / label
+    folder.mkdir(parents=True)
+    seconds = []
+    project_call = forces.CPUForces.__call__
+
+    def timed(self, x):
+        t = time.perf_counter()
+        r = project_call(self, x)
+        seconds.append(time.perf_counter() - t)
+        return r
+
+    forces.CPUForces.__call__ = timed
+    runs = {}
+    for seed in SEEDS:
+        seconds.clear()
+        cfg = folder / f"cfg_seed{seed}.json"
+        cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5,
+                                       save_interval_s=0.01, state_seed=seed, action_seed=seed)))
+        r = run(Path("."), cfg, folder / f"seed{seed}")
+        s = json.loads((folder / f"seed{seed}" / "SUMMARY.json").read_text())
+        runs[seed] = dict(bubbles=s["N"], status=s["status"], wall_s=s["wall_s"],
+                          force_evaluations=len(seconds),
+                          force_ms_mean=1e3 * float(np.mean(seconds)),
+                          min_collective_singular_value=s["min_collective_singular_value"],
+                          daqp_iterations=s["daqp_iterations"],
+                          steps_failing_gates=s["steps_failing_gates"],
+                          trajectory_sha256=s["trajectory_sha256"])
+        print(label, seed, runs[seed]["bubbles"], runs[seed]["status"], f"{s['wall_s']:.2f} s",
+              f"{runs[seed]['force_ms_mean']:.2f} ms/force evaluation", flush=True)
+    (folder / "RUNS.json").write_text(json.dumps(runs, indent=1) + "\n")
+else:
+    labels = ["before_1", "before_2", "after_1", "after_2"]
+    runs = {label: json.loads((out / label / "RUNS.json").read_text()) for label in labels}
+    reference = runs["before_1"]
+    result = {}
+    for seed in map(str, SEEDS):
+        first = h5py.File(out / "before_1" / f"seed{seed}" / "trajectory.h5")["positions_m"][()]
+        row = dict(bubbles=reference[seed]["bubbles"])
+        for label in labels:
+            r = runs[label][seed]
+            x = h5py.File(out / label / f"seed{seed}" / "trajectory.h5")["positions_m"][()]
+            row[label] = dict(status=r["status"], wall_s=r["wall_s"], force_ms_mean=r["force_ms_mean"],
+                              min_collective_singular_value=r["min_collective_singular_value"],
+                              same_trajectory_as_before_1=bool(np.array_equal(x, first)),
+                              same_singular_value_iterations_gates_as_before_1=(
+                                  r["min_collective_singular_value"] == reference[seed]["min_collective_singular_value"]
+                                  and r["daqp_iterations"] == reference[seed]["daqp_iterations"]
+                                  and r["steps_failing_gates"] == reference[seed]["steps_failing_gates"]))
+        result[seed] = row
+    (out / "SVD_RUNS.json").write_text(json.dumps(result, indent=1) + "\n")
+    print(json.dumps(result, indent=1))

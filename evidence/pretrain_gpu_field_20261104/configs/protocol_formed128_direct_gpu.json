@@ -1,0 +1,60 @@
+{
+ "fidelity": "PRETRAIN",
+ "coupling": "collective",
+ "field": "direct_gpu",
+ "state": "FORMED_N128_a1.0_s0",
+ "action": "X_PAIR",
+ "save_interval_s": 0.004166666666666667,
+ "duration_s": 4.5,
+ "control": {
+  "frequency": 2500000,
+  "segments": [
+   {
+    "amplitudes": [
+     0.0,
+     0.0,
+     3000.0,
+     0.0
+    ],
+    "phases": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "duration": 1.5
+   },
+   {
+    "amplitudes": [
+     3000.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "phases": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "duration": 1.5
+   },
+   {
+    "amplitudes": [
+     0.0,
+     0.0,
+     3000.0,
+     0.0
+    ],
+    "phases": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "duration": 1.5
+   }
+  ]
+ },
+ "state_file": "inputs/pretrain_formed_states.h5"
+}

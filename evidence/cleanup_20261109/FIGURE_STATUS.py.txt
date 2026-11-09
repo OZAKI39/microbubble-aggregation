@@ -1,0 +1,52 @@
+"""Figure: evidence folders by status after the README update of 2026-11-09.
+
+usage: python figure_status.py README.md OUT_PNG
+Reads the "证据目录索引" section of the root README and counts the folders per status.
+"""
+
+import re
+import shutil
+import sys
+import tempfile
+from collections import Counter
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+STATUS = (("现行", "Current: still the basis of the code or parameters"),
+          ("部分过时", "Partly outdated: some steps changed later"),
+          ("历史", "Historical: removed path or earlier conditions"),
+          ("记录", "Record: cleanup, storage, migration"))
+COLOURS = ("#2a78d6", "#7fb0e8", "#b9c0c8", "#5b6470")
+
+text = Path(sys.argv[1]).read_text()
+section = text.split("## 证据目录索引（2026-11-09）")[1].split("## 环境重建与范围")[0]
+counts = Counter()
+for line in section.splitlines():
+    if not line.startswith(("| [", "| `")):
+        continue
+    cells = [c.strip() for c in line.strip("|").split("|")]
+    folders = len(re.findall(r"\[([A-Za-z0-9_]+)\]\(|`([A-Za-z0-9_]+)/`", cells[0]))
+    counts[next(key for key, _ in STATUS if cells[2].startswith(key))] += folders
+with tempfile.TemporaryDirectory() as font_dir:
+    font_manager.fontManager.addfont(str(shutil.copy("/mnt/c/Windows/Fonts/arial.ttf", Path(font_dir) / "arial.ttf")))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": "#5b6470", "text.color": "#1f2328",
+                         "xtick.color": "#5b6470", "ytick.color": "#1f2328"})
+    fig, ax = plt.subplots(figsize=(8, 2.8), dpi=150)
+    fig.subplots_adjust(left=0.42, right=0.95, top=0.8, bottom=0.17)
+    for y, ((key, label), colour) in enumerate(zip(STATUS[::-1], COLOURS[::-1])):
+        ax.barh(y, counts[key], height=0.55, color=colour)
+        ax.text(counts[key] + 0.4, y, str(counts[key]), va="center")
+    ax.set_yticks(range(len(STATUS)), [label for _, label in STATUS[::-1]])
+    ax.set_xlabel("Evidence folders")
+    ax.set_xlim(0, 35)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    fig.text(0.02, 0.9, f"Evidence folders by status after the README update, 2026-11-09 ({sum(counts.values())} folders)",
+             fontsize=11, ha="left")
+    fig.savefig(sys.argv[2])
+print(dict(counts), sum(counts.values()))

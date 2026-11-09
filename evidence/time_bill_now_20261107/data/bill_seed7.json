@@ -1,0 +1,62 @@
+{
+ "seed": 7,
+ "bubbles": 122,
+ "steps": 500,
+ "dt_s": 0.001,
+ "status": "PASS",
+ "daqp_solves": 500,
+ "mean_active_pairs": 359.368,
+ "mean_daqp_iterations": 2.068,
+ "per_step_ms": {
+  "forces": {
+   "sound field (GPU)": 0.27347602182999253,
+   "bubble response (APECSS, 16 threads)": 1.230494727846235,
+   "pair distances (compiled)": 0.014504168182611465,
+   "collective coupling solve (chi, K, M, hand-over, solve)": 0.47280300641432405,
+   "bubble-bubble force F2 (compiled)": 0.2949315463192761,
+   "adhesion": 0.10822556400671601,
+   "rest of the force evaluation": 0.028543264139443636
+  },
+  "contact": {
+   "resistance matrix A (assembly)": 0.08456403343006968,
+   "sparse Cholesky of A": 0.3461268492974341,
+   "free displacement": 0.017024908680468798,
+   "candidate pairs + initial check": 0.02112788986414671,
+   "linearize constraints": 0.006540455389767885,
+   "transform: build B' and permute": 0.2588669117540121,
+   "transform: triangular solve": 1.6170510207302868,
+   "transform: z0 and d": 0.024313808418810368,
+   "load table: warm-start guess": 0.0013974481262266636,
+   "load table: copy into DAQP": 0.05650096898898482,
+   "load table: DAQP activates the warm-start constraints": 0.0003511440000000003,
+   "load table: one matrix product G = Ma Ma'": 0.7071115206927061,
+   "load table: block factorization of G": 0.3340732301585376,
+   "load table: write the factor into DAQP": 0.06307048629969358,
+   "DAQP other set-up (bounds, row scaling)": 0.22232605470433212,
+   "DAQP iterations": 0.21479657711461186,
+   "DAQP free memory": 0.0010113050229847431,
+   "transform back + active pairs": 0.011084780097007751,
+   "quality checks (gates)": 0.0467036054469645,
+   "quality checks (candidate coverage)": 0.009290235582739115,
+   "call overhead outside C++ (ctypes, arrays)": 0.0809972076676786
+  },
+  "loop": {
+   "waiting for the singular value check (after the contact step)": 0.0031395400874316692,
+   "rest of the loop (segments, wall check, records)": 0.07413919223472476
+  }
+ },
+ "per_step_total_ms": 6.624587472528219,
+ "block_fast_path": 499,
+ "block_pivoted_path": 0,
+ "dropped_dependent": 0,
+ "loop_ms_per_step": 6.628460349980742,
+ "one_time": {
+  "before_the_loop_s": 0.304528322070837,
+  "after_the_loop_s": 0.043223259039223194,
+  "run_outside_the_integrator_s": 0.1284068028908223
+ },
+ "run_s": 3.7903885589912534,
+ "wall_s": 3.648315257858485,
+ "check_on_second_thread_ms_per_step": 1.206537467893213,
+ "trajectory_sha256": "f3c9d9fbec3c9d357960f70c1b3b888364260969b4bbe3aab85e318bc575f726"
+}

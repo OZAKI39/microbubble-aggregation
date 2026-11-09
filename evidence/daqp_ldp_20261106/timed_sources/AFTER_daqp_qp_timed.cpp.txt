@@ -1,0 +1,78 @@
+// Pretraining-tier contact QP of contact.sparse_sequential_step(),
+//     min 1/2 s'As - b's   s.t.   B s + gap >= 0,
+// solved by DAQP (a dual active-set solver, C, MIT licence) in its least-distance form
+//     min 1/2 |w|^2   s.t.   M w >= d.
+// The callers form it from a Cholesky factor A = L L' (the compiled step from its sparse factor,
+// with its fill-reducing permutation; DaqpQP from a dense factor): z = L's, z0 = L^-1 b,
+// M = B L^-T, w = z - z0, d = -gap - M z0, and afterwards s = L^-T (w + z0). The multipliers of
+// the least-distance problem are those of the QP (A s - b = B' lam). DAQP gets no Hessian, so it
+// skips its dense factorization of A and the transformation of every constraint, which took
+// about 95% of its time when it was given A itself (evidence/daqp_ldp_20261106/). Called by
+// native/contact_step.cpp (same library) and by microbubble.contact.DaqpQP (ctypes). Since
+// 2026-11-06 (user decisions): first qpOASES, then DAQP on the QP, then this form.
+//
+// Warm start: guess (one entry per constraint, 1 = active) marks the constraints that start in
+// DAQP's working set (sense ACTIVE | LOWER); the callers pass the pairs active in the previous
+// solve. DAQP's default tolerances (primal 1e-6, here in units of R).
+//
+// Built once per source set, together with the DAQP sources (DAQP_DIR, compiled as C), by
+// microbubble.contact.cached_contact_library (g++).
+
+extern "C" {
+#include "api.h"
+}
+
+#include <chrono>
+#include <vector>
+extern "C" double contact_timing[16];
+static double now_d() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
+
+// M: m x n, dense row-major (copied: DAQP takes writable arrays). iterations: in, DAQP's
+// iteration limit; out, the iterations performed. Output: w (n), lam (m, the multipliers of the
+// constraints, >= 0 at the solution: w = M' lam) and active (m, 1 = active at the solution).
+// Returns 0 solved, 1 iteration limit reached, -1 otherwise.
+extern "C" int contact_ldp(int n, int m, const double* M, const double* d, const int* guess,
+                           int* iterations, double* w, double* lam, int* active) {
+    std::vector<double> rows(M, M + static_cast<size_t>(m) * n), lower(d, d + m), upper(m, DAQP_INF);
+    std::vector<int> sense(m);
+    for (int k = 0; k < m; ++k) sense[k] = guess[k] ? (DAQP_ACTIVE | DAQP_LOWER) : 0;
+
+    DAQPProblem problem{};
+    problem.n = n;
+    problem.m = m;
+    problem.ms = 0;     // no simple bounds
+    problem.H = NULL;   // no Hessian and no linear term: DAQP solves the least-distance problem
+    problem.f = NULL;
+    problem.A = rows.data();
+    problem.bupper = upper.data();
+    problem.blower = lower.data();
+    problem.sense = sense.data();
+    DAQPSettings settings;
+    daqp_default_settings(&settings);
+    settings.iter_limit = *iterations;
+
+    std::vector<double> multipliers(m);
+    DAQPResult result{};
+    result.x = w;
+    result.lam = multipliers.data();
+    DAQPWorkspace work;
+    work.settings = &settings;
+    double a0 = now_d();
+    const int flag = setup_daqp_main(&problem, &work, &(result.setup_time), DAQP_UPDATE_unconstrained | DAQP_UPDATE_eliminate);
+    result.exitflag = flag;
+    double a1 = now_d(); contact_timing[5] += a1 - a0;
+    if (flag >= 0) {
+        daqp_solve(&result, &work);
+        double a2 = now_d(); contact_timing[6] += a2 - a1;
+        work.settings = NULL;
+        free_daqp_workspace(&work);
+        free_daqp_ldp(&work);
+    }
+    *iterations = result.iter;
+    for (int k = 0; k < m; ++k) {
+        lam[k] = -multipliers[k];         // DAQP: w + M' lam = 0, lam < 0 at a lower bound
+        active[k] = multipliers[k] != 0;  // inactive constraints carry exactly zero
+    }
+    if (result.exitflag == DAQP_EXIT_OPTIMAL) return 0;
+    return result.exitflag == DAQP_EXIT_ITERLIMIT ? 1 : -1;
+}

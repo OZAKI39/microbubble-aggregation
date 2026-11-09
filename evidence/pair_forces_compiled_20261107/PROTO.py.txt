@@ -1,0 +1,62 @@
+"""Compiled F2 and distances against the NumPy versions (local prototype, measurement only).
+usage (repository root on PYTHONPATH):  python proto.py LIBRARY"""
+import ctypes, json, sys, time
+from pathlib import Path
+import h5py
+import numpy as np
+import microbubble.forces as forces
+from microbubble.parameters import Physics
+
+lib = ctypes.CDLL(str(Path(sys.argv[1]).resolve()))
+V = ctypes.c_void_p
+lib.pair_distances.argtypes = [ctypes.c_int, V, V]
+lib.delayed_pair_forces.argtypes = [ctypes.c_int, V, V, V, V, V] + [ctypes.c_double] * 7 + [ctypes.c_int, ctypes.c_double, V]
+
+def distances(x):
+    D = np.empty((len(x), len(x)))
+    assert lib.pair_distances(len(x), x.ctypes.data, D.ctypes.data) == 0
+    return D
+
+def compiled_f2(x, D, H, P, phys, chi_zero, u, k):
+    f = np.empty_like(x)
+    rho_w2 = phys.density_kg_m3 * (2 * np.pi * phys.frequency_Hz) ** 2
+    code = lib.delayed_pair_forces(len(x), x.ctypes.data, D.ctypes.data, H.ctypes.data, P.ctypes.data,
+                                   None if u is None else u.ctypes.data, chi_zero.real, chi_zero.imag, k, rho_w2,
+                                   phys.radius_m, phys.transition_over_sum, phys.soft_core_over_sum,
+                                   int(phys.force_model == "f2_near_field_candidate"), phys.feedback_end_over_sum,
+                                   f.ctypes.data)
+    assert code == 0
+    return f
+
+def median_ms(f, repeat=300):
+    t = []
+    for _ in range(repeat):
+        a = time.perf_counter(); f(); t.append(time.perf_counter() - a)
+    return 1e3 * float(np.median(t))
+
+phys = Physics(frequency_Hz=2.5e6)
+k = 2 * np.pi * 2.5e6 / 1480.0
+rng = np.random.default_rng(7)
+result = {}
+with h5py.File("inputs/pretrain_irregular_states.h5") as h:
+    for name in ("IRREGULAR_N128_a1.0_s0", "IRREGULAR_N128_a1.4_s2", "IRREGULAR_N16_a1.0_s0"):
+        x = np.ascontiguousarray(h[name][()], dtype=float)
+        n = len(x)
+        H = np.ascontiguousarray((rng.normal(size=(n, 8)) + 1j * rng.normal(size=(n, 8))) * 1e-19 / np.arange(1, 9) ** 2)
+        P = (3000 + 500 * rng.normal(size=n)) * np.exp(1j * rng.uniform(0, 2 * np.pi, n))
+        u = H[:, 0] * (1 + 0.1 * rng.normal(size=n))
+        chi_zero = complex(H[0, 0] / P[0])
+        D = distances(x)
+        Dn = np.linalg.norm(x[:, None] - x[None], axis=-1)
+        r = dict(bubbles=n, distances_bit_identical=bool(np.array_equal(D, Dn)),
+                 distances_max_ulps=float(np.max(np.abs(D - Dn) / np.spacing(np.maximum(Dn, 1e-30)))))
+        for mode, uu in (("collective", u), ("pairwise_feedback", None)):
+            old = forces._pair_forces_delayed(x, H, P, phys, chi_zero, uu, k)
+            new = compiled_f2(x, D, H, P, phys, chi_zero, uu, k)
+            r[mode] = dict(max_difference_over_max_force=float(np.abs(new - old).max() / np.abs(old).max()),
+                           numpy_ms=median_ms(lambda: forces._pair_forces_delayed(x, H, P, phys, chi_zero, uu, k)),
+                           compiled_ms=median_ms(lambda: compiled_f2(x, D, H, P, phys, chi_zero, uu, k)))
+        r["distances_numpy_ms"] = median_ms(lambda: np.linalg.norm(x[:, None] - x[None], axis=-1))
+        r["distances_compiled_ms"] = median_ms(lambda: distances(x))
+        result[name] = r
+print(json.dumps(result, indent=1))

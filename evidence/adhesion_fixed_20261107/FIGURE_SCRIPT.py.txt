@@ -1,0 +1,117 @@
+"""Adhesion before and after 2026-11-07: scaled with the drive, now a fixed force.
+
+usage (repository root):  PYTHONPATH=. python FIGURE_ADHESION.py EVIDENCE_DIR
+Reads configs/pretrain_policy.json; draws default random actions (microbubble.control.
+random_actions, action seeds 0-1999) for runs of 1, 3, 10, 30 and 64 segments of 0.1 s and
+compares, per run, the former adhesion (1.4e-17 N/(Pa-eq)^2 x the run's largest single-channel
+amplitude squared) with the fixed one. Writes EVIDENCE_DIR/fig1_adhesion_fixed.png and
+EVIDENCE_DIR/data/RATIOS.json.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+from microbubble.control import random_actions
+from workflows.f10ag import load_pretrain_policy
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+OLD, NEW = "#d08a1e", "#2a6fb0"
+FORMER_K = 1.4e-17                 # N/(Pa-eq)^2, the former default coefficient
+FORMER_K_RANGE = (7.5e-18, 2.5e-17)
+SEGMENTS = [1, 3, 10, 30, 64]
+SEEDS = range(2000)
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def main():
+    folder = Path(sys.argv[1])
+    (folder / "data").mkdir(parents=True, exist_ok=True)
+    p = load_pretrain_policy(Path("."))
+    cap = p["max_source_amplitude_Pa_equivalent"]
+    a = p["adhesion"]
+    r = p["random_actions"]
+    largest = {}
+    for count in SEGMENTS:
+        largest[count] = np.array([
+            max(max(s["amplitudes"]) for s in random_actions(count * r["segment_s"], r["segment_s"], seed, cap,
+                                                             p["frequency_range_Hz"], r["channel_on_probability"]))
+            for seed in SEEDS])
+    summary = {}
+    for count, A in largest.items():
+        on = A > 0
+        ratio = a["force_N"] / (FORMER_K * A[on] ** 2)
+        summary[str(count)] = dict(runs=len(A), all_off_share=float(np.mean(~on)),
+                                   ratio_median=float(np.median(ratio)), ratio_p90=float(np.percentile(ratio, 90)),
+                                   share_within_10_percent=float(np.mean(ratio <= 1.1) * np.mean(on)))
+    (folder / "data" / "RATIOS.json").write_text(json.dumps(dict(
+        note="new / former adhesion per run of default random actions (former = 1.4e-17 N/(Pa-eq)^2 x the "
+             "run's largest single-channel amplitude^2); runs with every channel off had no adhesion before",
+        force_N=a["force_N"], segments=summary), indent=1) + "\n")
+
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(1, 2, figsize=(13, 4.8), gridspec_kw=dict(wspace=0.3))
+
+        ax = axes[0]
+        A = np.linspace(0, cap, 301)
+        ax.fill_between(A, FORMER_K_RANGE[0] * A ** 2, FORMER_K_RANGE[1] * A ** 2, color=OLD, alpha=0.18, lw=0)
+        ax.plot(A, FORMER_K * A ** 2, color=OLD, lw=2, label="Until 2026-11-07: 1.4e-17 N/(Pa-eq)$^2$ x A$^2$ (band: calibrated range)")
+        ax.fill_between(A, a["force_range_N"][0], a["force_range_N"][1], color=NEW, alpha=0.15, lw=0)
+        ax.plot(A, np.full_like(A, a["force_N"]), color=NEW, lw=2, label=f"Now: {a['force_N']:.2e} N at any drive (band: range)")
+        ax.axvline(cap, color=MUTED, lw=1, ls=":")
+        ax.text(cap - 60, 1.15e-9, "source cap\n6000 Pa-eq", ha="right", fontsize=7.5, color=MUTED)
+        ax.set_yscale("log")
+        ax.set_ylim(1e-11, 2e-9)
+        ax.set_xlim(0, cap * 1.03)
+        ax.set_xlabel("Largest single-channel amplitude A of the run (Pa-eq)")
+        ax.set_ylabel("Adhesion force at contact (N)")
+        ax.legend(loc="lower right", fontsize=7.5, frameon=False)
+        ax.grid(color=GRID, lw=0.8)
+        ax.set_title("(a) Adhesion against the drive", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[1]
+        shades = ["#c6d8ec", "#9dbde0", "#6d9fd0", "#3f7fbe", "#1f5a96"]
+        for (count, A), colour in zip(largest.items(), shades):
+            on = A > 0
+            ratio = np.sort(a["force_N"] / (FORMER_K * A[on] ** 2))
+            share = np.arange(1, len(ratio) + 1) / len(A)
+            s = summary[str(count)]
+            ax.step(ratio, share * 100, where="post", color=colour, lw=2,
+                    label=f"{count} x 0.1 s: median {s['ratio_median']:.2f}x, all channels off in {s['all_off_share'] * 100:.1f}%")
+        ax.set_xscale("log")
+        ax.set_xlim(0.95, 1e3)
+        ax.set_ylim(0, 100)
+        ax.set_xlabel("New adhesion / former adhesion of the run")
+        ax.set_ylabel("Runs (cumulative %)")
+        ax.text(15, 50, "Runs with every channel off (no adhesion before)\nare not on the curves; their share is in the legend",
+                fontsize=7.2, color=MUTED, va="bottom")
+        ax.legend(loc="lower right", fontsize=7.5, frameon=False, title="Default random actions, 2000 runs each",
+                  title_fontsize=7.5)
+        ax.grid(color=GRID, lw=0.8)
+        ax.set_title("(b) How much the adhesion of random-action runs changes", loc="left", fontsize=9.5, color=INK)
+        fig.savefig(folder / "fig1_adhesion_fixed.png", dpi=170, bbox_inches="tight")
+        plt.close(fig)
+    print(json.dumps(summary, indent=1))
+
+
+if __name__ == "__main__":
+    main()

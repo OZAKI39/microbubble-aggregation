@@ -1,0 +1,74 @@
+{
+ "1 ms": {
+  "pieces": 4,
+  "largest_share": 0.90625,
+  "shed": 6,
+  "shed_farthest_um": 270.4470187802434,
+  "shed_radius_um_median": 1.6945519243240377,
+  "kept_radius_um_median": 1.797915670873413
+ },
+ "0.5 ms": {
+  "pieces": 4,
+  "largest_share": 0.9375,
+  "shed": 4,
+  "shed_farthest_um": 461.3709967253036,
+  "shed_radius_um_median": 1.6537143071123594,
+  "kept_radius_um_median": 1.7828710382901534
+ },
+ "0.25 ms": {
+  "pieces": 4,
+  "largest_share": 0.90625,
+  "shed": 6,
+  "shed_farthest_um": 196.07271486844056,
+  "shed_radius_um_median": 1.5884536460412195,
+  "kept_radius_um_median": 1.7828710382901534
+ },
+ "0.1 ms": {
+  "pieces": 5,
+  "largest_share": 0.921875,
+  "shed": 5,
+  "shed_farthest_um": 466.01588859859197,
+  "shed_radius_um_median": 1.6536041088278113,
+  "kept_radius_um_median": 1.7969269781928072
+ },
+ "0.25 ms equal radii": {
+  "pieces": 3,
+  "largest_share": 0.96875,
+  "shed": 2,
+  "shed_farthest_um": 257.8753192879522,
+  "shed_radius_um_median": 1.7799999999999998,
+  "kept_radius_um_median": 1.7799999999999998
+ },
+ "0.25 ms pairwise": {
+  "pieces": 1,
+  "largest_share": 1.0,
+  "shed": 0,
+  "shed_farthest_um": 0.0,
+  "shed_radius_um_median": null,
+  "kept_radius_um_median": 1.7534931467363915
+ },
+ "251 bubbles 1 ms": {
+  "pieces": 4,
+  "largest_share": 0.9840637450199203,
+  "shed": 4,
+  "shed_farthest_um": 284.1076039547096,
+  "shed_radius_um_median": 1.5165181871035567,
+  "kept_radius_um_median": 1.6720513048236376
+ },
+ "251 bubbles 0.5 ms": {
+  "pieces": 4,
+  "largest_share": 0.9880478087649402,
+  "shed": 3,
+  "shed_farthest_um": 614.0373491041634,
+  "shed_radius_um_median": 1.509299824620899,
+  "kept_radius_um_median": 1.6714755755740653
+ },
+ "121 bubbles pattern 3.25 MHz 1 ms (6.4 s)": {
+  "pieces": 13,
+  "largest_share": 0.8429752066115702,
+  "shed": 19,
+  "shed_farthest_um": 4582.881578910269,
+  "shed_radius_um_median": 1.3554874985993801,
+  "kept_radius_um_median": 1.7476440777213638
+ }
+}

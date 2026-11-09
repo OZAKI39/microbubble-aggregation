@@ -1,0 +1,377 @@
+// Pretraining-tier contact step, compiled: the same computation as
+// hydrodynamics.sparse_resistance() followed by contact.sparse_sequential_step() with policy
+// tier "pretrain", in one call (microbubble.contact.CompiledContactStep, ctypes).
+//
+// 1. Resistance matrix A: identity plus c n n^T pair blocks for every pair with gap/R < 0.1
+//    (same pairs and lubrication formula).
+// 2. Sparse Cholesky factor of A; free displacement s_free = A^-1 b, b = dt F / (zeta R).
+// 3. Candidate pairs: centre distance <= 2R + 2 x (largest free displacement) + 0.5R, in sorted
+//    (i, j) order as cKDTree.query_pairs gives them, so ties resolve the same way.
+// 4. Up to max_sequential_qp linearizations: the constraints B s + gap >= 0 at the current
+//    point; the free displacement if it violates none, otherwise the QP
+//    min 1/2 s'As - b's, B s + gap >= 0 solved by DAQP (contact_ldp() of native/daqp_qp.cpp,
+//    compiled into the same library) in its least-distance form, built from the sparse factor
+//    of step 2 (see the solve below). Warm start: the pairs active in the previous DAQP solve
+//    of the run (warm_pairs in, active_pairs_out out; the caller keeps them from step to step)
+//    start in its working set.
+// 5. The same five gates with the pretraining-tier definitions (dual tolerance scaled with the
+//    force scale, correction = largest actual displacement), the same stop rule, then the
+//    CANDIDATE_COVERAGE check.
+// Only the implementation differs from the Python step: Eigen's sparse Cholesky instead of
+// SuperLU's LU (A is symmetric positive definite: same solution up to rounding).
+// Until 2026-11-06 step 4 used the frozen active-set QP and handed steps where it failed back to
+// the Python step (and its fallback solver); since then every constrained step goes to a QP
+// solver (user decision: on dense three-dimensional contact networks the active set failed on
+// almost every step): qpOASES at first, DAQP since the same day (about 3x faster on the same QPs,
+// evidence/qpoases_contact_20261106/). Neighbour search is a plain double loop (fine for n up to
+// a few hundred).
+//
+// Built once per source set, with native/daqp_qp.cpp and the DAQP sources, by
+// microbubble.contact.cached_contact_library (g++, Eigen 3.4, DAQP 0.11).
+
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <Eigen/SparseCholesky>
+
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <vector>
+extern "C" {
+double contact_timing[16];
+void contact_timing_reset() { for (double& v : contact_timing) v = 0; }
+void contact_timing_get(double* out) { for (int k = 0; k < 16; ++k) out[k] = contact_timing[k]; }
+}
+static double now_s() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
+
+using Eigen::MatrixXd;
+using Eigen::VectorXd;
+using SparseMatrix = Eigen::SparseMatrix<double>;
+using Factor = Eigen::SimplicialLLT<SparseMatrix>;
+
+namespace {
+
+enum Status {
+    STATUS_NO_CANDIDATES = 0,
+    STATUS_UNCONSTRAINED = 1,
+    STATUS_DAQP_SOLVED = 2,
+    STATUS_DAQP_ITERATION_LIMIT = 3,
+    STATUS_DAQP_FAILED = 4,
+    STATUS_ILLEGAL_INITIAL = 5,
+    STATUS_FACTOR_FAILED = 6,
+};
+
+// Policy values used by the step (same names as the policy keys; ctypes mirror in contact.py).
+struct Policy {
+    double hard_geometry_m;
+    double contact_overlap_m;
+    double mobility_residual_m;
+    double primal_violation_m;
+    double complementarity_equivalent_gap_m;
+    double actual_geometry_complementarity_m;
+    double force_residual_atol_N;
+    double force_residual_rtol;
+    double dual_negative_N;
+    double contact_correction_m;
+    int max_sequential_qp;
+    int max_iterations;  // DAQP iteration limit (policy "daqp")
+};
+
+// Constraints of the candidate pairs at positions q: unit normals (i -> j) and gaps.
+struct Constraints {
+    std::vector<int> i, j;
+    std::vector<double> nx, ny, nz, gap_m;
+
+    int size() const { return static_cast<int>(i.size()); }
+
+    // (B v)_k = n_k . (v_j - v_i)
+    VectorXd apply(const VectorXd& v) const {
+        VectorXd out(size());
+        for (int k = 0; k < size(); ++k) out[k] = row_dot(k, v.data());
+        return out;
+    }
+
+    // B^T lam: pair forces scattered onto the bubbles, length 3n
+    VectorXd transpose_apply(const VectorXd& lam, int n) const {
+        VectorXd out = VectorXd::Zero(3 * n);
+        for (int k = 0; k < size(); ++k) {
+            const double f[3] = {lam[k] * nx[k], lam[k] * ny[k], lam[k] * nz[k]};
+            for (int axis = 0; axis < 3; ++axis) {
+                out[3 * i[k] + axis] -= f[axis];
+                out[3 * j[k] + axis] += f[axis];
+            }
+        }
+        return out;
+    }
+
+    // Row k of B written into a zeroed dense row of length 3n
+    void row_into(int k, double* column) const {
+        const double normal[3] = {nx[k], ny[k], nz[k]};
+        for (int axis = 0; axis < 3; ++axis) {
+            column[3 * i[k] + axis] = -normal[axis];
+            column[3 * j[k] + axis] = normal[axis];
+        }
+    }
+
+    // Row k of B times a dense vector of length 3n
+    double row_dot(int k, const double* v) const {
+        const int a = 3 * i[k], b = 3 * j[k];
+        return nx[k] * (v[b] - v[a]) + ny[k] * (v[b + 1] - v[a + 1]) + nz[k] * (v[b + 2] - v[a + 2]);
+    }
+};
+
+// contact.candidate_geometry()
+Constraints candidate_geometry(const double* q, const std::vector<int>& pi, const std::vector<int>& pj,
+                               double radius) {
+    Constraints c;
+    c.i = pi;
+    c.j = pj;
+    const int m = static_cast<int>(pi.size());
+    c.nx.resize(m);
+    c.ny.resize(m);
+    c.nz.resize(m);
+    c.gap_m.resize(m);
+    for (int k = 0; k < m; ++k) {
+        const double dx = q[3 * pj[k]] - q[3 * pi[k]];
+        const double dy = q[3 * pj[k] + 1] - q[3 * pi[k] + 1];
+        const double dz = q[3 * pj[k] + 2] - q[3 * pi[k] + 2];
+        const double d = std::sqrt(dx * dx + dy * dy + dz * dz);
+        c.nx[k] = dx / d;
+        c.ny[k] = dy / d;
+        c.nz[k] = dz / d;
+        c.gap_m[k] = d - 2 * radius;
+    }
+    return c;
+}
+
+double phi(double v) { return 0.5 / v - 0.45 * std::log(v) - (3.0 / 56.0) * v * std::log(v); }
+
+// hydrodynamics.sparse_resistance(): identity plus c n n^T pair blocks for gap/R < activation.
+SparseMatrix resistance(int n, const double* x, double radius) {
+    const double activation = 0.1, floor_ = 0.001;
+    const double reach2 = std::pow((2 + activation) * radius, 2);
+    std::vector<Eigen::Triplet<double>> t;
+    t.reserve(3 * n + 64 * n);
+    for (int a = 0; a < 3 * n; ++a) t.emplace_back(a, a, 1.0);
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            const double dx = x[3 * j] - x[3 * i], dy = x[3 * j + 1] - x[3 * i + 1], dz = x[3 * j + 2] - x[3 * i + 2];
+            const double d2 = dx * dx + dy * dy + dz * dz;
+            if (d2 > reach2) continue;
+            const double d = std::sqrt(d2);
+            const double e = (d - 2 * radius) / radius;
+            if (!(e < activation)) continue;
+            const double c = 0.5 * (phi(std::max(e, floor_)) - phi(activation));
+            const double normal[3] = {dx / d, dy / d, dz / d};
+            for (int r = 0; r < 3; ++r) {
+                for (int s = 0; s < 3; ++s) {
+                    const double block = c * normal[r] * normal[s];
+                    t.emplace_back(3 * i + r, 3 * i + s, block);
+                    t.emplace_back(3 * j + r, 3 * j + s, block);
+                    t.emplace_back(3 * i + r, 3 * j + s, -block);
+                    t.emplace_back(3 * j + r, 3 * i + s, -block);
+                }
+            }
+        }
+    }
+    SparseMatrix A(3 * n, 3 * n);
+    A.setFromTriplets(t.begin(), t.end());  // duplicate entries are summed, as in the COO -> CSC
+    return A;
+}
+
+// Largest per-bubble norm of scale * v (v of length 3n)
+double max_bubble_norm(const VectorXd& v, double scale) {
+    double best = 0.0;
+    for (int b = 0; b < v.size() / 3; ++b) best = std::max(best, scale * v.segment<3>(3 * b).norm());
+    return best;
+}
+
+}  // namespace
+
+extern "C" {
+
+// native/daqp_qp.cpp (same library)
+int contact_ldp(int n, int m, const double* M, const double* d, const int* guess, int* iterations,
+                double* w, double* lam, int* active);
+
+// One contact step. x, force and positions_out are n x 3 arrays (row major, metres and newtons).
+// gates_out[0..5]: LOCAL_QP_PASS, TRUE_GEOMETRY_PASS, TRUE_GAP_COMPLEMENTARITY_PASS,
+// CONTACT_REACTION_BALANCE_PASS, CONTACT_CORRECTION, CANDIDATE_COVERAGE (1 pass, 0 fail,
+// -1 not evaluated). counts_out[0..2]: candidate pairs, active pairs (reaction above
+// dual_negative_N), linearizations. Warm start of DAQP: warm_pairs (warm_count pairs i, j)
+// in; active_pairs_out (room for every pair) and *active_count_out out, the pairs active in the
+// last DAQP solve of this step (*active_count_out = -1 when DAQP was not called);
+// *iterations_out: DAQP iterations of this step. Returns a Status.
+int contact_step(int n, const double* x, const double* force, double radius, double zeta, double dt,
+                 const Policy* p, double* positions_out, int* gates_out, int* counts_out,
+                 const int* warm_pairs, int warm_count, int* active_pairs_out, int* active_count_out,
+                 int* iterations_out) {
+    const int dim = 3 * n;
+    for (int g = 0; g < 6; ++g) gates_out[g] = -1;
+    for (int c = 0; c < 3; ++c) counts_out[c] = 0;
+    *active_count_out = -1;
+    *iterations_out = 0;
+    contact_timing[15] += 1;
+    const double t_begin = now_s();
+
+    // Free displacement
+    const SparseMatrix A = resistance(n, x, radius);
+    const Factor factor(A);
+    if (factor.info() != Eigen::Success) return STATUS_FACTOR_FAILED;
+    VectorXd b(dim);
+    for (int a = 0; a < dim; ++a) b[a] = dt * force[a] / (zeta * radius);
+    const VectorXd free = factor.solve(b);
+    const double reach = max_bubble_norm(free, radius);
+
+    // Candidate pairs (distance <= cutoff, like cKDTree.query_pairs), sorted by (i, j)
+    const double cutoff = 2 * radius + 2 * reach + 0.5 * radius;
+    std::vector<int> pi, pj;
+    std::vector<bool> candidate(static_cast<size_t>(n) * n, false);
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            const double dx = x[3 * j] - x[3 * i], dy = x[3 * j + 1] - x[3 * i + 1], dz = x[3 * j + 2] - x[3 * i + 2];
+            if (dx * dx + dy * dy + dz * dz <= cutoff * cutoff) {
+                candidate[static_cast<size_t>(i) * n + j] = true;
+                pi.push_back(i);
+                pj.push_back(j);
+            }
+        }
+    }
+    const int m = static_cast<int>(pi.size());
+    if (m == 0) {
+        for (int a = 0; a < dim; ++a) positions_out[a] = x[a] + radius * free[a];
+        return STATUS_NO_CANDIDATES;
+    }
+    counts_out[0] = m;
+    const Constraints initial = candidate_geometry(x, pi, pj, radius);
+    for (int k = 0; k < m; ++k)
+        if (initial.gap_m[k] < -p->hard_geometry_m) return STATUS_ILLEGAL_INITIAL;
+
+    // Linearize at q, solve, check the gates; again at the new point while only geometry fails
+    const VectorXd x0 = Eigen::Map<const VectorXd>(x, dim);
+    VectorXd q = x0, s, lam, y;
+    int status = STATUS_UNCONSTRAINED;
+    double force_max = 0.0;
+    for (int bubble = 0; bubble < n; ++bubble)
+        force_max = std::max(force_max, Eigen::Map<const Eigen::Vector3d>(force + 3 * bubble).norm());
+    int iteration = 0;
+    for (; iteration < p->max_sequential_qp; ++iteration) {
+        const Constraints B = candidate_geometry(q.data(), pi, pj, radius);
+        const VectorXd offset = (Eigen::Map<const VectorXd>(B.gap_m.data(), m) + B.apply(x0 - q)) / radius;
+        const VectorXd free_slack = B.apply(free) + offset;
+        if (free_slack.minCoeff() >= 0) {
+            s = free;
+            lam = VectorXd::Zero(m);
+            status = STATUS_UNCONSTRAINED;
+        } else {
+            // min 1/2 s'As - b's, B s + offset >= 0 in least-distance form, from the sparse
+            // factor A = P' L L' P (P: Eigen's fill-reducing permutation): z = L' P s,
+            // z0 = L^-1 P b, M = B P' L^-T, w = z - z0, d = -offset - M z0; DAQP solves
+            // min 1/2 |w|^2, M w >= d, then s = P' L^-T (w + z0). The multipliers are the QP's.
+            // Mt = M' (dim x m, column-major), whose storage is M row-major as DAQP takes it.
+            double t0 = now_s();
+            MatrixXd Mt = MatrixXd::Zero(dim, m);
+            for (int k = 0; k < m; ++k) B.row_into(k, Mt.col(k).data());
+            Mt = factor.permutationP() * Mt;
+            double t1 = now_s(); contact_timing[0] += t1 - t0;
+            factor.matrixL().solveInPlace(Mt);
+            double t2 = now_s(); contact_timing[1] += t2 - t1;
+            VectorXd z0 = factor.permutationP() * b;
+            factor.matrixL().solveInPlace(z0);
+            const VectorXd d = -offset - Mt.transpose() * z0;
+            double t3 = now_s(); contact_timing[2] += t3 - t2;
+            std::vector<char> previous(static_cast<size_t>(n) * n, 0);
+            if (*active_count_out >= 0) {  // a second linearization: start from this step's solve
+                for (int k = 0; k < *active_count_out; ++k)
+                    previous[static_cast<size_t>(active_pairs_out[2 * k]) * n + active_pairs_out[2 * k + 1]] = 1;
+            } else {  // pairs are matched by bubble index; others (e.g. of a larger state) match none
+                for (int k = 0; k < warm_count; ++k)
+                    if (warm_pairs[2 * k + 1] < n)
+                        previous[static_cast<size_t>(warm_pairs[2 * k]) * n + warm_pairs[2 * k + 1]] = 1;
+            }
+            std::vector<int> guess(m), active(m);
+            for (int k = 0; k < m; ++k) guess[k] = previous[static_cast<size_t>(pi[k]) * n + pj[k]];
+            VectorXd w(dim);
+            lam.resize(m);
+            int iterations = p->max_iterations;
+            const int code = contact_ldp(dim, m, Mt.data(), d.data(), guess.data(), &iterations,
+                                         w.data(), lam.data(), active.data());
+            double t4 = now_s(); contact_timing[3] += t4 - t3;
+            VectorXd v = w + z0;
+            factor.matrixU().solveInPlace(v);
+            s = factor.permutationPinv() * v;
+            contact_timing[4] += now_s() - t4;
+            contact_timing[14] += 1;
+            contact_timing[9] += factor.matrixL().nestedExpression().nonZeros();
+            *iterations_out += iterations;
+            *active_count_out = 0;
+            for (int k = 0; k < m; ++k) {
+                if (!active[k]) continue;
+                active_pairs_out[2 * *active_count_out] = pi[k];
+                active_pairs_out[2 * *active_count_out + 1] = pj[k];
+                ++*active_count_out;
+            }
+            if (code != 0) {
+                for (int a = 0; a < dim; ++a) positions_out[a] = x[a];
+                return code == 1 ? STATUS_DAQP_ITERATION_LIMIT : STATUS_DAQP_FAILED;
+            }
+            status = STATUS_DAQP_SOLVED;
+        }
+        y = x0 + radius * s;
+        const Constraints By = candidate_geometry(y.data(), pi, pj, radius);
+        const VectorXd slack = radius * (B.apply(s) + offset);
+        const VectorXd reaction = (zeta * radius / dt) * lam;
+        const VectorXd As = A * s;
+        const VectorXd local_stat = As - b - B.transpose_apply(lam, n);
+        const VectorXd true_stat = As - b - By.transpose_apply(lam, n);
+        const double local_m = max_bubble_norm(factor.solve(local_stat), radius);
+        const double local_N = max_bubble_norm(local_stat, zeta * radius / dt);
+        const double true_m = max_bubble_norm(factor.solve(true_stat), radius);
+        const double true_N = max_bubble_norm(true_stat, zeta * radius / dt);
+        const double scale = std::max({force_max, reaction.cwiseAbs().maxCoeff(), 1e-18});
+        const double force_tol = p->force_residual_atol_N + p->force_residual_rtol * scale;
+        const double dual_tol = std::max(p->dual_negative_N, 1e-8 * scale);
+        double primal = 0.0, dual = 0.0, comp = 0.0, truecomp = 0.0, overlap = 0.0;
+        int active = 0;
+        for (int k = 0; k < m; ++k) {
+            primal = std::max(primal, -slack[k]);
+            dual = std::max(dual, -reaction[k]);
+            comp = std::max(comp, std::abs(reaction[k] * slack[k]));
+            truecomp = std::max(truecomp, std::abs(reaction[k] * By.gap_m[k]));
+            overlap = std::max(overlap, -By.gap_m[k]);
+            active += reaction[k] > p->dual_negative_N;
+        }
+        comp /= scale;
+        truecomp /= scale;
+        const double correction = max_bubble_norm(s, radius);  // pretraining tier: actual displacement
+        gates_out[0] = local_m <= p->mobility_residual_m && local_N <= force_tol && primal <= p->primal_violation_m &&
+                       dual <= dual_tol && comp <= p->complementarity_equivalent_gap_m;
+        gates_out[1] = overlap <= std::min(p->hard_geometry_m, p->contact_overlap_m);
+        gates_out[2] = truecomp <= p->actual_geometry_complementarity_m;
+        gates_out[3] = true_m <= p->mobility_residual_m && true_N <= force_tol;
+        gates_out[4] = correction <= p->contact_correction_m;
+        counts_out[1] = active;
+        const bool all_pass = gates_out[0] && gates_out[1] && gates_out[2] && gates_out[3] && gates_out[4];
+        if (all_pass || !gates_out[0]) break;
+        q = y;
+    }
+    counts_out[2] = std::min(iteration + 1, p->max_sequential_qp);
+
+    // CANDIDATE_COVERAGE: every pair within 2R at the new positions must be a candidate
+    bool any_near = false, covered = true;
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            const double dx = y[3 * j] - y[3 * i], dy = y[3 * j + 1] - y[3 * i + 1], dz = y[3 * j + 2] - y[3 * i + 2];
+            if (dx * dx + dy * dy + dz * dz <= 4 * radius * radius) {
+                any_near = true;
+                covered = covered && candidate[static_cast<size_t>(i) * n + j];
+            }
+        }
+    }
+    if (any_near) gates_out[5] = covered;
+
+    for (int a = 0; a < dim; ++a) positions_out[a] = y[a];
+    contact_timing[13] += now_s() - t_begin;
+    return status;
+}
+}

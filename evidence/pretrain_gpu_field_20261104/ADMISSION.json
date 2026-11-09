@@ -1,0 +1,159 @@
+{
+  "record": "Pretraining tier: the GPU direct field (gpu.GPUWaterDiscs) becomes the default field",
+  "date": "2026-11-04",
+  "status": "ADMITTED_PRETRAIN_TIER_ONLY",
+  "authorization": {
+    "conversation": "Claude Code session with the user, 2026-11-04",
+    "user": "目前我需要将【GPU直接求解声场的模块】作为正式计算的主模块，其它模块进行冻结。",
+    "clarified": "Scope: pretraining tier only (frozen HF/LF unchanged); the other field options (cache, CPU direct) are frozen; vibration, force, displacement and stepping modules are not changed in this task."
+  },
+  "change": {
+    "configs/pretrain_policy.json": "new key field = \"direct_gpu\" (run-level default) and reasons.field",
+    "workflows/f10ag.py": "run_pretrain reads the default field from the policy, accepts \"direct_gpu\" and config \"device\" (default cuda:0)",
+    "microbubble/integration.py": "integrate_pretrain passes GPUWaterDiscs to CPUForces for \"direct_gpu\"; records field_device in SUMMARY and trajectory attributes; stepping unchanged",
+    "microbubble/gpu.py": "GPUWaterDiscs.frequency and evaluate(points, order) as WaterDiscs; kernel (_warp_discs.py) unchanged",
+    "unchanged": "\"direct\" (acoustics.WaterDiscs) and \"cache\" (CachedWaterBasis) paths, forces.py, contact.py, hydrodynamics.py, bubble_response.py, frozen HF/LF, all gates and tolerances",
+    "reproducing_earlier_runs": "PRETRAIN runs made before 2026-11-04 without a field key used \"cache\": set \"field\": \"cache\""
+  },
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "PRETRAIN_TIER"
+  ],
+  "training_ready": false,
+  "evidence": {
+    "same_positions": {
+      "lumen_points": 31488,
+      "pressure_max_relative": 1.2890727729590912e-14,
+      "gradient_max_relative": 7.124201791156474e-14,
+      "cluster_states": 64,
+      "force_cases": 300,
+      "forces_worst_relative": {
+        "pressure": 8.213012884875128e-15,
+        "primary": 4.385603155991699e-14,
+        "secondary": 4.7936526081841374e-14,
+        "total": 1.5530908185616726e-14
+      },
+      "file": "AGREEMENT.json"
+    },
+    "whole_runs": {
+      "protocol_formed32": {
+        "max_bubble_position_difference_m": 3.868689067754558e-18,
+        "accepted_steps": {
+          "direct": 9772,
+          "direct_gpu": 9772
+        },
+        "gate_rejected_steps": {
+          "direct": 101,
+          "direct_gpu": 101
+        },
+        "wall_s": {
+          "direct": 30.5,
+          "direct_gpu": 40.6
+        },
+        "status": {
+          "direct": "PASS",
+          "direct_gpu": "PASS"
+        }
+      },
+      "protocol_formed128": {
+        "max_bubble_position_difference_m": 4.121840218789221e-20,
+        "accepted_steps": {
+          "direct": 3734,
+          "direct_gpu": 3734
+        },
+        "gate_rejected_steps": {
+          "direct": 0,
+          "direct_gpu": 0
+        },
+        "wall_s": {
+          "direct": 78.8,
+          "direct_gpu": 94.7
+        },
+        "status": {
+          "direct": "PASS",
+          "direct_gpu": "PASS"
+        }
+      },
+      "random_offset_B_formed32": {
+        "max_bubble_position_difference_m": 8.149566296525186e-19,
+        "accepted_steps": {
+          "direct": 6700,
+          "direct_gpu": 6700
+        },
+        "gate_rejected_steps": {
+          "direct": 92,
+          "direct_gpu": 92
+        },
+        "wall_s": {
+          "direct": 21.0,
+          "direct_gpu": 30.1
+        },
+        "status": {
+          "direct": "PASS",
+          "direct_gpu": "PASS"
+        }
+      }
+    },
+    "whole_runs_condition": "CPU and GPU twin run side by side, three pairs one after another, machine otherwise idle; file RUN_COMPARISON.json",
+    "timing": {
+      "device": "cuda:0 (NVIDIA GeForce RTX 4060 Laptop GPU)",
+      "field_back_to_back_ms": {
+        "16": {
+          "cpu": 0.46,
+          "gpu": 0.57
+        },
+        "32": {
+          "cpu": 0.68,
+          "gpu": 0.75
+        },
+        "64": {
+          "cpu": 1.15,
+          "gpu": 1.06
+        },
+        "128": {
+          "cpu": 2.17,
+          "gpu": 1.02
+        },
+        "256": {
+          "cpu": 4.49,
+          "gpu": 1.1
+        },
+        "512": {
+          "cpu": 8.81,
+          "gpu": 1.2
+        },
+        "1024": {
+          "cpu": 20.4,
+          "gpu": 1.56
+        },
+        "4096": {
+          "cpu": 124.46,
+          "gpu": 10.22
+        },
+        "16384": {
+          "cpu": 489.27,
+          "gpu": 12.1
+        }
+      },
+      "gpu_call_N32_breakdown_ms": {
+        "whole_call_ms": 0.781,
+        "kernel_launch_and_wait_ms": 0.403,
+        "launch_only_ms": 0.022,
+        "copy_results_back_ms": 0.118,
+        "copy_points_in_ms": 0.022,
+        "allocate_outputs_ms": 0.043
+      },
+      "gpu_init_s": 0.71,
+      "file": "TIMING.json"
+    },
+    "tests": "55 passed including GPU and APECSS tests (TESTS.log)"
+  },
+  "limits": [
+    "For one cluster per call (32-128 points) the GPU field is not faster: whole runs took 1.2-1.4x longer. The kernel run (~0.4 ms) dominates a small call and the laptop GPU clocks down while the CPU does the rest of the step; in-run GPU call times varied strongly between repeats.",
+    "The GPU pays off from about 128 points per call (13x at 1024, 40x at 16,384 points), i.e. when many trajectories are evaluated in one call; a batch runner does not exist yet.",
+    "Runs with the default field need Warp and a CUDA device; CPU-only machines must set field to \"direct\" or \"cache\"."
+  ]
+}

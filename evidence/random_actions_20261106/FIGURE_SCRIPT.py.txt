@@ -1,0 +1,188 @@
+"""Random actions of the pretraining tier (2026-11-06): what they look like, their statistics, runs.
+
+usage (repository root):  python FIGURE_SCRIPT.py RESULTS_DIR OUT_DIR
+RESULTS_DIR holds example_seed0_a, example_seed0_b, example_seed1_a (runs of configs/).
+Writes fig1_action_sequence.png, fig2_action_statistics.png, fig3_example_runs.png, CHECK.json.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+from microbubble.control import random_actions
+from workflows.f10ag import load_pretrain_policy
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+CHANNELS = ("Y-", "Y+", "X-", "X+")
+COLORS = ("#2a6fb0", "#d0812c", "#3b9a5b", "#8e5aa8")  # fixed channel order
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+
+
+def setup_style(font_dir):
+    family = "DejaVu Sans"
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+            family = "Arial"
+    plt.rcParams.update({"font.family": family, "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+    return family
+
+
+def generate(p, duration_s, seed):
+    r = p["random_actions"]
+    return random_actions(duration_s, r["segment_s"], seed, p["max_source_amplitude_Pa_equivalent"],
+                          p["frequency_range_Hz"], r["channel_on_probability"])
+
+
+def fig_sequence(p, out):
+    # The longest run the policy admits: max_segments segments of segment_s.
+    seg = p["random_actions"]["segment_s"]
+    a = generate(p, p["max_segments"] * seg, 0)
+    amp = np.array([s["amplitudes"] for s in a]).T
+    f = np.array([s["frequency"] for s in a])
+    t = np.arange(len(a) + 1) * seg
+    fig, axes = plt.subplots(2, 2, figsize=(11, 4.6),
+                             gridspec_kw=dict(height_ratios=[1.6, 1], width_ratios=[60, 1]))
+    (ax0, cax), (ax1, blank) = axes
+    blank.axis("off")
+    mesh = ax0.pcolormesh(t, np.arange(5), np.ma.masked_equal(amp, 0), cmap="Blues", vmin=0,
+                          vmax=p["max_source_amplitude_Pa_equivalent"], edgecolors="white",
+                          linewidth=1.0)
+    ax0.set_yticks(np.arange(4) + 0.5, CHANNELS)
+    ax0.invert_yaxis()
+    ax0.set_ylabel("Channel")
+    ax0.set_title(f"Random actions, seed 0: {len(a)} segments of {seg:g} s "
+                  "(white = channel off)", loc="left", fontsize=10, color=INK)
+    ax0.set_xlim(t[0], t[-1])
+    bar = fig.colorbar(mesh, cax=cax)
+    bar.set_label("Amplitude (Pa-eq)")
+    ax1.stairs(f / 1e6, t, color=COLORS[0], linewidth=1.6)
+    ax1.set_xlim(t[0], t[-1])
+    ax1.set_ylim(2.0, 3.0)
+    ax1.set_ylabel("Frequency (MHz)")
+    ax1.set_xlabel("Time (s)")
+    ax1.grid(color=GRID, linewidth=0.8)
+    fig.tight_layout()
+    fig.savefig(out / "fig1_action_sequence.png", dpi=170)
+    plt.close(fig)
+
+
+def fig_statistics(p, out):
+    seg = p["random_actions"]["segment_s"]
+    a = generate(p, 20000 * seg, 0)
+    amp = np.array([s["amplitudes"] for s in a])
+    phases = np.array([s["phases"] for s in a])
+    f = np.array([s["frequency"] for s in a])
+    cap = p["max_source_amplitude_Pa_equivalent"]
+    q = p["random_actions"]["channel_on_probability"]
+    open_ = amp > 0
+    counts = np.bincount(open_.sum(1), minlength=5) / len(a)
+    expected = np.array([1, 4, 6, 4, 1]) / 16
+    fig, axes = plt.subplots(1, 4, figsize=(12.5, 3.2))
+    ax = axes[0]
+    ax.bar(np.arange(5) - 0.2, counts, width=0.38, color=COLORS[0], label="Generated")
+    ax.bar(np.arange(5) + 0.2, expected, width=0.38, color="#c9d6e3", label="1:4:6:4:1 / 16")
+    ax.set_xticks(range(5))
+    ax.set_xlabel("Open channels per segment")
+    ax.set_ylabel("Fraction of segments")
+    ax.legend(frameon=False, fontsize=8)
+    ax = axes[1]
+    for k in range(4):
+        ax.hist(amp[open_[:, k], k], bins=np.linspace(0, cap, 13), histtype="step",
+                color=COLORS[k], linewidth=1.4, label=CHANNELS[k])
+    ax.set_xlabel("Amplitude of open channels (Pa-eq)")
+    ax.set_ylabel("Segments")
+    ax.legend(frameon=False, fontsize=8, ncol=2)
+    ax = axes[2]
+    ax.hist(phases.ravel(), bins=np.linspace(0, 2 * np.pi, 13), color=COLORS[0])
+    ax.set_xlabel("Phase (rad)")
+    ax = axes[3]
+    ax.hist(f / 1e6, bins=np.linspace(2, 3, 11), color=COLORS[0])
+    ax.set_xlabel("Frequency (MHz)")
+    for ax in axes:
+        ax.grid(axis="y", color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+    fig.suptitle(f"Statistics of {len(a)} random segments (seed 0): each channel on with "
+                 f"probability {q:g}, open amplitudes uniform in 0-{cap:g}, phases uniform, "
+                 "frequencies uniform in 2-3 MHz", x=0.01, ha="left", fontsize=10, color=INK)
+    fig.tight_layout()
+    fig.savefig(out / "fig2_action_statistics.png", dpi=170)
+    plt.close(fig)
+    return dict(segments=len(a), open_fraction=float(open_.mean()),
+                open_channel_counts=counts.tolist(), expected=expected.tolist(),
+                open_amplitude_mean=float(amp[open_].mean()), frequency_mean_Hz=float(f.mean()))
+
+
+def load(path):
+    with h5py.File(path) as h:
+        return {k: h[k][:] for k in h}
+
+
+def fig_runs(results, out):
+    runs = {"Seed 0": "example_seed0_a", "Seed 1": "example_seed1_a"}
+    data = {k: load(results / v / "trajectory.h5") for k, v in runs.items()}
+    again = load(results / "example_seed0_b" / "trajectory.h5")
+    identical = all(np.array_equal(data["Seed 0"][k], again[k]) for k in again)
+    fig, axes = plt.subplots(2, 2, figsize=(11, 5.6), sharex=True)
+    for col, (label, d) in enumerate(data.items()):
+        t = d["time_s"] * 1e3
+        ax = axes[0, col]
+        for k in range(4):
+            ax.step(t, d["action_amplitude_Pa_equivalent"][:, k], where="post", color=COLORS[k],
+                    linewidth=1.6, label=CHANNELS[k])
+        f = d["action_frequency_Hz"]
+        starts = np.flatnonzero(np.r_[True, np.diff(d["action_segment"]) != 0])
+        for i in starts:
+            ax.text(t[i] + 3, 6300, f"{f[i] / 1e6:.2f} MHz", fontsize=8, color=MUTED)
+        ax.set_ylim(0, 7000)
+        ax.set_ylabel("Amplitude (Pa-eq)")
+        ax.set_title(f"{label}: random actions (3 segments of 0.1 s)", loc="left", fontsize=10,
+                     color=INK)
+        ax = axes[1, col]
+        c = (d["positions_m"].mean(1) - d["positions_m"][0].mean(0)) * 1e6
+        ax.plot(t, c[:, 0], color=INK, linewidth=1.8, label="x")
+        ax.plot(t, c[:, 1], color=MUTED, linewidth=1.8, linestyle="--", label="y")
+        ax.set_xlabel("Time (ms)")
+        ax.set_ylabel("Cluster-centre travel (µm)")
+        ax.legend(frameon=False, fontsize=8)
+        for a in axes[:, col]:
+            a.grid(color=GRID, linewidth=0.8)
+    fig.suptitle("32-bubble irregular cluster (IRREGULAR_N32_a1.0_s0) under random actions\n"
+                 f"seed 0 run twice: {'bitwise identical' if identical else 'DIFFERENT'}",
+                 x=0.01, ha="left", fontsize=10.5, color=INK)
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper right", ncol=4, frameon=False, fontsize=8.5,
+               title="Channel", title_fontsize=8.5)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
+    fig.savefig(out / "fig3_example_runs.png", dpi=170)
+    plt.close(fig)
+    return dict(seed0_twice_identical=bool(identical))
+
+
+def main():
+    results, out = Path(sys.argv[1]), Path(sys.argv[2])
+    p = load_pretrain_policy(Path("."))
+    with tempfile.TemporaryDirectory() as font_dir:
+        font = setup_style(Path(font_dir))
+        fig_sequence(p, out)
+        stats = fig_statistics(p, out)
+        runs = fig_runs(results, out)
+    (out / "CHECK.json").write_text(json.dumps(dict(font=font, statistics=stats, runs=runs),
+                                               indent=1) + "\n")
+    print(json.dumps(dict(statistics=stats, runs=runs), indent=1))
+
+
+if __name__ == "__main__":
+    main()

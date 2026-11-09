@@ -1,0 +1,266 @@
+[
+ {
+  "group": "Ball, 250 bubbles, 9.375 MHz",
+  "name": "L_N250_9.375MHz_lines_x_adh0",
+  "panel": "Parallel lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 15.992035288060931,
+   "width": 4.38178822945036e-06,
+   "height": 15.707140740371303
+  },
+  "z_range_end_um": [
+   -32.057024878943096,
+   31.539048021141564
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 250 bubbles, 9.375 MHz",
+  "name": "L_N250_9.375MHz_cross_adh0",
+  "panel": "Crossed lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 5.393844062650588,
+   "width": 5.242171361852617,
+   "height": 9.738758836444063
+  },
+  "z_range_end_um": [
+   -21.095927245849477,
+   19.475651878790817
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 250 bubbles, 9.375 MHz",
+  "name": "L_N250_9.375MHz_wavy_adh0",
+  "panel": "Wavy lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 10.187071498151681,
+   "width": 3.2506923127260983,
+   "height": 11.33132770203732
+  },
+  "z_range_end_um": [
+   -27.579363352373804,
+   23.924776353752932
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 250 bubbles, 9.375 MHz",
+  "name": "L_N250_9.375MHz_dots_adh0",
+  "panel": "Dots",
+  "duration_s": 20.0,
+  "start": {
+   "length": 6.6774726109727585,
+   "width": 6.1422123927986965,
+   "height": 6.600051823585159
+  },
+  "end": {
+   "length": 4.212613925076038,
+   "width": 3.844432425051367,
+   "height": 12.98163013276856
+  },
+  "z_range_end_um": [
+   -41.16348270470273,
+   30.953557997955038
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 9.375 MHz",
+  "name": "L_N800_9.375MHz_lines_x_adh0",
+  "panel": "Parallel lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 16.8846700911414,
+   "width": 2.719934130149487,
+   "height": 16.544275193508096
+  },
+  "z_range_end_um": [
+   -38.958163063278214,
+   42.153878497541314
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 9.375 MHz",
+  "name": "L_N800_9.375MHz_cross_adh0",
+  "panel": "Crossed lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 7.835224599144161,
+   "width": 7.502983314858412,
+   "height": 15.11570042508935
+  },
+  "z_range_end_um": [
+   -30.522351879475064,
+   31.89628878229784
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 9.375 MHz",
+  "name": "L_N800_9.375MHz_wavy_adh0",
+  "panel": "Wavy lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 8.915748055906066,
+   "width": 8.574922866449187,
+   "height": 12.447861861165078
+  },
+  "z_range_end_um": [
+   -28.908160787428145,
+   29.213999137897545
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 9.375 MHz",
+  "name": "L_N800_9.375MHz_dots_adh0",
+  "panel": "Dots",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 6.755692915164637,
+   "width": 6.353825362814474,
+   "height": 16.333266357323545
+  },
+  "z_range_end_um": [
+   -39.448453155053926,
+   40.40140948437103
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 7.0 MHz",
+  "name": "L_N800_7.0MHz_lines_x_adh0",
+  "panel": "Parallel lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 15.75006858245763,
+   "width": 2.9527736951012753,
+   "height": 15.591997138191456
+  },
+  "z_range_end_um": [
+   -38.8983451406492,
+   38.67876160059554
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 7.0 MHz",
+  "name": "L_N800_7.0MHz_cross_adh0",
+  "panel": "Crossed lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 8.098803251126506,
+   "width": 7.722945246089004,
+   "height": 12.832943708961503
+  },
+  "z_range_end_um": [
+   -27.542347724468733,
+   26.902657481196275
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 7.0 MHz",
+  "name": "L_N800_7.0MHz_wavy_adh0",
+  "panel": "Wavy lines",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 10.157406251000141,
+   "width": 6.142594264720868,
+   "height": 13.108120290086783
+  },
+  "z_range_end_um": [
+   -29.035989780159646,
+   30.21435783741252
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ },
+ {
+  "group": "Ball, 800 bubbles, 7.0 MHz",
+  "name": "L_N800_7.0MHz_dots_adh0",
+  "panel": "Dots",
+  "duration_s": 20.0,
+  "start": {
+   "length": 9.821746164335245,
+   "width": 9.53136566921144,
+   "height": 9.625854958841312
+  },
+  "end": {
+   "length": 6.66651661335999,
+   "width": 6.25176817354815,
+   "height": 16.63434221979697
+  },
+  "z_range_end_um": [
+   -41.561737522518875,
+   46.003362312754305
+  ],
+  "pieces_max": 1,
+  "pieces_end": 1
+ }
+]

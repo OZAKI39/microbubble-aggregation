@@ -1,0 +1,190 @@
+{
+ "device": "cuda:0 (NVIDIA GeForce RTX 4060 Laptop GPU)",
+ "warp": "1.18.0",
+ "order": 96,
+ "node_kernel_first_load_s": 1.4422950400039554,
+ "block_dim": 96,
+ "kernel": [
+  {
+   "N": 32,
+   "kernel_loop_ms": 0.4510569851845503,
+   "kernel_node_ms": 0.07919149356894195,
+   "call_loop_ms": 0.7085344986990094,
+   "call_node_ms": 0.3600664931582287,
+   "node_vs_loop_pressure": 7.316044278795881e-16,
+   "node_vs_loop_gradient": 5.690361696778498e-16,
+   "node_repeat_identical": true,
+   "node_vs_cpu_pressure": 6.367000048089219e-15,
+   "node_vs_cpu_gradient": 6.286602153197644e-15
+  },
+  {
+   "N": 128,
+   "kernel_loop_ms": 0.7293820090126246,
+   "kernel_node_ms": 0.16400149615947157,
+   "call_loop_ms": 1.0795120033435524,
+   "call_node_ms": 0.5100819980725646,
+   "node_vs_loop_pressure": 6.896959131122054e-16,
+   "node_vs_loop_gradient": 9.353721152326381e-16,
+   "node_repeat_identical": true,
+   "node_vs_cpu_pressure": 7.086061596441293e-15,
+   "node_vs_cpu_gradient": 6.9652257045118455e-15
+  },
+  {
+   "N": 1024,
+   "kernel_loop_ms": 0.7348350045504048,
+   "kernel_node_ms": 0.9383029828313738,
+   "call_loop_ms": 1.2178140023024753,
+   "call_node_ms": 1.4414309989660978,
+   "node_vs_loop_pressure": 8.349557466936186e-16,
+   "node_vs_loop_gradient": 1.1208300897200322e-15,
+   "node_repeat_identical": true,
+   "node_vs_cpu_pressure": 7.595803114088808e-15,
+   "node_vs_cpu_gradient": 7.504100072674492e-15
+  },
+  {
+   "N": 16384,
+   "kernel_loop_ms": 7.927733502583578,
+   "kernel_node_ms": 14.528286992572248,
+   "call_loop_ms": 11.381432006601244,
+   "call_node_ms": 17.71506901422981,
+   "node_vs_loop_pressure": 1.008384248519161e-15,
+   "node_vs_loop_gradient": 1.1239109761926681e-15,
+   "node_repeat_identical": true,
+   "node_vs_cpu_pressure": 8.11293014405587e-15,
+   "node_vs_cpu_gradient": 8.118062258345447e-15
+  },
+  {
+   "N": 131072,
+   "kernel_loop_ms": 57.89050800376572,
+   "kernel_node_ms": 110.28432149032596,
+   "call_loop_ms": 81.2020329904044,
+   "call_node_ms": 134.158008499071,
+   "node_vs_loop_pressure": 1.0880006743285159e-15,
+   "node_vs_loop_gradient": 1.3198272334613859e-15,
+   "node_repeat_identical": true
+  }
+ ],
+ "runs": [
+  {
+   "run": "protocol_formed32",
+   "variant": "cpu",
+   "repeat": 0,
+   "duration_s": 0.5,
+   "wall_s": 4.705448499007616,
+   "steps": 1450,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 0.0
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "gpu_loop",
+   "repeat": 0,
+   "duration_s": 0.5,
+   "wall_s": 6.931374173000222,
+   "steps": 1450,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 3.638853541404474e-18
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "gpu_node",
+   "repeat": 0,
+   "duration_s": 0.5,
+   "wall_s": 4.798311287013348,
+   "steps": 1450,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 1.5319437884041276e-17
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "cpu",
+   "repeat": 1,
+   "duration_s": 0.5,
+   "wall_s": 4.510170822992222,
+   "steps": 1450,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 0.0
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "gpu_loop",
+   "repeat": 1,
+   "duration_s": 0.5,
+   "wall_s": 5.459843643009663,
+   "steps": 1450,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 3.638853541404474e-18
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "gpu_node",
+   "repeat": 1,
+   "duration_s": 0.5,
+   "wall_s": 4.422013756004162,
+   "steps": 1450,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 1.5319437884041276e-17
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "cpu",
+   "repeat": 0,
+   "duration_s": 0.3,
+   "wall_s": 5.4953405350097455,
+   "steps": 278,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 0.0
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "gpu_loop",
+   "repeat": 0,
+   "duration_s": 0.3,
+   "wall_s": 7.711393578996649,
+   "steps": 278,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 2.329340604949326e-20
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "gpu_node",
+   "repeat": 0,
+   "duration_s": 0.3,
+   "wall_s": 5.950875960988924,
+   "steps": 278,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 1.3976043629695956e-20
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "cpu",
+   "repeat": 1,
+   "duration_s": 0.3,
+   "wall_s": 5.959274746011943,
+   "steps": 278,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 0.0
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "gpu_loop",
+   "repeat": 1,
+   "duration_s": 0.3,
+   "wall_s": 6.407173677987885,
+   "steps": 278,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 2.329340604949326e-20
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "gpu_node",
+   "repeat": 1,
+   "duration_s": 0.3,
+   "wall_s": 5.725074518006295,
+   "steps": 278,
+   "status": "PASS",
+   "final_diff_vs_cpu_m": 1.3976043629695956e-20
+  }
+ ],
+ "note": "kernel_*: launch + synchronize, back to back after warm-up; call_*: whole evaluate() incl. copies; runs: shortened protocol runs, wall time incl. start-up, one process, machine otherwise idle"
+}

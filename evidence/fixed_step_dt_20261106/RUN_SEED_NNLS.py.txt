@@ -1,0 +1,59 @@
+"""Fixed-step convergence test with an NNLS fallback in place of OSQP (2026-11-06, test only).
+
+usage (repository root):  python run_seed_nnls.py RESULTS_DIR SEED [dt_s ...]
+Same runs as run_seed.py, but contact.osqp_qp (the fallback when the active set does not solve)
+is replaced, in this process only, by an exact solve of the same QP
+    min 1/2 s'As - b's   s.t.  B s + gap >= 0
+as a least-distance problem through NNLS (Lawson & Hanson 1974, ch. 23). The result is labelled
+"osqp_polished" only so that the unchanged project code accepts it; NNLS_CALLS.json counts the
+calls. The project code is not changed.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from scipy import linalg, optimize, sparse
+
+import microbubble.contact as contact
+from workflows.f10ag import run
+
+calls = []
+
+
+def nnls_qp(A, b, B, gap_over_R, settings):
+    m = len(B)
+    M = np.zeros((m, 3 * B.n))
+    for a in range(3):
+        M[np.arange(m), 3 * B.i + a] = -B.normals[:, a]
+        M[np.arange(m), 3 * B.j + a] = B.normals[:, a]
+    L = linalg.cholesky(sparse.csr_matrix(A).toarray(), lower=True)  # A = L L^T
+    z0 = linalg.solve_triangular(L, b, lower=True)  # z = L^T s: min 1/2 |z - z0|^2
+    G = linalg.solve_triangular(L, M.T, lower=True).T  # constraints G z >= -gap
+    h = -gap_over_R - G @ z0  # shifted: G w >= h, w = z - z0
+    E = np.vstack([G.T, h[None, :]])
+    f = np.zeros(len(E))
+    f[-1] = 1.0
+    u, _ = optimize.nnls(E, f, maxiter=50 * m)
+    r = E @ u - f
+    s = linalg.solve_triangular(L.T, z0 - r[:-1] / r[-1], lower=False)
+    calls.append(m)
+    return s, u / -r[-1], "osqp_polished"
+
+
+contact.osqp_qp = nnls_qp
+results, seed = Path(sys.argv[1]), int(sys.argv[2])
+steps = [float(v) for v in sys.argv[3:]] or [5e-3, 2e-3, 1e-3, 5e-4, 2e-4, 1e-4]
+(results / "configs").mkdir(parents=True, exist_ok=True)
+for dt in steps:
+    name = f"seed{seed}_dt{round(dt * 1e6)}us"
+    cfg = dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5, save_interval_s=0.01,
+               state_seed=seed, action_seed=seed, fixed_step_s=dt)
+    path = results / "configs" / f"{name}.json"
+    path.write_text(json.dumps(cfg, indent=1) + "\n")
+    calls.clear()
+    r = run(Path("."), path, results / name)
+    (results / name / "NNLS_CALLS.json").write_text(json.dumps(dict(calls=len(calls), pairs=calls)) + "\n")
+    print(name, r["status"], r.get("reason"), r["accepted_steps"], round(r["wall_s"], 1),
+          "nnls", len(calls), flush=True)

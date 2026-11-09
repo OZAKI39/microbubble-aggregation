@@ -1,0 +1,7 @@
+"""Run a bill script (argv[1], its arguments after it) and append the process minor page faults to its JSON (last argument)."""
+import json, resource, runpy, sys
+from pathlib import Path
+script, sys.argv = sys.argv[1], sys.argv[1:]
+runpy.run_path(script, run_name="__main__")
+out = Path(sys.argv[-1]); r = json.loads(out.read_text()); r["minor_page_faults"] = resource.getrusage(resource.RUSAGE_SELF).ru_minflt
+out.write_text(json.dumps(r, indent=1) + "\n")

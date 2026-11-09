@@ -1,0 +1,157 @@
+"""Whole runs for compiled F2, shared pair distances and 16 APECSS threads (2026-11-07).
+
+usage (repository root):
+  python RUNS_F2.py OUT_DIR LABEL [THREADS]   the four 3D random starts used before (seeds 23, 21,
+                                              16, 7: 20, 50, 76, 122 bubbles; 1 ms, 0.5 s, default
+                                              settings; THREADS sets config "apecss_threads", else
+                                              the policy default) with the code in the working
+                                              tree, timing every force evaluation;
+                                              writes OUT_DIR/LABEL/RUNS.json
+  python RUNS_F2.py OUT_DIR --bill            122 bubbles (seed 7) once more with the pieces of
+                                              every force evaluation timed; OUT_DIR/bill/BILL.json
+  python RUNS_F2.py OUT_DIR --compare BASE    compares every label with BASE/after_1 (the code
+                                              before the change, evidence/collective_svd_overlap_
+                                              20261107/): largest position difference, smallest
+                                              singular value, DAQP iterations, gate records; and
+                                              the 16-thread runs with the 8-thread runs bit for
+                                              bit; writes OUT_DIR/F2_RUNS.json
+"""
+
+import json
+import sys
+import time
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+SEEDS = [23, 21, 16, 7]
+LABELS = ["f2_t8_1", "f2_t8_2", "f2_t16_1", "f2_t16_2"]
+out = Path(sys.argv[1])
+
+
+def config(folder, seed, threads):
+    cfg = dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5, save_interval_s=0.01,
+               state_seed=seed, action_seed=seed)
+    if threads:
+        cfg["apecss_threads"] = threads
+    path = folder / f"cfg_seed{seed}.json"
+    path.write_text(json.dumps(cfg))
+    return path
+
+
+if sys.argv[2] == "--compare":
+    base = Path(sys.argv[3])
+    result = {}
+    for seed in map(str, SEEDS):
+        before = json.loads((base / "after_1" / "RUNS.json").read_text())[seed]
+        x0 = h5py.File(base / "after_1" / f"seed{seed}" / "trajectory.h5")["positions_m"][()]
+        row = dict(bubbles=before["bubbles"], before=dict(
+            wall_s=[json.loads((base / l / "RUNS.json").read_text())[seed]["wall_s"] for l in ("after_1", "after_2")],
+            force_ms_mean=[json.loads((base / l / "RUNS.json").read_text())[seed]["force_ms_mean"] for l in ("after_1", "after_2")],
+            daqp_iterations=before["daqp_iterations"],
+            min_collective_singular_value=before["min_collective_singular_value"],
+            steps_failing_gates=before["steps_failing_gates"]))
+        t8 = h5py.File(out / "f2_t8_1" / f"seed{seed}" / "trajectory.h5")["positions_m"][()]
+        for label in LABELS:
+            r = json.loads((out / label / "RUNS.json").read_text())[seed]
+            x = h5py.File(out / label / f"seed{seed}" / "trajectory.h5")["positions_m"][()]
+            row[label] = dict(
+                status=r["status"], wall_s=r["wall_s"], force_ms_mean=r["force_ms_mean"],
+                apecss_threads=r["apecss_threads"], apecss_ms_per_call=r["apecss_ms_per_call"],
+                max_position_difference_vs_before_m=float(np.abs(x - x0).max()) if x.shape == x0.shape else None,
+                same_trajectory_as_f2_t8_1=bool(np.array_equal(x, t8)),
+                min_collective_singular_value=r["min_collective_singular_value"],
+                daqp_iterations=r["daqp_iterations"],
+                gates_same_as_before=r["steps_failing_gates"] == before["steps_failing_gates"],
+                steps_failing_gates=r["steps_failing_gates"])
+        result[seed] = row
+    (out / "F2_RUNS.json").write_text(json.dumps(result, indent=1) + "\n")
+    print(json.dumps(result, indent=1))
+    sys.exit()
+
+import microbubble.forces as forces
+from microbubble.bubble_response import CarriedApecssResponse
+from microbubble.gpu import GPUWaterDiscs
+from workflows.f10ag import run
+
+seconds = []
+project_call = forces.CPUForces.__call__
+
+
+def timed(self, x):
+    t = time.perf_counter()
+    r = project_call(self, x)
+    seconds.append(time.perf_counter() - t)
+    return r
+
+
+forces.CPUForces.__call__ = timed
+
+if sys.argv[2] == "--bill":
+    pieces = {k: [] for k in ("field (GPU)", "APECSS", "pair distances", "collective solve (chi, K, M, solve)",
+                              "F2", "adhesion", "waiting for the SVD")}
+
+    def clock(name, f):
+        def g(*a, **k):
+            t = time.perf_counter()
+            r = f(*a, **k)
+            pieces[name].append(time.perf_counter() - t)
+            return r
+        return g
+
+    class TimedFuture:
+        def __init__(self, future):
+            self.future = future
+
+        def result(self):
+            t = time.perf_counter()
+            r = self.future.result()
+            pieces["waiting for the SVD"].append(time.perf_counter() - t)
+            return r
+
+    real_collective = forces.collective_fundamental
+
+    def collective(*a, **k):
+        t = time.perf_counter()
+        u, smallest = real_collective(*a, **k)
+        pieces["collective solve (chi, K, M, solve)"].append(time.perf_counter() - t)
+        return u, TimedFuture(smallest)
+
+    GPUWaterDiscs.evaluate = clock("field (GPU)", GPUWaterDiscs.evaluate)
+    CarriedApecssResponse.query = clock("APECSS", CarriedApecssResponse.query)
+    forces.CompiledPairForces.distances = clock("pair distances", forces.CompiledPairForces.distances)
+    forces.CompiledPairForces.delayed_pair_forces = clock("F2", forces.CompiledPairForces.delayed_pair_forces)
+    forces.adhesion_forces = clock("adhesion", forces.adhesion_forces)
+    forces.collective_fundamental = collective
+    folder = out / "bill"
+    folder.mkdir(parents=True)
+    run(Path("."), config(folder, 7, None), folder / "seed7")
+    calls = len(seconds)
+    bill = {k: 1e3 * sum(v) / calls for k, v in pieces.items()}
+    bill["rest (F1, sums, Python)"] = 1e3 * sum(seconds) / calls - sum(bill.values())
+    bill["whole force evaluation"] = 1e3 * sum(seconds) / calls
+    (folder / "BILL.json").write_text(json.dumps(dict(bubbles=122, calls=calls, ms_per_force_evaluation=bill), indent=1) + "\n")
+    print(json.dumps(bill, indent=1))
+    sys.exit()
+
+label = sys.argv[2]
+threads = int(sys.argv[3]) if len(sys.argv) > 3 else None
+folder = out / label
+folder.mkdir(parents=True)
+runs = {}
+for seed in SEEDS:
+    seconds.clear()
+    run(Path("."), config(folder, seed, threads), folder / f"seed{seed}")
+    s = json.loads((folder / f"seed{seed}" / "SUMMARY.json").read_text())
+    e = json.loads((folder / f"seed{seed}" / "EXECUTION.json").read_text())
+    runs[seed] = dict(bubbles=s["N"], status=s["status"], wall_s=s["wall_s"],
+                      force_evaluations=len(seconds), force_ms_mean=1e3 * float(np.mean(seconds)),
+                      apecss_threads=e["identity"]["apecss_response"]["stats"]["settings"]["threads"],
+                      apecss_ms_per_call=1e3 * e["identity"]["apecss_response"]["stats"]["seconds_in_apecss"] / e["identity"]["apecss_response"]["stats"]["calls"],
+                      min_collective_singular_value=s["min_collective_singular_value"],
+                      daqp_iterations=s["daqp_iterations"], steps_failing_gates=s["steps_failing_gates"],
+                      trajectory_sha256=s["trajectory_sha256"])
+    print(label, seed, runs[seed]["bubbles"], runs[seed]["status"], f"{s['wall_s']:.2f} s",
+          f"{runs[seed]['force_ms_mean']:.2f} ms/force evaluation", flush=True)
+(folder / "RUNS.json").write_text(json.dumps(runs, indent=1) + "\n")

@@ -1,0 +1,2 @@
+Q3_N500_2.5MHz_pushmatched_adh1 500 4 1.25 1 0.001 0.001 2.5:x_minus:1.5:19800
+Q3_N500_2.5MHz_pushmatched_adh0 500 4 1.25 0 0.001 0.001 2.5:x_minus:1.5:19800

@@ -1,0 +1,84 @@
+"""Why do weakly held clusters burst at 2-3.3 MHz? Step 4: the same cluster at 2-9.4 MHz (2026-11-08).
+
+usage (repository root):  APECSS_DIR=... PYTHONPATH=. python diag_sweep.py RUN_DIR RESPONSE_JSON OUT_JSON
+The start of RUN_DIR (64 bubbles, the cluster that bursts at 2.82 MHz) and its first segment's channels, at
+2.0-9.4 MHz, with the run's force model rebuilt (CPUForces, collective coupling with the propagation delay,
+carried APECSS bubbles settled from rest). The forces go with the square of the pressure, and the pressure the
+cluster meets changes with the frequency (the disc field), so everything is scaled to 10 kPa at the bubbles
+(the cluster is small against the wavelength: one pressure for all bubbles, median = largest within 1%).
+Per frequency: the resonant radius (RESPONSE_JSON, 20 kPa) and the share of bubbles below it; the speed the
+total force minus the cluster's mean would give a free bubble, |F - <F>| / (6 pi mu R_i), median and 90th
+percentile; the share of touching pairs (gap below 0.2 um) whose F1 pulls them apart more than their F2 and an
+adhesion of 1e-12 N, 1e-10 N or 5.04e-10 N hold them.
+"""
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+from microbubble.forces import CPUForces, cached_pair_forces_library, collective_fundamental
+from workflows.f10ag import carried_apecss_response, load_pretrain_policy, pretrain_context
+
+ROOT = Path(".")
+P_REF_PA = 1e4
+FREQUENCIES_HZ = (2.0e6, 2.25e6, 2.5e6, 2.82e6, 3.25e6, 3.6e6, 4.0e6, 5.0e6, 6.0e6, 7.5e6, 9.4e6)
+run, response_json, out = Path(sys.argv[1]), json.loads(Path(sys.argv[2]).read_text()), Path(sys.argv[3])
+policy = load_pretrain_policy(ROOT)
+task = json.loads((run / "EXECUTION.json").read_text())["task"]
+with h5py.File(run / "trajectory.h5") as h:
+    x, radii = h["positions_m"][0], h["radii_m"][()]
+segment = task["segments"][0]
+library = cached_pair_forces_library(ROOT / "build" / "pair_forces")["library"]
+known = [(f, response_json["single"][f"{f:g}_20000"]["resonant_radius_um"] or 0.8) for f in response_json["frequencies_Hz"]]
+rows = []
+with tempfile.TemporaryDirectory() as folder:
+    for f in FREQUENCIES_HZ:
+        c = pretrain_context(ROOT, f)
+        response, _ = carried_apecss_response(ROOT, {}, policy, f, list(radii), folder)
+        forces = CPUForces(response, c.physics, c.discs, "collective", policy["singular_guard"], wavenumber_rad_m=c.discs.k,
+                           adhesion_force_N=1e-12, adhesion_range_m=policy["adhesion"]["range_m"], pair_library=library,
+                           radii_m=radii)
+        forces.control(segment["amplitudes"], segment["phases"])
+        h, g = c.discs.evaluate(x, forces.direct_order)
+        P = forces.u @ h
+        scale = P_REF_PA / np.median(np.abs(P))
+        forces.control(np.array(segment["amplitudes"]) * scale, segment["phases"])  # 10 kPa at the bubbles
+        result = forces(x)
+        P = forces.u @ h
+        H = response.query(P)
+        D = forces.pairs.distances(x)
+        u, _ = collective_fundamental(D, H, P, c.physics, forces.chi_zero, 0.0, c.discs.k)
+        response.close()
+        i, j = np.triu_indices(len(x), 1)
+        d = D[i, j]
+        touch = d - radii[i] - radii[j] < 0.2e-6
+        i, j, d = i[touch], j[touch], d[touch]
+        n = (x[j] - x[i]) / d[:, None]
+        corr = np.sum(np.arange(2, 9) ** 2 * np.real(H[i, 1:] * np.conj(H[j, 1:])), axis=1) + np.real(u[i] * np.conj(u[j]))
+        radius_sum = radii[i] + radii[j]
+        q = np.minimum(d / (c.physics.transition_over_sum * radius_sum), 1)
+        core = c.physics.soft_core_over_sum * radius_sum * (1 - q) ** 2
+        f2 = c.physics.density_kg_m3 * (2 * np.pi * f) ** 2 / (8 * np.pi) * corr * d / (d * d + core * core) ** 1.5
+        apart = np.einsum("ij,ij->i", result["primary_force_N"][j] - result["primary_force_N"][i], n)
+        total = result["total_force_N"]
+        speed = np.linalg.norm(total - total.mean(0), axis=1) / (6 * np.pi * 1e-3 * radii)
+        r_res = float(np.interp(f, [k[0] for k in known], [k[1] for k in known]))
+        row = dict(frequency_Hz=f, resonant_radius_um=r_res, share_below_resonance=float(np.mean(radii * 1e6 < r_res)),
+                   pressure_spread=float(np.abs(P).max() / np.median(np.abs(P))),
+                   free_speed_mm_s_median=float(np.median(speed) * 1e3), free_speed_mm_s_p90=float(np.percentile(speed, 90) * 1e3),
+                   f2_repulsive_share=float(np.mean(f2 < 0)),
+                   torn_share_adh_1e12=float(np.mean(apart > np.maximum(f2, 0) + 1e-12)),
+                   torn_share_adh_1e10=float(np.mean(apart > np.maximum(f2, 0) + 1e-10)),
+                   torn_share_adh_5e10=float(np.mean(apart > np.maximum(f2, 0) + 5.04e-10)),
+                   f1_N_median=float(np.median(np.linalg.norm(result["primary_force_N"], axis=1))),
+                   f2_N_median=float(np.median(np.linalg.norm(result["secondary_force_N"], axis=1))))
+        rows.append(row)
+        print(f"{f / 1e6:5.2f} MHz (10 kPa): resonant radius {r_res:.2f} um, {row['share_below_resonance']:.0%} below; free speed "
+              f"median/p90 {row['free_speed_mm_s_median']:.3f}/{row['free_speed_mm_s_p90']:.3f} mm/s; |F1| {row['f1_N_median']:.1e} "
+              f"|F2| {row['f2_N_median']:.1e} N; torn pairs at 1e-12 / 1e-10 / 5e-10 N: {row['torn_share_adh_1e12']:.0%} / "
+              f"{row['torn_share_adh_1e10']:.0%} / {row['torn_share_adh_5e10']:.0%}", flush=True)
+out.write_text(json.dumps(dict(run=run.name, pressure_Pa=P_REF_PA, radii_um=(radii * 1e6).tolist(), rows=rows), indent=1) + "\n")

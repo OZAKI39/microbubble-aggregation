@@ -1,0 +1,31 @@
+"""Basic low-frequency actions on the Y-channel chip (2026-11-09): one plate alone, or one pair with a pressure
+maximum (antinode) or zero (node) at the reference point (0, 0, 0) on the trunk.
+
+Channel order Y-, Y+, X-, X+ (PZT1, PZT3, PZT2, PZT4). h: pressure per Pa-eq of each plate at the reference point
+(y_paths.centre_fields, the chip's own sources). A pair a, b with u_a = exp(-i arg h_a) / |h_a|,
+u_b = s exp(-i arg h_b) / |h_b| gives pressures that add (s = 1: antinode) or cancel (s = -1: node) at the point.
+The largest channel is the cap.
+"""
+
+import numpy as np
+
+from y_paths import X_MINUS, X_PLUS, Y_MINUS, Y_PLUS, centre_fields
+
+ACTIONS = ("x_minus", "y_minus", "x_pair_antinode", "x_pair_node", "y_pair_antinode", "y_pair_node")
+
+
+def action_drive(sources, frequency_Hz, action, cap_Pa_eq):
+    """Channel amplitudes [Pa-eq] and phases [rad] of an action."""
+    u = np.zeros(4, complex)
+    if action == "x_minus":
+        u[X_MINUS] = 1.0
+    elif action == "y_minus":
+        u[Y_MINUS] = 1.0
+    else:
+        h, _, _ = centre_fields(sources, frequency_Hz)
+        a, b = (X_MINUS, X_PLUS) if action.startswith("x_pair") else (Y_MINUS, Y_PLUS)
+        sign = 1.0 if action.endswith("antinode") else -1.0
+        u[a] = np.exp(-1j * np.angle(h[a])) / abs(h[a])
+        u[b] = sign * np.exp(-1j * np.angle(h[b])) / abs(h[b])
+    # ratio first: the largest ratio is exactly 1, so the largest channel is exactly the cap (scaling u can round above it)
+    return cap_Pa_eq * (np.abs(u) / np.abs(u).max()), np.mod(np.angle(u), 2 * np.pi)

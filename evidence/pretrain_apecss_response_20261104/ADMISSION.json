@@ -1,0 +1,209 @@
+{
+  "record": "Pretraining tier: the carried APECSS response (response \"apecss\") becomes the default",
+  "date": "2026-11-04",
+  "status": "ADMITTED_PRETRAIN_TIER_ONLY",
+  "authorization": {
+    "conversation": "Claude Code session with the user, 2026-11-04",
+    "user": "目前我需要将【response: \"apecss\" 热启动】作为正式计算的主模块，其它模块进行冻结。请正常完成我需要的功能，不要做多余的防御性编程。",
+    "scope": "Pretraining tier only, as for the GPU field the same day; the response tables (\"table\") are frozen; field, force, contact and stepping modules unchanged."
+  },
+  "change": {
+    "configs/pretrain_policy.json": "new key response = \"apecss\" (run-level default), reasons.response, apecss_response.use text",
+    "workflows/f10ag.py": "run_pretrain takes the default response from the policy; load_pretrain_policy copies it",
+    "unchanged": "bubble_response.CarriedApecssResponse, native/apecss_harmonics.c, the response tables and their classes, forces.py, contact.py, integration.py, frozen HF/LF",
+    "reproducing_earlier_runs": "PRETRAIN runs made before 2026-11-04 without a response key used \"table\": set \"response\": \"table\"",
+    "apecss_sources": "config apecss_dir or environment APECSS_DIR; APECSS v1.8 = a0ee071"
+  },
+  "labels": [
+    "EXPLORATORY",
+    "HOMOGENEOUS_WATER_CONTROL_PROXY",
+    "PHYSICS_UNCALIBRATED",
+    "ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED",
+    "PRETRAIN_TIER"
+  ],
+  "training_ready": false,
+  "evidence": {
+    "single_bubble": "RESPONSE_CURVES.json: fundamental within 0.06% of the 2.4/2.6 MHz tables and 2.1% of the 2.5 MHz table; 2.5 MHz table second harmonic about 17x too large near 1 kPa; no 12 kPa limit at 2.4/2.6 MHz",
+    "whole_runs": {
+      "protocol_formed32": {
+        "status": {
+          "table": "PASS",
+          "apecss": "PASS"
+        },
+        "accepted_steps": {
+          "table": 9772,
+          "apecss": 9772
+        },
+        "wall_s": {
+          "table": 30.9,
+          "apecss": 56.6
+        },
+        "max_bubble_position_difference_m": 1.5969022918074482e-07,
+        "apecss_cycles_per_bubble_step": 1.106496878837495
+      },
+      "protocol_formed128": {
+        "status": {
+          "table": "PASS",
+          "apecss": "PASS"
+        },
+        "accepted_steps": {
+          "table": 3734,
+          "apecss": 3974
+        },
+        "wall_s": {
+          "table": 85.6,
+          "apecss": 129.7
+        },
+        "max_bubble_position_difference_m": 1.0805544724519246e-06,
+        "apecss_cycles_per_bubble_step": 1.1697203699043786
+      },
+      "random_offset_B_formed32": {
+        "status": {
+          "table": "PASS",
+          "apecss": "PASS"
+        },
+        "accepted_steps": {
+          "table": 6700,
+          "apecss": 6710
+        },
+        "wall_s": {
+          "table": 21.7,
+          "apecss": 40.1
+        },
+        "max_bubble_position_difference_m": 2.737766238275127e-08,
+        "apecss_cycles_per_bubble_step": 1.1164726154992548
+      }
+    },
+    "threads": {
+      "protocol_formed32_table": {
+        "wall_s": 5.05,
+        "apecss_s": 0.0,
+        "identical_to_1_thread": null
+      },
+      "protocol_formed32_apecss_1": {
+        "wall_s": 10.39,
+        "apecss_s": 3.47,
+        "identical_to_1_thread": null
+      },
+      "protocol_formed32_apecss_4": {
+        "wall_s": 9.17,
+        "apecss_s": 1.06,
+        "identical_to_1_thread": true
+      },
+      "protocol_formed32_apecss_8": {
+        "wall_s": 7.72,
+        "apecss_s": 0.83,
+        "identical_to_1_thread": true
+      },
+      "protocol_formed128_table": {
+        "wall_s": 6.31,
+        "apecss_s": 0.0,
+        "identical_to_1_thread": null
+      },
+      "protocol_formed128_apecss_1": {
+        "wall_s": 11.21,
+        "apecss_s": 2.89,
+        "identical_to_1_thread": null
+      },
+      "protocol_formed128_apecss_4": {
+        "wall_s": 9.57,
+        "apecss_s": 0.86,
+        "identical_to_1_thread": true
+      },
+      "protocol_formed128_apecss_8": {
+        "wall_s": 8.99,
+        "apecss_s": 0.53,
+        "identical_to_1_thread": true
+      }
+    },
+    "tests": "56 passed including GPU and APECSS tests (TESTS.log)"
+  },
+  "limits": [
+    "With the defaults (8 APECSS threads, cached library) runs take 1.10-1.13x as long as with the tables.",
+    "Every run needs the APECSS sources and gcc; CPU-only or cloud machines without them must set response to \"table\".",
+    "Below about 300 Pa the settled second harmonic has a numerical floor of about 1e-4 of the fundamental (settling tolerance 1e-3); its force contribution is below 1e-6."
+  ],
+  "follow_up": {
+    "date": "2026-11-04",
+    "user": "同意把默认线程数改成多线程，把编译好的 APECSS 库缓存起来，同一份源码只编译一次",
+    "change": {
+      "configs/pretrain_policy.json": "apecss_response.threads 1 -> 8",
+      "microbubble/bubble_response.py": "cached_apecss_library (entry build/apecss/<key[:16]>/, key = SHA-256 of driver source, APECSS sources, compiler, LIBRARY_FLAGS; staged build then rename; never overwritten); apecss_sources helper; LIBRARY_FLAGS / EXECUTABLE_FLAGS constants",
+      "workflows/f10ag.py": "carried_apecss_response uses cached_apecss_library"
+    },
+    "evidence": {
+      "whole_runs": {
+        "protocol_formed32": {
+          "ratio_before": 1.83,
+          "ratio_now": 1.13,
+          "apecss_trajectory_identical_to_1_thread": true,
+          "seconds_in_apecss_now": 6.3
+        },
+        "protocol_formed128": {
+          "ratio_before": 1.51,
+          "ratio_now": 1.12,
+          "apecss_trajectory_identical_to_1_thread": true,
+          "seconds_in_apecss_now": 8.8
+        },
+        "random_offset_B_formed32": {
+          "ratio_before": 1.84,
+          "ratio_now": 1.1,
+          "apecss_trajectory_identical_to_1_thread": true,
+          "seconds_in_apecss_now": 4.3
+        }
+      },
+      "library_build_s": 1.55,
+      "short_runs": [
+        {
+          "run": "protocol_formed32",
+          "variant": "table",
+          "duration_s": 0.5,
+          "wall_s": 5.144661642000017,
+          "apecss_s": 0.0,
+          "threads": null,
+          "library_cached": null,
+          "steps": 1450
+        },
+        {
+          "run": "protocol_formed32",
+          "variant": "apecss_default",
+          "duration_s": 0.5,
+          "wall_s": 5.7808803510000075,
+          "apecss_s": 0.7826825069997199,
+          "threads": 8,
+          "library_cached": true,
+          "steps": 1450
+        },
+        {
+          "run": "protocol_formed128",
+          "variant": "table",
+          "duration_s": 0.3,
+          "wall_s": 6.004288548000034,
+          "apecss_s": 0.0,
+          "threads": null,
+          "library_cached": null,
+          "steps": 278
+        },
+        {
+          "run": "protocol_formed128",
+          "variant": "apecss_default",
+          "duration_s": 0.3,
+          "wall_s": 7.447861767000006,
+          "apecss_s": 0.5231399120002038,
+          "threads": 8,
+          "library_cached": true,
+          "steps": 302
+        }
+      ],
+      "note": "ratios are taken inside one session each: after a machine restart between the two sessions every run was about 30% slower (table 30.9 -> 40.4 s)",
+      "tests": "57 passed (TESTS.log); new test: a second call reuses the entry and only one entry exists",
+      "files": [
+        "RUN_COMPARISON_THREADS8.json",
+        "SHORT_DEFAULTS.json",
+        "SPEED_NOTES.json",
+        "fig3_threads_and_cache.png",
+        "APECSS_SPEED_SCRIPT.py.txt"
+      ]
+    }
+  }
+}

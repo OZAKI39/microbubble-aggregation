@@ -1,0 +1,172 @@
+"""Compiled F2, shared pair distances and 16 APECSS threads (2026-11-07).
+
+usage (repository root):  python FIGURE_SCRIPT.py.txt EVIDENCE_DIR
+Reads EVIDENCE_DIR/data/{F2_RUNS,BILL_122,SUBSTEPS,RUNS_laptop_*}.json; writes
+fig1_pair_forces_compiled.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+BEFORE, T8, T16, WAIT = "#5b6470", "#8fb3d9", "#2a6fb0", "#d08a1e"
+SEEDS = ["23", "21", "16", "7"]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def title(ax, text):
+    ax.set_title(text, loc="left", fontsize=9.5, color=INK)
+
+
+def grid(ax, axis):
+    ax.grid(axis=axis, color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+
+
+def grouped(ax, groups, labels, ylabel, ylim):
+    """Bars per bubble count: mean of the runs of each group, dots for the runs."""
+    width = 0.8 / len(groups)
+    for k, (name, colour, values) in enumerate(groups):
+        x = [i + (k - (len(groups) - 1) / 2) * width for i in range(len(labels))]
+        means = [sum(v) / len(v) for v in values]
+        ax.bar(x, means, width=width - 0.03, color=colour, label=name)
+        for xi, v, m in zip(x, values, means):
+            ax.scatter([xi] * len(v), v, s=9, color="white", edgecolor=INK, linewidth=0.6, zorder=3)
+            ax.text(xi, max(v) + 0.02 * ylim, f"{m:.2f}", ha="center", va="bottom", fontsize=6.5,
+                    color=INK)
+    ax.set_xticks(range(len(labels)), labels)
+    ax.set_xlabel("Bubbles")
+    ax.set_ylabel(ylabel)
+    ax.set_ylim(0, ylim)
+    grid(ax, "y")
+    ax.legend(loc="upper left", fontsize=7, frameon=False)
+
+
+def main():
+    folder = Path(sys.argv[1])
+    read = lambda name: json.loads((folder / "data" / name).read_text())
+    runs, bill, sub = read("F2_RUNS.json"), read("BILL_122.json"), read("SUBSTEPS.json")
+    laptop = {l: read(f"RUNS_laptop_{l}.json") for l in ("f2_t8_1", "f2_t8_2", "f2_t16_1", "f2_t16_2")}
+    labels = [str(runs[s]["bubbles"]) for s in SEEDS]
+    server = lambda key, names: [[runs[s][n][key] for n in names] for s in SEEDS]
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(2, 3, figsize=(16, 8.8), gridspec_kw=dict(wspace=0.45, hspace=0.45))
+
+        # (a) server, time per force evaluation
+        ax = axes[0, 0]
+        grouped(ax, [("Before (NumPy F2, 8 APECSS threads)", BEFORE, [runs[s]["before"]["force_ms_mean"] for s in SEEDS]),
+                     ("Compiled F2 + shared distances, 8 threads", T8, server("force_ms_mean", ("f2_t8_1", "f2_t8_2"))),
+                     ("... and 16 APECSS threads (adopted)", T16, server("force_ms_mean", ("f2_t16_1", "f2_t16_2")))],
+                labels, "Wall time per force evaluation (ms)", 8)
+        title(ax, "(a) Server, project code, 0.5 s runs (dots: runs)")
+
+        # (b) APECSS per call, server and laptop
+        ax = axes[0, 1]
+        rows = [("Server 7950X, 122", [runs["7"][n]["apecss_ms_per_call"] for n in ("f2_t8_1", "f2_t8_2")],
+                 [runs["7"][n]["apecss_ms_per_call"] for n in ("f2_t16_1", "f2_t16_2")]),
+                ("Laptop 13700HX, 122", [laptop[n]["7"]["apecss_ms_per_call"] for n in ("f2_t8_1", "f2_t8_2")],
+                 [laptop[n]["7"]["apecss_ms_per_call"] for n in ("f2_t16_1", "f2_t16_2")])]
+        for i, (name, t8, t16) in enumerate(rows):
+            for k, (v, colour, lab) in enumerate(((t8, T8, "8 threads"), (t16, T16, "16 threads (adopted)"))):
+                x = i + (k - 0.5) * 0.36
+                m = sum(v) / len(v)
+                ax.bar(x, m, width=0.33, color=colour, label=lab if i == 0 else None)
+                ax.scatter([x] * len(v), v, s=9, color="white", edgecolor=INK, linewidth=0.6, zorder=3)
+                ax.text(x, max(v) + 0.06, f"{m:.2f}", ha="center", va="bottom", fontsize=7, color=INK)
+        ax.set_xticks(range(len(rows)), [r[0] for r in rows])
+        ax.set_ylabel("Time inside APECSS per call (ms)")
+        ax.set_ylim(0, 4.8)
+        grid(ax, "y")
+        ax.legend(loc="upper right", fontsize=7, frameon=False)
+        ax.text(0.02, 0.76, "Trajectories with 8 and 16 threads identical bit for bit\n(all 4 starts, both machines)",
+                transform=ax.transAxes, fontsize=7, color=INK, va="top")
+        title(ax, "(b) APECSS: 8 vs 16 threads (dots: runs)")
+
+        # (c) laptop, time per force evaluation
+        ax = axes[0, 2]
+        grouped(ax, [("8 threads", T8, [[laptop[n][s]["force_ms_mean"] for n in ("f2_t8_1", "f2_t8_2")] for s in SEEDS]),
+                     ("16 threads (adopted)", T16, [[laptop[n][s]["force_ms_mean"] for n in ("f2_t16_1", "f2_t16_2")] for s in SEEDS])],
+                labels, "Wall time per force evaluation (ms)", 11)
+        title(ax, "(c) Laptop, new code: no reliable gain from 16 threads")
+
+        # (d) real inputs: NumPy vs compiled pieces
+        ax = axes[1, 0]
+        pieces = [("F2, collective", sub["F2, collective"]["numpy_ms"], sub["F2, collective"]["compiled_ms"],
+                   f"diff {sub['F2, collective']['max_difference_over_max_force']:.1e} of max"),
+                  ("F2, pairwise\n(two-bubble feedback)", sub["F2, pairwise (two-bubble feedback)"]["numpy_ms"],
+                   sub["F2, pairwise (two-bubble feedback)"]["compiled_ms"],
+                   f"diff {sub['F2, pairwise (two-bubble feedback)']['max_difference_over_max_force']:.1e} of max"),
+                  ("Pair distances", sub["pair distances"]["numpy_ms"], sub["pair distances"]["compiled_ms"],
+                   "bit for bit" if sub["pair distances"]["bit_identical"] else "DIFFERENT"),
+                  ("Adhesion", sub["adhesion"]["numpy_before_ms"], sub["adhesion"]["shared_distances_ms"],
+                   "bit for bit" if sub["adhesion"]["bit_identical"] else "DIFFERENT")]
+        for i, (name, old, new, note) in enumerate(pieces):
+            ax.barh(i - 0.18, old, height=0.34, color=BEFORE, label="NumPy before" if i == 0 else None)
+            ax.barh(i + 0.18, new, height=0.34, color=T16, label="Now" if i == 0 else None)
+            ax.text(old + 0.04, i - 0.18, f"{old:.2f} ms", va="center", fontsize=7, color=INK)
+            ax.text(new + 0.04, i + 0.18, f"{new:.3f} ms; {note}", va="center", fontsize=7, color=INK)
+        ax.set_yticks(range(len(pieces)), [p[0] for p in pieces])
+        ax.invert_yaxis()
+        ax.set_xlim(0, 3.6)
+        ax.set_xlabel("Time (ms; inputs of a real 122-bubble force evaluation, median of 300)")
+        grid(ax, "x")
+        ax.legend(loc="upper right", fontsize=7, frameon=False)
+        title(ax, "(d) The replaced pieces, server")
+
+        # (e) where the time goes now
+        ax = axes[1, 1]
+        b = bill["ms_per_force_evaluation"]
+        names = [k for k in b if k != "whole force evaluation"]
+        for i, k in enumerate(names):
+            ax.barh(i, b[k], height=0.6, color=WAIT if k == "waiting for the SVD" else T16)
+            ax.text(b[k] + 0.03, i, f"{b[k]:.2f}", va="center", fontsize=7, color=INK)
+        ax.set_yticks(range(len(names)), names)
+        ax.invert_yaxis()
+        ax.set_xlim(0, 1.8)
+        ax.set_xlabel(f"ms per force evaluation (122 bubbles, 0.5 s; total {b['whole force evaluation']:.2f} ms)")
+        grid(ax, "x")
+        title(ax, "(e) Server, new code: where a force evaluation goes")
+
+        # (f) trajectory differences
+        ax = axes[1, 2]
+        y = range(len(SEEDS))
+        diff = [runs[s]["f2_t16_1"]["max_position_difference_vs_before_m"] for s in SEEDS]
+        ax.scatter(diff, y, s=40, color=T16, zorder=3)
+        for yi, s, dv in zip(y, SEEDS, diff):
+            r = runs[s]
+            same = all(r[n]["gates_same_as_before"] and r[n]["daqp_iterations"] == r["before"]["daqp_iterations"]
+                       for n in ("f2_t8_1", "f2_t8_2", "f2_t16_1", "f2_t16_2"))
+            ax.text(dv * 1.8, yi, f"{dv:.1e} m; DAQP iterations, gates {'same' if same else 'DIFFERENT'}",
+                    va="center", fontsize=7, color=INK)
+        ax.set_yticks(list(y), [f"{l} bubbles" for l in labels])
+        ax.invert_yaxis()
+        ax.set_xscale("log")
+        ax.set_xlim(1e-17, 1e-9)
+        grid(ax, "x")
+        ax.set_xlabel("Largest position difference from before over 0.5 s (m; radius 1.78e-6 m)")
+        title(ax, "(f) Server: results against the code before")
+        fig.savefig(folder / "fig1_pair_forces_compiled.png", dpi=160, bbox_inches="tight")
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

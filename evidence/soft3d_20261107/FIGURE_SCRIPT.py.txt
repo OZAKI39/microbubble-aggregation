@@ -1,0 +1,239 @@
+"""Softness of the current 3D random starts (2026-11-07): figure and time series.
+
+usage (repository root):  python FIGURE_SCRIPT.py.txt DATA_DIR EVIDENCE_DIR
+DATA_DIR: <name>/compact.npz of SOFT3D_RUNS.py.txt; EVIDENCE_DIR/data/ANALYSIS.json of ANALYSE.py.txt.
+Writes EVIDENCE_DIR/fig1_soft3d.png and EVIDENCE_DIR/data/SERIES.json (contacts per bubble and
+pairs broken per bubble per 0.1 s, every 10 ms).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+R = 1.78e-6
+CONTACT_GAP_M = 0.01 * R
+SEEDS = [23, 14, 21, 16, 17, 7]
+LEVELS = [("x1", "Adhesion x1 (default)", "#2a6fb0"), ("x0.1", "Adhesion x0.1", "#8fb3d9"),
+          ("x0", "No adhesion", "#d08a1e")]
+REAL = dict(speed=(120, 250), dln=0.02405, n=138)  # evidence/softness_matched_speed_20261104/
+MONOLAYER = [("N32, x1", 172.07, 0.00794), ("N128, x1", 51.84, 0.00287), ("N32, no adhesion", 373.98, 0.23380)]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def title(ax, text):
+    ax.set_title(text, loc="left", fontsize=9.5, color=INK)
+
+
+def grid(ax, axis):
+    ax.grid(axis=axis, color=GRID, linewidth=0.8, which="major")
+    ax.set_axisbelow(True)
+
+
+def series(npz, n):
+    sets = [{tuple(p) for p in cKDTree(x).query_pairs(2 * R + CONTACT_GAP_M)} for x in npz["positions10_m"]]
+    return dict(t_s=npz["t10"].tolist(), contacts_per_bubble=[len(s) / n for s in sets],
+                broken_per_bubble_per_0p1s=[len(sets[i] - sets[i + 10]) / n for i in range(len(sets) - 10)])
+
+
+def largest_piece(p):
+    """The bubbles of the largest piece (bubbles within 0.5 R of a neighbour belong together)."""
+    pairs = np.array(sorted(cKDTree(p).query_pairs(2.5 * R)), dtype=int).reshape(-1, 2)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(p), len(p)))
+    _, labels = connected_components(graph, directed=False)
+    return p[labels == np.bincount(labels).argmax()]
+
+
+def snapshot(ax, groups, label_y):
+    """Top views side by side: groups = [(label, positions)], each centred on its own median."""
+    x_at = 0.0
+    zs = np.concatenate([p[:, 2] - np.median(p[:, 2]) for _, p in groups])
+    lim = np.abs(zs).max()
+    for label, p in groups:
+        c = np.median(p, axis=0)
+        q = (p - c) * 1e6
+        width = max(2 * np.abs(q[:, :2]).max() + 8, 34)  # room for the label under small clusters
+        order = np.argsort(q[:, 2])
+        col = EllipseCollection(2 * R * 1e6, 2 * R * 1e6, 0, units="xy", offsets=q[order, :2] + [x_at + width / 2, 0],
+                                offset_transform=ax.transData, array=q[order, 2], cmap="viridis",
+                                clim=(-lim * 1e6, lim * 1e6), edgecolor="white", linewidth=0.3)
+        ax.add_collection(col)
+        ax.text(x_at + width / 2, -label_y, label, ha="center", va="top", fontsize=7, color=INK)
+        x_at += width + 4
+    ax.set_xlim(-2, x_at)
+    ax.set_ylim(-label_y - 9, label_y)
+    ax.set_aspect("equal")
+    ax.set_yticks([])
+    ax.set_xticks([])
+    for s in ("left", "bottom"):
+        ax.spines[s].set_visible(False)
+    return col
+
+
+def main():
+    data, folder = Path(sys.argv[1]), Path(sys.argv[2])
+    a = json.loads((folder / "data" / "ANALYSIS.json").read_text())
+    name = lambda seed, level: f"seed{seed}_adhesion_{level}"
+    npz = {k: np.load(data / k / "compact.npz") for k in a}
+    ser = {k: series(npz[k], a[k]["bubbles"]) for k in a}
+    (folder / "data" / "SERIES.json").write_text(json.dumps(ser) + "\n")
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig = plt.figure(figsize=(17, 10.2))
+        gs = fig.add_gridspec(3, 3, height_ratios=[1, 1, 0.95], wspace=0.32, hspace=0.5)
+
+        # (a) shape change against speed
+        ax = fig.add_subplot(gs[0, 0])
+        ax.add_patch(plt.Rectangle((REAL["speed"][0], REAL["dln"] / 1.25), REAL["speed"][1] - REAL["speed"][0],
+                                   REAL["dln"] * (1.25 - 1 / 1.25), color="#f2d9a6", zorder=1))
+        ax.text(REAL["speed"][0] / 1.05, REAL["dln"], f"Real clusters (A/B),\n{REAL['n']} windows",
+                fontsize=7, color=INK, va="center", ha="right")
+        for label, v, d in MONOLAYER:
+            ax.scatter(v, d, marker="s", s=36, facecolor="white", edgecolor=MUTED, linewidth=1.2, zorder=3,
+                       label="Monolayer clusters, 2026-11-04" if label == MONOLAYER[0][0] else None)
+            ax.text(v * 1.08, d, label, fontsize=6.5, color=MUTED, va="center")
+        for level, lab, colour in LEVELS:
+            for seed in SEEDS:
+                r = a[name(seed, level)]
+                ax.scatter(r["sim"]["speed"], r["sim"]["dln"], s=30, color=colour, zorder=4,
+                           label=f"3D start, {lab.lower()}" if seed == SEEDS[0] else None)
+                if level == "x1":
+                    ax.scatter(r["rigid_floor"]["speed"], r["rigid_floor"]["dln"], marker="x", s=22, color=MUTED,
+                               zorder=3, label="Same path, rigid (pixel floor)" if seed == SEEDS[0] else None)
+                    ax.text(r["sim"]["speed"] / 1.12, r["sim"]["dln"], str(r["bubbles"]), fontsize=6.5, ha="right",
+                            va="center", color=colour)
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_xlim(15, 700)
+        ax.set_xticks([20, 50, 100, 200, 500], ["20", "50", "100", "200", "500"])
+        ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+        ax.set_ylim(1.5e-3, 0.5)
+        ax.set_xlabel("Cluster speed (px/s, 0.6 um/px)")
+        ax.set_ylabel("Median |d ln aspect| per 0.1 s (first 1 s)")
+        grid(ax, "both")
+        ax.legend(loc="upper left", fontsize=6.5, frameon=False)
+        title(ax, "(a) Shape change: X- 6000 Pa-eq (source cap), 1.5 s")
+
+        # (b) pairs broken after the first 0.1 s
+        ax = fig.add_subplot(gs[0, 1])
+        width = 0.26
+        for k, (level, lab, colour) in enumerate(LEVELS):
+            x = [i + (k - 1) * width for i in range(len(SEEDS))]
+            v = [np.median(ser[name(s, level)]["broken_per_bubble_per_0p1s"][10:]) for s in SEEDS]
+            ax.bar(x, v, width=width - 0.03, color=colour, label=lab)
+            for xi, s, vi in zip(x, SEEDS, v):
+                split = a[name(s, level)]["sim"]["split"]
+                if split > 0:
+                    ax.text(xi, vi + 0.03, f"{100 * split:.0f}%", ha="center", va="bottom", fontsize=6.5, color=INK)
+        ax.set_xticks(range(len(SEEDS)), [str(a[name(s, 'x1')]["bubbles"]) for s in SEEDS])
+        ax.set_xlabel("Bubbles (3D random start)")
+        ax.set_ylabel("Contacts broken per bubble per 0.1 s\n(median after the first 0.1 s)")
+        ax.set_ylim(0, 1.6)
+        grid(ax, "y")
+        ax.legend(loc="upper left", fontsize=7, frameon=False)
+        ax.text(0.98, 0.97, "Numbers: share of windows\nin which the cluster split.\nAdhesion x1: no contact\n"
+                "breaks after the first 0.1 s", transform=ax.transAxes, fontsize=7, color=INK, va="top", ha="right")
+        title(ax, "(b) Do bubbles rearrange?")
+
+        # (c) contacts per bubble over time
+        ax = fig.add_subplot(gs[0, 2])
+        colours = plt.cm.viridis(np.linspace(0.05, 0.85, len(SEEDS)))
+        for colour, s in zip(colours, SEEDS):
+            for level, style in (("x1", "-"), ("x0", "--")):
+                q = ser[name(s, level)]
+                ax.plot(q["t_s"], q["contacts_per_bubble"], style, color=colour, linewidth=1.3,
+                        label=f"{a[name(s, 'x1')]['bubbles']} bubbles" if level == "x1" else None)
+        ax.plot([], [], "k-", label="adhesion x1")
+        ax.plot([], [], "k--", label="no adhesion")
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Contacts per bubble (gap < 0.01 R)")
+        ax.set_ylim(0, 4.6)
+        grid(ax, "y")
+        ax.legend(loc="upper center", fontsize=6.3, frameon=False, ncol=4)
+        title(ax, "(c) Contacts: squeezed together within 0.1 s")
+
+        # (d) forces with adhesion x1
+        ax = fig.add_subplot(gs[1, 0])
+        x = np.arange(len(SEEDS))
+        rows = [a[name(s, "x1")] for s in SEEDS]
+        ax.bar(x - 0.2, [r["drive_per_bubble_N"] for r in rows], width=0.36, color="#9aa5b1",
+               label="Mean force per bubble (moves the cluster)")
+        ax.bar(x + 0.2, [r["F2_spread_median_N"] for r in rows], width=0.36, color="#2a6fb0",
+               label="F2 difference between bubbles (median)")
+        ax.scatter(x + 0.2, [r["F2_spread_p90_N"] for r in rows], marker="_", s=120, color=INK, zorder=3,
+                   label="F2 difference, 90th percentile")
+        for xi, r in zip(x, rows):
+            ax.text(xi + 0.2, r["F2_spread_p90_N"] * 1.4, f"{r['F2_spread_over_drive']:.0f}x", ha="center",
+                    fontsize=7, color=INK)
+        for level, value, style in (("x1", 5.04e-10, "-"), ("x0.1", 5.04e-11, "--")):
+            ax.axhline(value, color="#d08a1e", linestyle=style, linewidth=1)
+            ax.text(len(SEEDS) - 0.45, value * 1.12, f"adhesion per contact, {level}", fontsize=6.5, ha="right",
+                    color="#d08a1e")
+        ax.set_yscale("log")
+        ax.set_ylim(1e-13, 3e-7)
+        ax.set_xticks(x, [str(r["bubbles"]) for r in rows])
+        ax.set_xlabel("Bubbles (adhesion x1)")
+        ax.set_ylabel("Force (N, median over the run)")
+        grid(ax, "y")
+        ax.legend(loc="upper left", fontsize=6.5, frameon=False)
+        title(ax, "(d) F2 squeezes: 37-75x the force that moves the cluster")
+
+        # (e) the 122-bubble start without adhesion: rearranges, stays together
+        ax = fig.add_subplot(gs[1, 1:])
+        for colour, s in zip(colours, SEEDS):
+            q = ser[name(s, "x0")]
+            ax.plot(q["t_s"][:len(q["broken_per_bubble_per_0p1s"])], q["broken_per_bubble_per_0p1s"], color=colour,
+                    linewidth=1.2, label=f"{a[name(s, 'x0')]['bubbles']} bubbles, no adhesion "
+                    f"(split in {100 * a[name(s, 'x0')]['sim']['split']:.0f}% of windows)")
+            q = ser[name(s, "x1")]
+            ax.plot(q["t_s"][:len(q["broken_per_bubble_per_0p1s"])], q["broken_per_bubble_per_0p1s"], ":", color=colour,
+                    linewidth=1)
+        ax.plot([], [], "k:", label="dotted: adhesion x1 (zero after the start)")
+        ax.set_yscale("symlog", linthresh=0.01)
+        ax.set_ylim(0, 60)
+        ax.set_xlabel("Window start (s)")
+        ax.set_ylabel("Contacts broken per bubble in the next 0.1 s")
+        grid(ax, "y")
+        ax.legend(loc="upper right", fontsize=6.5, frameon=False, ncol=2)
+        title(ax, "(e) Without adhesion: small clusters split, 99 and 122 stay together (F2 alone)")
+
+        # (f, g) top views; at 1.5 s the largest piece only (clusters without adhesion split)
+        for place, letter, seed in ((gs[2, 0], "f", 14), (gs[2, 1:], "g", 7)):
+            ax = fig.add_subplot(place)
+            groups = [("start", npz[name(seed, "x1")]["positions10_m"][0])]
+            for level, lab, _ in LEVELS:
+                p = npz[name(seed, level)]["positions10_m"][-1]
+                piece = largest_piece(p)
+                text = "" if len(piece) == len(p) else f"\nlargest piece\n{len(piece)} of {len(p)}"
+                groups.append((f"1.5 s\n{lab.split(' (')[0].lower()}{text}", piece))
+            label_y = max(np.abs((g[1] - np.median(g[1], 0))[:, 1]).max() for g in groups) * 1e6 + 2.5
+            col = snapshot(ax, groups, label_y)
+            title(ax, f"({letter}) {a[name(seed, 'x1')]['bubbles']}-bubble start seen from above (colour: height)")
+        fig.savefig(folder / "fig1_soft3d.png", dpi=160, bbox_inches="tight")
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

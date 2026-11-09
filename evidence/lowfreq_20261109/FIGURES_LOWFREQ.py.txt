@@ -1,0 +1,195 @@
+"""Figures and an animation of the low-frequency runs on the Y-channel chip (2026-11-09).
+
+usage (repository root):
+    python figures_lowfreq.py DATA_DIR ANALYSIS_DIR OUT_DIR            (three PNG figures)
+    python figures_lowfreq.py --animate DATA_DIR OUT_MP4 NAME [NAME ...] (3d, 60 deg view, real time)
+ANALYSIS_DIR: LOWFREQ.json / .npz / STEP_CHECK_LOWFREQ.json of analyse_lowfreq.py.
+Top views: x along the trunk (trunk port at +x), y across it; the trunk walls at y = +-89.5 um are drawn.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+
+INK, MUTED, WALL = "#1f2328", "#5b6470", "#2a78d6"
+ACTIONS = ("x_minus", "y_minus", "x_pair_antinode", "x_pair_node", "y_pair_antinode", "y_pair_node")
+TITLES = {"x_minus": "PZT2 (X−) alone", "y_minus": "PZT1 (Y−) alone", "x_pair_antinode": "X pair, maximum at centre",
+          "x_pair_node": "X pair, zero at centre", "y_pair_antinode": "Y pair, maximum at centre",
+          "y_pair_node": "Y pair, zero at centre"}
+FREQUENCIES = ("0.5", "0.75", "1.0", "1.5", "2.0")
+HALF_WIDTH_UM = 89.5
+FREQ_COLOURS = ("#1b4f8a", "#2a78d6", "#5fa8a0", "#e09a2e", "#c2411f")
+
+
+def setup(font_dir):
+    font_manager.fontManager.addfont(str(shutil.copy("/mnt/c/Windows/Fonts/arial.ttf", Path(font_dir) / "arial.ttf")))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED, "text.color": INK,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK,
+                         "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+
+
+def ended(e):
+    return "1 s" if e["status"] == "PASS" else f"wall at {e['completed_s']:.2f} s"
+
+
+def overview(summary, arrays, out):
+    fig, axes = plt.subplots(len(ACTIONS), len(FREQUENCIES), figsize=(15, 17), dpi=130, squeeze=False)
+    fig.subplots_adjust(left=0.07, right=0.99, top=0.95, bottom=0.04, wspace=0.18, hspace=0.42)
+    by_name = {e["name"]: e for e in summary}
+    for i, action in enumerate(ACTIONS):
+        for j, f in enumerate(FREQUENCIES):
+            ax = axes[i, j]
+            name = f"LF_{action}_{f}MHz_1s"
+            e = by_name[name]
+            start, end = arrays[f"{name}__x_start"], arrays[f"{name}__x_end"]
+            centre = arrays[f"{name}__centre"]
+            ax.plot(centre[:, 0], centre[:, 1], color=MUTED, lw=0.8)
+            ax.scatter(start[:, 0], start[:, 1], s=3, color="#b9c0c8", lw=0)
+            ax.scatter(end[:, 0], end[:, 1], s=3, color="#2a78d6", lw=0)
+            for y in (-HALF_WIDTH_UM, HALF_WIDTH_UM):
+                ax.axhline(y, color=INK, lw=1.0)
+            cx = 0.5 * (min(start[:, 0].min(), end[:, 0].min()) + max(start[:, 0].max(), end[:, 0].max()))
+            half = max(100.0, 0.5 * (max(start[:, 0].max(), end[:, 0].max()) - min(start[:, 0].min(), end[:, 0].min())) + 15)
+            ax.set_xlim(cx - half, cx + half)
+            ax.set_ylim(-100, 100)
+            ax.set_aspect("equal")
+            ax.set_title(f"{f} MHz · {ended(e)} · {e['pieces_end']} piece{'s' if e['pieces_end'] > 1 else ''}",
+                         fontsize=8.5, loc="left")
+            if j == 0:
+                ax.set_ylabel(f"{TITLES[action]}\ny (µm)", fontsize=9)
+            if i == len(ACTIONS) - 1:
+                ax.set_xlabel("x (µm)")
+    fig.suptitle("Low-frequency runs on the Y chip, 6000 Pa-eq: grey start, blue end, line = path of the centre, "
+                 "black = trunk walls", fontsize=11, x=0.07, ha="left")
+    fig.savefig(out)
+    plt.close(fig)
+
+
+def series_figure(summary, arrays, out):
+    fig, axes = plt.subplots(3, len(ACTIONS), figsize=(18, 8.5), dpi=130, squeeze=False)
+    fig.subplots_adjust(left=0.05, right=0.99, top=0.88, bottom=0.07, wspace=0.3, hspace=0.35)
+    for j, action in enumerate(ACTIONS):
+        for f, colour in zip(FREQUENCIES, FREQ_COLOURS):
+            name = f"LF_{action}_{f}MHz_1s"
+            t = arrays[f"{name}__t"]
+            centre, extents, pieces = arrays[f"{name}__centre"], arrays[f"{name}__extents"], arrays[f"{name}__pieces"]
+            axes[0, j].plot(t, np.linalg.norm(centre - centre[0], axis=1), color=colour, lw=1.2, label=f"{f} MHz")
+            axes[1, j].plot(t, extents[:, 0] / extents[:, 2], color=colour, lw=1.2)
+            axes[2, j].plot(t, pieces, color=colour, lw=1.2)
+        axes[0, j].set_title(TITLES[action], loc="left", fontsize=9.5)
+        for ax in axes[:, j]:
+            ax.set_xlim(0, 1)
+            ax.grid(color="#e6e8eb", lw=0.6)
+        axes[2, j].set_xlabel("Time (s)")
+    axes[0, 0].set_ylabel("Centre moved (µm)")
+    axes[1, 0].set_ylabel("Longest / shortest extent")
+    axes[2, 0].set_ylabel("Pieces")
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper right", ncol=5, frameon=False)
+    fig.suptitle("Low-frequency runs: motion, shape and pieces (a line ends where the run stopped at a wall)",
+                 fontsize=11, x=0.05, ha="left")
+    fig.savefig(out)
+    plt.close(fig)
+
+
+def step_figure(checks, out):
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.2), dpi=130)
+    fig.subplots_adjust(left=0.06, right=0.99, top=0.84, bottom=0.14, wspace=0.3)
+    for c in checks:
+        key = "t0.2" if "t0.2" in c else "t0.1" if "t0.1" in c else None
+        if key is None:
+            continue
+        d = c[key]
+        f = c["coarse"].split("_")[-2].replace("MHz", "")
+        colour = FREQ_COLOURS[FREQUENCIES.index(f)]
+        marker = "o" if key == "t0.2" else "s"
+        axes[0].plot(*d["displacement_um"], marker=marker, color=colour, ms=5, ls="none")
+        axes[1].plot(d["extents_um"][0][0], d["extents_um"][1][0], marker=marker, color=colour, ms=5, ls="none")
+        axes[2].plot(*d["pieces"], marker=marker, color=colour, ms=5, ls="none", alpha=0.7)
+    for ax, label in zip(axes, ("Centre moved (µm)", "Longest extent (µm)", "Pieces")):
+        lim = max(ax.get_xlim()[1], ax.get_ylim()[1])
+        ax.plot([0, lim], [0, lim], color=MUTED, lw=0.8, ls="--")
+        ax.set_xlabel(f"{label}, 0.1 ms steps")
+        ax.set_ylabel(f"{label}, 0.05 ms steps")
+        ax.grid(color="#e6e8eb", lw=0.6)
+    for f, colour in zip(FREQUENCIES, FREQ_COLOURS):
+        axes[0].plot([], [], marker="o", color=colour, ls="none", label=f"{f} MHz")
+    axes[0].legend(frameon=False, fontsize=8)
+    fig.suptitle("Step check: 0.1 ms against 0.05 ms at 0.2 s (circles) or 0.1 s (squares) if a run stopped earlier",
+                 fontsize=11, x=0.06, ha="left")
+    fig.savefig(out)
+    plt.close(fig)
+
+
+def animate(data, out, names):
+    runs = [json.loads((data / n / "ROW.json").read_text()) for n in names]
+    compact = [np.load(data / n / "compact.npz") for n in names]
+    frames = max(len(c["times_s"]) for c in compact)
+    step = compact[0]["times_s"][1] - compact[0]["times_s"][0]
+    fig = plt.figure(figsize=(3.3 * len(names), 4.2), dpi=110)
+    axes, dots = [], []
+    for k, (row, c) in enumerate(zip(runs, compact)):
+        ax = fig.add_subplot(1, len(names), k + 1, projection="3d", proj_type="ortho")
+        ax.view_init(elev=60, azim=-60)
+        x = c["positions_m"] * 1e6
+        centre = x.mean(axis=1)
+        lo, hi = centre.min(axis=0) - 40, centre.max(axis=0) + 40
+        half = max(hi[0] - lo[0], hi[1] - lo[1]) / 2
+        mid = (lo + hi) / 2
+        ax.set_xlim(mid[0] - half, mid[0] + half)
+        ax.set_ylim(max(mid[1] - half, -HALF_WIDTH_UM), min(mid[1] + half, HALF_WIDTH_UM))
+        ax.set_zlim(-HALF_WIDTH_UM, HALF_WIDTH_UM)
+        ax.set_box_aspect((2 * half, ax.get_ylim()[1] - ax.get_ylim()[0], 2 * HALF_WIDTH_UM))
+        ax.set_xlabel("x (µm)", fontsize=8)
+        ax.set_ylabel("y (µm)", fontsize=8)
+        ax.set_zlabel("z (µm)", fontsize=8)
+        ax.tick_params(labelsize=7)
+        ax.set_title(f"{TITLES[row['action']]}\n{row['frequency_Hz'] / 1e6:g} MHz", fontsize=9, loc="left")
+        dots.append(ax.scatter(x[0, :, 0], x[0, :, 1], x[0, :, 2], c=x[0, :, 2], cmap="viridis", vmin=-30, vmax=30,
+                               s=6, depthshade=False))
+        axes.append(ax)
+    clock = fig.text(0.01, 0.02, "", fontsize=10)
+
+    def draw(i):
+        for ax, dot, c, row in zip(axes, dots, compact, runs):
+            k = min(i, len(c["times_s"]) - 1)
+            x = c["positions_m"][k] * 1e6
+            dot._offsets3d = (x[:, 0], x[:, 1], x[:, 2])
+            dot.set_array(x[:, 2])
+            if k == len(c["times_s"]) - 1 and row["status"] != "PASS":
+                ax.set_title(f"{TITLES[row['action']]}\n{row['frequency_Hz'] / 1e6:g} MHz · stopped at wall "
+                             f"{row['completed_s']:.2f} s", fontsize=9, loc="left")
+        clock.set_text(f"t = {min(i, frames - 1) * step:.2f} s (shown 10x slower)")
+        return dots
+
+    anim = animation.FuncAnimation(fig, draw, frames=frames, blit=False)
+    anim.save(out, writer=animation.FFMpegWriter(fps=10, codec="libx264", extra_args=["-pix_fmt", "yuv420p"]))
+    plt.close(fig)
+
+
+def main():
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup(font_dir)
+        if sys.argv[1] == "--animate":
+            animate(Path(sys.argv[2]), Path(sys.argv[3]), sys.argv[4:])
+            return
+        analysis, out = Path(sys.argv[2]), Path(sys.argv[3])
+        summary = json.loads((analysis / "LOWFREQ.json").read_text())
+        arrays = dict(np.load(analysis / "LOWFREQ.npz"))
+        checks = json.loads((analysis / "STEP_CHECK_LOWFREQ.json").read_text())
+        overview(summary, arrays, out / "fig_lowfreq_overview.png")
+        series_figure(summary, arrays, out / "fig_lowfreq_series.png")
+        step_figure(checks, out / "fig_lowfreq_step_check.png")
+
+
+main()

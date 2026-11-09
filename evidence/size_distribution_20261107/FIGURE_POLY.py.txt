@@ -1,0 +1,146 @@
+"""Figure of the size-distribution test runs (2026-11-07).
+
+usage (repository root):  python FIGURE_POLY.py POLY_ANALYSIS_JSON SOFT3D_ANALYSIS_JSON EVIDENCE_DIR
+POLY_ANALYSIS_JSON: ANALYSE_POLY.py on the runs of POLY_RUNS.py; SOFT3D_ANALYSIS_JSON: ANALYSE_POLY.py
+on the runs of evidence/soft3d_20261107/ (every bubble 1.78 um, same starts and drive). Writes
+EVIDENCE_DIR/fig1_size_distribution.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEEDS = [23, 14, 21, 16, 17, 7]
+CASES = [  # source, run suffix, label, colour
+    ("soft3d", "adhesion_x1", "All 1.78 um, adhesion", "#9aa5b1"),
+    ("poly", "tu_x1", "Sizes SD 1.5, shell by size, adhesion", "#2a6fb0"),
+    ("poly", "same_x1", "Sizes SD 1.5, same shell, adhesion", "#8a5cc2"),
+    ("soft3d", "adhesion_x0", "All 1.78 um, no adhesion", "#f0c27a"),
+    ("poly", "tu_x0", "Sizes SD 1.5, shell by size, no adhesion", "#d08a1e"),
+]
+WIDTH = 0.16
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def grid(ax, axis="y"):
+    ax.grid(axis=axis, color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+
+
+def main():
+    poly = json.loads(Path(sys.argv[1]).read_text())
+    soft = json.loads(Path(sys.argv[2]).read_text())
+    folder = Path(sys.argv[3])
+
+    def row(source, suffix, seed):
+        return (soft if source == "soft3d" else poly)[f"seed{seed}_{suffix}"]
+
+    n_of = {seed: poly[f"seed{seed}_tu_x1"]["bubbles"] for seed in SEEDS}
+    x = np.arange(len(SEEDS))
+
+    def bars(ax, value, log=False):
+        for k, (source, suffix, label, colour) in enumerate(CASES):
+            v = [value(row(source, suffix, seed)) for seed in SEEDS]
+            ax.bar(x + (k - 2) * WIDTH, [np.nan if a is None else a for a in v], WIDTH * 0.92, color=colour,
+                   label=label)
+        ax.set_xticks(x, [str(n_of[seed]) for seed in SEEDS])
+        ax.set_xlabel("Bubbles")
+        if log:
+            ax.set_yscale("log")
+        grid(ax)
+
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(2, 3, figsize=(17, 9.4), gridspec_kw=dict(wspace=0.3, hspace=0.42))
+
+        ax = axes[0, 0]
+        radii = np.concatenate([poly[f"seed{seed}_tu_x1"]["radii_m"] for seed in SEEDS]) * 1e6
+        ax.hist(radii, bins=np.arange(0.8, 3.01, 0.1), color="#2a6fb0", edgecolor="white", linewidth=0.8)
+        ax.axvline(1.78, color=INK, lw=1, ls="--")
+        ax.text(1.81, ax.get_ylim()[1] * 0.92, "1.78 um: the size before,\nthe median of the distribution", fontsize=7.5,
+                color=INK, va="top")
+        ax.set_xlabel("Bubble radius (um)")
+        ax.set_ylabel(f"Bubbles (the six starts, {len(radii)} in all)")
+        ax.text(0.98, 0.6, "log-normal, geometric SD 1.5,\ntruncated to 0.8-3.0 um", transform=ax.transAxes,
+                ha="right", fontsize=7.5, color=MUTED)
+        grid(ax)
+        ax.set_title("(a) Radii of the six starts (SD 1.5)", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[0, 1]
+        bars(ax, lambda r: r["broken_per_bubble_per_0p1s_after_0p1s_mean"])
+        ax.set_ylabel("Contacts opening per bubble per 0.1 s\n(mean after the first 0.1 s)")
+        ax.set_ylim(0, 1.5)
+        ax.text(0.02, 0.97, "with adhesion (grey, blue, purple): 0 or almost 0 in every start", transform=ax.transAxes,
+                fontsize=7.5, color=MUTED, va="top")
+        ax.set_title("(b) Rearrangement inside the cluster", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[0, 2]
+        bars(ax, lambda r: 100 * r["largest_piece_share_end"])
+        ax.set_ylabel("Largest piece at the end (% of the bubbles)")
+        ax.set_ylim(0, 125)
+        ax.set_yticks([0, 20, 40, 60, 80, 100])
+        ax.text(0.02, 0.97, "with adhesion, 20 and 32 bubbles: 1-3 single bubbles left in the\nfirst 10 ms "
+                "and were pushed 0.6-4.4 mm away", transform=ax.transAxes, fontsize=7, color=MUTED, va="top")
+        handles, labels = ax.get_legend_handles_labels()
+        fig.legend(handles, labels, loc="upper center", ncol=5, fontsize=8, frameon=False, bbox_to_anchor=(0.5, 0.955))
+        ax.set_title("(c) Does the cluster come apart?", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[1, 0]
+        for k, (source, suffix, label, colour) in enumerate(CASES):
+            for i, seed in enumerate(SEEDS):
+                r = row(source, suffix, seed)
+                pos = i + (k - 2) * WIDTH
+                ax.bar(pos, r["sim"]["dln"], WIDTH * 0.92, color=colour)
+                ax.plot([pos - WIDTH * 0.46, pos + WIDTH * 0.46], [r["rigid_floor"]["dln"]] * 2, color=INK, lw=1.3)
+        ax.set_yscale("log")
+        ax.set_ylim(1e-3, 0.5)
+        ax.set_xticks(x, [str(n_of[seed]) for seed in SEEDS])
+        ax.set_xlabel("Bubbles")
+        ax.set_ylabel("Top-view |d ln aspect| per 0.1 s (median)")
+        ax.text(0.02, 0.97, "black tick: the run's rigid floor", transform=ax.transAxes, fontsize=7.5, color=MUTED,
+                va="top")
+        grid(ax)
+        ax.set_title("(d) Shape change (metric of soft3d, discs at their own radius)", loc="left", fontsize=9.5,
+                     color=INK)
+
+        ax = axes[1, 1]
+        bars(ax, lambda r: r["F2_spread_over_drive"], log=True)
+        ax.set_ylim(2, 150)
+        ax.set_ylabel("F2 spread between bubbles / push on the cluster")
+        ax.set_title("(e) How strongly F2 holds the cluster", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[1, 2]
+        bars(ax, lambda r: r["contacts_per_bubble_end"])
+        for i, seed in enumerate(SEEDS):
+            ax.plot([i - 2.5 * WIDTH, i + 2.5 * WIDTH], [row("poly", "tu_x1", seed)["contacts_per_bubble_start"]] * 2,
+                    color=INK, lw=1, ls=":")
+        ax.set_ylim(0, 3.6)
+        ax.set_ylabel("Contacts per bubble at the end")
+        ax.text(0.02, 0.97, "dotted: at the start (SD 1.5 starts)", transform=ax.transAxes, fontsize=7.5, color=MUTED,
+                va="top")
+        ax.set_title("(f) Pressed together or loosened", loc="left", fontsize=9.5, color=INK)
+        fig.savefig(folder / "fig1_size_distribution.png", dpi=160, bbox_inches="tight")
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

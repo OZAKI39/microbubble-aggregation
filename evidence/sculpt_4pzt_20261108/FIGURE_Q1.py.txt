@@ -1,0 +1,98 @@
+"""Figure: outcomes of the shape runs Q1 at one frequency (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:SCRATCH python figure_q1.py DATA_DIR ANALYSIS_JSON FREQ_MHZ OUT_PNG
+Rows, for 800 and then 250 bubbles: adhesion after 1 s (Q1 run), no adhesion after 1 s (Q1 run), no
+adhesion after 20 s (L run, 5 ms steps; 7.0 MHz: 800 bubbles only; rows without runs are left out;
+the 800-bubble adhesion runs stopped at the 1 h wall-clock guard at 0.37-0.58 s); columns: lines_x, cross, wavy,
+dots. Each panel: top view at the end (bubbles at their radius, colour = height z), the start
+outline (grey), |p| of the drive at z = 0 as background (dark = low), and: the share of bubbles
+within R of the zero set (top view), start -> end; the spread of the bubble centres along x,
+start -> end; the pieces at the end; the bubble displacement (median / largest).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+from scipy.spatial import ConvexHull
+
+from microbubble.acoustics import WaterDiscs
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED = "#1f2328", "#5b6470"
+PATTERNS = ["lines_x", "cross", "wavy", "dots"]
+TITLE = {"lines_x": "lines (X pair)", "cross": "diagonal cross", "wavy": "wavy line", "dots": "dot"}
+data, analysis, f_mhz, out = Path(sys.argv[1]), json.loads(Path(sys.argv[2]).read_text()), sys.argv[3], sys.argv[4]
+elements = pretrain_context(Path("."), 2.5e6).discs.elements
+line = np.linspace(-45e-6, 45e-6, 181)
+gx, gy = np.meshgrid(line, line, indexing="xy")
+grid = np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)])
+discs = WaterDiscs(elements, float(f_mhz) * 1e6)
+P = discs.evaluate(grid, 192)[0]
+
+with tempfile.TemporaryDirectory() as font_dir:
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, Path(font_dir) / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 8.5, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+    rows = [(800, "Q1", 1, "adhesion, <= 1 s"), (800, "Q1", 0, "no adhesion, 1 s"), (800, "L", 0, "no adhesion, 20 s"),
+            (250, "Q1", 1, "adhesion, 1 s"), (250, "Q1", 0, "no adhesion, 1 s"), (250, "L", 0, "no adhesion, 20 s")]
+    # rows without any run (no 20 s runs of 250 bubbles at 7.0 MHz) are left out
+    rows = [row for row in rows if any(f"{row[1]}_N{row[0]}_{f_mhz}MHz_{pattern}_adh{row[2]}" in analysis for pattern in PATTERNS)]
+    fig, axes = plt.subplots(len(rows), 4, figsize=(12.6, 3.25 * len(rows) + 0.6), dpi=110)
+    fig.subplots_adjust(left=0.07, right=0.9, top=0.955, bottom=0.03, hspace=0.3, wspace=0.12)
+    for i, (n, kind, adh, text) in enumerate(rows):
+        for j, pattern in enumerate(PATTERNS):
+            ax = axes[i, j]
+            name = f"{kind}_N{n}_{f_mhz}MHz_{pattern}_adh{adh}"
+            r = analysis.get(name)
+            ax.set_xlim(-45, 45)
+            ax.set_ylim(-45, 45)
+            ax.set_aspect("equal")
+            ax.tick_params(labelsize=7.5)
+            if j == 0:
+                ax.set_ylabel(f"{n} bubbles, {text}\ny (um)")
+            if i == len(rows) - 1:
+                ax.set_xlabel("x (um)")
+            if i == 0:
+                ax.set_title(TITLE[pattern], fontsize=9.5, color=INK)
+            if r is None:
+                ax.text(0, 0, "not run", ha="center", color=MUTED)
+                continue
+            s = r["segments"][-1]
+            u = np.array(s["amplitudes_Pa_eq"]) * np.exp(1j * np.array(s["phases_rad"]))
+            p = np.abs(u @ P).reshape(gx.shape)
+            ax.imshow(p / p.max(), origin="lower", extent=[-45, 45, -45, 45], cmap="Greys_r", vmin=0, vmax=1.6)
+            c = np.load(data / name / "compact.npz")
+            x0, x1, radii = c["positions_m"][0] * 1e6, c["positions_m"][-1] * 1e6, c["radii_m"] * 1e6
+            hull = ConvexHull(x0[:, :2])
+            ax.plot(*np.vstack([x0[hull.vertices, :2], x0[hull.vertices[:1], :2]]).T, color="#9aa5b1", lw=0.8)
+            order = np.argsort(x1[:, 2])
+            dots = EllipseCollection(2 * radii[order], 2 * radii[order], 0, units="xy", offsets=x1[order, :2],
+                                     offset_transform=ax.transData, cmap="viridis", edgecolors="white", linewidths=0.15)
+            dots.set_array(x1[order, 2])
+            dots.set_clim(-22, 22)
+            ax.add_collection(dots)
+            ax.text(-43, 43, f"within R of zero set {r['share_within_R_of_zero_set_start']:.2f} -> "
+                             f"{r['share_within_R_of_zero_set_end']:.2f}\n"
+                             f"x spread {r['thickness_um_start'][0]:.1f} -> {r['thickness_um_end'][0]:.1f} um, pieces {r['pieces_end']}\n"
+                             f"moved {r['median_displacement_um']:.1f} / {r['largest_displacement_um']:.1f} um"
+                             + ("" if r["status"] == "PASS" else f"\nstopped {r['completed_s']:.3g} s"),
+                    fontsize=7, va="top", color=INK, bbox=dict(facecolor="white", edgecolor="none", alpha=0.8, pad=1.5))
+    cax = fig.add_axes([0.915, 0.3, 0.012, 0.4])
+    cb = fig.colorbar(dots, cax=cax)
+    cb.set_label("height z (um)")
+    fig.suptitle(f"{f_mhz} MHz, 6000 Pa-eq on the largest channel: top view at the end (grey line: start outline; "
+                 "background: |p|, dark = low)", x=0.07, ha="left", fontsize=10, color=INK)
+    fig.savefig(out)

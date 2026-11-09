@@ -1,0 +1,36 @@
+"""APECSS ODE tolerance 1e-8 vs 1e-10 in a normal run: time in APECSS, whole-run time, position
+difference (2026-11-08). usage (repository root): python ode_cost.py OUT ODE_TOL FREQ_MHz SEED
+Drive: X- alone at 6000 Pa-eq, 0.2 s, current defaults otherwise (random size spread of the seed)."""
+import json
+import sys
+from pathlib import Path
+
+import h5py
+
+import microbubble.control as control
+import workflows.f10ag as f10ag
+
+out, ode, f, seed = Path(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]) * 1e6, int(sys.argv[4])
+project_policy = f10ag.load_pretrain_policy
+
+
+def policy(path):
+    p = project_policy(path)
+    p["frequency_range_Hz"] = [2e6, 1e7]
+    p["apecss_response"] = dict(p["apecss_response"], ode_tolerance=ode)
+    return p
+
+
+f10ag.load_pretrain_policy = policy
+control.random_actions = lambda duration, *rest: [dict(amplitudes=[0, 0, 6000.0, 0], phases=[0, 0, 0, 0],
+                                                        frequency=f, duration=duration)]
+out.mkdir(parents=True)
+cfg = out / "cfg.json"
+cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.2, state_seed=seed,
+                               action_seed=0, apecss_threads=4)))
+f10ag.run(Path("."), cfg, out / "run")
+sm = json.loads((out / "run" / "SUMMARY.json").read_text())
+ex = json.loads((out / "run" / "EXECUTION.json").read_text())
+stats = ex["identity"]["apecss_response"]["stats"]
+print(json.dumps(dict(status=sm["status"], reason=sm["reason"], wall_s=sm["wall_s"], N=sm["N"],
+                      apecss_s=stats["seconds_in_apecss"], cycles_mean=stats["cycles_per_bubble_call_mean"])))

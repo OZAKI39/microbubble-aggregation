@@ -1,0 +1,75 @@
+"""Where in the channel do the pattern actions give a clean zero line? (2026-11-08)
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:SCRATCH python line_quality.py OUT_JSON
+For the start clusters of state seeds 0-199 (initial_conditions.random_start with the policy's settings) and
+at 3.5, 6.5 and 9.5 MHz: the first segment of control.pattern_actions with the knot fixed to a = 45 deg, phi = 0
+(the two pairs equal, in phase, nodes at the centre c), built from the disc field at c as workflows.f10ag
+does; line quality as analyse_pattern.py: the largest |p| of the disc field (plane z = c_z) on the local
+form's zero line within 20 um of c over the largest |p| within 20 um of c (0: the disc field has that zero
+line). Also the local wavenumbers over k = 2 pi f / 1500 m/s.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from microbubble.control import X_MINUS, X_PLUS, Y_MINUS, Y_PLUS
+from microbubble.initial_conditions import random_start
+from morph import zero_set
+from workflows.f10ag import load_pretrain_policy, pretrain_context
+
+RADIUS_M = 20e-6
+p = load_pretrain_policy(Path("."))
+s = p["random_state"]
+context = pretrain_context(Path("."), 3e6)
+centres = []
+for seed in range(200):
+    x, _, _ = random_start(seed, context.cavity.lumen, s["radius"], s["wall_margin_m"], s["bubble_count_range"],
+                           s["aspect_range"])
+    centres.append(x.mean(axis=0))
+centres = np.array(centres)
+ring = np.linspace(-RADIUS_M, RADIUS_M, 41)
+gx, gy = np.meshgrid(ring, ring)
+inside = np.hypot(gx, gy) <= RADIUS_M
+result = dict(radius_m=RADIUS_M, centres_m=centres.tolist(), frequencies={})
+for f in (3.5e6, 6.5e6, 9.5e6):
+    discs = WaterDiscs(context.discs.elements, f)
+    order = direct_quadrature_order(f)
+    k = 2 * np.pi * f / 1500.0
+    rows = []
+    for c in centres:
+        h, g = discs.evaluate(c[None, :], order)
+        h, g = h[:, 0], g[:, 0, :]
+        kx = abs((g[X_PLUS, 0] / (1j * h[X_PLUS])).real)
+        ky = abs((g[Y_PLUS, 1] / (1j * h[Y_PLUS])).real)
+        a = np.radians(45.0)
+        amplitudes, phases = np.zeros(4), np.zeros(4)
+        for minus, plus, size, turn in ((X_MINUS, X_PLUS, np.cos(a), 0.0), (Y_MINUS, Y_PLUS, kx / ky * np.sin(a), 0.0)):
+            amplitudes[[minus, plus]] = size / (2 * np.abs(h[[minus, plus]]))
+            phases[minus] = turn - np.pi / 2 - np.angle(h[minus])
+            phases[plus] = turn + np.pi / 2 - np.angle(h[plus])
+        u = amplitudes * np.exp(1j * phases)
+        points = zero_set(lambda x, y: -(np.cos(a) * np.sin(kx * x) + kx / ky * np.sin(a) * np.sin(ky * y)),
+                          half_m=RADIUS_M + 2e-6, spacing_m=0.2e-6)
+        points = points[np.hypot(points[:, 0], points[:, 1]) <= RADIUS_M]
+        on = np.column_stack([points + c[:2], np.full(len(points), c[2])])
+        area = np.column_stack([gx[inside] + c[0], gy[inside] + c[1], np.full(inside.sum(), c[2])])
+        quality = np.abs(u @ discs.evaluate(on, order)[0]).max() / np.abs(u @ discs.evaluate(area, order)[0]).max()
+        rows.append(dict(x_mm=float(c[0] * 1e3), y_mm=float(c[1] * 1e3), z_mm=float(c[2] * 1e3), kappa_x_over_k=float(kx / k),
+                         kappa_y_over_k=float(ky / k), line_quality=float(quality)))
+    q = np.array([r["line_quality"] for r in rows])
+    xs = np.abs([r["x_mm"] for r in rows])
+    result["frequencies"][f"{f:g}"] = dict(rows=rows, share_quality_below_0p05=float(np.mean(q < 0.05)),
+                                           share_quality_below_0p1=float(np.mean(q < 0.1)),
+                                           quality_median=float(np.median(q)))
+    for lo, hi in ((0, 2), (2, 4), (4, 8), (8, 20)):
+        sel = (xs >= lo) & (xs < hi)
+        if sel.any():
+            print(f"{f / 1e6:.1f} MHz |x| {lo}-{hi} mm: {sel.sum():3d} starts, line quality median {np.median(q[sel]):.3f} "
+                  f"max {q[sel].max():.3f}", flush=True)
+    print(f"{f / 1e6:.1f} MHz: share of starts with quality < 0.05: {np.mean(q < 0.05):.2f}, < 0.1: {np.mean(q < 0.1):.2f}; "
+          f"|x| of the starts: max {xs.max():.1f} mm", flush=True)
+Path(sys.argv[1]).write_text(json.dumps(result, indent=1) + "\n")

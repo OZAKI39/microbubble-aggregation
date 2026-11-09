@@ -1,0 +1,38 @@
+{
+ "build": {
+  "compiler": "g++",
+  "compiler_version": "13.3.0",
+  "eigen_version": "3.4.0",
+  "cache_key": "2546e5c56043d87200d7bf546414577006491d1ce6659eefb4447ac8776a6e20"
+ },
+ "runs": {
+  "protocol_formed32": {
+   "steps": 9873,
+   "python_ms": 1.3702050731324602,
+   "compiled_ms": 0.39731111851292605,
+   "speedup": 3.4486955166543676,
+   "max_position_difference_m": 1.3552527156068805e-20,
+   "steps_with_identical_decisions_and_counts": 9873,
+   "fallback_steps": 1
+  },
+  "protocol_formed128": {
+   "steps": 3974,
+   "python_ms": 12.11078530246105,
+   "compiled_ms": 9.729769620044255,
+   "speedup": 1.2447144974030706,
+   "max_position_difference_m": 6.776263578034403e-21,
+   "steps_with_identical_decisions_and_counts": 3974,
+   "fallback_steps": 1
+  },
+  "random_offset_B_formed32": {
+   "steps": 6804,
+   "python_ms": 1.5068520304185484,
+   "compiled_ms": 0.4402377576410305,
+   "speedup": 3.422814159541568,
+   "max_position_difference_m": 5.421010862427522e-20,
+   "steps_with_identical_decisions_and_counts": 6804,
+   "fallback_steps": 1
+  }
+ },
+ "note": "recorded steps of evidence/contact_speed_20261104, both steps on every step in alternating order, one core, times include the resistance matrix"
+}

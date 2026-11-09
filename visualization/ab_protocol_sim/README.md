@@ -1,5 +1,7 @@
 # 按实验方式跑的预训练档仿真与 A/B 对照（2026-11-03）
 
+> **状态（2026-11-09 核对）：** 历史。生成这些图的作图入口和配置 `configs/pretrain_protocol_ab/` 已于 2026-11-06 删除（最后一版在提交 `03e0701`）；运行用的是当时的登记初态和声场缓存。运行数据仍在 `results/pretrain_protocol_ab/`。
+
 由 `visualization/ab_protocol_figures.py` 生成，只读 `results/pretrain_protocol_ab/`、4 条随机动作成团运行和 MB_track A/B 追踪结果。
 
 `EXPLORATORY / HOMOGENEOUS_WATER_CONTROL_PROXY / PHYSICS_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`；像素尺度 0.6 µm/px 为暂定值。

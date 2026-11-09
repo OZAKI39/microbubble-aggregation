@@ -1,0 +1,542 @@
+{
+ "seed23_node_adhesion_x1": {
+  "seed": 23,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.104455356951803,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   4415.836546035964
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.910208995755333
+  ],
+  "centroid_m": [
+   -0.009132210935302129,
+   0.0003241059125814863,
+   -4.3846184823669986e-05
+  ],
+  "pressure_at_centroid_Pa": 1.8349619983596342e-12,
+  "pressure_one_channel_at_centroid_Pa": 8174.450553715738
+ },
+ "seed23_node_adhesion_x0": {
+  "seed": 23,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 2.0355281641241163,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   4415.836546035964
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.910208995755333
+  ],
+  "centroid_m": [
+   -0.009132210935302129,
+   0.0003241059125814863,
+   -4.3846184823669986e-05
+  ],
+  "pressure_at_centroid_Pa": 1.8349619983596342e-12,
+  "pressure_one_channel_at_centroid_Pa": 8174.450553715738
+ },
+ "seed23_antinode_adhesion_x1": {
+  "seed": 23,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 1.814179957145825,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   4415.836546035964
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   2.76861634216554
+  ],
+  "centroid_m": [
+   -0.009132210935302129,
+   0.0003241059125814863,
+   -4.3846184823669986e-05
+  ],
+  "pressure_at_centroid_Pa": 16348.90110743148,
+  "pressure_one_channel_at_centroid_Pa": 8174.450553715738
+ },
+ "seed14_node_adhesion_x1": {
+  "seed": 14,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.1711585759185255,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   1265.6973862641134,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   6.165571507862718
+  ],
+  "centroid_m": [
+   0.00700564784708245,
+   -4.912998989764462e-05,
+   0.00010843045345404033
+  ],
+  "pressure_at_centroid_Pa": 4.0194366942304643e-13,
+  "pressure_one_channel_at_centroid_Pa": 2470.533334229143
+ },
+ "seed14_node_adhesion_x0": {
+  "seed": 14,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 2.0411300130654126,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   1265.6973862641134,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   6.165571507862718
+  ],
+  "centroid_m": [
+   0.00700564784708245,
+   -4.912998989764462e-05,
+   0.00010843045345404033
+  ],
+  "pressure_at_centroid_Pa": 4.0194366942304643e-13,
+  "pressure_one_channel_at_centroid_Pa": 2470.533334229143
+ },
+ "seed14_antinode_adhesion_x1": {
+  "seed": 14,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.0808170661330223,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   1265.6973862641134,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   3.023978854272925
+  ],
+  "centroid_m": [
+   0.00700564784708245,
+   -4.912998989764462e-05,
+   0.00010843045345404033
+  ],
+  "pressure_at_centroid_Pa": 4941.066668458287,
+  "pressure_one_channel_at_centroid_Pa": 2470.533334229143
+ },
+ "seed21_node_adhesion_x1": {
+  "seed": 21,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 50,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 2.9231510050594807,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   3688.4324090690793
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   1.614208022502308
+  ],
+  "centroid_m": [
+   -0.012551712843716043,
+   0.0006857682395032614,
+   0.0002633467808042389
+  ],
+  "pressure_at_centroid_Pa": 4.547473508864641e-13,
+  "pressure_one_channel_at_centroid_Pa": 5923.945095621012
+ },
+ "seed21_node_adhesion_x0": {
+  "seed": 21,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 50,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_GUARD')",
+  "completed_s": 1.303,
+  "adhesion_force_N": 0.0,
+  "wall_s": 2.7018369738943875,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   3688.4324090690793
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   1.614208022502308
+  ],
+  "centroid_m": [
+   -0.012551712843716043,
+   0.0006857682395032614,
+   0.0002633467808042389
+  ],
+  "pressure_at_centroid_Pa": 4.547473508864641e-13,
+  "pressure_one_channel_at_centroid_Pa": 5923.945095621012
+ },
+ "seed21_antinode_adhesion_x1": {
+  "seed": 21,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 50,
+  "status": "FAIL",
+  "reason": "RuntimeError('PRETRAIN_WALL_GUARD')",
+  "completed_s": 0.097,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 0.205189798027277,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   6000.0,
+   3688.4324090690793
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   4.755800676092101
+  ],
+  "centroid_m": [
+   -0.012551712843716043,
+   0.0006857682395032614,
+   0.0002633467808042389
+  ],
+  "pressure_at_centroid_Pa": 11847.890191242024,
+  "pressure_one_channel_at_centroid_Pa": 5923.945095621012
+ },
+ "seed16_node_adhesion_x1": {
+  "seed": 16,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 4.471000732155517,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   2833.970272645951,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.631008539223291
+  ],
+  "centroid_m": [
+   0.009792594404532921,
+   -0.0004716851285446203,
+   0.00029273945121085213
+  ],
+  "pressure_at_centroid_Pa": 2.4502110952567955e-12,
+  "pressure_one_channel_at_centroid_Pa": 4946.524865646237
+ },
+ "seed16_node_adhesion_x0": {
+  "seed": 16,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 4.594058533897623,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   2833.970272645951,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.631008539223291
+  ],
+  "centroid_m": [
+   0.009792594404532921,
+   -0.0004716851285446203,
+   0.00029273945121085213
+  ],
+  "pressure_at_centroid_Pa": 2.4502110952567955e-12,
+  "pressure_one_channel_at_centroid_Pa": 4946.524865646237
+ },
+ "seed16_antinode_adhesion_x1": {
+  "seed": 16,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 4.4015347571112216,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   2833.970272645951,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   2.4894158856334982
+  ],
+  "centroid_m": [
+   0.009792594404532921,
+   -0.0004716851285446203,
+   0.00029273945121085213
+  ],
+  "pressure_at_centroid_Pa": 9893.049731292474,
+  "pressure_one_channel_at_centroid_Pa": 4946.524865646237
+ },
+ "seed17_node_adhesion_x1": {
+  "seed": 17,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 6.422154989792034,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3367.7305167990658,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   0.25119508239997224
+  ],
+  "centroid_m": [
+   0.007653386707355319,
+   0.00015584802260364754,
+   -0.0006229130606023715
+  ],
+  "pressure_at_centroid_Pa": 9.374856803373542e-13,
+  "pressure_one_channel_at_centroid_Pa": 5811.202926726151
+ },
+ "seed17_node_adhesion_x0": {
+  "seed": 17,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 6.443982541095465,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3367.7305167990658,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   0.25119508239997224
+  ],
+  "centroid_m": [
+   0.007653386707355319,
+   0.00015584802260364754,
+   -0.0006229130606023715
+  ],
+  "pressure_at_centroid_Pa": 9.374856803373542e-13,
+  "pressure_one_channel_at_centroid_Pa": 5811.202926726151
+ },
+ "seed17_antinode_adhesion_x1": {
+  "seed": 17,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 7.4630667108576745,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3367.7305167990658,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   3.3927877359897654
+  ],
+  "centroid_m": [
+   0.007653386707355319,
+   0.00015584802260364754,
+   -0.0006229130606023715
+  ],
+  "pressure_at_centroid_Pa": 11622.405853452305,
+  "pressure_one_channel_at_centroid_Pa": 5811.202926726151
+ },
+ "seed7_node_adhesion_x1": {
+  "seed": 7,
+  "setting": "node",
+  "adhesion": "x1",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 9.563602440059185,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3510.4299993260533,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.525793747799591
+  ],
+  "centroid_m": [
+   0.010401184393783236,
+   0.00044454657596171217,
+   -4.798341916654244e-05
+  ],
+  "pressure_at_centroid_Pa": 7.288603167730942e-12,
+  "pressure_one_channel_at_centroid_Pa": 6240.753903425897
+ },
+ "seed7_node_adhesion_x0": {
+  "seed": 7,
+  "setting": "node",
+  "adhesion": "x0",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "wall_s": 9.548304977826774,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3510.4299993260533,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   5.525793747799591
+  ],
+  "centroid_m": [
+   0.010401184393783236,
+   0.00044454657596171217,
+   -4.798341916654244e-05
+  ],
+  "pressure_at_centroid_Pa": 7.288603167730942e-12,
+  "pressure_one_channel_at_centroid_Pa": 6240.753903425897
+ },
+ "seed7_antinode_adhesion_x1": {
+  "seed": 7,
+  "setting": "antinode",
+  "adhesion": "x1",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "wall_s": 10.534852313809097,
+  "amplitudes_Pa_eq": [
+   0.0,
+   0.0,
+   3510.4299993260533,
+   6000.0
+  ],
+  "phases_rad": [
+   0.0,
+   0.0,
+   0.0,
+   2.3842010942097986
+  ],
+  "centroid_m": [
+   0.010401184393783236,
+   0.00044454657596171217,
+   -4.798341916654244e-05
+  ],
+  "pressure_at_centroid_Pa": 12481.507806851794,
+  "pressure_one_channel_at_centroid_Pa": 6240.753903425897
+ }
+}

@@ -1,5 +1,7 @@
 # 预训练档：声场直接现算（`field: "direct"`）准入证据，2026-11-03
 
+> **状态（2026-11-09 核对）：** 现行（直接现算声场）。文中的 `field: "cache"` 和声场缓存读取已于 2026-11-06 随 HF/LF 路径删除；2026-11-04 起默认在 GPU 上算（`evidence/pretrain_gpu_field_20261104/`）。
+
 先读 [ADMISSION.json](ADMISSION.json)。本目录记录预训练档新增的声场取法：不再读中央盒子里的三次插值缓存，而是在泡的实际位置，用**同一个** FNM 圆片模型（均匀水，4 片 7 mm 圆片）直接现算声压和梯度。物理模型、APECSS 响应表、F1/F2、接触、步长控制都没有改；默认仍是 `field: "cache"`，已有结果原样可重现。
 
 `EXPLORATORY / HOMOGENEOUS_WATER_CONTROL_PROXY / PHYSICS_UNCALIBRATED / ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`

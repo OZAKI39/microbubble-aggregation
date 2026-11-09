@@ -1,0 +1,1262 @@
+{
+ "seed23_adhesion_x1": {
+  "seed": 23,
+  "adhesion": "x1",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "start": {
+   "state": "IRREGULAR3D_N20_a1.257",
+   "bubble_count": 20,
+   "aspect": 1.2565832883512922,
+   "cluster_seed": 1186533541274159326,
+   "rotation": [
+    [
+     0.019667909244903026,
+     0.21856637683820646,
+     0.9756238579810117
+    ],
+    [
+     -0.5548642673537009,
+     0.8141346800881415,
+     -0.1712027087747746
+    ],
+    [
+     -0.8317083732655184,
+     -0.5379716178327614,
+     0.13728699955358603
+    ]
+   ],
+   "centre_local_m": [
+    -0.009132210935302129,
+    0.0003241059125814863,
+    -4.3846184823669986e-05
+   ]
+  },
+  "wall_s": 2.0355297909118235,
+  "daqp_iterations": 1556,
+  "min_collective_singular_value": 0.626735222949285,
+  "sim": {
+   "dln": 0.012185601286371552,
+   "per_px": 0.002200936222265818,
+   "aspect": 1.2800011912385696,
+   "aspect_p90": 1.3085196906922243,
+   "split": 0.0,
+   "speed": 54.73971869884529,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.005907088569908155,
+   "per_px": 0.0010591090469389069,
+   "aspect": 1.2504129333474754,
+   "aspect_p90": 1.268553738479417,
+   "split": 0.0,
+   "speed": 54.73971869884465,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.35,
+  "contacts_per_bubble_end": 2.7,
+  "pressed_contacts_per_bubble_median": 2.7,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.05,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 1.1071219922333177e-12,
+  "total_spread_median_N": 1.3223295346344834e-09,
+  "F2_spread_median_N": 6.533436129948712e-11,
+  "F2_spread_p90_N": 1.4274797523964909e-10,
+  "F1_spread_median_N": 1.1709183736854423e-12,
+  "F2_spread_over_drive": 59.39907031194982
+ },
+ "seed23_adhesion_x0.1": {
+  "seed": 23,
+  "adhesion": "x0.1",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-11,
+  "start": {
+   "state": "IRREGULAR3D_N20_a1.257",
+   "bubble_count": 20,
+   "aspect": 1.2565832883512922,
+   "cluster_seed": 1186533541274159326,
+   "rotation": [
+    [
+     0.019667909244903026,
+     0.21856637683820646,
+     0.9756238579810117
+    ],
+    [
+     -0.5548642673537009,
+     0.8141346800881415,
+     -0.1712027087747746
+    ],
+    [
+     -0.8317083732655184,
+     -0.5379716178327614,
+     0.13728699955358603
+    ]
+   ],
+   "centre_local_m": [
+    -0.009132210935302129,
+    0.0003241059125814863,
+    -4.3846184823669986e-05
+   ]
+  },
+  "wall_s": 1.6247240568045527,
+  "daqp_iterations": 1572,
+  "min_collective_singular_value": 0.626735222949285,
+  "sim": {
+   "dln": 0.013968864148171677,
+   "per_px": 0.0025591676846887556,
+   "aspect": 1.4268832954762523,
+   "aspect_p90": 1.4542879057447649,
+   "split": 0.0,
+   "speed": 54.40474859519287,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.008313326958050926,
+   "per_px": 0.0015267500606518036,
+   "aspect": 1.248396458646131,
+   "aspect_p90": 1.2792196351163532,
+   "split": 0.0,
+   "speed": 54.4047485951726,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.35,
+  "contacts_per_bubble_end": 2.7,
+  "pressed_contacts_per_bubble_median": 2.7,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.1,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 1.1002937346324492e-12,
+  "total_spread_median_N": 1.8527582237878227e-10,
+  "F2_spread_median_N": 6.249747376535044e-11,
+  "F2_spread_p90_N": 1.58732587417335e-10,
+  "F1_spread_median_N": 1.3597108663105516e-12,
+  "F2_spread_over_drive": 57.12735373263261
+ },
+ "seed23_adhesion_x0": {
+  "seed": 23,
+  "adhesion": "x0",
+  "bubbles": 20,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "start": {
+   "state": "IRREGULAR3D_N20_a1.257",
+   "bubble_count": 20,
+   "aspect": 1.2565832883512922,
+   "cluster_seed": 1186533541274159326,
+   "rotation": [
+    [
+     0.019667909244903026,
+     0.21856637683820646,
+     0.9756238579810117
+    ],
+    [
+     -0.5548642673537009,
+     0.8141346800881415,
+     -0.1712027087747746
+    ],
+    [
+     -0.8317083732655184,
+     -0.5379716178327614,
+     0.13728699955358603
+    ]
+   ],
+   "centre_local_m": [
+    -0.009132210935302129,
+    0.0003241059125814863,
+    -4.3846184823669986e-05
+   ]
+  },
+  "wall_s": 1.8069758219644427,
+  "daqp_iterations": 2232,
+  "min_collective_singular_value": 0.5928931312231159,
+  "sim": {
+   "dln": 0.015471708879327424,
+   "per_px": 0.001373733823713723,
+   "aspect": 1.211142842550778,
+   "aspect_p90": 1.2892243204720595,
+   "split": 0.18823529411764706,
+   "speed": 102.07479190795387,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.016655215510209178,
+   "per_px": 0.0004734347684860452,
+   "aspect": 1.252285506886972,
+   "aspect_p90": 1.2767613035891139,
+   "split": 0.0,
+   "speed": 361.1009885210876,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.35,
+  "contacts_per_bubble_end": 1.8,
+  "pressed_contacts_per_bubble_median": 1.8,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 1.8,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 7.142735706668833e-12,
+  "total_spread_median_N": 1.6559849458252894e-10,
+  "F2_spread_median_N": 1.683247394869097e-10,
+  "F2_spread_p90_N": 7.147661973981268e-10,
+  "F1_spread_median_N": 6.181487538192923e-12,
+  "F2_spread_over_drive": 23.605333187543522
+ },
+ "seed14_adhesion_x1": {
+  "seed": 14,
+  "adhesion": "x1",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "start": {
+   "state": "IRREGULAR3D_N32_a1.144",
+   "bubble_count": 32,
+   "aspect": 1.1443786667337026,
+   "cluster_seed": 6481626060304268532,
+   "rotation": [
+    [
+     0.6957140829219943,
+     -0.06719351061377568,
+     -0.7151691736613126
+    ],
+    [
+     -0.1049891543863592,
+     0.9754114648721789,
+     -0.19377758295826494
+    ],
+    [
+     0.7106048073896247,
+     0.20989880020454246,
+     0.6715529028955559
+    ]
+   ],
+   "centre_local_m": [
+    0.00700564784708245,
+    -4.912998989764462e-05,
+    0.00010843045345404034
+   ]
+  },
+  "wall_s": 2.029825489036739,
+  "daqp_iterations": 1599,
+  "min_collective_singular_value": 0.7515907951046849,
+  "sim": {
+   "dln": 0.011670637461520708,
+   "per_px": 0.0015208392912737555,
+   "aspect": 1.1170482785932874,
+   "aspect_p90": 1.1380113465971144,
+   "split": 0.0,
+   "speed": 76.5777034232675,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.006955289750104868,
+   "per_px": 0.0009082794650902968,
+   "aspect": 1.0190849581700954,
+   "aspect_p90": 1.0288868994025828,
+   "split": 0.0,
+   "speed": 76.57770342325306,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5,
+  "contacts_per_bubble_end": 2.8125,
+  "pressed_contacts_per_bubble_median": 2.78125,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.03125,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 1.5421659809157855e-12,
+  "total_spread_median_N": 1.240493141941223e-09,
+  "F2_spread_median_N": 1.1613653049635518e-10,
+  "F2_spread_p90_N": 4.1437635600694243e-10,
+  "F1_spread_median_N": 5.509185605430509e-12,
+  "F2_spread_over_drive": 75.30516538248789
+ },
+ "seed14_adhesion_x0.1": {
+  "seed": 14,
+  "adhesion": "x0.1",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-11,
+  "start": {
+   "state": "IRREGULAR3D_N32_a1.144",
+   "bubble_count": 32,
+   "aspect": 1.1443786667337026,
+   "cluster_seed": 6481626060304268532,
+   "rotation": [
+    [
+     0.6957140829219943,
+     -0.06719351061377568,
+     -0.7151691736613126
+    ],
+    [
+     -0.1049891543863592,
+     0.9754114648721789,
+     -0.19377758295826494
+    ],
+    [
+     0.7106048073896247,
+     0.20989880020454246,
+     0.6715529028955559
+    ]
+   ],
+   "centre_local_m": [
+    0.00700564784708245,
+    -4.912998989764462e-05,
+    0.00010843045345404034
+   ]
+  },
+  "wall_s": 2.529039165005088,
+  "daqp_iterations": 12213,
+  "min_collective_singular_value": 0.5927230756466014,
+  "sim": {
+   "dln": 0.05899533833472318,
+   "per_px": 0.004428753878900526,
+   "aspect": 1.2885722501800843,
+   "aspect_p90": 2.0317002528788435,
+   "split": 0.6235294117647059,
+   "speed": 409.0444734471914,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.011081340016032792,
+   "per_px": 6.573426630842e-05,
+   "aspect": 1.0198424465090172,
+   "aspect_p90": 1.0328729276625743,
+   "split": 0.0,
+   "speed": 1542.8677499769972,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5,
+  "contacts_per_bubble_end": 2.03125,
+  "pressed_contacts_per_bubble_median": 1.65625,
+  "broken_per_bubble_per_0p1s_median": 0.25,
+  "broken_per_bubble_per_0p1s_first_0p1s": 2.40625,
+  "formed_per_bubble_per_0p1s_median": 0.3125,
+  "drive_per_bubble_N": 2.9627864280347006e-11,
+  "total_spread_median_N": 5.05720909801472e-10,
+  "F2_spread_median_N": 4.1658882670650684e-10,
+  "F2_spread_p90_N": 4.275565672061035e-09,
+  "F1_spread_median_N": 2.947972112652173e-11,
+  "F2_spread_over_drive": 14.270387293781319
+ },
+ "seed14_adhesion_x0": {
+  "seed": 14,
+  "adhesion": "x0",
+  "bubbles": 32,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "start": {
+   "state": "IRREGULAR3D_N32_a1.144",
+   "bubble_count": 32,
+   "aspect": 1.1443786667337026,
+   "cluster_seed": 6481626060304268532,
+   "rotation": [
+    [
+     0.6957140829219943,
+     -0.06719351061377568,
+     -0.7151691736613126
+    ],
+    [
+     -0.1049891543863592,
+     0.9754114648721789,
+     -0.19377758295826494
+    ],
+    [
+     0.7106048073896247,
+     0.20989880020454246,
+     0.6715529028955559
+    ]
+   ],
+   "centre_local_m": [
+    0.00700564784708245,
+    -4.912998989764462e-05,
+    0.00010843045345404034
+   ]
+  },
+  "wall_s": 2.554674715967849,
+  "daqp_iterations": 18317,
+  "min_collective_singular_value": 0.5928841468673403,
+  "sim": {
+   "dln": 0.04454474313512192,
+   "per_px": 0.0009949999601687213,
+   "aspect": 1.5910669636469483,
+   "aspect_p90": 2.579909040007823,
+   "split": 0.9176470588235294,
+   "speed": 496.4728152114878,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.005953812618695037,
+   "per_px": 6.581807180471168e-05,
+   "aspect": 1.0161313069306377,
+   "aspect_p90": 1.0291334923463,
+   "split": 0.0,
+   "speed": 1289.492255645263,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5,
+  "contacts_per_bubble_end": 1.8125,
+  "pressed_contacts_per_bubble_median": 1.5625,
+  "broken_per_bubble_per_0p1s_median": 0.375,
+  "broken_per_bubble_per_0p1s_first_0p1s": 2.4375,
+  "formed_per_bubble_per_0p1s_median": 0.5,
+  "drive_per_bubble_N": 2.5891371096598485e-11,
+  "total_spread_median_N": 3.4709106634966353e-10,
+  "F2_spread_median_N": 3.460801442051846e-10,
+  "F2_spread_p90_N": 3.0563503833507595e-09,
+  "F1_spread_median_N": 2.6894778332172003e-11,
+  "F2_spread_over_drive": 13.625669726247903
+ },
+ "seed21_adhesion_x1": {
+  "seed": 21,
+  "adhesion": "x1",
+  "bubbles": 50,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "start": {
+   "state": "IRREGULAR3D_N50_a1.242",
+   "bubble_count": 50,
+   "aspect": 1.2423388118283871,
+   "cluster_seed": 6546760451339301878,
+   "rotation": [
+    [
+     0.37810904076250385,
+     0.6738925742676761,
+     -0.6347458953317807
+    ],
+    [
+     -0.6372455886561869,
+     0.6868152976789241,
+     0.34957518020082706
+    ],
+    [
+     0.6715293091383944,
+     0.27231148565768476,
+     0.6891261435666299
+    ]
+   ],
+   "centre_local_m": [
+    -0.012551712843716045,
+    0.0006857682395032613,
+    0.0002633467808042389
+   ]
+  },
+  "wall_s": 2.7139567928388715,
+  "daqp_iterations": 1646,
+  "min_collective_singular_value": 0.595006989258969,
+  "sim": {
+   "dln": 0.008738855458186605,
+   "per_px": 0.0030192192384703646,
+   "aspect": 1.0697207629080105,
+   "aspect_p90": 1.1429790062176628,
+   "split": 0.0,
+   "speed": 29.16240497808036,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.006840667583560415,
+   "per_px": 0.0023195147582652812,
+   "aspect": 1.0455092479423929,
+   "aspect_p90": 1.05763826301657,
+   "split": 0.0,
+   "speed": 29.16240497808116,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.64,
+  "contacts_per_bubble_end": 2.84,
+  "pressed_contacts_per_bubble_median": 2.84,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.0,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 5.956026175243335e-13,
+  "total_spread_median_N": 1.1311359953858888e-09,
+  "F2_spread_median_N": 3.88824484798242e-11,
+  "F2_spread_p90_N": 1.0811977758105455e-10,
+  "F1_spread_median_N": 2.548232825432164e-12,
+  "F2_spread_over_drive": 65.16559926303776
+ },
+ "seed21_adhesion_x0.1": {
+  "seed": 21,
+  "adhesion": "x0.1",
+  "bubbles": 50,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-11,
+  "start": {
+   "state": "IRREGULAR3D_N50_a1.242",
+   "bubble_count": 50,
+   "aspect": 1.2423388118283871,
+   "cluster_seed": 6546760451339301878,
+   "rotation": [
+    [
+     0.37810904076250385,
+     0.6738925742676761,
+     -0.6347458953317807
+    ],
+    [
+     -0.6372455886561869,
+     0.6868152976789241,
+     0.34957518020082706
+    ],
+    [
+     0.6715293091383944,
+     0.27231148565768476,
+     0.6891261435666299
+    ]
+   ],
+   "centre_local_m": [
+    -0.012551712843716045,
+    0.0006857682395032613,
+    0.0002633467808042389
+   ]
+  },
+  "wall_s": 2.6913376019801944,
+  "daqp_iterations": 2715,
+  "min_collective_singular_value": 0.592834125062469,
+  "sim": {
+   "dln": 0.016797126683652602,
+   "per_px": 0.007484793843230241,
+   "aspect": 1.115806985022342,
+   "aspect_p90": 1.2121017806261594,
+   "split": 0.0,
+   "speed": 22.097870937241186,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0056306905157539455,
+   "per_px": 0.002497705134196065,
+   "aspect": 1.0468311475240395,
+   "aspect_p90": 1.056501694498127,
+   "split": 0.0,
+   "speed": 22.09787093722045,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.64,
+  "contacts_per_bubble_end": 3.0,
+  "pressed_contacts_per_bubble_median": 2.86,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.68,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 4.552773918435138e-13,
+  "total_spread_median_N": 1.453578051810187e-10,
+  "F2_spread_median_N": 2.176269903245708e-11,
+  "F2_spread_p90_N": 7.531413434598775e-11,
+  "F1_spread_median_N": 1.3039877035903307e-12,
+  "F2_spread_over_drive": 48.65733946377664
+ },
+ "seed21_adhesion_x0": {
+  "seed": 21,
+  "adhesion": "x0",
+  "bubbles": 50,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "start": {
+   "state": "IRREGULAR3D_N50_a1.242",
+   "bubble_count": 50,
+   "aspect": 1.2423388118283871,
+   "cluster_seed": 6546760451339301878,
+   "rotation": [
+    [
+     0.37810904076250385,
+     0.6738925742676761,
+     -0.6347458953317807
+    ],
+    [
+     -0.6372455886561869,
+     0.6868152976789241,
+     0.34957518020082706
+    ],
+    [
+     0.6715293091383944,
+     0.27231148565768476,
+     0.6891261435666299
+    ]
+   ],
+   "centre_local_m": [
+    -0.012551712843716045,
+    0.0006857682395032613,
+    0.0002633467808042389
+   ]
+  },
+  "wall_s": 2.9683417649939656,
+  "daqp_iterations": 22034,
+  "min_collective_singular_value": 0.592645134901879,
+  "sim": {
+   "dln": 0.20180190868529876,
+   "per_px": 0.036928420866666055,
+   "aspect": 1.3023224065835228,
+   "aspect_p90": 1.6293515088234982,
+   "split": 0.6,
+   "speed": 46.35892506982288,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.007682219575516954,
+   "per_px": 0.0009072540604233531,
+   "aspect": 1.0471333380641281,
+   "aspect_p90": 1.0568577835761126,
+   "split": 0.0,
+   "speed": 101.03763778678649,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.64,
+  "contacts_per_bubble_end": 1.84,
+  "pressed_contacts_per_bubble_median": 1.04,
+  "broken_per_bubble_per_0p1s_median": 1.26,
+  "broken_per_bubble_per_0p1s_first_0p1s": 2.16,
+  "formed_per_bubble_per_0p1s_median": 1.24,
+  "drive_per_bubble_N": 2.2268651118129762e-12,
+  "total_spread_median_N": 3.429736699967326e-11,
+  "F2_spread_median_N": 3.4254333641652265e-11,
+  "F2_spread_p90_N": 8.198357868070142e-11,
+  "F1_spread_median_N": 2.8356422309561704e-12,
+  "F2_spread_over_drive": 16.971993526810145
+ },
+ "seed16_adhesion_x1": {
+  "seed": 16,
+  "adhesion": "x1",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "start": {
+   "state": "IRREGULAR3D_N76_a1.172",
+   "bubble_count": 76,
+   "aspect": 1.1722976581960742,
+   "cluster_seed": 867677891161782324,
+   "rotation": [
+    [
+     0.8152484381887029,
+     -0.5242123112874482,
+     0.24611265047849995
+    ],
+    [
+     -0.05786153706885502,
+     -0.4965898602181804,
+     -0.8660545902288823
+    ],
+    [
+     0.5762135251440305,
+     0.6918091958214774,
+     -0.4351758380447268
+    ]
+   ],
+   "centre_local_m": [
+    0.00979259440453292,
+    -0.0004716851285446203,
+    0.0002927394512108522
+   ]
+  },
+  "wall_s": 4.4137808319646865,
+  "daqp_iterations": 1753,
+  "min_collective_singular_value": 0.6004112724454707,
+  "sim": {
+   "dln": 0.004296134940679702,
+   "per_px": 0.0006908446249973758,
+   "aspect": 1.1429071100874355,
+   "aspect_p90": 1.149435981919158,
+   "split": 0.0,
+   "speed": 62.207194809434746,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.008299766118193802,
+   "per_px": 0.0013336969153969875,
+   "aspect": 1.074692194769438,
+   "aspect_p90": 1.0817965901739248,
+   "split": 0.0,
+   "speed": 62.20719480946357,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5789473684210527,
+  "contacts_per_bubble_end": 2.9078947368421053,
+  "pressed_contacts_per_bubble_median": 2.9078947368421053,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.02631578947368421,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 1.253596551866762e-12,
+  "total_spread_median_N": 1.056558667733815e-09,
+  "F2_spread_median_N": 5.894075184162645e-11,
+  "F2_spread_p90_N": 2.4006859347082137e-10,
+  "F1_spread_median_N": 5.539783714990153e-12,
+  "F2_spread_over_drive": 47.01513720514343
+ },
+ "seed16_adhesion_x0.1": {
+  "seed": 16,
+  "adhesion": "x0.1",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-11,
+  "start": {
+   "state": "IRREGULAR3D_N76_a1.172",
+   "bubble_count": 76,
+   "aspect": 1.1722976581960742,
+   "cluster_seed": 867677891161782324,
+   "rotation": [
+    [
+     0.8152484381887029,
+     -0.5242123112874482,
+     0.24611265047849995
+    ],
+    [
+     -0.05786153706885502,
+     -0.4965898602181804,
+     -0.8660545902288823
+    ],
+    [
+     0.5762135251440305,
+     0.6918091958214774,
+     -0.4351758380447268
+    ]
+   ],
+   "centre_local_m": [
+    0.00979259440453292,
+    -0.0004716851285446203,
+    0.0002927394512108522
+   ]
+  },
+  "wall_s": 4.0994156850501895,
+  "daqp_iterations": 2524,
+  "min_collective_singular_value": 0.6059030667111052,
+  "sim": {
+   "dln": 0.005400086462869157,
+   "per_px": 0.0010906735376800159,
+   "aspect": 1.0712159068473543,
+   "aspect_p90": 1.0835157235429038,
+   "split": 0.0,
+   "speed": 49.5077487274715,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.006729292426735546,
+   "per_px": 0.0013591978599889385,
+   "aspect": 1.074091377584125,
+   "aspect_p90": 1.0829002116685233,
+   "split": 0.0,
+   "speed": 49.507748727327765,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5789473684210527,
+  "contacts_per_bubble_end": 2.9473684210526314,
+  "pressed_contacts_per_bubble_median": 2.9210526315789473,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.5394736842105263,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 9.982063238210884e-13,
+  "total_spread_median_N": 1.660431776530489e-10,
+  "F2_spread_median_N": 6.245468157392059e-11,
+  "F2_spread_p90_N": 1.407309811361679e-10,
+  "F1_spread_median_N": 3.690722983857649e-12,
+  "F2_spread_over_drive": 62.57275091655248
+ },
+ "seed16_adhesion_x0": {
+  "seed": 16,
+  "adhesion": "x0",
+  "bubbles": 76,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "start": {
+   "state": "IRREGULAR3D_N76_a1.172",
+   "bubble_count": 76,
+   "aspect": 1.1722976581960742,
+   "cluster_seed": 867677891161782324,
+   "rotation": [
+    [
+     0.8152484381887029,
+     -0.5242123112874482,
+     0.24611265047849995
+    ],
+    [
+     -0.05786153706885502,
+     -0.4965898602181804,
+     -0.8660545902288823
+    ],
+    [
+     0.5762135251440305,
+     0.6918091958214774,
+     -0.4351758380447268
+    ]
+   ],
+   "centre_local_m": [
+    0.00979259440453292,
+    -0.0004716851285446203,
+    0.0002927394512108522
+   ]
+  },
+  "wall_s": 7.824834675062448,
+  "daqp_iterations": 51195,
+  "min_collective_singular_value": 0.5919628867035239,
+  "sim": {
+   "dln": 0.03989593651885729,
+   "per_px": 0.004034782093022588,
+   "aspect": 1.2480403514906941,
+   "aspect_p90": 1.596487316367814,
+   "split": 0.9411764705882353,
+   "speed": 164.29860572163204,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.006157300199991296,
+   "per_px": 0.0001442112124976177,
+   "aspect": 1.0745419508060305,
+   "aspect_p90": 1.0834834016656794,
+   "split": 0.0,
+   "speed": 481.80990265101053,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5789473684210527,
+  "contacts_per_bubble_end": 1.118421052631579,
+  "pressed_contacts_per_bubble_median": 1.5921052631578947,
+  "broken_per_bubble_per_0p1s_median": 0.9605263157894737,
+  "broken_per_bubble_per_0p1s_first_0p1s": 1.8289473684210527,
+  "formed_per_bubble_per_0p1s_median": 0.881578947368421,
+  "drive_per_bubble_N": 9.861215718557258e-12,
+  "total_spread_median_N": 1.1078138510364056e-10,
+  "F2_spread_median_N": 1.115331818878722e-10,
+  "F2_spread_p90_N": 4.5387524468439875e-10,
+  "F1_spread_median_N": 1.0085139164045664e-11,
+  "F2_spread_over_drive": 11.874786603813185
+ },
+ "seed17_adhesion_x1": {
+  "seed": 17,
+  "adhesion": "x1",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "start": {
+   "state": "IRREGULAR3D_N99_a1.064",
+   "bubble_count": 99,
+   "aspect": 1.0643892364676428,
+   "cluster_seed": 5144285461880948901,
+   "rotation": [
+    [
+     0.7746880064058953,
+     -0.3622255623873733,
+     0.5183156708840768
+    ],
+    [
+     0.33801887875218356,
+     -0.4555229432651384,
+     -0.823554543285496
+    ],
+    [
+     0.5344171875398247,
+     0.81319830921628,
+     -0.23044908233665673
+    ]
+   ],
+   "centre_local_m": [
+    0.007653386707355318,
+    0.00015584802260364757,
+    -0.0006229130606023715
+   ]
+  },
+  "wall_s": 6.700301564997062,
+  "daqp_iterations": 1837,
+  "min_collective_singular_value": 0.5929452540696314,
+  "sim": {
+   "dln": 0.007758475837989989,
+   "per_px": 0.002179672358327383,
+   "aspect": 1.0332582524600422,
+   "aspect_p90": 1.0426595190099999,
+   "split": 0.0,
+   "speed": 35.58712229938025,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.005123411080097567,
+   "per_px": 0.0014400431640322273,
+   "aspect": 1.0642383508689583,
+   "aspect_p90": 1.0713259545458789,
+   "split": 0.0,
+   "speed": 35.587122299409124,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5353535353535355,
+  "contacts_per_bubble_end": 2.9494949494949494,
+  "pressed_contacts_per_bubble_median": 2.9393939393939394,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.010101010101010102,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 7.24285112543709e-13,
+  "total_spread_median_N": 1.0255804774822787e-09,
+  "F2_spread_median_N": 2.660985336005668e-11,
+  "F2_spread_p90_N": 8.665166147824112e-11,
+  "F1_spread_median_N": 2.3305251412201452e-12,
+  "F2_spread_over_drive": 36.739268341525104
+ },
+ "seed17_adhesion_x0.1": {
+  "seed": 17,
+  "adhesion": "x0.1",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-11,
+  "start": {
+   "state": "IRREGULAR3D_N99_a1.064",
+   "bubble_count": 99,
+   "aspect": 1.0643892364676428,
+   "cluster_seed": 5144285461880948901,
+   "rotation": [
+    [
+     0.7746880064058953,
+     -0.3622255623873733,
+     0.5183156708840768
+    ],
+    [
+     0.33801887875218356,
+     -0.4555229432651384,
+     -0.823554543285496
+    ],
+    [
+     0.5344171875398247,
+     0.81319830921628,
+     -0.23044908233665673
+    ]
+   ],
+   "centre_local_m": [
+    0.007653386707355318,
+    0.00015584802260364757,
+    -0.0006229130606023715
+   ]
+  },
+  "wall_s": 6.451160974102095,
+  "daqp_iterations": 2105,
+  "min_collective_singular_value": 0.5928938452724404,
+  "sim": {
+   "dln": 0.006143436564990471,
+   "per_px": 0.001746562933856404,
+   "aspect": 1.0150039989146624,
+   "aspect_p90": 1.0407347115100556,
+   "split": 0.0,
+   "speed": 35.178106555184876,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.005576942927591226,
+   "per_px": 0.0015858453035174193,
+   "aspect": 1.0644060147060275,
+   "aspect_p90": 1.0712212202712463,
+   "split": 0.0,
+   "speed": 35.17810655511266,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5353535353535355,
+  "contacts_per_bubble_end": 2.9797979797979797,
+  "pressed_contacts_per_bubble_median": 2.9393939393939394,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.18181818181818182,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 7.160464895183063e-13,
+  "total_spread_median_N": 1.2802292526349522e-10,
+  "F2_spread_median_N": 2.5796799126956053e-11,
+  "F2_spread_p90_N": 8.531849235734721e-11,
+  "F1_spread_median_N": 2.1413149676810437e-12,
+  "F2_spread_over_drive": 36.042334439853036
+ },
+ "seed17_adhesion_x0": {
+  "seed": 17,
+  "adhesion": "x0",
+  "bubbles": 99,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "start": {
+   "state": "IRREGULAR3D_N99_a1.064",
+   "bubble_count": 99,
+   "aspect": 1.0643892364676428,
+   "cluster_seed": 5144285461880948901,
+   "rotation": [
+    [
+     0.7746880064058953,
+     -0.3622255623873733,
+     0.5183156708840768
+    ],
+    [
+     0.33801887875218356,
+     -0.4555229432651384,
+     -0.823554543285496
+    ],
+    [
+     0.5344171875398247,
+     0.81319830921628,
+     -0.23044908233665673
+    ]
+   ],
+   "centre_local_m": [
+    0.007653386707355318,
+    0.00015584802260364757,
+    -0.0006229130606023715
+   ]
+  },
+  "wall_s": 6.124482122948393,
+  "daqp_iterations": 5238,
+  "min_collective_singular_value": 0.5928913821754862,
+  "sim": {
+   "dln": 0.006300740614076395,
+   "per_px": 0.0019157895660216221,
+   "aspect": 1.0549500963414515,
+   "aspect_p90": 1.099142678504519,
+   "split": 0.0,
+   "speed": 32.61951650284472,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.004124053583139029,
+   "per_px": 0.0012569860315047156,
+   "aspect": 1.0629657119442852,
+   "aspect_p90": 1.0704366480758891,
+   "split": 0.0,
+   "speed": 32.619516502815834,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.5353535353535355,
+  "contacts_per_bubble_end": 2.9797979797979797,
+  "pressed_contacts_per_bubble_median": 2.7777777777777777,
+  "broken_per_bubble_per_0p1s_median": 0.13131313131313133,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.6464646464646465,
+  "formed_per_bubble_per_0p1s_median": 0.1414141414141414,
+  "drive_per_bubble_N": 6.653383243898541e-13,
+  "total_spread_median_N": 2.5071846622057492e-11,
+  "F2_spread_median_N": 2.5547844873391685e-11,
+  "F2_spread_p90_N": 8.554016052775554e-11,
+  "F1_spread_median_N": 1.928203233212986e-12,
+  "F2_spread_over_drive": 38.28113590022234
+ },
+ "seed7_adhesion_x1": {
+  "seed": 7,
+  "adhesion": "x1",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-10,
+  "start": {
+   "state": "IRREGULAR3D_N122_a1.359",
+   "bubble_count": 122,
+   "aspect": 1.35888552038783,
+   "cluster_seed": 7154437704795913393,
+   "rotation": [
+    [
+     0.006492257379357658,
+     0.5077723132030496,
+     0.861466847033909
+    ],
+    [
+     0.39993700442542246,
+     0.7882660782265112,
+     -0.46763979985520404
+    ],
+    [
+     -0.9165196359518654,
+     0.3475685081560465,
+     -0.19795931160933167
+    ]
+   ],
+   "centre_local_m": [
+    0.01040118439378324,
+    0.0004445465759617121,
+    -4.7983419166542436e-05
+   ]
+  },
+  "wall_s": 8.956731157144532,
+  "daqp_iterations": 2020,
+  "min_collective_singular_value": 0.5939457817001097,
+  "sim": {
+   "dln": 0.004485773883271818,
+   "per_px": 0.0014469630455863913,
+   "aspect": 1.1135345134259491,
+   "aspect_p90": 1.1208547706396412,
+   "split": 0.0,
+   "speed": 30.992695972355804,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.004401841665069386,
+   "per_px": 0.0014200275730190987,
+   "aspect": 1.112366099774649,
+   "aspect_p90": 1.1177569008124295,
+   "split": 0.0,
+   "speed": 30.992695972499334,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.6147540983606556,
+  "contacts_per_bubble_end": 3.0081967213114753,
+  "pressed_contacts_per_bubble_median": 2.9508196721311477,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.040983606557377046,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 6.239529776496833e-13,
+  "total_spread_median_N": 9.331376693998355e-10,
+  "F2_spread_median_N": 2.7541998605291868e-11,
+  "F2_spread_p90_N": 9.514380121800375e-11,
+  "F1_spread_median_N": 2.2623481260884845e-12,
+  "F2_spread_over_drive": 44.13819621154598
+ },
+ "seed7_adhesion_x0.1": {
+  "seed": 7,
+  "adhesion": "x0.1",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 5.04e-11,
+  "start": {
+   "state": "IRREGULAR3D_N122_a1.359",
+   "bubble_count": 122,
+   "aspect": 1.35888552038783,
+   "cluster_seed": 7154437704795913393,
+   "rotation": [
+    [
+     0.006492257379357658,
+     0.5077723132030496,
+     0.861466847033909
+    ],
+    [
+     0.39993700442542246,
+     0.7882660782265112,
+     -0.46763979985520404
+    ],
+    [
+     -0.9165196359518654,
+     0.3475685081560465,
+     -0.19795931160933167
+    ]
+   ],
+   "centre_local_m": [
+    0.01040118439378324,
+    0.0004445465759617121,
+    -4.7983419166542436e-05
+   ]
+  },
+  "wall_s": 8.654415972996503,
+  "daqp_iterations": 2792,
+  "min_collective_singular_value": 0.5930292183102518,
+  "sim": {
+   "dln": 0.0042596962561861264,
+   "per_px": 0.0014203662796880032,
+   "aspect": 1.0594317687489918,
+   "aspect_p90": 1.067025238989713,
+   "split": 0.0,
+   "speed": 29.949284407683454,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.003913882404597409,
+   "per_px": 0.0013057730373827155,
+   "aspect": 1.111463655117832,
+   "aspect_p90": 1.1170570417045627,
+   "split": 0.0,
+   "speed": 29.949284407654844,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.6147540983606556,
+  "contacts_per_bubble_end": 3.0081967213114753,
+  "pressed_contacts_per_bubble_median": 2.9508196721311477,
+  "broken_per_bubble_per_0p1s_median": 0.0,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.26229508196721313,
+  "formed_per_bubble_per_0p1s_median": 0.0,
+  "drive_per_bubble_N": 6.0294854396035e-13,
+  "total_spread_median_N": 1.2911626562074127e-10,
+  "F2_spread_median_N": 2.626143693296738e-11,
+  "F2_spread_p90_N": 9.65416061919629e-11,
+  "F1_spread_median_N": 2.2732527579942473e-12,
+  "F2_spread_over_drive": 43.49096648215748
+ },
+ "seed7_adhesion_x0": {
+  "seed": 7,
+  "adhesion": "x0",
+  "bubbles": 122,
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 1.5,
+  "adhesion_force_N": 0.0,
+  "start": {
+   "state": "IRREGULAR3D_N122_a1.359",
+   "bubble_count": 122,
+   "aspect": 1.35888552038783,
+   "cluster_seed": 7154437704795913393,
+   "rotation": [
+    [
+     0.006492257379357658,
+     0.5077723132030496,
+     0.861466847033909
+    ],
+    [
+     0.39993700442542246,
+     0.7882660782265112,
+     -0.46763979985520404
+    ],
+    [
+     -0.9165196359518654,
+     0.3475685081560465,
+     -0.19795931160933167
+    ]
+   ],
+   "centre_local_m": [
+    0.01040118439378324,
+    0.0004445465759617121,
+    -4.7983419166542436e-05
+   ]
+  },
+  "wall_s": 17.057549940189347,
+  "daqp_iterations": 4818,
+  "min_collective_singular_value": 0.5929331764232193,
+  "sim": {
+   "dln": 0.004734113102628928,
+   "per_px": 0.0016624855014196634,
+   "aspect": 1.0504036375366201,
+   "aspect_p90": 1.0648400555676307,
+   "split": 0.03529411764705882,
+   "speed": 30.17985312581023,
+   "windows": 85
+  },
+  "rigid_floor": {
+   "dln": 0.0027492891024905983,
+   "per_px": 0.00039639101222797537,
+   "aspect": 1.112294039013003,
+   "aspect_p90": 1.1168562809020415,
+   "split": 0.0,
+   "speed": 75.87431228301513,
+   "windows": 85
+  },
+  "contacts_per_bubble_start": 2.6147540983606556,
+  "contacts_per_bubble_end": 2.9508196721311477,
+  "pressed_contacts_per_bubble_median": 2.7950819672131146,
+  "broken_per_bubble_per_0p1s_median": 0.09016393442622951,
+  "broken_per_bubble_per_0p1s_first_0p1s": 0.819672131147541,
+  "formed_per_bubble_per_0p1s_median": 0.09016393442622951,
+  "drive_per_bubble_N": 1.5247585729879535e-12,
+  "total_spread_median_N": 2.358015190197051e-11,
+  "F2_spread_median_N": 2.3962328603497663e-11,
+  "F2_spread_p90_N": 1.3814010334420191e-10,
+  "F1_spread_median_N": 1.7818217921375305e-12,
+  "F2_spread_over_drive": 15.705604398876243
+ }
+}

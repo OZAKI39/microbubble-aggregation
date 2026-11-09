@@ -1,0 +1,103 @@
+{
+ "23": {
+  "bubbles": 20,
+  "before": {
+   "step_ms": 1.0829876721836627,
+   "load_table_ms": 0.022550599999999973,
+   "mean_daqp_iterations": 1.108,
+   "page_faults_per_step": 95.124,
+   "pivoted_loads": null
+  },
+  "block": {
+   "step_ms": 1.093182331416756,
+   "load_table_ms": 0.020390081738746405,
+   "mean_daqp_iterations": 1.108,
+   "page_faults_per_step": 95.076,
+   "pivoted_loads": 0
+  },
+  "block_avx2": {
+   "step_ms": 1.07418303610757,
+   "load_table_ms": 0.015257591704672812,
+   "mean_daqp_iterations": 1.108,
+   "page_faults_per_step": 95.08,
+   "pivoted_loads": 0
+  }
+ },
+ "21": {
+  "bubbles": 50,
+  "before": {
+   "step_ms": 2.5322831426747143,
+   "load_table_ms": 0.37491881000000005,
+   "mean_daqp_iterations": 1.288,
+   "page_faults_per_step": 96.62,
+   "pivoted_loads": null
+  },
+  "block": {
+   "step_ms": 2.396043323446065,
+   "load_table_ms": 0.1999635344513929,
+   "mean_daqp_iterations": 1.288,
+   "page_faults_per_step": 96.836,
+   "pivoted_loads": 0
+  },
+  "block_avx2": {
+   "step_ms": 2.272707361727953,
+   "load_table_ms": 0.10279250164149045,
+   "mean_daqp_iterations": 1.288,
+   "page_faults_per_step": 96.816,
+   "pivoted_loads": 0
+  }
+ },
+ "16": {
+  "bubbles": 76,
+  "before": {
+   "step_ms": 5.273948161397129,
+   "load_table_ms": 1.4846516200000017,
+   "mean_daqp_iterations": 1.482,
+   "page_faults_per_step": 97.87,
+   "pivoted_loads": null
+  },
+  "block": {
+   "step_ms": 4.4016907922923565,
+   "load_table_ms": 0.6587076108907723,
+   "mean_daqp_iterations": 1.482,
+   "page_faults_per_step": 98.996,
+   "pivoted_loads": 0
+  },
+  "block_avx2": {
+   "step_ms": 4.033286327496171,
+   "load_table_ms": 0.30417692119308687,
+   "mean_daqp_iterations": 1.482,
+   "page_faults_per_step": 98.932,
+   "pivoted_loads": 0
+  }
+ },
+ "7": {
+  "bubbles": 122,
+  "before": {
+   "step_ms": 16.801767866127193,
+   "load_table_ms": 7.164016000000001,
+   "mean_daqp_iterations": 2.068,
+   "page_faults_per_step": 148.994,
+   "pivoted_loads": null
+  },
+  "block": {
+   "step_ms": 12.25184428691864,
+   "load_table_ms": 2.605126653832828,
+   "mean_daqp_iterations": 2.068,
+   "page_faults_per_step": 106.836,
+   "pivoted_loads": 0
+  },
+  "block_avx2": {
+   "step_ms": 10.642218518070877,
+   "load_table_ms": 1.1014983855103506,
+   "mean_daqp_iterations": 2.068,
+   "page_faults_per_step": 107.58,
+   "pivoted_loads": 0
+  }
+ },
+ "122_bubbles_tables_freed_each_step": {
+  "step_ms": 15.39074547123164,
+  "f2_ms": 3.1232591322623193,
+  "page_faults_per_step": 2903.282
+ }
+}

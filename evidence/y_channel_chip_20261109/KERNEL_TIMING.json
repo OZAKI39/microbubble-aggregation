@@ -1,0 +1,176 @@
+[
+ {
+  "f_MHz": 2.5,
+  "order": 96,
+  "kernel": "loop",
+  "points": 64,
+  "ms": 3.986,
+  "rel_err_p": 3.347983461391901e-15,
+  "rel_err_grad": 1.1765767848132937e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 96,
+  "kernel": "loop",
+  "points": 255,
+  "ms": 3.791,
+  "rel_err_p": 3.347983461391901e-15,
+  "rel_err_grad": 1.1765767848132937e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 96,
+  "kernel": "loop",
+  "points": 512,
+  "ms": 3.778,
+  "rel_err_p": 3.347983461391901e-15,
+  "rel_err_grad": 1.1765767848132937e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 96,
+  "kernel": "node",
+  "points": 64,
+  "ms": 0.616,
+  "rel_err_p": 3.554129241678164e-15,
+  "rel_err_grad": 1.1771761295858523e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 96,
+  "kernel": "node",
+  "points": 255,
+  "ms": 1.459,
+  "rel_err_p": 3.554129241678164e-15,
+  "rel_err_grad": 1.1771761295858523e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 96,
+  "kernel": "node",
+  "points": 512,
+  "ms": 2.553,
+  "rel_err_p": 3.554129241678164e-15,
+  "rel_err_grad": 1.1771761295858523e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 192,
+  "kernel": "loop",
+  "points": 64,
+  "ms": 7.179,
+  "rel_err_p": 3.1810440941636866e-14,
+  "rel_err_grad": 6.774554193415279e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 192,
+  "kernel": "loop",
+  "points": 255,
+  "ms": 6.946,
+  "rel_err_p": 3.1810440941636866e-14,
+  "rel_err_grad": 6.774554193415279e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 192,
+  "kernel": "loop",
+  "points": 512,
+  "ms": 7.078,
+  "rel_err_p": 3.1810440941636866e-14,
+  "rel_err_grad": 6.774554193415279e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 192,
+  "kernel": "node",
+  "points": 64,
+  "ms": 0.959,
+  "rel_err_p": 3.154263414223373e-14,
+  "rel_err_grad": 6.772896544703913e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 192,
+  "kernel": "node",
+  "points": 255,
+  "ms": 2.562,
+  "rel_err_p": 3.154263414223373e-14,
+  "rel_err_grad": 6.772896544703913e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 192,
+  "kernel": "node",
+  "points": 512,
+  "ms": 4.71,
+  "rel_err_p": 3.154263414223373e-14,
+  "rel_err_grad": 6.772896544703913e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 48,
+  "kernel": "node, registered square order",
+  "points": 64,
+  "ms": 0.509,
+  "gpu_vs_cpu_p": 9.568471435712078e-15,
+  "gpu_vs_cpu_grad": 3.878261855638918e-14,
+  "vs768_p": 1.2587335769137586e-14,
+  "vs768_grad": 2.976440761038996e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 48,
+  "kernel": "node, registered square order",
+  "points": 255,
+  "ms": 1.035,
+  "gpu_vs_cpu_p": 9.568471435712078e-15,
+  "gpu_vs_cpu_grad": 3.878261855638918e-14,
+  "vs768_p": 1.2587335769137586e-14,
+  "vs768_grad": 2.976440761038996e-14
+ },
+ {
+  "f_MHz": 2.5,
+  "order": 48,
+  "kernel": "node, registered square order",
+  "points": 512,
+  "ms": 1.706,
+  "gpu_vs_cpu_p": 9.568471435712078e-15,
+  "gpu_vs_cpu_grad": 3.878261855638918e-14,
+  "vs768_p": 1.2587335769137586e-14,
+  "vs768_grad": 2.976440761038996e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 80,
+  "kernel": "node, registered square order",
+  "points": 64,
+  "ms": 0.639,
+  "gpu_vs_cpu_p": 3.7169814200982816e-14,
+  "gpu_vs_cpu_grad": 9.979909440144392e-14,
+  "vs768_p": 2.50777634198118e-14,
+  "vs768_grad": 6.352953864572684e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 80,
+  "kernel": "node, registered square order",
+  "points": 255,
+  "ms": 1.447,
+  "gpu_vs_cpu_p": 3.7169814200982816e-14,
+  "gpu_vs_cpu_grad": 9.979909440144392e-14,
+  "vs768_p": 2.50777634198118e-14,
+  "vs768_grad": 6.352953864572684e-14
+ },
+ {
+  "f_MHz": 9.375,
+  "order": 80,
+  "kernel": "node, registered square order",
+  "points": 512,
+  "ms": 2.622,
+  "gpu_vs_cpu_p": 3.7169814200982816e-14,
+  "gpu_vs_cpu_grad": 9.979909440144392e-14,
+  "vs768_p": 2.50777634198118e-14,
+  "vs768_grad": 6.352953864572684e-14
+ }
+]

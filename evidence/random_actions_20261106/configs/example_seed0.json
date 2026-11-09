@@ -1,0 +1,9 @@
+{
+  "fidelity": "PRETRAIN",
+  "coupling": "collective",
+  "state": "IRREGULAR_N32_a1.0_s0",
+  "duration_s": 0.3,
+  "save_interval_s": 0.01,
+  "action_seed": 0,
+  "offset_m": [2e-05, 0, 0]
+}

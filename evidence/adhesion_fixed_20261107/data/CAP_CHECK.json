@@ -1,0 +1,20 @@
+{
+ "seed23_node_adhesion_x1": {
+  "status": "PASS",
+  "completed_s": 1.5,
+  "adhesion_force_N_now": 5.04e-10,
+  "adhesion_force_N_before": 5.04e-10,
+  "same_shape": true,
+  "identical": true,
+  "max_abs_difference_m": 0.0
+ },
+ "seed7_node_adhesion_x1": {
+  "status": "PASS",
+  "completed_s": 1.5,
+  "adhesion_force_N_now": 5.04e-10,
+  "adhesion_force_N_before": 5.04e-10,
+  "same_shape": true,
+  "identical": true,
+  "max_abs_difference_m": 0.0
+ }
+}

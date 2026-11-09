@@ -1,0 +1,47 @@
+"""How much the four-PZT field changes along z near the channel centre (2026-11-09).
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS python field_z_check.py SCULPT_OUT OUT_JSON
+SCULPT_OUT: sculpt_runs.py output with L_N250_9.375MHz_<pattern>_adh0/ROW.json (the drive of each pattern).
+Over x, y in +-45 um (31 x 31 points) and z in {-80, -40, 0, 40, 80} um, with the project's disc field: the largest
+z-component of grad |p|^2 over the largest horizontal one (|p|^2 sets the primary force on a bubble far from
+resonance), and the largest change of |p|^2 between z = 0 and z = +-80 um over the largest |p|^2.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from workflows.f10ag import pretrain_context
+
+FREQUENCY_HZ = 9.375e6
+
+
+def main():
+    sculpt_out, out = Path(sys.argv[1]), Path(sys.argv[2])
+    elements = pretrain_context(Path("."), FREQUENCY_HZ).discs.elements
+    discs = WaterDiscs(elements, FREQUENCY_HZ)
+    side_um = np.linspace(-45, 45, 31)
+    heights_um = np.array([-80, -40, 0, 40, 80])
+    gx, gy, gz = np.meshgrid(side_um, side_um, heights_um, indexing="ij")
+    points = np.column_stack([gx.ravel(), gy.ravel(), gz.ravel()]) * 1e-6
+    pressure, gradient = discs.evaluate(points, direct_quadrature_order(FREQUENCY_HZ))
+    result = {}
+    for pattern in ("lines_x", "cross", "wavy", "dots"):
+        segment = json.loads((sculpt_out / f"L_N250_9.375MHz_{pattern}_adh0" / "ROW.json").read_text())["segments"][0]
+        u = np.array(segment["amplitudes_Pa_eq"]) * np.exp(1j * np.array(segment["phases_rad"]))
+        p = u @ pressure
+        grad_p = np.einsum("c,cnk->nk", u, gradient)
+        grad_p2 = 2 * np.real(np.conj(p)[:, None] * grad_p)  # gradient of |p|^2
+        p2 = (np.abs(p) ** 2).reshape(gx.shape)
+        result[pattern] = dict(
+            z_over_horizontal_gradient=float(np.abs(grad_p2[:, 2]).max() / np.linalg.norm(grad_p2[:, :2], axis=1).max()),
+            p2_change_z0_to_80um_over_max=float(np.abs(p2[..., [0, 4]] - p2[..., [2]]).max() / p2.max()))
+        print(pattern, result[pattern])
+    out.write_text(json.dumps(dict(frequency_Hz=FREQUENCY_HZ, region_um=dict(x=[-45, 45], y=[-45, 45], z=[-80, 80]),
+                                   patterns=result), indent=1) + "\n")
+
+
+main()

@@ -1,0 +1,1076 @@
+{
+ "G1_user_named": [
+  {
+   "path": "evidence/rotate_sheet_20261108",
+   "bytes": 6031505,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/complex_paths_20261109",
+   "bytes": 6541738,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/ANALYSE_MORPH.py.txt",
+   "bytes": 7617,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/ANIMATION_3D_PZT_FIELD.py.txt",
+   "bytes": 14877,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/ANIMATION_MORPH.py.txt",
+   "bytes": 8571,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/ANIMATION_MORPH_PZT_FIELD.py.txt",
+   "bytes": 15913,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/DRIVE_CHECK_MORPH.py.txt",
+   "bytes": 3191,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/MORPH.py.txt",
+   "bytes": 5411,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/MORPH_RUNS.py.txt",
+   "bytes": 5424,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/fig1_translate.png",
+   "bytes": 206833,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/fig2_bend.png",
+   "bytes": 177332,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/fig3_line_dot.png",
+   "bytes": 169588,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/fig4_views.png",
+   "bytes": 692793,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/data/DRIVE_CHECK.json",
+   "bytes": 6371,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/data/JOBS_MORPH.txt",
+   "bytes": 1765,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/data/JOBS_MORPH_RERUN.txt",
+   "bytes": 726,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/data/MORPH.json",
+   "bytes": 9347,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/data/MORPH.npz",
+   "bytes": 179594,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_bend.mp4",
+   "bytes": 808297,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_bend_3d_pzt_field.mp4",
+   "bytes": 1706516,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_bend_pzt_field.mp4",
+   "bytes": 1465912,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_line_dot.mp4",
+   "bytes": 3426383,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_line_dot_3d_pzt_field.mp4",
+   "bytes": 1751816,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_translate.mp4",
+   "bytes": 885328,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_translate_3d_pzt_field.mp4",
+   "bytes": 1740068,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/morph_sheet_20261108/anim_translate_pzt_field.mp4",
+   "bytes": 1244549,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/sculpt_4pzt_20261108/anim_switching_9.375MHz.mp4",
+   "bytes": 805131,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/sculpt_4pzt_20261108/fig5_switching.png",
+   "bytes": 474885,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/sculpt_4pzt_20261108/fig6_softness.png",
+   "bytes": 207818,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/sculpt_4pzt_20261108/data/SOFTNESS.json",
+   "bytes": 49955,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/sculpt_4pzt_20261108/FIGURE_Q2.py.txt",
+   "bytes": 4539,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/sculpt_4pzt_20261108/FIGURE_Q3.py.txt",
+   "bytes": 6844,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/sculpt_4pzt_20261108/ANALYSE_SOFTNESS.py.txt",
+   "bytes": 5893,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/shape3d_20261109/fig_sheet_changes.png",
+   "bytes": 177278,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/shape3d_20261109/fig_follow_ball_vs_sheet.png",
+   "bytes": 157474,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/shape3d_20261109/data/SHAPE3D_sheet_changes.json",
+   "bytes": 6317,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/shape3d_20261109/data/SHAPE3D_sheet_changes.npz",
+   "bytes": 168011,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/complex_ball_20261109/data/COMPLEX_sheet_recheck.json",
+   "bytes": 4035,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/complex_ball_20261109/data/COMPLEX_sheet_recheck.npz",
+   "bytes": 162038,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/rotate_20261108",
+   "bytes": 27334061,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/complex_20261109",
+   "bytes": 98735969,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_bend_N250_9.375MHz_sweep1.6s_hold2s",
+   "bytes": 2279023,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_bend_N250_9.375MHz_sweep25.6s_hold2s",
+   "bytes": 15195482,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_bend_N250_9.375MHz_sweep6.4s_hold2s",
+   "bytes": 4944655,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_linedot_N250_9.375MHz_sweep1.6s_hold2s",
+   "bytes": 2300481,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_linedot_N250_9.375MHz_sweep25.6s_hold2s",
+   "bytes": 15636499,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_linedot_N250_9.375MHz_sweep6.4s_hold2s",
+   "bytes": 5015630,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_linedot_N250_9.375MHz_to22.5deg_in3.2s_then_linesx5s",
+   "bytes": 4056717,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_translate_N250_9.375MHz_sweep1.6s_hold2s",
+   "bytes": 2247810,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_translate_N250_9.375MHz_sweep25.6s_hold2s",
+   "bytes": 14889549,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/out/MOV_translate_N250_9.375MHz_sweep6.4s_hold2s",
+   "bytes": 4863776,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_bend_N250_9.375MHz_sweep1.6s_hold2s.log",
+   "bytes": 444,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_bend_N250_9.375MHz_sweep25.6s_hold2s.log",
+   "bytes": 449,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_bend_N250_9.375MHz_sweep6.4s_hold2s.log",
+   "bytes": 446,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_linedot_N250_9.375MHz_sweep1.6s_hold2s.log",
+   "bytes": 447,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_linedot_N250_9.375MHz_sweep25.6s_hold2s.log",
+   "bytes": 452,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_linedot_N250_9.375MHz_sweep6.4s_hold2s.log",
+   "bytes": 449,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_linedot_N250_9.375MHz_to22.5deg_in3.2s_then_linesx5s.log",
+   "bytes": 463,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_translate_N250_9.375MHz_sweep1.6s_hold2s.log",
+   "bytes": 450,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_translate_N250_9.375MHz_sweep25.6s_hold2s.log",
+   "bytes": 454,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/logs/MOV_translate_N250_9.375MHz_sweep6.4s_hold2s.log",
+   "bytes": 451,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/MOV_linedot_N250_9.375MHz_to22.5deg_in3.2s_then_linesx5s",
+   "bytes": 224,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/MOV_translate_N250_9.375MHz_sweep1.6s_hold2s",
+   "bytes": 224,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/MOV_translate_N250_9.375MHz_sweep25.6s_hold2s",
+   "bytes": 226,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/MOV_translate_N250_9.375MHz_sweep6.4s_hold2s",
+   "bytes": 224,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/MOV_linedot_N250_9.375MHz_to22.5deg_in3.2s_then_linesx5s.log",
+   "bytes": 831,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/MOV_translate_N250_9.375MHz_sweep1.6s_hold2s.log",
+   "bytes": 831,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/MOV_translate_N250_9.375MHz_sweep25.6s_hold2s.log",
+   "bytes": 831,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/MOV_translate_N250_9.375MHz_sweep6.4s_hold2s.log",
+   "bytes": 831,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/scripts/morph.py",
+   "bytes": 5411,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/scripts/morph_runs.py",
+   "bytes": 5424,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/scripts/JOBS_MORPH.txt",
+   "bytes": 1765,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/scripts/JOBS_MORPH_RERUN.txt",
+   "bytes": 726,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q2L_N250_9.375MHz_linesx_then_linesy_adh0",
+   "bytes": 6736414,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q2L_N800_9.375MHz_linesx_then_linesy_adh0",
+   "bytes": 17142368,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q2L_N800_9.375MHz_linesx_then_off_adh0",
+   "bytes": 9911018,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q2L_N250_9.375MHz_linesx_then_linesy_adh0.log",
+   "bytes": 451,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q2L_N800_9.375MHz_linesx_then_linesy_adh0.log",
+   "bytes": 451,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q2L_N800_9.375MHz_linesx_then_off_adh0.log",
+   "bytes": 449,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N120_2.5MHz_push6000_adh0",
+   "bytes": 9244678,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N120_2.5MHz_push6000_adh1",
+   "bytes": 9225321,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N120_2.5MHz_pushmatched_adh0",
+   "bytes": 5770001,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N120_2.5MHz_pushmatched_adh1",
+   "bytes": 9125694,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N250_2.5MHz_push6000_adh0",
+   "bytes": 18336491,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N250_2.5MHz_push6000_adh1",
+   "bytes": 17893022,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N250_2.5MHz_pushmatched_adh0",
+   "bytes": 17965086,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N250_2.5MHz_pushmatched_adh1",
+   "bytes": 18231822,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N500_2.5MHz_push6000_adh0",
+   "bytes": 35444171,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N500_2.5MHz_push6000_adh1",
+   "bytes": 34960076,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N500_2.5MHz_pushmatched_adh0",
+   "bytes": 13839464,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/Q3_N500_2.5MHz_pushmatched_adh1",
+   "bytes": 17721861,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N120_2.5MHz_push6000_adh0.log",
+   "bytes": 437,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N120_2.5MHz_push6000_adh1.log",
+   "bytes": 437,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N120_2.5MHz_pushmatched_adh0.log",
+   "bytes": 473,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N120_2.5MHz_pushmatched_adh1.log",
+   "bytes": 439,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N250_2.5MHz_push6000_adh0.log",
+   "bytes": 437,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N250_2.5MHz_push6000_adh1.log",
+   "bytes": 437,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N250_2.5MHz_pushmatched_adh0.log",
+   "bytes": 439,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N250_2.5MHz_pushmatched_adh1.log",
+   "bytes": 440,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N500_2.5MHz_push6000_adh0.log",
+   "bytes": 437,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N500_2.5MHz_push6000_adh1.log",
+   "bytes": 437,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N500_2.5MHz_pushmatched_adh0.log",
+   "bytes": 499,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/Q3_N500_2.5MHz_pushmatched_adh1.log",
+   "bytes": 471,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/out/HALF_Q3_N250_2.5MHz_pushmatched_adh1",
+   "bytes": 18910452,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/logs/HALF_Q3_N250_2.5MHz_pushmatched_adh1.log",
+   "bytes": 445,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/pilot/N500_push",
+   "bytes": 1116705,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/scripts/JOBS_WAVE2A.txt",
+   "bytes": 401,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/scripts/JOBS_WAVE2B.txt",
+   "bytes": 158,
+   "git_tracked_files": 0
+  }
+ ],
+ "G2_regenerable_and_strays": [
+  {
+   "path": "build/apecss/0df15a2f6a95702a",
+   "bytes": 142362,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/apecss/4fbc41eb8048f75d",
+   "bytes": 134130,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/apecss/8d43c9a5b97ddfb9",
+   "bytes": 142315,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/22c8ac026db7a2fd",
+   "bytes": 304596,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/2546e5c56043d872",
+   "bytes": 215319,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/306c03ab1cad0824",
+   "bytes": 413042,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/33d38de99b2cdad9",
+   "bytes": 294379,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/3d838abb2a743a5c",
+   "bytes": 625781,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/4a99c54c5170e42b",
+   "bytes": 366859,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/6cf6b2507f5ed14c",
+   "bytes": 366067,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/72205f04fd394d95",
+   "bytes": 215366,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/85831464bf4a0319",
+   "bytes": 366859,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/c0e8bda6d8e3924d",
+   "bytes": 625828,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/ef0829bf30acef7d",
+   "bytes": 304643,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/contact/f4dd40216c1a893b",
+   "bytes": 370244,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/pair_forces/be0441943bcdd909",
+   "bytes": 28919,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "build/qpoases",
+   "bytes": 528055,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "__pycache__",
+   "bytes": 3064,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "microbubble/__pycache__",
+   "bytes": 370977,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/ball3d_20261109/scripts/__pycache__",
+   "bytes": 20669,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/complex_20261109/scripts/__pycache__",
+   "bytes": 14183,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/complex_ball_20261109/scripts/__pycache__",
+   "bytes": 14193,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/scripts/__pycache__",
+   "bytes": 8701,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/rotate_20261108/scripts/__pycache__",
+   "bytes": 5276,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/sculpt_20261108/scripts/__pycache__",
+   "bytes": 6691,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "tests/__pycache__",
+   "bytes": 608090,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "visualization/__pycache__",
+   "bytes": 23214,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "workflows/__pycache__",
+   "bytes": 41848,
+   "git_tracked_files": 0
+  },
+  {
+   "path": ".pytest_cache",
+   "bytes": 9001,
+   "git_tracked_files": 0
+  },
+  {
+   "path": ".ruff_cache",
+   "bytes": 9522,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/_scratch",
+   "bytes": 504193586,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/regression_v1",
+   "bytes": 0,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "node_probe_1e-08.json",
+   "bytes": 9201,
+   "git_tracked_files": 0
+  }
+ ],
+ "G3_superseded_unadopted_incomplete_evidence": [
+  {
+   "path": "evidence/qpoases_fallback_20261106",
+   "bytes": 275855,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/qpoases_contact_20261106",
+   "bytes": 521868,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/pretrain_step_control_20261104",
+   "bytes": 72931,
+   "git_tracked_files": 18
+  },
+  {
+   "path": "evidence/soft_contacts_20261104",
+   "bytes": 1302029,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/step_sweep_20261106",
+   "bytes": 353363,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/step_sweep_once_20261106",
+   "bytes": 262500,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/svd_wait_20261107",
+   "bytes": 642908,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/time_bill_20261107",
+   "bytes": 173090,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/pretrain_formed_defaults_20261104",
+   "bytes": 196059,
+   "git_tracked_files": 17
+  },
+  {
+   "path": "evidence/softness_matched_speed_20261104",
+   "bytes": 138632,
+   "git_tracked_files": 12
+  },
+  {
+   "path": "evidence/ab_reference_clusters_20261104",
+   "bytes": 5581478,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/disordered_clusters_trial_20261104",
+   "bytes": 248913,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/deforming_controls_20261104",
+   "bytes": 40185,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/polydispersity_static_20261103",
+   "bytes": 371372,
+   "git_tracked_files": 6
+  },
+  {
+   "path": "evidence/high_frequency_test_20261107",
+   "bytes": 2037496,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/phased_array_test_20261107",
+   "bytes": 4481143,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/contact_speed_20261104",
+   "bytes": 739733,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/random_starts_20261106/planar_starts_superseded",
+   "bytes": 1376947,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/apecss_harmonics_20261103/superseded",
+   "bytes": 199448,
+   "git_tracked_files": 2
+  }
+ ],
+ "G4_old_path_results_kept_on_1106": [
+  {
+   "path": "results/compact_failure_hf",
+   "bytes": 2427726,
+   "git_tracked_files": 4
+  },
+  {
+   "path": "results/contact_lf",
+   "bytes": 154300,
+   "git_tracked_files": 2
+  },
+  {
+   "path": "results/final_minimal_hf",
+   "bytes": 794010,
+   "git_tracked_files": 5
+  },
+  {
+   "path": "results/half_step_hf",
+   "bytes": 1089062,
+   "git_tracked_files": 4
+  },
+  {
+   "path": "results/historical_150ms_review",
+   "bytes": 793918,
+   "git_tracked_files": 5
+  },
+  {
+   "path": "results/minimal_hf",
+   "bytes": 643656,
+   "git_tracked_files": 4
+  },
+  {
+   "path": "results/minimal_hf_analysis",
+   "bytes": 563676,
+   "git_tracked_files": 6
+  },
+  {
+   "path": "results/minimal_lf",
+   "bytes": 164961,
+   "git_tracked_files": 2
+  },
+  {
+   "path": "results/paired_hf",
+   "bytes": 4535894,
+   "git_tracked_files": 5
+  },
+  {
+   "path": "results/paired_lf",
+   "bytes": 275325,
+   "git_tracked_files": 2
+  },
+  {
+   "path": "results/regression_final",
+   "bytes": 1633109,
+   "git_tracked_files": 3
+  },
+  {
+   "path": "results/regression_v2",
+   "bytes": 1320488,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "results/regression_v3",
+   "bytes": 1632135,
+   "git_tracked_files": 3
+  },
+  {
+   "path": "results/single_f1",
+   "bytes": 70834,
+   "git_tracked_files": 2
+  },
+  {
+   "path": "results/pretrain_apecss_response",
+   "bytes": 27150914,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/pretrain_apecss_response_threads8",
+   "bytes": 27154547,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/pretrain_gpu_field",
+   "bytes": 27005873,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/pretrain_gpu_field_auto",
+   "bytes": 27009141,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/pretrain_direct_field",
+   "bytes": 63434893,
+   "git_tracked_files": 9
+  },
+  {
+   "path": "results/pretrain_feasibility_2s",
+   "bytes": 11362605,
+   "git_tracked_files": 3
+  },
+  {
+   "path": "results/pretrain_protocol_ab",
+   "bytes": 98871759,
+   "git_tracked_files": 17
+  },
+  {
+   "path": "results/pretrain_stability_2s",
+   "bytes": 100501377,
+   "git_tracked_files": 15
+  },
+  {
+   "path": "visualization/ab_protocol_sim",
+   "bytes": 2436492,
+   "git_tracked_files": 6
+  },
+  {
+   "path": "visualization/pretrain_stability_2s",
+   "bytes": 28608700,
+   "git_tracked_files": 10
+  }
+ ],
+ "G5_failed_first_attempts": [
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/ADH_N128_9.375MHz_adh0N",
+   "bytes": 223,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/ADH_N128_9.375MHz_adh1e-10N",
+   "bytes": 225,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/ADH_N128_9.375MHz_adh1e-11N",
+   "bytes": 225,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/ADH_N128_9.375MHz_adh1e-12N",
+   "bytes": 225,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/ADH_N128_9.375MHz_adh1e-13N",
+   "bytes": 225,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/out/ADH_N128_9.375MHz_adh1e-14N",
+   "bytes": 225,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/ADH_N128_9.375MHz_adh0N.log",
+   "bytes": 834,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/ADH_N128_9.375MHz_adh1e-10N.log",
+   "bytes": 834,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/ADH_N128_9.375MHz_adh1e-11N.log",
+   "bytes": 834,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/ADH_N128_9.375MHz_adh1e-12N.log",
+   "bytes": 834,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/ADH_N128_9.375MHz_adh1e-13N.log",
+   "bytes": 834,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/morph_20261108/first_attempt_cap_rounding/logs/ADH_N128_9.375MHz_adh1e-14N.log",
+   "bytes": 834,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/complex_ball_20261109/out/first_attempt_wrong_column",
+   "bytes": 1135,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/complex_ball_20261109/JOBS_COMPLEX_BALL_STEP_first_attempt_wrong_column.txt",
+   "bytes": 955,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "evidence/complex_ball_20261109/data/JOBS_COMPLEX_BALL_STEP_first_attempt_wrong_column.txt",
+   "bytes": 955,
+   "git_tracked_files": 0
+  },
+  {
+   "path": "results/lowfreq_20261109/logs/failed_cap_rounding",
+   "bytes": 3344,
+   "git_tracked_files": 0
+  }
+ ],
+ "G6_outdated_docs": [
+  {
+   "path": "HANDOFF_20261102.md",
+   "bytes": 1,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/TREE.txt",
+   "bytes": 1830,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/DELIVERY_REPORT.md",
+   "bytes": 3697,
+   "git_tracked_files": 1
+  }
+ ],
+ "G7_historical_audit_docs": [
+  {
+   "path": "docs/CLEANUP_AUDIT.md",
+   "bytes": 18615,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/CLEANUP_RESULT.md",
+   "bytes": 6089,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/CLEANUP_REVIEW.md",
+   "bytes": 2745,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/HISTORICAL_DIRECTORY_AUDIT.md",
+   "bytes": 14252,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/PROJECTS_DIRECTORY_REVIEW.md",
+   "bytes": 7568,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/SERVER_CLEANUP_AUDIT_20261024.md",
+   "bytes": 13318,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/SERVER_CLEANUP_RESULT_20261024.md",
+   "bytes": 4158,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/MIGRATION_MAP.md",
+   "bytes": 12661,
+   "git_tracked_files": 1
+  },
+  {
+   "path": "docs/GITHUB_SYNC.md",
+   "bytes": 11435,
+   "git_tracked_files": 1
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "23": {
+  "bubbles": 20,
+  "status": "PASS",
+  "wall_s": 0.9499444761313498,
+  "force_evaluations": 500,
+  "force_ms_mean": 0.8772460073232651,
+  "min_collective_singular_value": 0.3782620305539847,
+  "daqp_iterations": 554,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 0,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "5fb0ca72e6dcef3ebfe4ff130a10578183cf5a3aa3059915825a82e49e805acd"
+ },
+ "21": {
+  "bubbles": 50,
+  "status": "PASS",
+  "wall_s": 1.1097269719466567,
+  "force_evaluations": 500,
+  "force_ms_mean": 1.6662871618755162,
+  "min_collective_singular_value": 0.5144438032091551,
+  "daqp_iterations": 644,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 4,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "5d4c6b79e31fcd180e73b2f516a16e2c3f551ad7bd8a95cc3c9037eefaa5a7bc"
+ },
+ "16": {
+  "bubbles": 76,
+  "status": "PASS",
+  "wall_s": 1.9164565119426697,
+  "force_evaluations": 500,
+  "force_ms_mean": 2.5968458335846663,
+  "min_collective_singular_value": 0.39491765574202287,
+  "daqp_iterations": 741,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 11,
+   "CONTACT_REACTION_BALANCE_PASS": 404,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "6a3b787230b111f1c1b70ef0f7efb6b930287b0ad1a90d58511d430204c77368"
+ },
+ "7": {
+  "bubbles": 122,
+  "status": "PASS",
+  "wall_s": 5.201566180912778,
+  "force_evaluations": 500,
+  "force_ms_mean": 6.20003685541451,
+  "min_collective_singular_value": 0.44307847560717506,
+  "daqp_iterations": 1034,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 12,
+   "CONTACT_REACTION_BALANCE_PASS": 200,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "476b2766c966d8cb592ad20f80b8cb76668b471e800e8f47e82fc5cdc7043e43"
+ }
+}

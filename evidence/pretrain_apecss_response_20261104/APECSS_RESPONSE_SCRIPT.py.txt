@@ -1,0 +1,194 @@
+"""Pretraining tier: response "apecss" (carried APECSS bubbles) against "table".
+
+usage (repository root, PYTHONPATH=.:visualization, APECSS_DIR set):
+  python apecss_response_check.py curves OUT_DIR    one bubble from rest: response vs pressure
+  python apecss_response_check.py runs OUT_DIR      whole runs in results/pretrain_apecss_response
+  python apecss_response_check.py figures OUT_DIR
+Evidence script only; not imported by project code.
+"""
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+ROOT = Path.cwd()
+UM_PER_PX = 0.6
+RUNS = ("protocol_formed32", "protocol_formed128", "random_offset_B_formed32")
+RUN_LABEL = {
+    "protocol_formed32": "Protocol X−→Y−→X−, 32 bubbles",
+    "protocol_formed128": "Protocol X−→Y−→X−, 128 bubbles",
+    "random_offset_B_formed32": "Random actions, 32 bubbles",
+}
+
+
+def curves(out_dir):
+    from workflows.f10ag import carried_apecss_response, context, load_pretrain_policy
+
+    p = load_pretrain_policy(ROOT)
+    pressures = np.logspace(0, np.log10(4e4), 41)
+    out = dict(pressure_Pa=pressures.tolist(), settings=p["apecss_response"], frequencies={})
+    for f in (2.4e6, 2.5e6, 2.6e6):
+        c = context(ROOT, f, device="cpu")
+        inside = pressures <= c.response.knots[-1]
+        table = np.full((len(pressures), 8), np.nan, complex)
+        table[inside] = c.response.query(pressures[inside] + 0j)
+        with tempfile.TemporaryDirectory() as build:
+            response, record = carried_apecss_response(ROOT, {}, p, f, 1, build)
+            apecss = response.query(pressures + 0j)  # other shape than n: fresh bubbles from rest
+            response.close()
+        out["frequencies"][str(int(f))] = dict(
+            table_re=table.real.tolist(), table_im=table.imag.tolist(),
+            apecss_re=apecss.real.tolist(), apecss_im=apecss.imag.tolist(),
+            table_max_Pa=float(c.response.knots[-1]),
+        )
+        rel = np.abs(table[inside, 0] - apecss[inside, 0]) / np.abs(apecss[inside, 0])
+        print(f"{f/1e6} MHz: |V1| table vs APECSS max rel diff {np.nanmax(rel):.2e}; "
+              f"|V2/V1| at 1 kPa table {abs(table[pressures.searchsorted(1e3), 1] / table[pressures.searchsorted(1e3), 0]):.2e} "
+              f"APECSS {abs(apecss[pressures.searchsorted(1e3), 1] / apecss[pressures.searchsorted(1e3), 0]):.2e}")
+    (Path(out_dir) / "RESPONSE_CURVES.json").write_text(json.dumps(out))
+
+
+def aspect(xy):
+    w = np.linalg.eigvalsh(np.cov((xy - xy.mean(0)).T))
+    return float(np.sqrt(w[1] / max(w[0], 1e-30)))
+
+
+def runs(out_dir):
+    base = ROOT / "results/pretrain_apecss_response"
+    result = {}
+    for name in RUNS:
+        pair = {}
+        for response in ("table", "apecss"):
+            d = base / f"{name}_{response}"
+            s = json.loads((d / "SUMMARY.json").read_text())
+            e = json.loads((d / "EXECUTION.json").read_text())
+            with h5py.File(d / "trajectory.h5") as h:
+                pair[response] = dict(summary=s, execution=e, t=h["time_s"][:], x=h["positions_m"][:])
+        a, b = pair["table"], pair["apecss"]
+        assert np.array_equal(a["t"], b["t"])
+        start = a["x"][0].mean(0)
+        result[name] = dict(
+            time_s=a["t"].tolist(),
+            max_bubble_diff_m=np.linalg.norm(a["x"] - b["x"], axis=2).max(1).tolist(),
+            centroid_diff_m=np.linalg.norm(a["x"].mean(1) - b["x"].mean(1), axis=1).tolist(),
+            centroid_path_table_m=(a["x"].mean(1) - start).tolist(),
+            centroid_path_apecss_m=(b["x"].mean(1) - start).tolist(),
+            aspect_table=[aspect(x[:, :2]) for x in a["x"]],
+            aspect_apecss=[aspect(x[:, :2]) for x in b["x"]],
+            summary={
+                r: {k: pair[r]["summary"][k] for k in ("status", "field", "field_device", "completed_s",
+                                                       "accepted_steps", "gate_rejected_steps",
+                                                       "constrained_solves", "wall_s", "trajectory_sha256")}
+                for r in pair
+            },
+            apecss_stats=b["execution"]["identity"]["apecss_response"]["stats"],
+        )
+        r = result[name]
+        path_t = np.linalg.norm(r["centroid_path_table_m"][-1])
+        path_a = np.linalg.norm(r["centroid_path_apecss_m"][-1])
+        print(name, {k: (v["status"], v["accepted_steps"], round(v["wall_s"], 1)) for k, v in r["summary"].items()},
+              "final centroid displacement table %.2f um apecss %.2f um" % (path_t * 1e6, path_a * 1e6),
+              "max bubble diff %.3g um" % (max(r["max_bubble_diff_m"]) * 1e6),
+              "cycles/call %.2f" % r["apecss_stats"]["cycles_per_bubble_call_mean"])
+    (Path(out_dir) / "RUN_COMPARISON.json").write_text(json.dumps(result))
+
+
+def figures(out_dir):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from pretrain_stability_figures import INK, setup_style
+
+    out_dir = Path(out_dir)
+    cur = json.loads((out_dir / "RESPONSE_CURVES.json").read_text())
+    run = json.loads((out_dir / "RUN_COMPARISON.json").read_text())
+    blue, orange, green = "#2a78d6", "#eb6834", "#1baf7a"
+    footer = ("Exploratory · homogeneous-water proxy · physics uncalibrated · pretraining tier, "
+              "response \"table\" vs \"apecss\" (carried APECSS bubbles)")
+    with tempfile.TemporaryDirectory() as fonts:
+        setup_style(Path(fonts))
+
+        # fig1: one bubble, response against pressure
+        P = np.asarray(cur["pressure_Pa"])
+        fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.4))
+        for f, color in (("2400000", blue), ("2500000", orange), ("2600000", green)):
+            d = cur["frequencies"][f]
+            t = np.asarray(d["table_re"]) + 1j * np.asarray(d["table_im"])
+            a = np.asarray(d["apecss_re"]) + 1j * np.asarray(d["apecss_im"])
+            label = f"{int(f) / 1e6:.1f} MHz"
+            axes[0].plot(P, np.abs(a[:, 0]) / P * 1e24, "-", color=color, linewidth=2, label=f"{label} APECSS")
+            axes[0].plot(P, np.abs(t[:, 0]) / P * 1e24, "o", color=color, markersize=4, label=f"{label} table")
+            axes[1].plot(P, np.degrees(np.angle(a[:, 0])), "-", color=color, linewidth=2)
+            axes[1].plot(P, np.degrees(np.angle(t[:, 0])), "o", color=color, markersize=4)
+            axes[2].plot(P, np.abs(a[:, 1] / a[:, 0]), "-", color=color, linewidth=2)
+            axes[2].plot(P, np.abs(t[:, 1] / t[:, 0]), "o", color=color, markersize=4)
+        for ax in axes:
+            ax.set_xscale("log")
+            ax.set_xlabel("Local pressure amplitude |P| (Pa)")
+        axes[0].set_ylabel("|V1| / |P|  (1e-24 m³/Pa)")
+        axes[0].set_title("a  Fundamental per pascal")
+        axes[1].set_ylabel("Phase of V1 relative to P (deg)")
+        axes[1].set_title("b  Phase of the fundamental")
+        axes[2].set_yscale("log")
+        axes[2].set_ylabel("|V2| / |V1|")
+        axes[2].set_title("c  Second harmonic relative to the fundamental")
+        axes[0].legend(frameon=False, fontsize=8, loc="upper left", ncols=2)
+        fig.suptitle("One bubble: carried APECSS (lines) against the frozen tables (dots)",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer, ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(out_dir / "fig1_response_vs_pressure.png", dpi=160)
+        plt.close(fig)
+
+        # fig2: whole runs
+        fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.4))
+        ax = axes[0]
+        for name, color in zip(RUNS, (blue, orange, green)):
+            r = run[name]
+            t = np.asarray(r["time_s"])
+            ax.plot(t, np.linalg.norm(r["centroid_path_table_m"], axis=1) / (UM_PER_PX * 1e-6), "--", color=color, linewidth=1.5)
+            ax.plot(t, np.linalg.norm(r["centroid_path_apecss_m"], axis=1) / (UM_PER_PX * 1e-6), "-", color=color, linewidth=2,
+                    label=RUN_LABEL[name])
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Cluster centre distance from start (px)")
+        ax.set_title("a  Cluster travel (solid APECSS, dashed table)")
+        ax.legend(frameon=False, fontsize=8.5, loc="upper left")
+        ax = axes[1]
+        for name, color in zip(RUNS, (blue, orange, green)):
+            r = run[name]
+            ax.plot(r["time_s"], np.asarray(r["centroid_diff_m"]) / (UM_PER_PX * 1e-6), color=color, linewidth=2, label=RUN_LABEL[name])
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Cluster centre difference, APECSS − table (px)")
+        ax.set_title("b  How far the two runs drift apart")
+        ax = axes[2]
+        y = np.arange(len(RUNS))
+        table_s = [run[n]["summary"]["table"]["wall_s"] for n in RUNS]
+        apecss_s = [run[n]["summary"]["apecss"]["wall_s"] for n in RUNS]
+        ax.barh(y - 0.19, table_s, height=0.36, color=INK["muted"], label="response \"table\"")
+        ax.barh(y + 0.19, apecss_s, height=0.36, color=orange, label="response \"apecss\"")
+        for yy, a, b, n in zip(y, table_s, apecss_s, RUNS):
+            cyc = run[n]["apecss_stats"]["cycles_per_bubble_call_mean"]
+            ax.text(a, yy - 0.19, f" {a:.0f} s", va="center", fontsize=8.5, color=INK["secondary"])
+            ax.text(b, yy + 0.19, f" {b:.0f} s ({b / a:.2f}×, {cyc:.2f} cycles/step)", va="center", fontsize=8.5,
+                    color=INK["secondary"])
+        ax.set_yticks(y, [RUN_LABEL[n].replace(", ", "\n") for n in RUNS])
+        ax.invert_yaxis()
+        ax.set_xlim(0, max(table_s + apecss_s) * 1.6)
+        ax.set_xlabel("Wall time of the whole run (s)")
+        ax.set_title("c  Run time (twin runs side by side)")
+        ax.legend(frameon=False, fontsize=8.5, loc="upper right")
+        fig.suptitle("Whole runs with the carried APECSS response",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer, ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(out_dir / "fig2_whole_runs.png", dpi=160)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    {"curves": curves, "runs": runs, "figures": figures}[sys.argv[1]](sys.argv[2])

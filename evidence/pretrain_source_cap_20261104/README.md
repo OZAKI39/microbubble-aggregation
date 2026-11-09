@@ -1,5 +1,7 @@
 # 预训练档声源上限 3000 → 6000 Pa-eq（2026-11-04）
 
+> **状态（2026-11-09 核对）：** 现行（声源上限 6000 Pa-eq）。
+
 先读 [ADMISSION.json](ADMISSION.json)。用户同意（2026-11-04“同意上述三项建议”）把预训练档的声源上限提到约 6000 Pa-eq，使 32 泡团的团速达到真实 A/B 的水平（按团速推出的增益约 5400 Pa-eq）。只改 `configs/pretrain_policy.json` 的 `max_source_amplitude_Pa_equivalent`；HF/LF 仍为 1500，响应表和它的域检查不变。
 
 `EXPLORATORY / PHYSICS_UNCALIBRATED / ELECTRICAL_TO_ACOUSTIC_UNCALIBRATED / PRETRAIN_TIER / training_ready=false`

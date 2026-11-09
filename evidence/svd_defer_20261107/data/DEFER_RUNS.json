@@ -1,0 +1,406 @@
+{
+ "runs": {
+  "23": {
+   "bubbles": 20,
+   "before": [
+    {
+     "status": "PASS",
+     "wall_s": 0.9114703091327101,
+     "step_ms_median": 0.7948281709104776,
+     "force_ms_mean": 0.7190138795413077,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 0.8622984439134598,
+     "step_ms_median": 0.7245771121233702,
+     "force_ms_mean": 0.6906572575680912,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "after": [
+    {
+     "status": "PASS",
+     "wall_s": 0.8669935020152479,
+     "step_ms_median": 0.7195181678980589,
+     "force_ms_mean": 0.6594495540484786,
+     "wait_ms_median": 0.0020139850676059723,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 0.8783510478679091,
+     "step_ms_median": 0.7825158536434174,
+     "force_ms_mean": 0.7060816129669547,
+     "wait_ms_median": 0.0021439045667648315,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "deferonly": [
+    {
+     "status": "PASS",
+     "wall_s": 0.8512841309420764,
+     "step_ms_median": 0.7492532022297382,
+     "force_ms_mean": 0.6733570494689047,
+     "wait_ms_median": 0.002034008502960205,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 0.861634329892695,
+     "step_ms_median": 0.7640409749001265,
+     "force_ms_mean": 0.6459165276028216,
+     "wait_ms_median": 0.002004089765250683,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ]
+  },
+  "21": {
+   "bubbles": 50,
+   "before": [
+    {
+     "status": "PASS",
+     "wall_s": 0.8643396059051156,
+     "step_ms_median": 1.5183528885245323,
+     "force_ms_mean": 1.0891334395855665,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 0.8446193200070411,
+     "step_ms_median": 1.4264010824263096,
+     "force_ms_mean": 1.1018308433704078,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "after": [
+    {
+     "status": "PASS",
+     "wall_s": 0.7661179129499942,
+     "step_ms_median": 1.2779131066054106,
+     "force_ms_mean": 0.9610811760649085,
+     "wait_ms_median": 0.0022139865905046463,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 0.8212783271446824,
+     "step_ms_median": 1.4078961685299873,
+     "force_ms_mean": 1.044823054689914,
+     "wait_ms_median": 0.002284068614244461,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "deferonly": [
+    {
+     "status": "PASS",
+     "wall_s": 0.7722866421099752,
+     "step_ms_median": 1.367541030049324,
+     "force_ms_mean": 0.9573449552990496,
+     "wait_ms_median": 0.00220397487282753,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 0.7709619561210275,
+     "step_ms_median": 1.2940028682351112,
+     "force_ms_mean": 0.9652508893050253,
+     "wait_ms_median": 0.002184184268116951,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ]
+  },
+  "16": {
+   "bubbles": 76,
+   "before": [
+    {
+     "status": "PASS",
+     "wall_s": 1.4772532919887453,
+     "step_ms_median": 2.836711937561631,
+     "force_ms_mean": 1.5582715887576342,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 1.4624702278524637,
+     "step_ms_median": 2.8200908564031124,
+     "force_ms_mean": 1.566952295601368,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "after": [
+    {
+     "status": "PASS",
+     "wall_s": 1.3380922242067754,
+     "step_ms_median": 2.5581808295100927,
+     "force_ms_mean": 1.321788600180298,
+     "wait_ms_median": 0.002303975634276867,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 1.3439865480177104,
+     "step_ms_median": 2.5911421980708838,
+     "force_ms_mean": 1.3194227651692927,
+     "wait_ms_median": 0.0023850006982684135,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "deferonly": [
+    {
+     "status": "PASS",
+     "wall_s": 1.337754223961383,
+     "step_ms_median": 2.5652030017226934,
+     "force_ms_mean": 1.3458634559065104,
+     "wait_ms_median": 0.0022894237190485,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 1.3706939260009676,
+     "step_ms_median": 2.672425005584955,
+     "force_ms_mean": 1.3593760477378964,
+     "wait_ms_median": 0.0034563709050416946,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ]
+  },
+  "7": {
+   "bubbles": 122,
+   "before": [
+    {
+     "status": "PASS",
+     "wall_s": 3.9393301100935787,
+     "step_ms_median": 7.578550837934017,
+     "force_ms_mean": 3.400631354190409,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 3.9077833381015807,
+     "step_ms_median": 7.575495168566704,
+     "force_ms_mean": 3.2971305130049586,
+     "wait_ms_median": null,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "after": [
+    {
+     "status": "PASS",
+     "wall_s": 3.6391817710828036,
+     "step_ms_median": 7.045094156637788,
+     "force_ms_mean": 2.5746292141266167,
+     "wait_ms_median": 0.002594897523522377,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 3.5596801950596273,
+     "step_ms_median": 6.754208821803331,
+     "force_ms_mean": 2.552331388927996,
+     "wait_ms_median": 0.0031958334147930145,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ],
+   "deferonly": [
+    {
+     "status": "PASS",
+     "wall_s": 3.4610721259377897,
+     "step_ms_median": 6.624315865337849,
+     "force_ms_mean": 2.4553428646177053,
+     "wait_ms_median": 0.003035878762602806,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    },
+    {
+     "status": "PASS",
+     "wall_s": 3.5317242350429296,
+     "step_ms_median": 6.702421931549907,
+     "force_ms_mean": 2.540708755608648,
+     "wait_ms_median": 0.0025349436327815056,
+     "same_trajectory_as_first_before": true,
+     "same_summary_as_first_before": true
+    }
+   ]
+  }
+ },
+ "guard": {
+  "guard10_seed7": {
+   "before": {
+    "singular_guard": 10.0,
+    "seed": 7,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.0,
+    "accepted_steps": 0,
+    "step_records": 0,
+    "saved_frames": 1,
+    "trajectory_sha256": "57972cc69d8003343c9abe40df23e13ebd90231baba7c6711fcaca9af1ebad00",
+    "positions_sha256": "52a316f384cd929e3e4d15dac9c139b651b0dc884a36e3eb4927c5fbb16e6fbd",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 188, in smallest_singular_value"
+    ]
+   },
+   "after": {
+    "singular_guard": 10.0,
+    "seed": 7,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.0,
+    "accepted_steps": 0,
+    "step_records": 0,
+    "saved_frames": 1,
+    "trajectory_sha256": "57972cc69d8003343c9abe40df23e13ebd90231baba7c6711fcaca9af1ebad00",
+    "positions_sha256": "52a316f384cd929e3e4d15dac9c139b651b0dc884a36e3eb4927c5fbb16e6fbd",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 203, in smallest_singular_value"
+    ]
+   },
+   "same_stop": true
+  },
+  "guard0.4440_seed7": {
+   "before": {
+    "singular_guard": 0.444,
+    "seed": 7,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.001,
+    "accepted_steps": 1,
+    "step_records": 1,
+    "saved_frames": 2,
+    "trajectory_sha256": "f75727dade448c2fd372b36149e6f1cb609351b6a921e25900101269ef5edf36",
+    "positions_sha256": "3e24a2d6cec86db94f5b7f4ddf5cc098da2c7397551280d498f82ac1c495d9c7",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 188, in smallest_singular_value"
+    ]
+   },
+   "after": {
+    "singular_guard": 0.444,
+    "seed": 7,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.001,
+    "accepted_steps": 1,
+    "step_records": 1,
+    "saved_frames": 2,
+    "trajectory_sha256": "f75727dade448c2fd372b36149e6f1cb609351b6a921e25900101269ef5edf36",
+    "positions_sha256": "3e24a2d6cec86db94f5b7f4ddf5cc098da2c7397551280d498f82ac1c495d9c7",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 203, in smallest_singular_value"
+    ]
+   },
+   "same_stop": true
+  },
+  "guard0.38_seed23": {
+   "before": {
+    "singular_guard": 0.38,
+    "seed": 23,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.006,
+    "accepted_steps": 6,
+    "step_records": 6,
+    "saved_frames": 2,
+    "trajectory_sha256": "5bc500c40f7847e68422a3b7fdee5c0f4bdec7007338bc70a5f715ff485efd05",
+    "positions_sha256": "2eb2ba7262e4068c4b98c7ee676172c1839276f3ce546de5df3fe9e1340becff",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 188, in smallest_singular_value"
+    ]
+   },
+   "after": {
+    "singular_guard": 0.38,
+    "seed": 23,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.006,
+    "accepted_steps": 6,
+    "step_records": 6,
+    "saved_frames": 2,
+    "trajectory_sha256": "5bc500c40f7847e68422a3b7fdee5c0f4bdec7007338bc70a5f715ff485efd05",
+    "positions_sha256": "2eb2ba7262e4068c4b98c7ee676172c1839276f3ce546de5df3fe9e1340becff",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 203, in smallest_singular_value"
+    ]
+   },
+   "same_stop": true
+  },
+  "guard0.6_seed21": {
+   "before": {
+    "singular_guard": 0.6,
+    "seed": 21,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.1,
+    "accepted_steps": 100,
+    "step_records": 100,
+    "saved_frames": 11,
+    "trajectory_sha256": "b27c1ddf14a5cd2d6ce5015bcad219e45be6ccc185ac5ed3f81837080ce0aa59",
+    "positions_sha256": "f7df87a60799f98386437d666e0132873c2804a9cf903eb10aee7d4815441111",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 188, in smallest_singular_value"
+    ]
+   },
+   "after": {
+    "singular_guard": 0.6,
+    "seed": 21,
+    "status": "FAIL",
+    "reason": "ValueError('Near-singular collective response; no regularization')",
+    "completed_s": 0.1,
+    "accepted_steps": 100,
+    "step_records": 100,
+    "saved_frames": 11,
+    "trajectory_sha256": "b27c1ddf14a5cd2d6ce5015bcad219e45be6ccc185ac5ed3f81837080ce0aa59",
+    "positions_sha256": "f7df87a60799f98386437d666e0132873c2804a9cf903eb10aee7d4815441111",
+    "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+    "exception_raised_in": [
+     "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+     "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 203, in smallest_singular_value"
+    ]
+   },
+   "same_stop": true
+  }
+ }
+}

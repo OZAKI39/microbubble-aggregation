@@ -1,0 +1,205 @@
+// Pretraining-tier contact QP of contact.sparse_sequential_step(),
+//     min 1/2 s'As - b's   s.t.   B s + gap >= 0,
+// solved by DAQP (a dual active-set solver, C, MIT licence) in its least-distance form
+//     min 1/2 |w|^2   s.t.   M w >= d.
+// The callers form it from a Cholesky factor A = L L' (the compiled step from its sparse factor,
+// with its fill-reducing permutation; DaqpQP from a dense factor): z = L's, z0 = L^-1 b,
+// M = B L^-T, w = z - z0, d = -gap - M z0, and afterwards s = L^-T (w + z0). The multipliers of
+// the least-distance problem are those of the QP (A s - b = B' lam). DAQP gets no Hessian, so it
+// skips its dense factorization of A and the transformation of every constraint, which took
+// about 95% of its time when it was given A itself (evidence/daqp_ldp_20261106/). Called by
+// native/contact_step.cpp (same library) and by microbubble.contact.DaqpQP (ctypes). Since
+// 2026-11-06 (user decisions): first qpOASES, then DAQP on the QP, then this form.
+//
+// Warm start, loaded as one block (since 2026-11-07, user decision): guess (one entry per
+// constraint, 1 = active) marks the pairs active in the previous solve. DAQP used to take them in
+// one by one, appending a row to the LDL' factor of the working set's table M_A M_A' for each
+// (about 45% of a 122-bubble step, evidence/time_bill_20261107/). Here the table is computed in
+// one matrix product and factorized in one block (Eigen), and the factor is written into DAQP's
+// workspace, from which it iterates as before:
+//   1. G = M_A M_A' for the guessed rows of DAQP's (row-normalized) M;
+//   2. Cholesky of G in the guessed order (the order in which DAQP added them); if every pivot is
+//      at least DAQP's sing_tol, this is DAQP's factor;
+//   3. otherwise some guessed contacts depend on the others: a pivoted LDL' of G (Eigen's LDLT,
+//      largest remaining pivot first) keeps the constraints with pivot >= sing_tol in pivot
+//      order and leaves the rest inactive (multiplier 0), as DAQP skips dependent ones.
+// The callers call this only when the unconstrained point w = 0 violates a constraint (the free
+// displacement violates one), so DAQP's set-up is not asked to check the unconstrained optimum
+// (it does so only when no warm start is marked, which is now always the case).
+// Evidence: evidence/daqp_block_warm_start_20261107/. DAQP's default tolerances (primal 1e-6,
+// here in units of R).
+//
+// Built once per source set, together with the DAQP sources (DAQP_DIR, compiled as C), by
+// microbubble.contact.cached_contact_library (g++).
+
+extern "C" {
+#include "api.h"
+}
+
+#include <Eigen/Dense>
+
+#include <chrono>
+#include <numeric>
+#include <vector>
+
+extern "C" double contact_bill[32];  // TEMPORARY TIMING, defined in contact_step_bill.cpp
+static double now_d() {
+    return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+namespace {
+
+using RowMatrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+
+// Write the working set `rows` (indices into M, in factor order) with the LDL' factor of its
+// table into DAQP's workspace, as daqp_add_constraint leaves it. unit(i, j): entry (i, j) of the
+// unit lower L (j < i); D: the diagonal.
+template <class Unit>
+void install(DAQPWorkspace* work, const std::vector<int>& rows, const Unit& unit,
+             const Eigen::VectorXd& D) {
+    reset_daqp_workspace(work);
+    for (int i = 0; i < static_cast<int>(rows.size()); ++i) {
+        const int id = rows[i];
+        work->sense[id] |= DAQP_ACTIVE | DAQP_LOWER;
+        work->WS[i] = id;
+        work->lam[i] = -1.0;  // as daqp_activate_constraint: multiplier -1 at a lower bound
+        double* row = work->L + DAQP_ARSUM(i);
+        for (int j = 0; j < i; ++j) row[j] = unit(i, j);
+        row[i] = 1.0;
+        work->D[i] = D[i];
+    }
+    work->n_active = static_cast<int>(rows.size());
+}
+
+// Load the guessed constraints into DAQP's working set as one block (steps 1-3 above).
+void load_warm_start(DAQPWorkspace* work, const int* guess) {
+    // Storage of Ma and G, kept between calls (about 1 MB each at 122 bubbles): allocating and
+    // freeing them every step let glibc give the top of its heap back to the system, and the force
+    // evaluation in Python then page-faulted on its own temporaries
+    // (evidence/daqp_block_warm_start_20261107/).
+    static std::vector<double> ma_storage, g_storage;
+    std::vector<int> rows;
+    for (int k = 0; k < work->m; ++k)
+        if (guess[k]) rows.push_back(k);
+    const int k = static_cast<int>(rows.size());
+    if (k == 0) return;
+    const double g0 = now_d();
+    const int n = work->n;
+    ma_storage.resize(static_cast<size_t>(k) * n);
+    Eigen::Map<RowMatrix> Ma(ma_storage.data(), k, n);
+    for (int r = 0; r < k; ++r)
+        Ma.row(r) = Eigen::Map<const Eigen::RowVectorXd>(work->M + static_cast<size_t>(n) * (rows[r] - work->ms), n);
+    g_storage.assign(static_cast<size_t>(k) * k, 0.0);
+    Eigen::Map<Eigen::MatrixXd> G(g_storage.data(), k, k);
+    G.selfadjointView<Eigen::Lower>().rankUpdate(Ma);  // lower triangle of Ma Ma'
+    const double tol = work->settings->sing_tol;
+    const double g1 = now_d();
+    contact_bill[25] += g1 - g0;
+
+    // Cholesky in place (G's lower triangle becomes C, G = C C'): DAQP's L = C diag(C)^-1,
+    // D = diag(C)^2
+    const Eigen::LLT<Eigen::Ref<Eigen::MatrixXd>> llt(G);
+    if (llt.info() == Eigen::Success) {
+        const Eigen::VectorXd c = G.diagonal();
+        if ((c.array().square() >= tol).all()) {
+            const double g2 = now_d();
+            contact_bill[26] += g2 - g1;
+            install(work, rows, [&](int i, int j) { return G(i, j) / c[j]; },
+                    c.array().square().matrix());
+            contact_bill[27] += now_d() - g2;
+            contact_bill[29] += 1;
+            return;
+        }
+    }
+    // Some guessed contacts depend on the others: pivoted LDL' of the table formed again (the
+    // Cholesky above overwrote it), dependent ones left out. At each step the largest pivot that
+    // remains after the eliminations so far is taken (as LAPACK's dpstrf), until it is below
+    // sing_tol. (Eigen's LDLT chooses its pivots from the diagonal before elimination, all 1 here,
+    // so its pivots are not ordered by size and cannot tell the dependent contacts.)
+    G.setZero();
+    G.selfadjointView<Eigen::Lower>().rankUpdate(Ma);
+    G.triangularView<Eigen::StrictlyUpper>() = G.transpose();
+    std::vector<int> order(k);  // order[i]: the guessed constraint at pivot position i
+    std::iota(order.begin(), order.end(), 0);
+    int kept = 0;
+    for (; kept < k; ++kept) {
+        Eigen::Index p;
+        const double pivot = G.diagonal().tail(k - kept).maxCoeff(&p);
+        if (pivot < tol) break;
+        p += kept;
+        G.row(kept).swap(G.row(p));
+        G.col(kept).swap(G.col(p));
+        std::swap(order[kept], order[p]);
+        // Column `kept` below the pivot becomes L's column; the remaining table loses its part.
+        const int rest = k - kept - 1;
+        G.col(kept).tail(rest) /= pivot;
+        G.bottomRightCorner(rest, rest).noalias() -=
+            pivot * G.col(kept).tail(rest) * G.col(kept).tail(rest).transpose();
+    }
+    const double g2 = now_d();
+    contact_bill[26] += g2 - g1;
+    std::vector<int> selected(kept);
+    for (int i = 0; i < kept; ++i) selected[i] = rows[order[i]];
+    install(work, selected, [&](int i, int j) { return G(i, j); }, G.diagonal().head(kept));
+    contact_bill[27] += now_d() - g2;
+    contact_bill[28] += 1;
+    contact_bill[30] += k - kept;
+}
+
+}  // namespace
+
+// M: m x n, dense row-major (copied: DAQP takes writable arrays). iterations: in, DAQP's
+// iteration limit; out, the iterations performed. Output: w (n), lam (m, the multipliers of the
+// constraints, >= 0 at the solution: w = M' lam) and active (m, 1 = active at the solution).
+// Returns 0 solved, 1 iteration limit reached, -1 otherwise.
+extern "C" int contact_ldp(int n, int m, const double* M, const double* d, const int* guess,
+                           int* iterations, double* w, double* lam, int* active) {
+    const double c0 = now_d();
+    std::vector<double> rows(M, M + static_cast<size_t>(m) * n), lower(d, d + m), upper(m, DAQP_INF);
+    std::vector<int> sense(m, 0);  // the warm start is loaded below, not by DAQP's set-up
+
+    DAQPProblem problem{};
+    problem.n = n;
+    problem.m = m;
+    problem.ms = 0;     // no simple bounds
+    problem.H = NULL;   // no Hessian and no linear term: DAQP solves the least-distance problem
+    problem.f = NULL;
+    problem.A = rows.data();
+    problem.bupper = upper.data();
+    problem.blower = lower.data();
+    problem.sense = sense.data();
+    DAQPSettings settings;
+    daqp_default_settings(&settings);
+    settings.iter_limit = *iterations;
+
+    std::vector<double> multipliers(m);
+    DAQPResult result{};
+    result.x = w;
+    result.lam = multipliers.data();
+    // daqp_quadprog() of DAQP's api.c, with the warm start loaded between set-up and solve
+    DAQPWorkspace work;
+    work.settings = &settings;
+    const double c1 = now_d();
+    contact_bill[11] += c1 - c0;
+    result.exitflag = setup_daqp_main(&problem, &work, &result.setup_time, DAQP_UPDATE_eliminate);
+    const double c2 = now_d();
+    contact_bill[12] += c2 - c1;
+    if (result.exitflag >= 0) {
+        load_warm_start(&work, guess);
+        const double c3 = now_d();
+        daqp_solve(&result, &work);
+        const double c4 = now_d();
+        contact_bill[14] += c4 - c3;
+        work.settings = NULL;
+        free_daqp_workspace(&work);
+        free_daqp_ldp(&work);
+        contact_bill[15] += now_d() - c4;
+    }
+    *iterations = result.iter;
+    for (int k = 0; k < m; ++k) {
+        lam[k] = -multipliers[k];         // DAQP: w + M' lam = 0, lam < 0 at a lower bound
+        active[k] = multipliers[k] != 0;  // inactive constraints carry exactly zero
+    }
+    if (result.exitflag == DAQP_EXIT_OPTIMAL) return 0;
+    return result.exitflag == DAQP_EXIT_ITERLIMIT ? 1 : -1;
+}

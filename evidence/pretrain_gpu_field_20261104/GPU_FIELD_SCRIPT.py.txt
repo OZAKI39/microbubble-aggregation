@@ -1,0 +1,494 @@
+"""GPU direct field (field "direct_gpu") against the CPU direct field (field "direct").
+
+usage (repository root, PYTHONPATH=.:visualization):
+  python gpu_field_check.py agreement OUT.json   same positions: field and forces
+  python gpu_field_check.py timing OUT.json      per-call wall time (run on an idle machine)
+  python gpu_field_check.py runs OUT.json        whole runs in results/pretrain_gpu_field
+  python gpu_field_check.py figures DIR          figures from the three JSON files in DIR
+Evidence script only; not imported by project code.
+"""
+
+import json
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+ROOT = Path.cwd()
+UM_PER_PX = 0.6
+RUNS = ("protocol_formed32", "protocol_formed128", "random_offset_B_formed32")
+RUN_LABEL = {
+    "protocol_formed32": "Protocol X−→Y−→X−, 32 bubbles",
+    "protocol_formed128": "Protocol X−→Y−→X−, 128 bubbles",
+    "random_offset_B_formed32": "Random actions, 32 bubbles",
+}
+FORMED = ROOT / "inputs/pretrain_formed_states.h5"
+
+
+def forces_pair(c, gpu, coupling="collective", adhesion=True):
+    from microbubble.forces import CPUForces
+
+    p = json.loads((ROOT / "configs/pretrain_policy.json").read_text())
+    k_adh = p["adhesion"]["coefficient_N_per_Pa2"] * 6000.0**2 if adhesion else 0.0
+    common = dict(
+        wavenumber_rad_m=c.discs.k,
+        adhesion_force_N=k_adh,
+        adhesion_range_m=p["adhesion"]["range_m"],
+    )
+    cpu = CPUForces(c.basis, c.response, c.physics, coupling, 1e-3, discs=c.discs, **common)
+    gpu_f = CPUForces(c.basis, c.response, c.physics, coupling, 1e-3, discs=gpu, **common)
+    return cpu, gpu_f
+
+
+def rel(a, b):
+    a, b = np.asarray(a), np.asarray(b)
+    if a.ndim == 2:
+        return float(np.linalg.norm(a - b, axis=1).max() / np.linalg.norm(a, axis=1).max())
+    return float(np.abs(a - b).max() / np.abs(a).max())
+
+
+def agreement(out):
+    from workflows.f10ag import context
+    from microbubble.acoustics import direct_quadrature_order
+    from microbubble.gpu import GPUWaterDiscs
+    from microbubble.initial_conditions import load_state
+
+    c = context(ROOT, device="cpu")
+    order = direct_quadrature_order(c.discs.frequency)
+    gpu = GPUWaterDiscs(c.discs, order)
+    rng = np.random.default_rng(20261104)
+
+    # 1. Field alone at random points over the whole lumen.
+    x = rng.uniform([-16e-3, -0.75e-3, -0.75e-3], [16e-3, 0.75e-3, 0.75e-3], (40000, 3))
+    x = x[np.linalg.norm(x[:, 1:], axis=1) < 0.75e-3]
+    p_c, g_c = c.discs.evaluate(x, order)
+    p_g, g_g = gpu.evaluate(x, order)
+    p_scale = np.abs(p_c).max(axis=1, keepdims=True)
+    g_scale = np.linalg.norm(g_c, axis=-1).max(axis=1, keepdims=True)
+    bins = np.logspace(-18, -11, 57)
+    p_rel = np.maximum((np.abs(p_g - p_c) / p_scale).ravel(), 1e-18)
+    g_rel = np.maximum((np.linalg.norm(g_g - g_c, axis=-1) / g_scale).ravel(), 1e-18)
+    field = dict(
+        points=int(len(x)),
+        bins=bins.tolist(),
+        pressure_counts=np.histogram(p_rel, bins)[0].tolist(),
+        gradient_counts=np.histogram(g_rel, bins)[0].tolist(),
+        pressure_max=float(p_rel.max()),
+        gradient_max=float(g_rel.max()),
+    )
+
+    # 2. Forces at cluster states: formed clusters (all) and saved positions of earlier runs.
+    with h5py.File(FORMED) as h:
+        formed = sorted(h.keys())
+    states = [(f"formed/{n}", load_state(FORMED, n)[0]) for n in formed]
+    for run in sorted((ROOT / "results/pretrain_protocol_ab").glob("*/trajectory.h5")):
+        with h5py.File(run) as h:
+            pos = h["positions_m"]
+            for i in range(0, len(pos), 180):
+                states.append((f"{run.parent.name}/frame{i}", pos[i]))
+    actions = [([0, 0, 6000, 0], [0] * 4)]
+    actions += [
+        (rng.uniform(0, 6000, 4).tolist(), rng.uniform(0, 2 * np.pi, 4).tolist()) for _ in range(2)
+    ]
+    rows = []
+    for coupling in ("collective", "pairwise"):
+        cpu, gpu_f = forces_pair(c, gpu, coupling)
+        for name, xs in states:
+            if coupling == "pairwise" and not name.startswith("formed/"):
+                continue
+            for a, ph in actions:
+                cpu.control(a, ph)
+                gpu_f.control(a, ph)
+                fc, fg = cpu(xs), gpu_f(xs)
+                rows.append(
+                    dict(
+                        state=name,
+                        N=len(xs),
+                        coupling=coupling,
+                        amplitudes=a,
+                        pressure=rel(fc["pressure_Pa"], fg["pressure_Pa"]),
+                        primary=rel(fc["primary_force_N"], fg["primary_force_N"]),
+                        secondary=rel(fc["secondary_force_N"], fg["secondary_force_N"]),
+                        total=rel(fc["total_force_N"], fg["total_force_N"]),
+                    )
+                )
+    worst = {k: max(r[k] for r in rows) for k in ("pressure", "primary", "secondary", "total")}
+    Path(out).write_text(
+        json.dumps(dict(field=field, forces=rows, worst=worst, n_states=len(states)), indent=1)
+    )
+    print("field max", field["pressure_max"], field["gradient_max"])
+    print("forces worst", worst, "states", len(states), "rows", len(rows))
+
+
+def median_ms(fn, repeats):
+    fn()
+    times = []
+    for _ in range(repeats):
+        a = time.perf_counter()
+        fn()
+        times.append(time.perf_counter() - a)
+    return float(np.median(times) * 1e3)
+
+
+def timing(out):
+    import warp as wp
+
+    from workflows.f10ag import context
+    from microbubble import _warp_discs
+    from microbubble.acoustics import direct_quadrature_order
+    from microbubble.gpu import GPUWaterDiscs
+    from microbubble.initial_conditions import load_state
+
+    c = context(ROOT, device="cpu")
+    order = direct_quadrature_order(c.discs.frequency)
+    a = time.perf_counter()
+    gpu = GPUWaterDiscs(c.discs, order)
+    init_s = time.perf_counter() - a
+    rng = np.random.default_rng(1)
+    field = []
+    for n in (16, 32, 64, 128, 256, 512, 1024, 4096, 16384):
+        x = rng.uniform([-3e-4, -1e-4, -1e-4], [3e-4, 1e-4, 1e-4], (n, 3))
+        repeats = 200 if n <= 1024 else 20
+        field.append(
+            dict(
+                N=n,
+                cpu_ms=median_ms(lambda x=x: c.discs.evaluate(x, order), repeats),
+                gpu_ms=median_ms(lambda x=x: gpu.evaluate(x, order), repeats),
+            )
+        )
+        print(field[-1])
+    calls = []
+    for name in ("FORMED_N16_a1.0_s0", "FORMED_N32_a1.0_s1", "FORMED_N64_a1.0_s0", "FORMED_N128_a1.0_s0"):
+        x, _ = load_state(FORMED, name)
+        cpu, gpu_f = forces_pair(c, gpu)
+        for f in (cpu, gpu_f):
+            f.control([0, 0, 6000, 0], [0] * 4)
+        calls.append(
+            dict(
+                state=name,
+                N=len(x),
+                cpu_force_call_ms=median_ms(lambda: cpu(x), 200),
+                gpu_force_call_ms=median_ms(lambda: gpu_f(x), 200),
+            )
+        )
+        print(calls[-1])
+    # Where the GPU call at 32 points spends its time.
+    x, _ = load_state(FORMED, "FORMED_N32_a1.0_s1")
+    shape = (4, len(x))
+    xs = wp.array(x, dtype=wp.vec3d, device=gpu.device)
+    bufs = [wp.zeros(shape, dtype=t, device=gpu.device) for t in (wp.vec2d, wp.vec3d, wp.vec3d)]
+
+    def launch():
+        wp.launch(
+            _warp_discs.fnm_discs,
+            dim=shape,
+            inputs=[xs, gpu.centers, gpu.normal_array, gpu.radii, gpu.node_cos,
+                    gpu.node_weights, float(gpu.discs.k), *bufs],
+            device=gpu.device,
+        )
+
+    def launch_and_wait():
+        launch()
+        wp.synchronize_device(gpu.device)
+
+    breakdown = dict(
+        whole_call_ms=median_ms(lambda: gpu.evaluate(x, order), 500),
+        kernel_launch_and_wait_ms=median_ms(launch_and_wait, 500),
+        launch_only_ms=median_ms(launch, 500),
+        copy_results_back_ms=median_ms(lambda: [b.numpy() for b in bufs], 500),
+        copy_points_in_ms=median_ms(lambda: wp.array(x, dtype=wp.vec3d, device=gpu.device), 500),
+        allocate_outputs_ms=median_ms(
+            lambda: [wp.zeros(shape, dtype=t, device=gpu.device) for t in (wp.vec2d, wp.vec3d, wp.vec3d)], 500
+        ),
+    )
+    print(breakdown)
+
+    # The integrator does CPU work between field calls; an idle laptop GPU lowers its clock.
+    idle_gaps = []
+    for name in ("FORMED_N32_a1.0_s1", "FORMED_N128_a1.0_s0"):
+        x, _ = load_state(FORMED, name)
+        for gap_ms in (0.0, 2.5, 19.0):
+            times = []
+            for _ in range(150):
+                end = time.perf_counter() + gap_ms / 1e3
+                while time.perf_counter() < end:  # busy CPU between calls, as in a run
+                    pass
+                a = time.perf_counter()
+                gpu.evaluate(x, order)
+                times.append(time.perf_counter() - a)
+            t = np.array(times[20:]) * 1e3
+            idle_gaps.append(dict(N=len(x), cpu_busy_between_calls_ms=gap_ms,
+                                  gpu_call_median_ms=float(np.median(t)),
+                                  gpu_call_p90_ms=float(np.percentile(t, 90))))
+            print(idle_gaps[-1])
+
+    # Field calls inside real (shortened) runs, CPU and GPU field, timed around evaluate().
+    from microbubble import acoustics, gpu as gpu_module
+    from workflows.f10ag import run
+
+    field_calls = []
+
+    def wrap(cls):
+        original = cls.evaluate
+
+        def timed(self, *a, **k):
+            t0 = time.perf_counter()
+            r = original(self, *a, **k)
+            field_calls.append(time.perf_counter() - t0)
+            return r
+
+        cls.evaluate = timed
+
+    wrap(acoustics.WaterDiscs)
+    wrap(gpu_module.GPUWaterDiscs)
+    in_run = []
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, duration_s in (("protocol_formed32", 0.5), ("protocol_formed128", 0.3)):
+            cfg = json.loads((ROOT / f"evidence/pretrain_gpu_field_20261104/configs/{name}_direct.json").read_text())
+            cfg["duration_s"] = duration_s
+            cfg["control"]["segments"] = [dict(cfg["control"]["segments"][0], duration=duration_s)]
+            for mode in ("direct", "direct_gpu"):
+                field_calls.clear()
+                path = Path(tmp) / f"{name}_{mode}.json"
+                path.write_text(json.dumps(dict(cfg, field=mode)))
+                a = time.perf_counter()
+                r = run(ROOT, path, Path(tmp) / f"{name}_{mode}")
+                wall = time.perf_counter() - a
+                c = np.array(field_calls) * 1e3
+                in_run.append(dict(run=name, field=mode, duration_s=duration_s, wall_s=wall,
+                                   steps=r["constrained_solves"],
+                                   field_call_median_ms=float(np.median(c)),
+                                   field_call_p90_ms=float(np.percentile(c, 90)),
+                                   field_total_s=float(c.sum() / 1e3),
+                                   rest_per_step_ms=float((wall - c.sum() / 1e3) / r["constrained_solves"] * 1e3)))
+                print(in_run[-1])
+    Path(out).write_text(
+        json.dumps(
+            dict(
+                device=f"{gpu.device.alias} ({gpu.device.name})",
+                warp=wp.config.version,
+                gpu_init_s=init_s,
+                quadrature_order=order,
+                field=field,
+                force_calls=calls,
+                gpu_breakdown_N32=breakdown,
+                idle_gaps=idle_gaps,
+                in_run=in_run,
+                note="median wall time per call in one process on an otherwise idle machine; "
+                "CPU = NumPy WaterDiscs.evaluate (cached nodes since 2026-11-04); in_run wall_s "
+                "includes start-up (GPU: Warp and device initialisation)",
+            ),
+            indent=1,
+        )
+    )
+
+
+def aspect(xy):
+    w = np.linalg.eigvalsh(np.cov((xy - xy.mean(0)).T))
+    return float(np.sqrt(w[1] / max(w[0], 1e-30)))
+
+
+def runs(out):
+    base = ROOT / "results/pretrain_gpu_field"
+    result = {}
+    for name in RUNS:
+        pair = {}
+        for field in ("direct", "direct_gpu"):
+            d = base / f"{name}_{field}"
+            s = json.loads((d / "SUMMARY.json").read_text())
+            with h5py.File(d / "trajectory.h5") as h:
+                pair[field] = dict(summary=s, t=h["time_s"][:], x=h["positions_m"][:])
+        a, b = pair["direct"], pair["direct_gpu"]
+        assert np.array_equal(a["t"], b["t"])
+        diff = np.linalg.norm(a["x"] - b["x"], axis=2)
+        centroid = np.linalg.norm(a["x"].mean(1) - b["x"].mean(1), axis=1)
+        result[name] = dict(
+            time_s=a["t"].tolist(),
+            max_bubble_diff_m=diff.max(1).tolist(),
+            centroid_diff_m=centroid.tolist(),
+            aspect_cpu=[aspect(x[:, :2]) for x in a["x"]],
+            aspect_gpu=[aspect(x[:, :2]) for x in b["x"]],
+            path_length_m=float(np.linalg.norm(np.diff(a["x"].mean(1), axis=0), axis=1).sum()),
+            summary={
+                field: {
+                    k: pair[field]["summary"][k]
+                    for k in ("status", "field", "field_device", "completed_s", "accepted_steps",
+                              "gate_rejected_steps", "constrained_solves", "force_evaluations",
+                              "wall_s", "trajectory_sha256")
+                }
+                for field in pair
+            },
+        )
+        r = result[name]
+        print(name, "max diff %.3g m" % max(r["max_bubble_diff_m"]),
+              {f: (v["status"], v["accepted_steps"], round(v["wall_s"], 1)) for f, v in r["summary"].items()})
+    Path(out).write_text(json.dumps(result, indent=1))
+
+
+def figures(folder):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from pretrain_stability_figures import INK, setup_style
+
+    folder = Path(folder)
+    agree = json.loads((folder / "AGREEMENT.json").read_text())
+    tim = json.loads((folder / "TIMING.json").read_text())
+    run = json.loads((folder / "RUN_COMPARISON.json").read_text())
+    blue, orange, green = "#2a78d6", "#eb6834", "#1baf7a"
+    footer = ("Exploratory · homogeneous-water proxy · physics uncalibrated · "
+              "pretraining tier, field \"direct\" (CPU) vs \"direct_gpu\" (GPU)")
+    with tempfile.TemporaryDirectory() as fonts:
+        family = setup_style(Path(fonts))
+        print("font", family)
+
+        # fig1: same positions, same numbers
+        fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
+        ax = axes[0]
+        bins = np.asarray(agree["field"]["bins"])
+        for key, color, label in (("pressure_counts", blue, "Pressure P"),
+                                  ("gradient_counts", orange, "Gradient of P")):
+            ax.stairs(agree["field"][key], bins, linewidth=2, color=color, label=label)
+        ax.axvline(1e-12, color=INK["muted"], linestyle="--", linewidth=1)
+        ax.text(1.15e-12, ax.get_ylim()[1] * 0.92, "test limit 1e-12", color=INK["secondary"], fontsize=8.5, va="top")
+        ax.set_xscale("log")
+        ax.set_xlabel("|GPU − CPU| / largest value of that disc")
+        ax.set_ylabel("Points × discs")
+        ax.set_title(f"a  Field at {agree['field']['points']:,} random points in the lumen")
+        ax.legend(frameon=False, loc="upper left")
+        ax = axes[1]
+        keys = (("primary", "Primary force F1"), ("secondary", "Secondary force F2"), ("total", "Total force"))
+        rows = agree["forces"]
+        for i, (key, label) in enumerate(keys):
+            for coupling, color in (("collective", blue), ("pairwise", orange)):
+                v = np.array([max(r[key], 1e-18) for r in rows if r["coupling"] == coupling])
+                y = i + (0.12 if coupling == "pairwise" else -0.12) + np.random.default_rng(i).uniform(-0.06, 0.06, len(v))
+                ax.scatter(v, y, s=10, color=color, alpha=0.6, linewidths=0,
+                           label=coupling.capitalize() + " coupling" if i == 0 else None)
+        ax.axvline(1e-12, color=INK["muted"], linestyle="--", linewidth=1)
+        ax.set_xscale("log")
+        ax.set_xlim(1e-17, 1e-11)
+        ax.set_yticks(range(3), [k[1] for k in keys])
+        ax.invert_yaxis()
+        ax.set_xlabel("max |GPU − CPU| / max |CPU| over the bubbles")
+        n_coll = sum(r["coupling"] == "collective" for r in rows)
+        ax.set_title(f"b  Forces on clusters ({n_coll} collective, {len(rows) - n_coll} pairwise cases)")
+        ax.legend(frameon=False, loc="lower right")
+        fig.suptitle("GPU and CPU direct field give the same numbers at the same positions",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer, ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(folder / "fig1_same_numbers.png", dpi=160)
+        plt.close(fig)
+
+        # fig2: whole runs
+        fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
+        ax = axes[0]
+        for name, color in zip(RUNS, (blue, orange, green)):
+            r = run[name]
+            d = np.maximum(np.asarray(r["max_bubble_diff_m"]), 1e-21)
+            ax.plot(r["time_s"], d, color=color, linewidth=2, label=RUN_LABEL[name])
+        px = UM_PER_PX * 1e-6
+        ax.axhline(px, color=INK["muted"], linestyle="--", linewidth=1)
+        ax.text(4.5, px * 1.6, "1 camera pixel (0.6 µm)", color=INK["secondary"], fontsize=8.5, ha="right")
+        ax.axhline(1e-9, color=INK["muted"], linestyle=":", linewidth=1)
+        ax.text(4.5, 1.6e-9, "1 nm", color=INK["secondary"], fontsize=8.5, ha="right")
+        ax.set_yscale("log")
+        ax.set_ylim(1e-21, 1e-4)
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Largest bubble position difference (m)")
+        ax.set_title("a  GPU run vs CPU run, same configuration")
+        ax.legend(frameon=False, loc="center left", bbox_to_anchor=(0.0, 0.42), fontsize=8.5)
+        ax = axes[1]
+        labels, cpu_s, gpu_s = [], [], []
+        for name in RUNS:
+            s = run[name]["summary"]
+            labels.append(RUN_LABEL[name].replace(", ", "\n"))
+            cpu_s.append(s["direct"]["wall_s"])
+            gpu_s.append(s["direct_gpu"]["wall_s"])
+        y = np.arange(len(RUNS))
+        ax.barh(y - 0.19, cpu_s, height=0.36, color=blue, label="CPU field (\"direct\")")
+        ax.barh(y + 0.19, gpu_s, height=0.36, color=orange, label="GPU field (\"direct_gpu\")")
+        for yy, a, b in zip(y, cpu_s, gpu_s):
+            ax.text(a, yy - 0.19, f" {a:.0f} s", va="center", fontsize=8.5, color=INK["secondary"])
+            ax.text(b, yy + 0.19, f" {b:.0f} s ({b / a:.2f}×)", va="center", fontsize=8.5, color=INK["secondary"])
+        ax.set_yticks(y, labels)
+        ax.invert_yaxis()
+        ax.set_xlim(0, max(cpu_s + gpu_s) * 1.3)
+        ax.set_xlabel("Wall time of the whole run (s)")
+        ax.set_title("b  Run time (CPU and GPU twin run side by side)")
+        ax.legend(frameon=False, loc="lower right", fontsize=8.5)
+        fig.suptitle("Whole runs: the same trajectories; with the GPU field a run takes 1.2–1.4× longer",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer, ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(folder / "fig2_whole_runs.png", dpi=160)
+        plt.close(fig)
+
+        # fig3: where the time goes
+        fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.4))
+        ax = axes[0]
+        n = [r["N"] for r in tim["field"]]
+        ax.plot(n, [r["cpu_ms"] for r in tim["field"]], "o-", color=blue, linewidth=2, markersize=6, label="CPU field")
+        ax.plot(n, [r["gpu_ms"] for r in tim["field"]], "o-", color=orange, linewidth=2, markersize=6, label="GPU field (incl. copies)")
+        for r in tim["field"]:
+            if r["N"] in (32, 128, 1024, 16384):
+                ax.annotate(f"{r['cpu_ms'] / r['gpu_ms']:.1f}×", (r["N"], r["gpu_ms"]), textcoords="offset points",
+                            xytext=(0, -14), ha="center", fontsize=8.5, color=INK["secondary"])
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_xlabel("Points per call (bubbles × trajectories)")
+        ax.set_ylabel("Wall time per call (ms)")
+        ax.set_title("a  Field only, calls back to back")
+        ax.legend(frameon=False, loc="upper left")
+        ax = axes[1]
+        b = tim["gpu_breakdown_N32"]
+        parts = (("Kernel run (launch + wait)", b["kernel_launch_and_wait_ms"], orange),
+                 ("Copy results back", b["copy_results_back_ms"], blue),
+                 ("Allocate outputs", b["allocate_outputs_ms"], green),
+                 ("Copy points in", b["copy_points_in_ms"], "#eda100"))
+        left = 0.0
+        for label, v, color in parts:
+            ax.barh([1], [v], left=left, color=color, height=0.4, label=f"{label}: {v:.2f} ms",
+                    edgecolor="white", linewidth=1.5)
+            left += v
+        cpu32 = next(r for r in tim["field"] if r["N"] == 32)["cpu_ms"]
+        ax.barh([0], [cpu32], color=INK["muted"], height=0.4, edgecolor="white", linewidth=1.5)
+        ax.text(cpu32, 0, f" {cpu32:.2f} ms", va="center", fontsize=8.5, color=INK["secondary"])
+        ax.text(left, 1, f" parts {left:.2f} ms\n whole call {b['whole_call_ms']:.2f} ms", va="center", fontsize=8.5, color=INK["secondary"])
+        ax.set_yticks([0, 1], ["CPU field", "GPU field"])
+        ax.set_ylim(-0.5, 2.6)
+        ax.set_xlim(0, max(left, cpu32) * 1.35)
+        ax.set_xlabel("Wall time per call at 32 points (ms)")
+        ax.set_title("b  One 32-bubble call, back to back")
+        ax.legend(frameon=False, loc="upper left", fontsize=8.5, ncols=2)
+        ax = axes[2]
+        rows = tim["in_run"]
+        groups = [("protocol_formed32", "32 bubbles"), ("protocol_formed128", "128 bubbles")]
+        y = np.arange(len(groups))
+        for offset, mode, color, label in ((-0.19, "direct", blue, "CPU field"),
+                                           (0.19, "direct_gpu", orange, "GPU field")):
+            v = [next(r for r in rows if r["run"] == g and r["field"] == mode)["field_call_median_ms"] for g, _ in groups]
+            ax.barh(y + offset, v, height=0.36, color=color, label=label)
+            for yy, vv in zip(y, v):
+                ax.text(vv, yy + offset, f" {vv:.2f} ms", va="center", fontsize=8.5, color=INK["secondary"])
+        ax.set_yticks(y, [g[1] for g in groups])
+        ax.invert_yaxis()
+        ax.set_xlim(0, 8.5)
+        ax.set_xlabel("Median field call inside a run (ms)")
+        ax.legend(frameon=False, loc="upper right", fontsize=8.5)
+        ax.set_title("c  Inside a run (GPU clocks down between calls)")
+        fig.suptitle("Where the time goes: one cluster per call is too small for the GPU",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer + f" · {tim['device']}", ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(folder / "fig3_where_time_goes.png", dpi=160)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    {"agreement": agreement, "timing": timing, "runs": runs, "figures": figures}[sys.argv[1]](sys.argv[2])

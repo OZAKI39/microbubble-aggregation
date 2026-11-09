@@ -1,0 +1,53 @@
+{
+ "guard10_seed7": {
+  "singular_guard": 10.0,
+  "seed": 7,
+  "status": "FAIL",
+  "reason": "ValueError('Near-singular collective response; no regularization')",
+  "completed_s": 0.0,
+  "accepted_steps": 0,
+  "step_records": 0,
+  "saved_frames": 1,
+  "trajectory_sha256": "57972cc69d8003343c9abe40df23e13ebd90231baba7c6711fcaca9af1ebad00",
+  "positions_sha256": "52a316f384cd929e3e4d15dac9c139b651b0dc884a36e3eb4927c5fbb16e6fbd",
+  "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+  "exception_raised_in": [
+   "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+   "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 188, in smallest_singular_value"
+  ]
+ },
+ "guard0.45_seed7": {
+  "singular_guard": 0.45,
+  "seed": 7,
+  "status": "FAIL",
+  "reason": "ValueError('Near-singular collective response; no regularization')",
+  "completed_s": 0.0,
+  "accepted_steps": 0,
+  "step_records": 0,
+  "saved_frames": 1,
+  "trajectory_sha256": "57972cc69d8003343c9abe40df23e13ebd90231baba7c6711fcaca9af1ebad00",
+  "positions_sha256": "52a316f384cd929e3e4d15dac9c139b651b0dc884a36e3eb4927c5fbb16e6fbd",
+  "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+  "exception_raised_in": [
+   "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+   "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 188, in smallest_singular_value"
+  ]
+ },
+ "guard0.40_seed16": {
+  "singular_guard": 0.4,
+  "seed": 16,
+  "status": "FAIL",
+  "reason": "ValueError('Near-singular collective response; no regularization')",
+  "completed_s": 0.0,
+  "accepted_steps": 0,
+  "step_records": 0,
+  "saved_frames": 1,
+  "trajectory_sha256": "0eaebd5f439b2346338a5b32c3219a35f8091133b39b7df50a046a6198b6512c",
+  "positions_sha256": "39bcc51ee312e55a5e5f8c94fc5cf8d318da84c068a7d0efbee3ec2c1b70b1b6",
+  "exception_last_line": "ValueError: Near-singular collective response; no regularization",
+  "exception_raised_in": [
+   "File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run",
+   "File \"/workspace/new_microbubble_aggregation/microbubble/forces.py\", line 188, in smallest_singular_value"
+  ]
+ }
+}

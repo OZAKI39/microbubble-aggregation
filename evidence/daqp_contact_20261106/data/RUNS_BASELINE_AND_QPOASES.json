@@ -1,0 +1,134 @@
+{
+ "baseline": {
+  "23": {
+   "bubbles": 20,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 1.010304054012522,
+   "contact_fallback_steps": 0,
+   "qpoases_working_set_recalculations": 0,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 0,
+    "CONTACT_REACTION_BALANCE_PASS": 500,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  },
+  "21": {
+   "bubbles": 50,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 1.3746731190476567,
+   "contact_fallback_steps": 0,
+   "qpoases_working_set_recalculations": 0,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 4,
+    "CONTACT_REACTION_BALANCE_PASS": 500,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  },
+  "16": {
+   "bubbles": 76,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 11.364102763822302,
+   "contact_fallback_steps": 492,
+   "qpoases_working_set_recalculations": 241,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 11,
+    "CONTACT_REACTION_BALANCE_PASS": 404,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  },
+  "7": {
+   "bubbles": 122,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 42.00651273899712,
+   "contact_fallback_steps": 490,
+   "qpoases_working_set_recalculations": 472,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 12,
+    "CONTACT_REACTION_BALANCE_PASS": 200,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  }
+ },
+ "direct": {
+  "23": {
+   "bubbles": 20,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 1.0347483018413186,
+   "contact_fallback_steps": null,
+   "qpoases_working_set_recalculations": 56,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 0,
+    "CONTACT_REACTION_BALANCE_PASS": 500,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  },
+  "21": {
+   "bubbles": 50,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 2.3329833690077066,
+   "contact_fallback_steps": null,
+   "qpoases_working_set_recalculations": 142,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 4,
+    "CONTACT_REACTION_BALANCE_PASS": 500,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  },
+  "16": {
+   "bubbles": 76,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 6.512928410898894,
+   "contact_fallback_steps": null,
+   "qpoases_working_set_recalculations": 249,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 11,
+    "CONTACT_REACTION_BALANCE_PASS": 404,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  },
+  "7": {
+   "bubbles": 122,
+   "status": "PASS",
+   "steps": 500,
+   "wall_s": 23.684481194010004,
+   "contact_fallback_steps": null,
+   "qpoases_working_set_recalculations": 533,
+   "steps_failing_gates": {
+    "CANDIDATE_COVERAGE": 0,
+    "CONTACT_CORRECTION": 12,
+    "CONTACT_REACTION_BALANCE_PASS": 200,
+    "LOCAL_QP_PASS": 0,
+    "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+    "TRUE_GEOMETRY_PASS": 0
+   }
+  }
+ }
+}

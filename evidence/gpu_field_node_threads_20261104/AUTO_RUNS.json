@@ -1,0 +1,41 @@
+{
+ "note": "Whole runs with the automatic kernel choice (results/pretrain_gpu_field_auto) next to the runs before it (results/pretrain_gpu_field, loop kernel only); CPU and GPU twin run side by side, three pairs one after another, machine otherwise idle. Configs: evidence/pretrain_gpu_field_20261104/configs/.",
+ "runs": {
+  "protocol_formed32": {
+   "before_direct_wall_s": 30.5,
+   "before_direct_steps": 9772,
+   "before_direct_gpu_wall_s": 40.6,
+   "before_direct_gpu_steps": 9772,
+   "auto_direct_wall_s": 32.0,
+   "auto_direct_steps": 9772,
+   "auto_direct_gpu_wall_s": 32.0,
+   "auto_direct_gpu_steps": 9772,
+   "auto_gpu_vs_cpu_max_diff_m": 1.573194292935412e-17,
+   "auto_cpu_vs_before_cpu_identical": true
+  },
+  "protocol_formed128": {
+   "before_direct_wall_s": 78.8,
+   "before_direct_steps": 3734,
+   "before_direct_gpu_wall_s": 94.7,
+   "before_direct_gpu_steps": 3734,
+   "auto_direct_wall_s": 85.1,
+   "auto_direct_steps": 3734,
+   "auto_direct_gpu_wall_s": 87.9,
+   "auto_direct_gpu_steps": 3734,
+   "auto_gpu_vs_cpu_max_diff_m": 7.962109704190423e-20,
+   "auto_cpu_vs_before_cpu_identical": true
+  },
+  "random_offset_B_formed32": {
+   "before_direct_wall_s": 21.0,
+   "before_direct_steps": 6700,
+   "before_direct_gpu_wall_s": 30.1,
+   "before_direct_gpu_steps": 6700,
+   "auto_direct_wall_s": 22.7,
+   "auto_direct_steps": 6700,
+   "auto_direct_gpu_wall_s": 23.4,
+   "auto_direct_gpu_steps": 6700,
+   "auto_gpu_vs_cpu_max_diff_m": 1.463672932855431e-18,
+   "auto_cpu_vs_before_cpu_identical": true
+  }
+ }
+}

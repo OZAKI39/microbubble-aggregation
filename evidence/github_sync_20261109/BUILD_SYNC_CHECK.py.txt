@@ -1,0 +1,109 @@
+"""Staging lists and the sync check for the 2026-11-09 GitHub sync (branch pretrain-y-channel-chip).
+
+usage: python build_sync_check.py PROJECT_ROOT OUT_DIR PYTEST_LOG
+Groups every changed path of `git status` into three commits (code, docs_evidence, results) plus the paths
+kept local (results/**/*.npz by user decision, and the emptied untracked TODO.md). Writes OUT_DIR/stage_<group>.txt
+(pathspecs for git add) and PROJECT_ROOT/evidence/github_sync_20261109/SYNC_CHECK.json (size and SHA-256 of
+every added or modified file, the deleted paths, the files kept local with their SHA-256, a scan for common
+credential formats and server details, the test summary). Stages nothing.
+"""
+
+import hashlib
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(sys.argv[1]).resolve()
+OUT = Path(sys.argv[2])
+PYTEST_LOG = Path(sys.argv[3])
+RECORD = ROOT / "evidence/github_sync_20261109/SYNC_CHECK.json"
+PATTERNS = {
+    "github_token": r"gh[pousr]_[A-Za-z0-9]{30,}", "aws_key": r"AKIA[0-9A-Z]{16}",
+    "private_key": r"-----BEGIN [A-Z ]*PRIVATE KEY", "api_key": r"sk-(?:ant-)?[A-Za-z0-9-]{20,}",
+    "password": r"(?i)passw(?:or)?d\s*[:=]\s*\S+", "ssh_command": r"ssh\s+-p\s*\d+|root@[\w.-]+",
+    "ssh_key_path": r"\.ssh/[\w.-]+", "jupyter_token": r"token=[0-9a-f]{20,}",
+    "ipv4": r"(?<![\d.])(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?![\d.])",
+}
+BINARY = (".npz", ".h5", ".png", ".mp4", ".gif", ".pdf", ".so", ".gz")
+
+
+def sha256(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for block in iter(lambda: f.read(1 << 20), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+status = subprocess.run(["git", "-C", str(ROOT), "status", "--porcelain=v1", "-uall", "-z"],
+                        capture_output=True, text=True, check=True).stdout.split("\0")
+changes = [(s[:2], s[3:]) for s in status if s]
+groups = {"code": [], "docs_evidence": [], "results": []}
+kept_local, deleted = [], []
+for code, path in changes:
+    if path == "TODO.md" or (path.startswith("results/") and path.endswith(".npz")):
+        kept_local.append(path)
+        continue
+    if path.startswith(("main.py", "microbubble/", "workflows/", "tests/", "native/", "configs/", "inputs/",
+                        "pyproject.toml", "requirements-lock.txt")) or (
+            path.startswith("visualization/") and path.endswith(".py")):
+        group = "code"
+    elif path.startswith(("README.md", "AGENTS", "HANDOFF_20261102.md", "docs/", "evidence/", "visualization/")):
+        group = "docs_evidence"
+    elif path.startswith("results/"):
+        group = "results"
+    else:
+        raise ValueError(f"unclassified change: {code} {path}")
+    groups[group].append(path)
+    if code.strip() == "D":
+        deleted.append(path)
+
+files, hits = {}, []
+for group, paths in groups.items():
+    rows = []
+    for path in paths:
+        p = ROOT / path
+        if not p.exists():
+            continue
+        rows.append(dict(path=path, bytes=p.stat().st_size, sha256=sha256(p)))
+        if path.endswith(BINARY) or path == str(RECORD.relative_to(ROOT)):
+            continue
+        text = p.read_text(errors="ignore")
+        for name, pattern in PATTERNS.items():
+            for m in re.finditer(pattern, text):
+                if name == "ipv4" and m.group(0) in ("0.0.0.0", "127.0.0.1"):
+                    continue
+                hits.append(dict(file=path, kind=name, match=m.group(0)))
+    files[group] = rows
+    (OUT / f"stage_{group}.txt").write_text("\n".join(paths) + "\n")
+
+pytest_tail = PYTEST_LOG.read_text().strip().splitlines()[-1]
+record = dict(
+    date="2026-11-09",
+    request="用户要求按 AGENTS 文件的同步要求把工程同步到 GitHub；分支选择“推送到新分支”，results 只传记录、.npz 留本地",
+    branch="pretrain-y-channel-chip", base_commit="03e0701 (pretrain-softness-check = origin/pretrain-softness-check)",
+    main_untouched="22e8326 (= origin/main)",
+    commits=["code: source, tests, configs, inputs", "docs_evidence: README, docs, evidence",
+             "results: run records without .npz"],
+    files=files,
+    deleted=sorted(deleted),
+    kept_local=[dict(path=p, bytes=(ROOT / p).stat().st_size, sha256=sha256(ROOT / p)) for p in sorted(kept_local)],
+    kept_local_reason="results/**/*.npz: per-frame position series and field grids, 380 MB, kept local (second copy on "
+                      "the rented server /workspace/scratch, not guaranteed) by user decision; TODO.md: untracked, "
+                      "emptied by the user at 21:54",
+    credential_scan=dict(patterns=PATTERNS, skipped_extensions=list(BINARY), hits=hits,
+                         note="Common formats only; not a guarantee against secrets of unknown format."),
+    tests=dict(command="APECSS_DIR=... DAQP_DIR=... python -m pytest -q tests", summary=pytest_tail,
+               known_failure="test_irregular_clusters_are_connected_disordered_and_never_overwritten "
+                             "(stored vs regenerated start differ by 1e-20 m; failed before these changes)"),
+    main_check="python main.py check: PASS",
+)
+RECORD.parent.mkdir(parents=True, exist_ok=True)
+RECORD.write_text(json.dumps(record, indent=1, ensure_ascii=False) + "\n")
+for group, rows in files.items():
+    print(group, "paths", len(groups[group]), "present", len(rows), "MB", round(sum(r["bytes"] for r in rows) / 1e6, 1),
+          "deleted", sum(1 for p in groups[group] if p in deleted))
+print("kept local", len(kept_local), "MB", round(sum((ROOT / p).stat().st_size for p in kept_local) / 1e6, 1))
+print("credential hits", len(hits), hits[:10])

@@ -1,0 +1,52 @@
+{
+ "seed": 7,
+ "bubbles": 122,
+ "steps": 500,
+ "dt_s": 0.001,
+ "status": "PASS",
+ "daqp_solves": 500,
+ "mean_active_pairs": 359.368,
+ "mean_daqp_iterations": 2.068,
+ "per_step_ms": {
+  "forces": {
+   "sound field (GPU)": 0.3540325812064111,
+   "bubble response (APECSS, 8 threads)": 2.184271499980241,
+   "collective coupling solve": 2.6221504993736744,
+   "bubble-bubble force F2": 5.794261186849326,
+   "adhesion": 0.5701955510303378,
+   "rest of the force evaluation": 0.03067888133227825
+  },
+  "contact": {
+   "resistance matrix A (assembly)": 0.1804575603455305,
+   "sparse Cholesky of A": 0.3879686896689236,
+   "free displacement": 0.016026487108319998,
+   "candidate pairs + initial check": 0.022187278605997562,
+   "linearize constraints": 0.006369559559971094,
+   "transform: build B' and permute": 0.7233039019629359,
+   "transform: triangular solve": 1.4766440652310848,
+   "transform: z0 and d": 0.029092112090438604,
+   "load table: warm-start guess": 0.0013935775496065617,
+   "load table: copy into DAQP": 0.5063149905763566,
+   "load table: DAQP activates the warm-start constraints": 7.410951615999998,
+   "DAQP other set-up (bounds, row scaling)": 0.7222075101550799,
+   "DAQP iterations": 0.23938727425411344,
+   "DAQP free memory": 0.10830503795295954,
+   "transform back + active pairs": 0.011201151181012392,
+   "quality checks (gates)": 0.12326983595266938,
+   "quality checks (candidate coverage)": 0.05128283752128482,
+   "call overhead outside C++ (ctypes, arrays)": 0.062913553789258
+  },
+  "loop": {
+   "rest of the loop (segments, wall check, records)": 0.08186870720237494
+  }
+ },
+ "per_step_total_ms": 23.716735946480185,
+ "loop_ms_per_step": 23.79755279608071,
+ "one_time": {
+  "before_the_loop_s": 0.31276828492991626,
+  "after_the_loop_s": 0.047312323935329914,
+  "run_outside_the_integrator_s": 0.1537264089565724
+ },
+ "run_s": 12.412583415862173,
+ "wall_s": 12.244880854850635
+}

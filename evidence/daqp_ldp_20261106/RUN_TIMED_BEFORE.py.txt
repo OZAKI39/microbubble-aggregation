@@ -1,0 +1,36 @@
+"""Run seed SEED (0.1 s, defaults) with the timed scratch contact library; print the segments."""
+import ctypes
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+import microbubble.contact as contact
+from workflows.f10ag import run
+
+seed, lib_path, out_json = int(sys.argv[1]), sys.argv[2], sys.argv[3]
+real = contact.cached_contact_library
+contact.cached_contact_library = lambda *a, **k: dict(real(*a, **k), library=lib_path)
+lib = ctypes.CDLL(lib_path)
+lib.contact_timing_reset()
+with tempfile.TemporaryDirectory() as tmp:
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.1,
+                                   save_interval_s=0.01, state_seed=seed, action_seed=seed)))
+    r = run(Path("."), cfg, Path(tmp) / "out")
+t = np.zeros(16)
+lib.contact_timing_get(t.ctypes.data_as(ctypes.POINTER(ctypes.c_double)))
+steps, qps = int(t[15]), int(t[14])
+names = ["1 resistance matrix A", "2 sparse Cholesky of A", "  free displacement", "3 candidate pairs (all pairs)",
+         "4 initial geometry check", "5 linearize constraints", "6a dense H, C, warm-start guess",
+         "6b DAQP call (total)", "7 gates", "8 coverage check (all pairs)"]
+total = t[:10].sum()
+print(f"seed {seed}: {r['N']} bubbles, {steps} steps, {qps} DAQP solves, contact step {total:.3f} s "
+      f"= {total / steps * 1e3:.2f} ms/step")
+for k, name in enumerate(names):
+    print(f"   {name:34s} {t[k] / steps * 1e3:8.3f} ms/step  {100 * t[k] / total:5.1f} %")
+for k, name in ((10, "copy inputs"), (11, "setup: Cholesky of H + transform constraints"), (12, "solve: warm-start activation + iterations"), (13, "free memory")):
+    print(f"      DAQP {name:44s} {t[k] / max(qps, 1) * 1e3:8.3f} ms/solve  {100 * t[k] / max(t[7], 1e-12):5.1f} % of the DAQP call")
+Path(out_json).write_text(json.dumps(dict(seed=seed, bubbles=r['N'], timing_s=t.tolist())) + "\n")

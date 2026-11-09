@@ -1,0 +1,218 @@
+"""Block warm start figure (2026-11-07): time per step before and after, the memory side effect,
+and the checks that the results are the same.
+
+usage (repository root):  python FIGURE_SCRIPT.py.txt EVIDENCE_DIR
+Reads EVIDENCE_DIR/data/*.json; writes fig1_block_warm_start.png and data/BLOCK_SUMMARY.json.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEEDS = [23, 21, 16, 7]
+# Category -> (part of the bill, items or None for the whole part, colour); same grouping as
+# evidence/time_bill_20261107/ with the block items added to the load table.
+CATEGORIES = {
+    "Forces (field, APECSS, coupling, F2, adhesion)": ("forces", None, "#2a6fb0"),
+    "Resistance matrix (assembly, sparse Cholesky, free step)": ("contact", (
+        "resistance matrix A (assembly)", "sparse Cholesky of A", "free displacement"), "#7fb3d5"),
+    "Transform (build B', triangular solve, z0, d, back)": ("contact", (
+        "transform: build B' and permute", "transform: triangular solve", "transform: z0 and d",
+        "transform back + active pairs"), "#3a9a5b"),
+    "Load table (warm start into DAQP, DAQP set-up)": ("contact", (
+        "load table: warm-start guess", "load table: copy into DAQP",
+        "load table: DAQP activates the warm-start constraints",
+        "load table: one matrix product G = Ma Ma'", "load table: block factorization of G",
+        "load table: write the factor into DAQP", "DAQP other set-up (bounds, row scaling)",
+        "DAQP free memory"), "#d0812c"),
+    "DAQP iterations": ("contact", ("DAQP iterations",), "#b8457a"),
+    "Quality checks (gates, candidate coverage)": ("contact", (
+        "quality checks (gates)", "quality checks (candidate coverage)"), "#8e6bb8"),
+    "Other (candidates, linearize, call overhead, loop)": (None, None, "#9aa3ad"),
+}
+# The part that was changed: taking the warm-start constraints into DAQP's factor
+LOAD_ITEMS = ("load table: DAQP activates the warm-start constraints",
+              "load table: one matrix product G = Ma Ma'", "load table: block factorization of G",
+              "load table: write the factor into DAQP")
+VARIANTS = {"before": ("Before: one by one", "#5b6470"),
+            "block": ("Block (adopted, default build)", "#2a6fb0"),
+            "block_avx2": ("Block + AVX2/FMA build (not adopted)", "#7fb3d5")}
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def categories(bill):
+    out = {}
+    for name, (part, items, _) in CATEGORIES.items():
+        if part is None:
+            continue
+        out[name] = sum(bill[part].values()) if items is None else sum(bill[part].get(i, 0.0) for i in items)
+    total = sum(v for p in bill.values() for v in p.values())
+    out["Other (candidates, linearize, call overhead, loop)"] = total - sum(out.values())
+    return out, total
+
+
+def stacked(ax, rows, labels, legend):
+    """Horizontal stacked bars of the categories, one per bill in rows, with the total at the end."""
+    left = [0.0] * len(rows)
+    for name, (_, _, colour) in CATEGORIES.items():
+        values = [categories(r["per_step_ms"])[0][name] for r in rows]
+        ax.barh(range(len(rows)), values, left=left, color=colour, height=0.7, edgecolor="white",
+                linewidth=0.6, label=name if legend else None)
+        left = [a + b for a, b in zip(left, values)]
+    for i, t in enumerate(left):
+        ax.text(t + 0.15, i, f"{t:.2f} ms", va="center", fontsize=7.5, color=INK)
+    ax.set_yticks(range(len(rows)), labels, fontsize=7.5)
+    ax.invert_yaxis()
+    ax.grid(axis="x", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+
+
+def main():
+    folder = Path(sys.argv[1])
+    data = folder / "data"
+    read = lambda name: json.loads((data / name).read_text())
+    bills = {v: {s: read(f"bill_{v}_seed{s}.json") for s in SEEDS} for v in VARIANTS}
+    freed = read("bill_block_tables_freed_each_step_seed7.json")
+    runs = read("DAQP_BLOCK_RUNS.json")
+    pivot, first = read("PIVOT_CHECK.json"), read("PIVOT_CHECK_first_try.json")
+
+    summary = {}
+    for s in SEEDS:
+        summary[str(s)] = dict(bubbles=bills["before"][s]["bubbles"])
+        for v in VARIANTS:
+            b = bills[v][s]
+            summary[str(s)][v] = dict(
+                step_ms=categories(b["per_step_ms"])[1],
+                load_table_ms=sum(b["per_step_ms"]["contact"].get(i, 0.0) for i in LOAD_ITEMS),
+                mean_daqp_iterations=b["mean_daqp_iterations"],
+                page_faults_per_step=b["minor_page_faults"] / b["steps"],
+                pivoted_loads=b.get("block_pivoted_path"))
+    summary["122_bubbles_tables_freed_each_step"] = dict(
+        step_ms=categories(freed["per_step_ms"])[1],
+        f2_ms=freed["per_step_ms"]["forces"]["bubble-bubble force F2"],
+        page_faults_per_step=freed["minor_page_faults"] / freed["steps"])
+    (data / "BLOCK_SUMMARY.json").write_text(json.dumps(summary, indent=1) + "\n")
+
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig = plt.figure(figsize=(14, 9.6))
+        grid = fig.add_gridspec(2, 3, width_ratios=[1.25, 1, 1], height_ratios=[1.25, 1],
+                                hspace=0.42, wspace=0.42)
+
+        # (a) whole step, three variants per size
+        ax = fig.add_subplot(grid[0, :2])
+        rows, labels = [], []
+        for s in SEEDS:
+            for v, short in (("before", "before"), ("block", "block"), ("block_avx2", "block + AVX2/FMA")):
+                rows.append(bills[v][s])
+                labels.append(f"{bills[v][s]['bubbles']} bubbles, {short}")
+        stacked(ax, rows, labels, legend=True)
+        for g in range(1, len(SEEDS)):
+            ax.axhline(3 * g - 0.5, color=GRID, linewidth=1.2)
+        ax.axvline(1.0, color=INK, linestyle="--", linewidth=1)
+        ax.text(1.15, -0.6, "real time: 1 ms per 1 ms step", fontsize=7.5, color=INK, va="bottom")
+        ax.set_xlim(0, 19.5)
+        ax.set_xlabel("Wall time per 1 ms step (ms, server, one run alone, mean over 0.5 s)")
+        ax.set_title("(a) Time per step: before, block (adopted), block + AVX2/FMA (not adopted)",
+                     loc="left", fontsize=9.5, color=INK)
+        ax.legend(loc="upper right", fontsize=7.5, frameon=False)
+
+        # (b) the changed part only
+        ax = fig.add_subplot(grid[0, 2])
+        width = 0.26
+        for k, (v, (name, colour)) in enumerate(VARIANTS.items()):
+            x = [i + (k - 1) * width for i in range(len(SEEDS))]
+            y = [summary[str(s)][v]["load_table_ms"] for s in SEEDS]
+            ax.bar(x, y, width=width - 0.03, color=colour, label=name)
+            for xi, yi in zip(x, y):
+                ax.text(xi, yi + 0.08, f"{yi:.2f}", ha="center", fontsize=6.5, color=INK, rotation=90,
+                        va="bottom")
+        ax.set_xticks(range(len(SEEDS)), [f"{summary[str(s)]['bubbles']}" for s in SEEDS])
+        ax.set_xlabel("Bubbles")
+        ax.set_ylabel("ms per step")
+        ax.set_ylim(0, 9)
+        ax.grid(axis="y", color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.legend(loc="upper left", fontsize=7, frameon=False)
+        ax.set_title("(b) Taking the warm-start contacts into\nDAQP's factor (the part that changed)",
+                     loc="left", fontsize=9.5, color=INK)
+
+        # (c) memory side effect at 122 bubbles
+        ax = fig.add_subplot(grid[1, 0])
+        rows = [bills["before"][7], freed, bills["block"][7]]
+        stacked(ax, rows, ["before", "block, tables\nfreed every step", "block, tables\nkept (adopted)"],
+                legend=False)
+        for i, r in enumerate(rows):
+            ax.text(0.2, i + 0.47, f"{r['minor_page_faults'] / r['steps']:.0f} page faults per step, "
+                    f"F2 {r['per_step_ms']['forces']['bubble-bubble force F2']:.2f} ms",
+                    fontsize=7, color=MUTED, va="center")
+        ax.set_xlim(0, 21)
+        ax.set_ylim(2.75, -0.55)
+        ax.set_xlabel("Wall time per step at 122 bubbles (ms)")
+        ax.set_title("(c) Side effect: freeing ~1 MB tables every step", loc="left", fontsize=9.5,
+                     color=INK)
+
+        # (d) same trajectories
+        ax = fig.add_subplot(grid[1, 1])
+        y = range(len(SEEDS))
+        diff = [runs[str(s)]["max_position_difference_m"] for s in SEEDS]
+        ax.scatter(diff, y, s=40, color="#2a6fb0", zorder=3)
+        for yi, s, dv in zip(y, SEEDS, diff):
+            r = runs[str(s)]
+            ax.text(dv * 1.6, yi, f"{dv:.1e} m; iterations {r['daqp_iterations_before']} / "
+                    f"{r['daqp_iterations']}; gates {'same' if r['gates_same'] else 'DIFFERENT'}",
+                    va="center", fontsize=7, color=INK)
+        ax.set_yticks(list(y), [f"{runs[str(s)]['bubbles']} bubbles" for s in SEEDS])
+        ax.invert_yaxis()
+        ax.set_xscale("log")
+        ax.set_xlim(1e-17, 1e-8)
+        ax.grid(axis="x", color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.set_xlabel("Largest position difference over 0.5 s (m; radius 1.78e-6 m)")
+        ax.set_title("(d) Whole runs: block vs before", loc="left", fontsize=9.5, color=INK)
+
+        # (e) dependent contacts in the guess
+        ax = fig.add_subplot(grid[1, 2])
+        for cases, name, colour, marker in ((first["synthetic"], "first try (Eigen LDLT pivots)", "#d0812c", "s"),
+                                             (pivot["synthetic"], "adopted (largest remaining pivot)", "#2a6fb0", "o")):
+            x = [c["dependent"] for c in cases]
+            ax.scatter(x, [c["counters"]["left_out"] for c in cases], s=28, color=colour, marker=marker,
+                       label=f"{name}: DAQP iterations "
+                             f"{min(c['iterations_new'] for c in cases)}-{max(c['iterations_new'] for c in cases)}",
+                       zorder=3, alpha=0.85, edgecolor="white", linewidth=0.5)
+        ax.plot([0, 9], [0, 9], color=MUTED, linewidth=1, linestyle="--")
+        ax.text(8.6, 9.6, "left out = dependent", fontsize=7, color=MUTED, ha="right")
+        ax.set_xlim(0, 9)
+        ax.set_ylim(0, 40)
+        ax.set_xlabel("Guessed rows that depend on the others (rank deficit)")
+        ax.set_ylabel("Guessed rows left out by the load")
+        ax.grid(color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.legend(loc="upper left", fontsize=6.8, frameon=False)
+        ax.set_title("(e) Pivoted path: 20 problems with dependent rows\n(solution = cold start to 2e-15; "
+                     "one by one: 1 iteration)", loc="left", fontsize=9.5, color=INK)
+        fig.savefig(folder / "fig1_block_warm_start.png", dpi=170, bbox_inches="tight")
+        plt.close(fig)
+    print(json.dumps(summary, indent=1))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,148 @@
+{
+ "fnm_vs_area_rayleigh_768": [
+  {
+   "frequency_Hz": 2000000.0,
+   "order": 96,
+   "points": 32,
+   "pressure_rel": 4.27057933116461e-14,
+   "gradient_rel": 8.163791328861805e-14
+  },
+  {
+   "frequency_Hz": 2500000.0,
+   "order": 96,
+   "points": 32,
+   "pressure_rel": 4.3667512001481656e-14,
+   "gradient_rel": 1.556836350635943e-13
+  },
+  {
+   "frequency_Hz": 5000000.0,
+   "order": 96,
+   "points": 32,
+   "pressure_rel": 7.811273238227042e-14,
+   "gradient_rel": 8.934740623099153e-14
+  },
+  {
+   "frequency_Hz": 9375000.0,
+   "order": 192,
+   "points": 32,
+   "pressure_rel": 1.1230627068522117e-13,
+   "gradient_rel": 1.372126196778506e-13
+  },
+  {
+   "frequency_Hz": 10000000.0,
+   "order": 192,
+   "points": 32,
+   "pressure_rel": 1.2185458515868653e-13,
+   "gradient_rel": 1.6416043111838423e-13
+  }
+ ],
+ "registered_order_vs_768_whole_channel": [
+  {
+   "frequency_Hz": 2000000.0,
+   "order": 96,
+   "points": 3000,
+   "pressure_rel": 1.0276629666326072e-14,
+   "gradient_rel": 2.489499106908163e-12
+  },
+  {
+   "frequency_Hz": 3000000.0,
+   "order": 96,
+   "points": 3000,
+   "pressure_rel": 1.3902415003048835e-14,
+   "gradient_rel": 9.157723838797518e-13
+  },
+  {
+   "frequency_Hz": 5000000.0,
+   "order": 96,
+   "points": 3000,
+   "pressure_rel": 5.23155813463762e-14,
+   "gradient_rel": 8.836909805754424e-12
+  },
+  {
+   "frequency_Hz": 7500000.0,
+   "order": 192,
+   "points": 3000,
+   "pressure_rel": 2.1209979230276708e-14,
+   "gradient_rel": 8.298629806825982e-12
+  },
+  {
+   "frequency_Hz": 10000000.0,
+   "order": 192,
+   "points": 3000,
+   "pressure_rel": 3.109380950072971e-14,
+   "gradient_rel": 9.39249397918656e-12
+  }
+ ],
+ "gpu_vs_cpu_9375kHz": {
+  "points": 3000,
+  "pressure_rel": 2.0632260691772632e-14,
+  "gradient_rel": 1.326895149709236e-13,
+  "gpu_seconds_3000_points": 0.015574571007164195,
+  "timing": [
+   {
+    "points": 64,
+    "ms_per_call": 7.643299199116882
+   },
+   {
+    "points": 255,
+    "ms_per_call": 7.7510406510555185
+   }
+  ]
+ },
+ "random_starts": {
+  "seeds": 100,
+  "wall_margin_m": 5e-05,
+  "min_gap_um": 50.34157160029817,
+  "centre_x_range_mm": [
+   -0.8713997776856699,
+   4.609291877105264
+  ],
+  "centre_abs_y_max_um": 29.435067973970078,
+  "all_in_trunk": true
+ },
+ "short_run": {
+  "config": {
+   "fidelity": "PRETRAIN",
+   "coupling": "collective",
+   "state_seed": 3,
+   "duration_s": 0.3,
+   "save_interval_s": 0.01,
+   "action_seed": 1,
+   "action_kind": "pattern_local",
+   "action_segment_s": 0.1
+  },
+  "status": "PASS",
+  "completed_s": 0.3,
+  "wall_s": 83.12779953502468,
+  "apparatus": {
+   "file": "inputs/apparatus_y_channel.json",
+   "sha256": "2c9bf07ece83b856732265fcb6e536ab6bec32cb75a16fc5ee819fd5793a1499"
+  },
+  "bubbles": 219,
+  "saved_frames": 31,
+  "end_time_s": 0.3,
+  "frequency_Hz": 7283271.815519611,
+  "centre_start_um": [
+   -342.9756888199799,
+   -15.244166240472536,
+   -5.135569932452181
+  ],
+  "centre_end_um": [
+   -342.9013916948832,
+   -15.264010131748698,
+   -5.134533607878768
+  ],
+  "displacement_um_median": 0.8351531179736693,
+  "displacement_um_max": 3.5905218995265504,
+  "min_wall_gap_um_end": 59.76680421925531,
+  "accepted_steps": 300,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 0,
+   "CONTACT_REACTION_BALANCE_PASS": 275,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 0,
+   "TRUE_GEOMETRY_PASS": 0
+  }
+ }
+}

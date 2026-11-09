@@ -1,0 +1,37 @@
+f 2.5 MHz ode_tol 1e-08: failures 0 of 110; first failure at |P| none
+f 7.5 MHz ode_tol 1e-08: failures 0 of 110; first failure at |P| none
+f 10 MHz ode_tol 1e-08: failures 0 of 110; first failure at |P| none
+ode 1e-08 f  2.500 MHz P0    10 kPa: failures   0/400, cycles max   8 mean   4.6
+ode 1e-08 f  2.500 MHz P0    25 kPa: failures   0/400, cycles max   8 mean   4.6
+ode 1e-08 f  2.500 MHz P0    50 kPa: failures   0/400, cycles max  20 mean   5.8
+ode 1e-08 f  2.500 MHz P0   100 kPa: failures   0/400, cycles max  22 mean   5.4
+ode 1e-08 f  2.500 MHz P0   150 kPa: failures   0/400, cycles max  22 mean   5.1
+ode 1e-08 f  3.000 MHz P0    10 kPa: failures   0/400, cycles max   9 mean   4.7
+ode 1e-08 f  3.000 MHz P0    25 kPa: failures   0/400, cycles max   9 mean   4.9
+ode 1e-08 f  3.000 MHz P0    50 kPa: failures   0/400, cycles max   9 mean   5.2
+ode 1e-08 f  3.000 MHz P0   100 kPa: failures   0/400, cycles max   9 mean   5.3
+ode 1e-08 f  3.000 MHz P0   150 kPa: failures   0/400, cycles max   9 mean   5.3
+ode 1e-08 f  7.000 MHz P0    10 kPa: failures   0/400, cycles max  26 mean  13.7
+ode 1e-08 f  7.000 MHz P0    25 kPa: failures   0/400, cycles max  26 mean  13.7
+ode 1e-08 f  7.000 MHz P0    50 kPa: failures   0/400, cycles max  26 mean  13.7
+ode 1e-08 f  7.000 MHz P0   100 kPa: failures   0/400, cycles max  26 mean  13.7
+ode 1e-08 f  7.000 MHz P0   150 kPa: failures   0/400, cycles max  26 mean  13.7
+ode 1e-08 f  8.500 MHz P0    10 kPa: failures   0/400, cycles max  30 mean  18.1
+ode 1e-08 f  8.500 MHz P0    25 kPa: failures   0/400, cycles max  30 mean  18.1
+ode 1e-08 f  8.500 MHz P0    50 kPa: failures   0/400, cycles max  30 mean  18.1
+ode 1e-08 f  8.500 MHz P0   100 kPa: failures   0/400, cycles max  30 mean  18.2
+ode 1e-08 f  8.500 MHz P0   150 kPa: failures   0/400, cycles max  30 mean  18.2
+ode 1e-08 f  9.375 MHz P0    10 kPa: failures   0/400, cycles max  36 mean  20.8
+ode 1e-08 f  9.375 MHz P0    25 kPa: failures   0/400, cycles max  36 mean  20.8
+ode 1e-08 f  9.375 MHz P0    50 kPa: failures   0/400, cycles max  36 mean  20.8
+ode 1e-08 f  9.375 MHz P0   100 kPa: failures   0/400, cycles max  36 mean  20.8
+ode 1e-08 f  9.375 MHz P0   150 kPa: failures   0/400, cycles max  36 mean  20.8
+ode 1e-08 f 10.000 MHz P0    10 kPa: failures   0/400, cycles max  47 mean  23.0
+ode 1e-08 f 10.000 MHz P0    25 kPa: failures   0/400, cycles max  47 mean  23.0
+ode 1e-08 f 10.000 MHz P0    50 kPa: failures   0/400, cycles max  47 mean  23.0
+ode 1e-08 f 10.000 MHz P0   100 kPa: failures   0/400, cycles max  47 mean  23.0
+ode 1e-08 f 10.000 MHz P0   150 kPa: failures   0/400, cycles max  47 mean  23.2
+150000 x_antinode seed7: PASS None 0.3 6.9 s
+150000 x_node seed7: PASS None 0.3 5.4 s
+12000 x_node seed14: PASS None 0.3 1.9 s
+150000 x_node seed14: PASS None 0.3 1.8 s

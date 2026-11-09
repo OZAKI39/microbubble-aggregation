@@ -1,0 +1,314 @@
+"""Y-channel chip (2026-11-09): checks of the square-plate field and the channel, field maps, one short run.
+
+usage (repository root, APECSS_DIR and DAQP_DIR set):
+    .venv/bin/python y_chip_evidence.py OUT_DIR RUN_DIR
+
+Checks (CHECKS.json): the FNM square field against an independent area quadrature of the Rayleigh
+integral; the registered quadrature orders against order 768 over points filling the whole Y; GPU
+against CPU; 100 random starts against the channel walls. Figures: the modelled chip with the random
+start centres, single-PZT |p| maps in the channel plane, the standing waves of the two PZT pairs at the
+junction, and one short PRETRAIN run of the default policy (pattern drawn at the start cluster).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.patches import Circle, Polygon, Rectangle
+
+from microbubble.acoustics import WaterSquares, direct_quadrature_order
+from microbubble.geometry import YChannel
+from microbubble.gpu import GPUWaterSquares
+from microbubble.initial_conditions import random_start
+from microbubble.io import read
+from workflows.f10ag import load_pretrain_policy, pretrain_context, run
+
+ROOT = Path(".").resolve()
+CHIP = "inputs/apparatus_y_channel.json"
+INK, MUTED, WALL, PZT = "#1f2328", "#5b6470", "#2a78d6", "#c2611f"
+LABELS = {"side_y_minus": "PZT1 (Y−)", "side_y_plus": "PZT3 (Y+)", "end_x_minus": "PZT2 (X−)",
+          "end_x_plus": "PZT4 (X+)"}
+
+
+def channel_points(lumen, count, seed):
+    """Points uniform over the channel (box union, gap >= 0)."""
+    rng = np.random.default_rng(seed)
+    lo = np.array([-5.0e-3, -2.0e-3, -1.0e-4])
+    hi = np.array([5.0e-3, 2.0e-3, 1.0e-4])
+    found = []
+    while sum(len(f) for f in found) < count:
+        x = rng.uniform(lo, hi, (200000, 3))
+        found.append(x[lumen.gaps(x) >= 0])
+    return np.concatenate(found)[:count]
+
+
+def box_polygon(s):
+    normal = np.array([-s["axis"][1], s["axis"][0]])
+    a, b = s["port"], s["port"] + s["length_m"] * s["axis"]
+    w = s["width_m"] / 2
+    return np.array([a + w * normal, b + w * normal, b - w * normal, a - w * normal])
+
+
+def checks(lumen, squares_at):
+    record = {}
+    special = np.array([[0.0, 0.0, 0.0], [0.0047, 5e-5, -6e-5], [-8.75e-4, 0, 3e-5], [-0.0047, 0.00172, 2e-5],
+                        [-0.0047, -0.00175, -4e-5], [0.0027 + 1e-6, 3e-5, 0], [-0.0027 + 1e-6, 0, 0]])
+    points = np.concatenate([special, channel_points(lumen, 25, 1)])
+    rows = []
+    for f in (2e6, 2.5e6, 5e6, 9.375e6, 10e6):
+        s = squares_at(f)
+        p, g = s.evaluate(points, direct_quadrature_order(f))
+        pr, gr = s.rayleigh_reference(points, 768)
+        rows.append(dict(frequency_Hz=f, order=direct_quadrature_order(f), points=len(points),
+                         pressure_rel=float(np.abs(p - pr).max() / np.abs(pr).max()),
+                         gradient_rel=float(np.abs(g - gr).max() / np.abs(gr).max())))
+        print("rayleigh", rows[-1], flush=True)
+    record["fnm_vs_area_rayleigh_768"] = rows
+    dense = channel_points(lumen, 3000, 2)
+    rows = []
+    for f in (2e6, 3e6, 5e6, 7.5e6, 10e6):
+        s = squares_at(f)
+        p, g = s.evaluate(dense, direct_quadrature_order(f))
+        p8, g8 = s.evaluate(dense, 768)
+        rows.append(dict(frequency_Hz=f, order=direct_quadrature_order(f), points=len(dense),
+                         pressure_rel=float(np.abs(p - p8).max() / np.abs(p8).max()),
+                         gradient_rel=float(np.abs(g - g8).max() / np.abs(g8).max())))
+        print("order", rows[-1], flush=True)
+    record["registered_order_vs_768_whole_channel"] = rows
+    s = squares_at(9.375e6)
+    order = direct_quadrature_order(9.375e6)
+    p, g = s.evaluate(dense, order)
+    gpu = GPUWaterSquares(s, order)
+    gpu.evaluate(dense[:10])
+    start = time.perf_counter()
+    pg, gg = gpu.evaluate(dense)
+    gpu_s = time.perf_counter() - start
+    calls = []
+    for n in (64, 255):
+        start = time.perf_counter()
+        for _ in range(20):
+            gpu.evaluate(dense[:n])
+        calls.append(dict(points=n, ms_per_call=(time.perf_counter() - start) / 20 * 1e3))
+    record["gpu_vs_cpu_9375kHz"] = dict(points=len(dense), pressure_rel=float(np.abs(pg - p).max() / np.abs(p).max()),
+                                        gradient_rel=float(np.abs(gg - g).max() / np.abs(g).max()),
+                                        gpu_seconds_3000_points=gpu_s, timing=calls)
+    print("gpu", record["gpu_vs_cpu_9375kHz"], flush=True)
+    return record, dense
+
+
+def starts(lumen):
+    p = load_pretrain_policy(ROOT)["random_state"]
+    rows, centres = [], []
+    for seed in range(100):
+        x, _, rec = random_start(seed, lumen, p["radius"], p["wall_margin_m"], p["bubble_count_range"], p["aspect_range"])
+        gaps = lumen.gaps(x, np.array(rec["radii_m"]))
+        rows.append(dict(seed=seed, bubbles=rec["bubble_count"], min_gap_um=float(gaps.min() * 1e6)))
+        centres.append(rec["centre_local_m"])
+    centres = np.array(centres)
+    summary = dict(seeds=100, wall_margin_m=p["wall_margin_m"], min_gap_um=min(r["min_gap_um"] for r in rows),
+                   centre_x_range_mm=[float(centres[:, 0].min() * 1e3), float(centres[:, 0].max() * 1e3)],
+                   centre_abs_y_max_um=float(np.abs(centres[:, 1]).max() * 1e6),
+                   all_in_trunk=bool(np.all(lumen.box_gaps(centres)[:, 0] >= 0)))
+    print("starts", summary, flush=True)
+    return summary, centres
+
+
+def field_grid(squares_at, f, x_mm, y_mm):
+    gx, gy = np.meshgrid(np.array(x_mm) * 1e-3, np.array(y_mm) * 1e-3, indexing="xy")
+    pts = np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)])
+    s = squares_at(f)
+    gpu = GPUWaterSquares(s, direct_quadrature_order(f))
+    p = np.concatenate([gpu.evaluate(chunk)[0] for chunk in np.array_split(pts, 20)], axis=1)
+    return p.reshape(len(s.elements), *gx.shape)
+
+
+def draw_channel(ax, lumen, scale=1e3, **style):
+    for s in lumen.segments:
+        ax.add_patch(Polygon(box_polygon(s) * scale, closed=True, fill=False, **style))
+
+
+def figure_model(g, lumen, centres, out):
+    fig, (top, zoom) = plt.subplots(1, 2, figsize=(13, 5.6), dpi=150, gridspec_kw=dict(width_ratios=[1.2, 1]))
+    fig.subplots_adjust(left=0.05, right=0.98, top=0.88, bottom=0.11, wspace=0.18)
+    L, W, _ = (v * 1e3 for v in g["block_dimensions_m"])
+    top.add_patch(Rectangle((-L / 2, -W / 2), L, W, facecolor="#e9edf1", edgecolor=MUTED))
+    for s in lumen.segments:
+        top.add_patch(Polygon(box_polygon(s) * 1e3, closed=True, facecolor=WALL, edgecolor=WALL, lw=1.2))
+    for port in g["top_ports"]:
+        top.add_patch(Circle(np.array(port["center_xy_m"]) * 1e3, port["diameter_m"] / 2 * 1e3, facecolor="white",
+                             edgecolor=INK, lw=0.9, zorder=3))
+    for e in g["pzt"]:
+        c, n = np.array(e["center_local_m"]) * 1e3, np.array(e["normal_local"])
+        side, t = e["side_m"] * 1e3, 0.45
+        if n[0] != 0:
+            top.add_patch(Rectangle((c[0] - (t if n[0] < 0 else 0), -side / 2), t, side, facecolor=PZT, edgecolor=INK))
+            top.text(c[0] + (0.6 if n[0] < 0 else -0.6), side / 2 + 0.4, LABELS[e["id"]], ha="center", fontsize=9, color=PZT)
+        else:
+            top.add_patch(Rectangle((-side / 2, c[1] - (t if n[1] < 0 else 0)), side, t, facecolor=PZT, edgecolor=INK))
+            top.text(side / 2 + 0.3, c[1] + (0.45 if n[1] < 0 else -0.45), LABELS[e["id"]], va="center", fontsize=9, color=PZT)
+    top.plot(centres[:, 0] * 1e3, centres[:, 1] * 1e3, ls="none", marker=".", ms=3, color=INK)
+    top.set_xlim(-L / 2 - 1.2, L / 2 + 1.2)
+    top.set_ylim(-W / 2 - 1.2, W / 2 + 1.2)
+    top.set_aspect("equal")
+    top.set_xlabel("x (mm)")
+    top.set_ylabel("y (mm)")
+    top.set_title("Modelled chip (channel plane), black dots: 100 random start centres", loc="left", fontsize=10)
+    for s in lumen.segments:
+        zoom.add_patch(Polygon(box_polygon(s) * 1e3, closed=True, facecolor="#cfe0f5", edgecolor=WALL, lw=1.0, alpha=0.7))
+    zoom.plot(centres[:, 0] * 1e3, centres[:, 1] * 1e3, ls="none", marker=".", ms=4, color=INK)
+    zoom.set_xlim(-1.6, 0.9)
+    zoom.set_ylim(-0.55, 0.55)
+    zoom.set_aspect("equal")
+    zoom.set_xlabel("x (mm)")
+    zoom.set_title("Junction: segment boxes of the wall guard", loc="left", fontsize=10)
+    fig.suptitle("Y-channel chip as modelled (inputs/apparatus_y_channel.json)", fontsize=11, x=0.05, ha="left")
+    fig.savefig(out)
+    plt.close(fig)
+
+
+def figure_fields(squares_at, lumen, out):
+    x_mm, y_mm = np.linspace(-5.3, 5.3, 1061), np.linspace(-2.3, 2.3, 461)
+    frequencies = (2.5e6, 9.375e6)
+    maps = {f: np.abs(field_grid(squares_at, f, x_mm, y_mm)) for f in frequencies}
+    top = max(m.max() for m in maps.values())
+    fig, axes = plt.subplots(len(frequencies), 4, figsize=(16, 5.4), dpi=150, squeeze=False)
+    fig.subplots_adjust(left=0.04, right=0.92, top=0.88, bottom=0.1, wspace=0.12, hspace=0.35)
+    ids = [e["id"] for e in squares_at(2.5e6).elements]
+    order = [ids.index(k) for k in ("side_y_minus", "end_x_minus", "side_y_plus", "end_x_plus")]
+    for r, f in enumerate(frequencies):
+        for c, k in enumerate(order):
+            ax = axes[r, c]
+            image = ax.imshow(maps[f][k], origin="lower", extent=[x_mm[0], x_mm[-1], y_mm[0], y_mm[-1]], cmap="Blues",
+                              vmin=0, vmax=top)
+            draw_channel(ax, lumen, edgecolor="#e5533d", lw=0.8)
+            ax.set_title(f"{LABELS[ids[k]]} alone · {f / 1e6:g} MHz", loc="left", fontsize=9.5)
+            ax.set_aspect("equal")
+            if r == len(frequencies) - 1:
+                ax.set_xlabel("x (mm)")
+            if c == 0:
+                ax.set_ylabel("y (mm)")
+    cax = fig.add_axes([0.93, 0.15, 0.012, 0.65])
+    fig.colorbar(image, cax=cax, label="|p| per 1 Pa-eq source")
+    fig.suptitle("Single-PZT pressure amplitude in the channel plane (free-field water model); red: channel",
+                 fontsize=11, x=0.04, ha="left")
+    fig.savefig(out)
+    plt.close(fig)
+
+
+def figure_pairs(squares_at, lumen, out):
+    f = 9.375e6
+    x_mm, y_mm = np.linspace(-1.6, 0.9, 1001), np.linspace(-0.55, 0.55, 441)
+    p = field_grid(squares_at, f, x_mm, y_mm)
+    ids = [e["id"] for e in squares_at(f).elements]
+    pairs = {"X pair (PZT2 + PZT4) in phase": ("end_x_minus", "end_x_plus"),
+             "Y pair (PZT1 + PZT3) in phase": ("side_y_minus", "side_y_plus")}
+    fig, axes = plt.subplots(1, 2, figsize=(14, 3.8), dpi=150)
+    fig.subplots_adjust(left=0.05, right=0.92, top=0.82, bottom=0.14, wspace=0.12)
+    for ax, (title, (a, b)) in zip(axes, pairs.items()):
+        m = np.abs(p[ids.index(a)] + p[ids.index(b)])
+        image = ax.imshow(m / m.max(), origin="lower", extent=[x_mm[0], x_mm[-1], y_mm[0], y_mm[-1]], cmap="Blues",
+                          vmin=0, vmax=1)
+        draw_channel(ax, lumen, edgecolor="#e5533d", lw=1.0)
+        ax.set_aspect("equal")
+        ax.set_xlabel("x (mm)")
+        ax.set_title(f"{title} · 9.375 MHz", loc="left", fontsize=10)
+    axes[0].set_ylabel("y (mm)")
+    cax = fig.add_axes([0.93, 0.18, 0.012, 0.6])
+    fig.colorbar(image, cax=cax, label="|p| / max")
+    fig.suptitle("Standing waves at the junction: nodes 79 µm apart, the trunk is 179 µm wide", fontsize=11,
+                 x=0.05, ha="left")
+    fig.savefig(out)
+    plt.close(fig)
+
+
+def short_run(run_dir):
+    cfg = dict(fidelity="PRETRAIN", coupling="collective", state_seed=3, duration_s=0.3, save_interval_s=0.01,
+               action_seed=1, action_kind="pattern_local", action_segment_s=0.1)
+    run_dir.mkdir(parents=True, exist_ok=True)  # run() reuses a finished run of the same config
+    path = run_dir / "cfg.json"
+    path.write_text(json.dumps(cfg, indent=1))
+    start = time.perf_counter()
+    r = run(ROOT, path, run_dir / "out")
+    wall = time.perf_counter() - start
+    print("run", r["status"], r.get("completed_s"), round(wall, 1), "s", flush=True)
+    return cfg, r, wall
+
+
+def figure_run(lumen, run_dir, r, out):
+    import h5py
+
+    with h5py.File(run_dir / "out/trajectory.h5") as h:
+        x = h["positions_m"][:] * 1e6
+        t = h["time_s"][:]
+        radii = h["radii_m"][:] * 1e6
+    fig, axes = plt.subplots(1, 2, figsize=(11, 5.4), dpi=150)
+    fig.subplots_adjust(left=0.08, right=0.98, top=0.86, bottom=0.11, wspace=0.25)
+    centre = x[0].mean(axis=0)
+    for ax, (i, j, label) in zip(axes, ((0, 1, "y"), (0, 2, "z"))):
+        for s in lumen.segments if j == 1 else []:
+            ax.add_patch(Polygon(box_polygon(s) * 1e6, closed=True, fill=False, edgecolor=WALL, lw=1.0))
+        for frame, colour in ((0, "#9aa5b1"), (-1, "#2a78d6")):
+            for p, rad in zip(x[frame], radii):
+                ax.add_patch(Circle((p[i], p[j]), rad, facecolor=colour, edgecolor="none", alpha=0.55))
+        ax.set_xlim(centre[i] - 100, centre[i] + 100)
+        ax.set_ylim(-100, 100)  # the trunk: walls, floor and ceiling at +-89.5 um
+        if j == 2:
+            ax.axhline(89.5, color=WALL, lw=1.0)
+            ax.axhline(-89.5, color=WALL, lw=1.0)
+        ax.set_aspect("equal")
+        ax.set_xlabel("x (µm)")
+        ax.set_ylabel(f"{label} (µm)")
+    axes[0].set_title("Top view (x–y); blue lines: trunk walls", loc="left", fontsize=10)
+    axes[1].set_title("Side view (x–z); blue lines: floor and ceiling", loc="left", fontsize=10)
+    task = r["task"]
+    fig.suptitle(f"Short PRETRAIN run on the Y chip: {len(radii)} bubbles, pattern at the start cluster, "
+                 f"{task['segments'][0]['frequency'] / 1e6:.2f} MHz · grey t = 0, blue t = {t[-1]:.2f} s",
+                 fontsize=10.5, x=0.07, ha="left")
+    fig.savefig(out)
+    plt.close(fig)
+    move = np.linalg.norm(x[-1] - x[0], axis=1)
+    return dict(bubbles=len(radii), saved_frames=len(t), end_time_s=float(t[-1]),
+                frequency_Hz=task["segments"][0]["frequency"], centre_start_um=x[0].mean(axis=0).tolist(),
+                centre_end_um=x[-1].mean(axis=0).tolist(), displacement_um_median=float(np.median(move)),
+                displacement_um_max=float(move.max()), min_wall_gap_um_end=float(lumen.gaps(x[-1] * 1e-6, radii * 1e-6).min() * 1e6))
+
+
+def main():
+    out, run_dir = Path(sys.argv[1]), Path(sys.argv[2])
+    out.mkdir(parents=True, exist_ok=True)
+    g = read(ROOT / CHIP)["geometry"]
+    lumen = YChannel.from_config(g)
+
+    def squares_at(f):
+        return WaterSquares(g["pzt"], f)
+
+    assert isinstance(pretrain_context(ROOT, 2.5e6, CHIP).discs, WaterSquares)
+    with tempfile.TemporaryDirectory() as fonts:
+        font_manager.fontManager.addfont(str(shutil.copy("/mnt/c/Windows/Fonts/arial.ttf", Path(fonts) / "arial.ttf")))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED, "text.color": INK,
+                             "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+        record, _ = checks(lumen, squares_at)
+        record["random_starts"], centres = starts(lumen)
+        figure_model(g, lumen, centres, out / "fig_y_chip_model.png")
+        figure_fields(squares_at, lumen, out / "fig_y_chip_single_pzt_fields.png")
+        figure_pairs(squares_at, lumen, out / "fig_y_chip_pair_standing_waves.png")
+        cfg, r, wall = short_run(run_dir)
+        summary = read(run_dir / "out/SUMMARY.json")  # the run's own wall time (a reused run returns at once)
+        record["short_run"] = dict(config=cfg, status=r["status"], completed_s=r.get("completed_s"), wall_s=summary["wall_s"],
+                                   accepted_steps=summary["accepted_steps"], steps_failing_gates=summary["steps_failing_gates"],
+                                   apparatus=r["task"]["apparatus"],
+                                   **figure_run(lumen, run_dir, r, out / "fig_y_chip_short_run.png"))
+    (out / "CHECKS.json").write_text(json.dumps(record, indent=1) + "\n")
+
+
+if __name__ == "__main__":
+    main()

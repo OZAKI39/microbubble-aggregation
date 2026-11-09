@@ -1,0 +1,153 @@
+"""Animations of the standing-wave test (2026-11-07): one start, node with adhesion x1 / node
+without adhesion / antinode with adhesion x1 side by side.
+
+usage (repository root):  python ANIMATION_NODE.py DATA_DIR EVIDENCE_DIR SEED [SEED ...]
+DATA_DIR: RUNS.json, PROFILES.npz and <name>/compact.npz of NODE_RUNS.py. Writes
+EVIDENCE_DIR/anim_node_seed<SEED>_N<n>.mp4, positions every 10 ms seen from above (x right along
+the channel, y up), 25 frames/s, so 4x slower than real time.
+Top row: discs of radius R coloured by height, the view following the centre of the largest
+piece (bubbles within 0.5 R of a neighbour belong together); contacts per bubble (gap below
+0.01 R), start contacts broken so far, number of pieces. Bottom row: every bubble along
+-220..220 um of the channel (and -60..60 um sideways) around the start centroid, with the
+pressure nodes (dashed) and antinodes (dotted) of the drive along the channel axis.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED = "#1f2328", "#5b6470"
+R = 1.78e-6
+CASES = [("node_adhesion_x1", "Node at the cluster, adhesion x1 (default)", "#2a6fb0"),
+         ("node_adhesion_x0", "Node at the cluster, no adhesion", "#d08a1e"),
+         ("antinode_adhesion_x1", "Antinode at the cluster, adhesion x1", "#6a9f58")]
+FPS = 25
+STRIP_UM = 220
+STRIP_Y_UM = 60
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED,
+                         "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+
+
+def pieces(p):
+    pairs = np.array(sorted(cKDTree(p).query_pairs(2.5 * R)), dtype=int).reshape(-1, 2)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(p), len(p)))
+    n, labels = connected_components(graph, directed=False)
+    return n, labels == np.bincount(labels).argmax()
+
+
+def contacts(p):
+    return {tuple(q) for q in cKDTree(p).query_pairs(2 * R + 0.01 * R)}
+
+
+def extrema(x_um, amplitude):
+    """Local minima (nodes) and maxima (antinodes) of the pressure amplitude along x."""
+    inner = slice(1, -1)
+    lower = (amplitude[inner] < amplitude[:-2]) & (amplitude[inner] < amplitude[2:])
+    upper = (amplitude[inner] > amplitude[:-2]) & (amplitude[inner] > amplitude[2:])
+    return x_um[inner][lower], x_um[inner][upper]
+
+
+def main():
+    data, folder, seeds = Path(sys.argv[1]), Path(sys.argv[2]), [int(s) for s in sys.argv[3:]]
+    runs = json.loads((data / "RUNS.json").read_text())
+    prof = np.load(data / "PROFILES.npz")
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        for seed in seeds:
+            names = {key: f"seed{seed}_{key}" for key, _, _ in CASES}
+            frames = {key: np.load(data / names[key] / "compact.npz")["positions10_m"] for key, _, _ in CASES}
+            t = np.load(data / names["node_adhesion_x1"] / "compact.npz")["t10"]
+            n = frames["node_adhesion_x1"].shape[1]
+            centroid = np.array(runs[names["node_adhesion_x1"]]["centroid_m"])
+            first = frames["node_adhesion_x1"][0] - centroid
+            half = 1.35 * np.abs(first[:, :2]).max() * 1e6 + 6  # um
+            zlim = 1.1 * np.abs(first[:, 2]).max() * 1e6
+            start_contacts = {key: contacts(frames[key][0]) for key, _, _ in CASES}
+            ever_broken = {key: set() for key, _, _ in CASES}
+            x_um = prof[f"seed{seed}_x_m"] * 1e6
+
+            fig = plt.figure(figsize=(12.6, 7.0))
+            top = [fig.add_axes([0.035 + 0.3 * k, 0.33, 0.27, 0.53]) for k in range(3)]
+            bottom = [fig.add_axes([0.05 + 0.3 * k, 0.07, 0.255, 0.15]) for k in range(3)]
+            collections, notes, strips = {}, {}, {}
+            for k, (key, label, colour) in enumerate(CASES):
+                ax = top[k]
+                col = EllipseCollection(2 * R * 1e6, 2 * R * 1e6, 0, units="xy", offsets=np.zeros((n, 2)),
+                                        offset_transform=ax.transData, array=np.zeros(n), cmap="viridis",
+                                        clim=(-zlim, zlim), edgecolor="white", linewidth=0.3)
+                ax.add_collection(col)
+                ax.set_xlim(-half, half)
+                ax.set_ylim(-half, half)
+                ax.set_aspect("equal")
+                ax.set_title(label, fontsize=10, color=colour)
+                ax.set_xlabel("x (um, following the largest piece)", fontsize=8, color=MUTED)
+                collections[key] = col
+                notes[key] = ax.text(0.02, 0.02, "", transform=ax.transAxes, fontsize=8, color=INK, va="bottom")
+                ax = bottom[k]
+                setting = key.split("_")[0]
+                nodes, antinodes = extrema(x_um, prof[f"seed{seed}_{setting}_abs_pressure_Pa"])
+                for v in nodes:
+                    ax.axvline(v, color=MUTED, lw=1, ls="--")
+                for v in antinodes:
+                    ax.axvline(v, color=MUTED, lw=1, ls=":")
+                strips[key] = ax.scatter([], [], s=3, color=colour, linewidths=0)
+                ax.set_xlim(-STRIP_UM, STRIP_UM)
+                ax.set_ylim(-STRIP_Y_UM, STRIP_Y_UM)
+                ax.set_xlabel("x along the channel from the start centroid (um)", fontsize=8, color=MUTED)
+                ax.set_ylabel("y (um)", fontsize=8, color=MUTED)
+            fig.text(0.035, 0.255, "Whole channel around the cluster: dashed = pressure node, dotted = antinode "
+                     "(y stretched; bubbles beyond 220 um along x or 60 um sideways not shown)", fontsize=8, color=MUTED)
+            bar = fig.colorbar(collections["node_adhesion_x1"], cax=fig.add_axes([0.93, 0.33, 0.012, 0.53]))
+            bar.set_label("Height relative to the start centroid (um)", fontsize=8)
+            header = fig.text(0.035, 0.955, "", fontsize=10.5, color=INK)
+
+            def draw(i):
+                for key, _, _ in CASES:
+                    p = frames[key][i]
+                    count, main = pieces(p)
+                    centre = p[main].mean(0)
+                    q = (p - centre) * 1e6
+                    order = np.argsort(q[:, 2])
+                    collections[key].set_offsets(q[order, :2])
+                    collections[key].set_array((p[order, 2] - centroid[2]) * 1e6)
+                    now = contacts(p)
+                    ever_broken[key] |= start_contacts[key] - now
+                    notes[key].set_text(f"contacts per bubble {len(now) / n:.2f}\n"
+                                        f"start contacts broken so far {len(ever_broken[key])}\n"
+                                        f"pieces {count}")
+                    strips[key].set_offsets((p[:, :2] - centroid[:2]) * 1e6)
+                header.set_text(f"{n}-bubble 3D start seen from above; standing wave from X- and X+, 2.5 MHz; "
+                                f"t = {t[i]:.2f} s  (4x slower than real time)")
+                return list(collections.values())
+
+            writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+            out = folder / f"anim_node_seed{seed}_N{n}.mp4"
+            animation.FuncAnimation(fig, draw, frames=len(t), blit=False).save(out, writer=writer, dpi=100)  # 1260 x 700 px: libx264 with yuv420p needs even sizes
+            plt.close(fig)
+            print(out, out.stat().st_size // 1024, "KiB")
+
+
+if __name__ == "__main__":
+    main()

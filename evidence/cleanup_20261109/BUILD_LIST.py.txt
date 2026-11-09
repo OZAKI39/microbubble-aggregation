@@ -1,0 +1,129 @@
+"""Exact deletion candidates for /home/lzy/projects/new_microbubble_aggregation (2026-11-09, proposal only).
+
+usage: python build_list.py PROJECT_ROOT OUT_DIR
+Writes OUT_DIR/DELETE_LIST.json (group -> exact relative paths with size and git-tracked file count)
+and OUT_DIR/CLEANUP_PROPOSAL.md. Deletes nothing.
+"""
+
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(sys.argv[1]).resolve()
+OUT = Path(sys.argv[2])
+
+
+def size(p):
+    p = ROOT / p
+    if p.is_file():
+        return p.stat().st_size
+    return sum(f.stat().st_size for f in p.rglob("*") if f.is_file() and not f.is_symlink())
+
+
+def tracked(p):
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "--", p], capture_output=True, text=True).stdout
+    return len(out.split())
+
+
+def glob(pattern):
+    return sorted(str(p.relative_to(ROOT)) for p in ROOT.glob(pattern))
+
+
+def human(n):
+    for unit in ("B", "KB", "MB", "GB"):
+        if n < 1024:
+            return f"{n:.0f} {unit}" if unit == "B" else f"{n:.1f} {unit}"
+        n /= 1024
+    return f"{n:.1f} TB"
+
+
+MORPH_PART1 = [f"evidence/morph_sheet_20261108/{f}" for f in (
+    "ANALYSE_MORPH.py.txt", "ANIMATION_3D_PZT_FIELD.py.txt", "ANIMATION_MORPH.py.txt",
+    "ANIMATION_MORPH_PZT_FIELD.py.txt", "DRIVE_CHECK_MORPH.py.txt", "MORPH.py.txt", "MORPH_RUNS.py.txt",
+    "fig1_translate.png", "fig2_bend.png", "fig3_line_dot.png", "fig4_views.png",
+    "data/DRIVE_CHECK.json", "data/JOBS_MORPH.txt", "data/JOBS_MORPH_RERUN.txt", "data/MORPH.json", "data/MORPH.npz")]
+SCULPT_Q2_Q3 = [f"evidence/sculpt_4pzt_20261108/{f}" for f in (
+    "anim_switching_9.375MHz.mp4", "fig5_switching.png", "fig6_softness.png", "data/SOFTNESS.json",
+    "FIGURE_Q2.py.txt", "FIGURE_Q3.py.txt", "ANALYSE_SOFTNESS.py.txt")]
+Q23 = ("Q2L_*", "Q3_*", "HALF_Q3_*")
+
+groups = {}
+groups["G1_user_named"] = (
+    ["evidence/rotate_sheet_20261108", "evidence/complex_paths_20261109"]
+    + MORPH_PART1 + glob("evidence/morph_sheet_20261108/anim_*.mp4") + SCULPT_Q2_Q3
+    + ["evidence/shape3d_20261109/fig_sheet_changes.png", "evidence/shape3d_20261109/fig_follow_ball_vs_sheet.png",
+       "evidence/shape3d_20261109/data/SHAPE3D_sheet_changes.json",
+       "evidence/shape3d_20261109/data/SHAPE3D_sheet_changes.npz",
+       "evidence/complex_ball_20261109/data/COMPLEX_sheet_recheck.json",
+       "evidence/complex_ball_20261109/data/COMPLEX_sheet_recheck.npz",
+       "results/rotate_20261108", "results/complex_20261109"]
+    + glob("results/morph_20261108/out/MOV_*") + glob("results/morph_20261108/logs/MOV_*")
+    + glob("results/morph_20261108/first_attempt_cap_rounding/out/MOV_*")
+    + glob("results/morph_20261108/first_attempt_cap_rounding/logs/MOV_*")
+    + [f"results/morph_20261108/scripts/{f}" for f in ("morph.py", "morph_runs.py", "JOBS_MORPH.txt",
+                                                        "JOBS_MORPH_RERUN.txt")]
+    + [p for q in Q23 for p in glob(f"results/sculpt_20261108/out/{q}") + glob(f"results/sculpt_20261108/logs/{q}")]
+    + ["results/sculpt_20261108/pilot/N500_push", "results/sculpt_20261108/scripts/JOBS_WAVE2A.txt",
+       "results/sculpt_20261108/scripts/JOBS_WAVE2B.txt"])
+
+KEEP_BUILD = {"build/apecss/16b0195e2dc6a2d9", "build/contact/7693fe3fc4a409bd", "build/pair_forces/acf33178214f8551"}
+caches = [p for d in ("apecss", "contact", "pair_forces") for p in glob(f"build/{d}/*") if p not in KEEP_BUILD]
+pycache = sorted(str(p.relative_to(ROOT)) for p in ROOT.rglob("__pycache__")
+                 if ".venv" not in p.parts and ".git" not in p.parts and "retained_history" not in p.parts)
+groups["G2_regenerable_and_strays"] = (
+    caches + ["build/qpoases"] + pycache + [".pytest_cache", ".ruff_cache", "results/_scratch",
+                                            "results/regression_v1", "node_probe_1e-08.json"])
+
+groups["G3_superseded_unadopted_incomplete_evidence"] = [f"evidence/{n}" for n in (
+    "qpoases_fallback_20261106", "qpoases_contact_20261106", "pretrain_step_control_20261104",
+    "soft_contacts_20261104", "step_sweep_20261106", "step_sweep_once_20261106", "svd_wait_20261107",
+    "time_bill_20261107", "pretrain_formed_defaults_20261104", "softness_matched_speed_20261104",
+    "ab_reference_clusters_20261104", "disordered_clusters_trial_20261104", "deforming_controls_20261104",
+    "polydispersity_static_20261103", "high_frequency_test_20261107", "phased_array_test_20261107",
+    "contact_speed_20261104", "random_starts_20261106/planar_starts_superseded",
+    "apecss_harmonics_20261103/superseded")]
+
+groups["G4_old_path_results_kept_on_1106"] = [f"results/{n}" for n in (
+    "compact_failure_hf", "contact_lf", "final_minimal_hf", "half_step_hf", "historical_150ms_review",
+    "minimal_hf", "minimal_hf_analysis", "minimal_lf", "paired_hf", "paired_lf", "regression_final",
+    "regression_v2", "regression_v3", "single_f1", "pretrain_apecss_response",
+    "pretrain_apecss_response_threads8", "pretrain_gpu_field", "pretrain_gpu_field_auto",
+    "pretrain_direct_field", "pretrain_feasibility_2s", "pretrain_protocol_ab", "pretrain_stability_2s")] + [
+    "visualization/ab_protocol_sim", "visualization/pretrain_stability_2s"]
+
+groups["G5_failed_first_attempts"] = (
+    glob("results/morph_20261108/first_attempt_cap_rounding/out/ADH_*")
+    + glob("results/morph_20261108/first_attempt_cap_rounding/logs/ADH_*")
+    + ["results/complex_ball_20261109/out/first_attempt_wrong_column",
+       "results/complex_ball_20261109/JOBS_COMPLEX_BALL_STEP_first_attempt_wrong_column.txt",
+       "evidence/complex_ball_20261109/data/JOBS_COMPLEX_BALL_STEP_first_attempt_wrong_column.txt",
+       "results/lowfreq_20261109/logs/failed_cap_rounding"])
+
+groups["G6_outdated_docs"] = ["HANDOFF_20261102.md", "docs/TREE.txt", "docs/DELIVERY_REPORT.md"]
+groups["G7_historical_audit_docs"] = [f"docs/{n}" for n in (
+    "CLEANUP_AUDIT.md", "CLEANUP_RESULT.md", "CLEANUP_REVIEW.md", "HISTORICAL_DIRECTORY_AUDIT.md",
+    "PROJECTS_DIRECTORY_REVIEW.md", "SERVER_CLEANUP_AUDIT_20261024.md", "SERVER_CLEANUP_RESULT_20261024.md",
+    "MIGRATION_MAP.md", "GITHUB_SYNC.md")]
+
+rows = {}
+for g, paths in groups.items():
+    rows[g] = []
+    for p in paths:
+        if not (ROOT / p).exists():
+            raise FileNotFoundError(p)
+        rows[g].append(dict(path=p, bytes=size(p), git_tracked_files=tracked(p)))
+OUT.mkdir(parents=True, exist_ok=True)
+(OUT / "DELETE_LIST.json").write_text(json.dumps(rows, indent=1, ensure_ascii=False) + "\n")
+
+lines = []
+for g, items in rows.items():
+    total = sum(r["bytes"] for r in items)
+    nt = sum(r["git_tracked_files"] for r in items)
+    lines.append(f"\n## {g}  ({len(items)} paths, {human(total)}, git-tracked files {nt})\n")
+    lines.append("| Path | Size | Tracked files |\n|---|---|---|")
+    for r in items:
+        lines.append(f"| `{r['path']}` | {human(r['bytes'])} | {r['git_tracked_files']} |")
+(OUT / "PATH_TABLES.md").write_text("\n".join(lines) + "\n")
+for g, items in rows.items():
+    print(g, len(items), human(sum(r["bytes"] for r in items)), sum(r["git_tracked_files"] for r in items))

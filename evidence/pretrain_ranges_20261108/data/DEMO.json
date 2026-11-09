@@ -1,0 +1,152 @@
+{
+ "LOCAL_state203_action1": {
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 6.4,
+  "wall_s": 353.888512667967,
+  "action_kind": "pattern_local",
+  "bubbles": 125,
+  "frequency_Hz": 7283271.815519611,
+  "adhesion_force_N": 6.878851307049219e-14,
+  "reference_m": [
+   -0.0019639661322666626,
+   0.00032124186462470603,
+   0.000575356172493998
+  ],
+  "start_centre_m": [
+   -0.0019639661322666626,
+   0.00032124186462470603,
+   0.000575356172493998
+  ],
+  "start_distance_from_reference_mm": 0.0,
+  "p_ratio_start": 0.0986893355607971,
+  "p_ratio_end": 0.0822796944087339,
+  "p_ratio_median": 0.0639390080007926,
+  "centroid_moved_um_end": 4.547789524932146,
+  "aspect_start": 1.0784716110665482,
+  "aspect_max": 2.451924139724199,
+  "aspect_end": 2.451924139724199,
+  "pieces_max": 1,
+  "largest_share_min": 1.0
+ },
+ "PAT2_state201_action28": {
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 6.4,
+  "wall_s": 401.811914739199,
+  "action_kind": "pattern",
+  "bubbles": 121,
+  "frequency_Hz": 3253246.7084354763,
+  "adhesion_force_N": 1.0792197714446756e-14,
+  "reference_m": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "start_centre_m": [
+   0.0013863434283569104,
+   9.469092891265111e-06,
+   8.829216304606768e-05
+  ],
+  "start_distance_from_reference_mm": 1.389184390613402,
+  "p_ratio_start": 0.1748959698197389,
+  "p_ratio_end": 0.2567009251694764,
+  "p_ratio_median": 0.2989997988333683,
+  "centroid_moved_um_end": 335.4566620405083,
+  "aspect_start": 1.2768341205849554,
+  "aspect_max": 59.10572889277925,
+  "aspect_end": 43.162540850567765,
+  "pieces_max": 13,
+  "largest_share_min": 0.8429752066115702
+ },
+ "PAT2_state202_action3": {
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 6.4,
+  "wall_s": 256.2015647869557,
+  "action_kind": "pattern",
+  "bubbles": 99,
+  "frequency_Hz": 5850380.338973964,
+  "adhesion_force_N": 1.4375848509425095e-13,
+  "reference_m": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "start_centre_m": [
+   0.01090327690001115,
+   -0.0002765430714729774,
+   0.000416857254129816
+  ],
+  "start_distance_from_reference_mm": 10.914746593440322,
+  "p_ratio_start": 0.6291322806878685,
+  "p_ratio_end": 0.06767846734144606,
+  "p_ratio_median": 0.20502558510235383,
+  "centroid_moved_um_end": 20.345520037742958,
+  "aspect_start": 1.0622016708079003,
+  "aspect_max": 1.656136427161072,
+  "aspect_end": 1.656136427161072,
+  "pieces_max": 1,
+  "largest_share_min": 1.0
+ },
+ "PAT2_state203_action1": {
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 6.4,
+  "wall_s": 361.45545671414584,
+  "action_kind": "pattern",
+  "bubbles": 125,
+  "frequency_Hz": 7283271.815519611,
+  "adhesion_force_N": 6.878851307049219e-14,
+  "reference_m": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "start_centre_m": [
+   -0.0019639661322666626,
+   0.00032124186462470603,
+   0.000575356172493998
+  ],
+  "start_distance_from_reference_mm": 2.071568012280788,
+  "p_ratio_start": 0.16971843018768043,
+  "p_ratio_end": 0.14792569646755435,
+  "p_ratio_median": 0.1642141006053583,
+  "centroid_moved_um_end": 13.56456371546126,
+  "aspect_start": 1.0784716110665482,
+  "aspect_max": 2.066132734644687,
+  "aspect_end": 2.066132734644687,
+  "pieces_max": 1,
+  "largest_share_min": 1.0
+ },
+ "PAT2_state204_action11": {
+  "status": "PASS",
+  "reason": null,
+  "completed_s": 6.4,
+  "wall_s": 589.6932484419085,
+  "action_kind": "pattern",
+  "bubbles": 206,
+  "frequency_Hz": 9455382.94376605,
+  "adhesion_force_N": 3.2162942434897325e-13,
+  "reference_m": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "start_centre_m": [
+   -0.007377312412407373,
+   -0.00010759084118805928,
+   -0.00067011367082772
+  ],
+  "start_distance_from_reference_mm": 7.4084658702863475,
+  "p_ratio_start": 0.25672224242072766,
+  "p_ratio_end": 0.3609262879585101,
+  "p_ratio_median": 0.22608438693671504,
+  "centroid_moved_um_end": 11.120419650612654,
+  "aspect_start": 1.195763478413104,
+  "aspect_max": 1.8981775987142455,
+  "aspect_end": 1.8981775987142455,
+  "pieces_max": 1,
+  "largest_share_min": 1.0
+ }
+}

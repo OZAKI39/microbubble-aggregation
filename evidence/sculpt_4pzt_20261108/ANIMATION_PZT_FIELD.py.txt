@@ -1,0 +1,185 @@
+"""Sculpting runs side by side, each column: top view, the four PZT states, the field over the channel (2026-11-09).
+
+usage (repository root):  PYTHONPATH=. python animation_pzt_field.py DATA_DIR OUT_MP4 NAME1 NAME2 NAME3 NAME4
+DATA_DIR: <name>/ROW.json and <name>/compact.npz of sculpt_runs.py; every saved frame at 20 frames/s.
+Row 1: bubbles at their radius, colour = height z; background |p| of the segment in effect at z = 0
+(dark = low, scaled per map); grey line: start outline.
+Row 2: one dial per PZT, placed on its side of the channel: circle = source cap, hand = amplitude and phase.
+Row 3: |p| at z = 0 over the channel; grey = outside the lumen; dark lines = channel wall; white square = row-1 view.
+The lumen boundary of the z = 0 slice (|x| <= L/2, |y| <= R) is drawn in rows 1 and 3; it shows wherever it falls in view.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+from matplotlib.patches import Circle, Rectangle
+from scipy.spatial import ConvexHull
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, WALL_FILL = "#1f2328", "#5b6470", "#c9ced4"
+FPS = 20
+HALF_UM = 45  # row 1 half width
+HALF_MM = 1.0  # row 3 half width
+TITLES = {"lines_x": "Parallel lines", "cross": "Crossed lines", "wavy": "Wavy lines", "dots": "Dots"}
+CHANNELS = ("Y−", "Y+", "X−", "X+")  # order of amplitudes_Pa_eq / phases_rad
+DIAL_RADIUS = 0.2
+DIALS = ((0.0, -0.42), (0.0, 0.42), (-0.66, 0.0), (0.66, 0.0))  # Y- below, Y+ above, X- left, X+ right
+VALUE_SPOTS = ((0.26, -0.42, "left", "center"), (0.26, 0.42, "left", "center"),
+               (-0.9, 0.0, "right", "center"), (0.9, 0.0, "left", "center"))
+
+
+def pressure(elements, segment, points):
+    u = np.array(segment["amplitudes_Pa_eq"]) * np.exp(1j * np.array(segment["phases_rad"]))
+    discs = WaterDiscs(elements, segment["frequency_Hz"])
+    order = direct_quadrature_order(segment["frequency_Hz"])
+    return np.abs(np.concatenate([u @ discs.evaluate(chunk, order)[0] for chunk in np.array_split(points, 12)]))
+
+
+def lumen_outline(ax, lumen, scale):
+    ax.add_patch(Rectangle((-lumen.length_m / 2 * scale, -lumen.radius_m * scale), lumen.length_m * scale,
+                           2 * lumen.radius_m * scale, fill=False, edgecolor=INK, linewidth=1.4, zorder=4))
+
+
+def main():
+    data, out, names = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3:7]
+    context = pretrain_context(Path("."), 2.5e6)
+    elements, lumen = context.discs.elements, context.cavity.lumen
+    line = np.linspace(-HALF_UM, HALF_UM, 181) * 1e-6
+    gx, gy = np.meshgrid(line, line, indexing="xy")
+    near = np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)])
+    line = np.linspace(-HALF_MM, HALF_MM, 301) * 1e-3
+    fx, fy = np.meshgrid(line, line, indexing="xy")
+    inside = (np.abs(fy) <= lumen.radius_m) & (np.abs(fx) <= lumen.length_m / 2)
+    wide = np.column_stack([fx[inside], fy[inside], np.zeros(inside.sum())])
+    with tempfile.TemporaryDirectory() as font_dir:
+        for name in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / name).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, Path(font_dir) / name)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                             "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK,
+                             "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+        runs = [json.loads((data / n / "ROW.json").read_text()) for n in names]
+        compact = [np.load(data / n / "compact.npz") for n in names]
+        frames = max(len(c["times_s"]) for c in compact)
+        near_maps, wide_maps = [], []
+        for r in runs:
+            near_maps.append([pressure(elements, s, near).reshape(gx.shape) for s in r["segments"]])
+            maps = []
+            for s in r["segments"]:
+                p = np.full(fx.shape, np.nan)
+                p[inside] = pressure(elements, s, wide) / 1e3
+                maps.append(p)
+            wide_maps.append(maps)
+        p_max = max(np.nanmax(p) for maps in wide_maps for p in maps)
+
+        fig = plt.figure(figsize=(14.4, 9.6), dpi=100)
+        grid = fig.add_gridspec(3, 5, width_ratios=[1, 1, 1, 1, 0.05], height_ratios=[1, 0.47, 1],
+                                left=0.045, right=0.95, bottom=0.06, top=0.93, wspace=0.22, hspace=0.18)
+        time_label = fig.text(0.045, 0.975, "", fontsize=11, color=INK, va="top")
+        cmap = plt.get_cmap("magma").copy()
+        cmap.set_bad(WALL_FILL)
+        state = []
+        for k, (r, c) in enumerate(zip(runs, compact)):
+            top, dial, field = (fig.add_subplot(grid[row, k]) for row in range(3))
+            starts = np.cumsum([0.0] + [s["duration_s"] for s in r["segments"]])[:-1]
+
+            near_image = top.imshow(near_maps[k][0] / near_maps[k][0].max(), origin="lower",
+                                    extent=[-HALF_UM, HALF_UM, -HALF_UM, HALF_UM], cmap="Greys_r", vmin=0, vmax=1.6)
+            x0, radii = c["positions_m"][0] * 1e6, c["radii_m"] * 1e6
+            hull = ConvexHull(x0[:, :2])
+            top.plot(*np.vstack([x0[hull.vertices, :2], x0[hull.vertices[:1], :2]]).T, color="#9aa5b1", lw=0.8)
+            dots = EllipseCollection(2 * radii, 2 * radii, 0, units="xy", offsets=x0[:, :2], offset_transform=top.transData,
+                                     cmap="viridis", edgecolors="white", linewidths=0.15)
+            dots.set_array(x0[:, 2])
+            dots.set_clim(-22, 22)
+            top.add_collection(dots)
+            lumen_outline(top, lumen, 1e6)
+            top.set_xlim(-HALF_UM, HALF_UM)
+            top.set_ylim(-HALF_UM, HALF_UM)
+            top.set_aspect("equal")
+            top.set_title(" → ".join(TITLES[s["pattern"]] for s in r["segments"]), loc="left", fontsize=10, color=INK)
+            top.set_xlabel("x (µm)")
+
+            dial.add_patch(Rectangle((-0.4, -0.05), 0.8, 0.1, facecolor=WALL_FILL, edgecolor=INK, linewidth=0.8))
+            hands, values = [], []
+            for (cx, cy), (tx, ty, ha, va) in zip(DIALS, VALUE_SPOTS):
+                dial.add_patch(Circle((cx, cy), DIAL_RADIUS, fill=False, edgecolor=MUTED, linewidth=0.8))
+                dial.plot([cx, cx + DIAL_RADIUS], [cy, cy], color=MUTED, linewidth=0.5, linestyle=":")
+                hands.append(dial.plot([], [], color=INK, linewidth=1.6, marker="o", markersize=3, markevery=[1])[0])
+                values.append(dial.text(tx, ty, "", ha=ha, va=va, fontsize=8, color=INK, linespacing=1.15))
+            frequency = dial.text(-1.43, 0.66, "", ha="left", va="top", fontsize=9, color=INK)
+            dial.set_xlim(-1.45, 1.45)
+            dial.set_ylim(-0.68, 0.68)
+            dial.set_aspect("equal")
+            dial.axis("off")
+
+            wide_image = field.imshow(wide_maps[k][0], origin="lower", extent=[-HALF_MM, HALF_MM, -HALF_MM, HALF_MM],
+                                      cmap=cmap, vmin=0, vmax=p_max, interpolation="nearest")
+            lumen_outline(field, lumen, 1e3)
+            field.add_patch(Rectangle((-HALF_UM * 1e-3, -HALF_UM * 1e-3), 2 * HALF_UM * 1e-3, 2 * HALF_UM * 1e-3,
+                                      fill=False, edgecolor="white", linewidth=0.9, zorder=5))
+            field.set_xlim(-HALF_MM, HALF_MM)
+            field.set_ylim(-HALF_MM, HALF_MM)
+            field.set_aspect("equal")
+            field.set_xlabel("x (mm)")
+            if k == 0:
+                top.set_ylabel("y (µm)")
+                field.set_ylabel("y (mm)")
+            state.append(dict(run=r, compact=c, starts=starts, dots=dots, near_image=near_image, wide_image=wide_image,
+                              hands=hands, values=values, frequency=frequency, segment=None, index=k))
+        fig.colorbar(dots, cax=fig.add_subplot(grid[0, 4]), label="z (µm)")
+        fig.colorbar(wide_image, cax=fig.add_subplot(grid[2, 4]), label="|p| (kPa)")
+
+        def show_segment(s, j):
+            segment = s["run"]["segments"][j]
+            cap = segment["cap_Pa_eq"]
+            for (cx, cy), hand, value, name, a, phase in zip(DIALS, s["hands"], s["values"], CHANNELS,
+                                                              segment["amplitudes_Pa_eq"], segment["phases_rad"]):
+                length = DIAL_RADIUS * a / cap
+                hand.set_data([cx, cx + length * np.cos(phase)], [cy, cy + length * np.sin(phase)])
+                value.set_text(f"{name}\n{a / 1e3:.2f} kPa-eq\n{np.degrees(phase) % 360:.0f}°")
+            s["frequency"].set_text(f"{segment['frequency_Hz'] / 1e6:.3f} MHz")
+            near = near_maps[s["index"]][j]
+            s["near_image"].set_data(near / near.max())
+            s["wide_image"].set_data(wide_maps[s["index"]][j])
+            s["segment"] = j
+
+        def draw(i):
+            t_label = 0.0
+            for s in state:
+                c = s["compact"]
+                j = min(i, len(c["times_s"]) - 1)
+                t = c["times_s"][j]
+                t_label = max(t_label, t)
+                x = c["positions_m"][j] * 1e6
+                order = np.argsort(x[:, 2])
+                s["dots"].set_offsets(x[order, :2])
+                s["dots"].set_array(x[order, 2])
+                s["dots"].set_widths(2 * c["radii_m"][order] * 1e6)
+                s["dots"].set_heights(2 * c["radii_m"][order] * 1e6)
+                segment = int(np.searchsorted(s["starts"], t + 1e-9) - 1)
+                if segment != s["segment"]:
+                    show_segment(s, segment)
+            time_label.set_text(f"t = {t_label:.2f} s")
+            return []
+
+        writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+        animation.FuncAnimation(fig, draw, frames=frames, blit=False).save(out, writer=writer)
+        plt.close(fig)
+
+
+main()

@@ -1,0 +1,41 @@
+{
+ "note": "new / former adhesion per run of default random actions (former = 1.4e-17 N/(Pa-eq)^2 x the run's largest single-channel amplitude^2); runs with every channel off had no adhesion before",
+ "force_N": 5.04e-10,
+ "segments": {
+  "1": {
+   "runs": 2000,
+   "all_off_share": 0.0665,
+   "ratio_median": 1.9642881620787478,
+   "ratio_p90": 16.459007363004602,
+   "share_within_10_percent": 0.089
+  },
+  "3": {
+   "runs": 2000,
+   "all_off_share": 0.0005,
+   "ratio_median": 1.2694664248943264,
+   "ratio_p90": 2.4000103986727965,
+   "share_within_10_percent": 0.23800000000000002
+  },
+  "10": {
+   "runs": 2000,
+   "all_off_share": 0.0,
+   "ratio_median": 1.0728005168653023,
+   "ratio_p90": 1.2640099962507383,
+   "share_within_10_percent": 0.603
+  },
+  "30": {
+   "runs": 2000,
+   "all_off_share": 0.0,
+   "ratio_median": 1.023408562473239,
+   "ratio_p90": 1.0828558231868541,
+   "share_within_10_percent": 0.9365
+  },
+  "64": {
+   "runs": 2000,
+   "all_off_share": 0.0,
+   "ratio_median": 1.010206652295242,
+   "ratio_p90": 1.0368036249696,
+   "share_within_10_percent": 0.9975
+  }
+ }
+}

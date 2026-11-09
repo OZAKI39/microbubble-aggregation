@@ -1,0 +1,150 @@
+"""Figures of the ordinary pretraining runs with pattern actions and of the line-quality survey (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:SCRATCH python figure_pattern.py DEMO_DIR PATTERN_JSON PATTERN_NPZ LINE_QUALITY_JSON OUT_DIR
+Writes OUT_DIR/fig6_pattern_runs.png (per run: a and phi, the node offsets, the share within R of the zero set,
+the top-view distance of the cluster's centroid from it; top views at 0, 1.6, 3.2, 4.8 and 6.4 s with |p|
+of the field in effect at the start height, dashed: the local form's zero line, +: the zero point) and
+OUT_DIR/fig7_line_quality.png (line quality of the first pattern segment against the start's distance
+from the channel centre along x, 200 random starts, three frequencies).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, BLUE, ORANGE, GREEN, GREY = "#1f2328", "#5b6470", "#1f5a96", "#c2611f", "#2f7d4f", "#9aa5b1"
+demo, out_dir = Path(sys.argv[1]), Path(sys.argv[5])
+result, series = json.loads(Path(sys.argv[2]).read_text()), np.load(sys.argv[3])
+quality = json.loads(Path(sys.argv[4]).read_text())
+elements = pretrain_context(Path("."), 3e6).discs.elements
+names = sorted(result, key=lambda n: result[n]["frequency_Hz"])
+
+with tempfile.TemporaryDirectory() as font_dir:
+    for font in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / font).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 8.5, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+
+    # ---- figure 6: the four runs ----
+    times = (0.0, 1.6, 3.2, 4.8, 6.4)
+    fig = plt.figure(figsize=(16.0, 17.0), dpi=110)
+    gs = fig.add_gridspec(4 + len(times), len(names), height_ratios=[1, 1, 1, 1] + [1.6] * len(times),
+                          hspace=0.45, wspace=0.25, left=0.06, right=0.99, top=0.95, bottom=0.03)
+    for col, n in enumerate(names):
+        s = result[n]
+        t = series[f"{n}__t_s"]
+        seg = series[f"{n}__segment"].astype(int)
+        e = json.loads((demo / n / "EXECUTION.json").read_text())
+        task = e["task"]
+        ax = fig.add_subplot(gs[0, col])
+        ax.plot(t, series[f"{n}__a_deg"][seg], color=BLUE, lw=1.2, label="a (zero line direction a + 90 deg)")
+        ax.plot(t, series[f"{n}__phi_deg"][seg], color=ORANGE, lw=1.2, label="phi (0 line, 90 deg point)")
+        ax.set_ylim(-95, 95)
+        ax.set_title(f"{n}: {s['bubbles']} bubbles, {s['frequency_Hz'] / 1e6:.2f} MHz,\nadhesion {s['adhesion_force_N']:.1e} N, "
+                     f"start x = {s['centre_m'][0] * 1e3:.1f} mm, line quality {s['line_quality_median'] if s['line_quality_median'] is None else round(s['line_quality_median'], 3)}",
+                     loc="left", fontsize=8, color=INK)
+        if col == 0:
+            ax.set_ylabel("deg")
+            ax.legend(frameon=False, fontsize=6.5, loc="lower left")
+        ax = fig.add_subplot(gs[1, col])
+        ax.plot(t, series[f"{n}__sx_m"][seg] * 1e6, color=BLUE, lw=1.2, label="X pair node offset s_x")
+        ax.plot(t, series[f"{n}__sy_m"][seg] * 1e6, color=ORANGE, lw=1.2, label="Y pair node offset s_y")
+        if col == 0:
+            ax.set_ylabel("um")
+            ax.legend(frameon=False, fontsize=6.5, loc="lower left")
+        ax = fig.add_subplot(gs[2, col])
+        ax.plot(t, series[f"{n}__share_on_zero_set"], color=GREEN, lw=1.2)
+        ax.set_ylim(-0.03, 1.05)
+        if col == 0:
+            ax.set_ylabel("share within R\nof the zero set")
+        ax = fig.add_subplot(gs[3, col])
+        ax.plot(t, series[f"{n}__centroid_distance_m"] * 1e6, color=INK, lw=1.2)
+        ax.text(0.98, 0.85, f"pieces: {'1 throughout' if s['pieces_max'] == 1 else 'up to ' + str(s['pieces_max'])}",
+                transform=ax.transAxes, ha="right", fontsize=7.5, color=INK)
+        ax.set_xlabel("time (s)")
+        if col == 0:
+            ax.set_ylabel("centroid distance\nfrom the zero set (um)")
+        # top views
+        c = np.array(s["centre_m"])
+        with h5py.File(demo / n / "trajectory.h5") as h:
+            positions, radii = h["positions_m"][()], h["radii_m"][()]
+        half = max(40e-6, float(np.abs(positions[:, :, :2] - c[:2]).max()) + 10e-6)
+        half = max(half, float(np.abs(series[f"{n}__sx_m"]).max()) + 25e-6, float(np.abs(series[f"{n}__sy_m"]).max()) + 25e-6)
+        line = np.linspace(-half, half, 161)
+        gx, gy = np.meshgrid(line, line, indexing="xy")
+        f = s["frequency_Hz"]
+        disc_field = WaterDiscs(elements, f).evaluate(np.column_stack([gx.ravel() + c[0], gy.ravel() + c[1], np.full(gx.size, c[2])]),
+                                                       direct_quadrature_order(f))[0]
+        kx, ky = s["pattern_path"]["kappa_x_per_m"], s["pattern_path"]["kappa_y_per_m"]
+        for row, when in enumerate(times):
+            ax = fig.add_subplot(gs[4 + row, col])
+            j = int(np.argmin(np.abs(t - when)))
+            k = int(seg[j])
+            g = task["segments"][k]
+            u = np.array(g["amplitudes"]) * np.exp(1j * np.array(g["phases"]))
+            p = np.abs(u @ disc_field).reshape(gx.shape)
+            ax.imshow(p / p.max(), origin="lower", extent=np.array([-half, half, -half, half]) * 1e6, cmap="Greys_r", vmin=0, vmax=1.6)
+            a, phi = np.radians(series[f"{n}__a_deg"][k]), series[f"{n}__phi_deg"][k]
+            sx, sy = series[f"{n}__sx_m"][k], series[f"{n}__sy_m"][k]
+            if phi == 0.0:
+                form = -(np.cos(a) * np.sin(kx * (gx - sx)) + kx / ky * np.sin(a) * np.sin(ky * (gy - sy)))
+                ax.contour(gx * 1e6, gy * 1e6, form, levels=[0], colors=ORANGE, linewidths=0.9, linestyles="--")
+            else:
+                ax.plot(sx * 1e6, sy * 1e6, marker="+", ms=10, mew=1.5, color=ORANGE)
+            x = (positions[j] - c) * 1e6
+            order = np.argsort(x[:, 2])
+            d = EllipseCollection(2 * radii[order] * 1e6, 2 * radii[order] * 1e6, 0, units="xy", offsets=x[order, :2],
+                                  offset_transform=ax.transData, cmap="viridis", edgecolors="white", linewidths=0.15)
+            d.set_array(x[order, 2])
+            d.set_clim(-15, 15)
+            ax.add_collection(d)
+            ax.set_xlim(-half * 1e6, half * 1e6)
+            ax.set_ylim(-half * 1e6, half * 1e6)
+            ax.set_aspect("equal")
+            ax.tick_params(labelsize=6.5)
+            ax.text(0.02, 0.97, f"t = {t[j]:.1f} s, phi {phi:.0f} deg, on zero set {series[f'{n}__share_on_zero_set'][j]:.2f}",
+                    transform=ax.transAxes, fontsize=6.5, color=INK, va="top",
+                    bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1.0))
+            if col == 0:
+                ax.set_ylabel("y - c_y (um)", fontsize=7)
+            if row == len(times) - 1:
+                ax.set_xlabel("x - c_x (um)", fontsize=7)
+    fig.suptitle("Ordinary pretraining runs with pattern actions (config: only the seeds and 6.4 s; weak adhesion drawn), "
+                 "top views around the start centre c (background |p|; dashed: zero line, +: zero point; colour = height)",
+                 x=0.06, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig6_pattern_runs.png")
+    plt.close(fig)
+
+    # ---- figure 7: line quality ----
+    fig, ax = plt.subplots(figsize=(8.0, 4.2), dpi=130)
+    fig.subplots_adjust(left=0.1, right=0.98, top=0.86, bottom=0.13)
+    for (f, rows), colour in zip(sorted(quality["frequencies"].items(), key=lambda item: float(item[0])), (ORANGE, BLUE, GREEN)):
+        xs = np.abs([r["x_mm"] for r in rows["rows"]])
+        q = [r["line_quality"] for r in rows["rows"]]
+        ax.plot(xs, q, "o", ms=3.5, color=colour, alpha=0.75,
+                label=f"{float(f) / 1e6:g} MHz (quality < 0.05: {rows['share_quality_below_0p05']:.0%} of starts)")
+    ax.axhline(0.05, color=MUTED, lw=0.8, ls="--")
+    ax.set_xlabel("start cluster's distance from the channel centre along x, |x| (mm)")
+    ax.set_ylabel("|p| on the predicted zero line / largest |p|, within 20 um")
+    ax.set_ylim(0, 0.6)
+    ax.legend(frameon=False, fontsize=7.5, loc="upper left")
+    ax.set_title("Is the zero line of the pattern actions a zero line of the disc field? 200 random starts, a = 45 deg, "
+                 "phi = 0 (dashed: 0.05)", loc="left", fontsize=9, color=INK)
+    fig.savefig(out_dir / "fig7_line_quality.png")
+    plt.close(fig)

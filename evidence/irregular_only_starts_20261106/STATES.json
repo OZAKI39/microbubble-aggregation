@@ -1,0 +1,294 @@
+{
+ "font": "Arial",
+ "accepted": [
+  {
+   "state": "IRREGULAR_N16_a1.0_s0",
+   "n": 16,
+   "aspect_requested": 1.0,
+   "seed": 0,
+   "bond_order_psi6": 0.8554504857313573
+  },
+  {
+   "state": "IRREGULAR_N16_a1.0_s1",
+   "n": 16,
+   "aspect_requested": 1.0,
+   "seed": 1,
+   "bond_order_psi6": 0.9541932487020154
+  },
+  {
+   "state": "IRREGULAR_N16_a1.0_s2",
+   "n": 16,
+   "aspect_requested": 1.0,
+   "seed": 2,
+   "bond_order_psi6": 0.9201646851520231
+  },
+  {
+   "state": "IRREGULAR_N16_a1.2_s0",
+   "n": 16,
+   "aspect_requested": 1.2,
+   "seed": 0,
+   "bond_order_psi6": 0.8554504857313573
+  },
+  {
+   "state": "IRREGULAR_N16_a1.2_s1",
+   "n": 16,
+   "aspect_requested": 1.2,
+   "seed": 1,
+   "bond_order_psi6": 0.9006194646981827
+  },
+  {
+   "state": "IRREGULAR_N16_a1.2_s2",
+   "n": 16,
+   "aspect_requested": 1.2,
+   "seed": 2,
+   "bond_order_psi6": 0.9473490064270518
+  },
+  {
+   "state": "IRREGULAR_N16_a1.4_s0",
+   "n": 16,
+   "aspect_requested": 1.4,
+   "seed": 0,
+   "bond_order_psi6": 0.8554504857313573
+  },
+  {
+   "state": "IRREGULAR_N16_a1.4_s1",
+   "n": 16,
+   "aspect_requested": 1.4,
+   "seed": 1,
+   "bond_order_psi6": 0.8400121163572455
+  },
+  {
+   "state": "IRREGULAR_N16_a1.4_s2",
+   "n": 16,
+   "aspect_requested": 1.4,
+   "seed": 2,
+   "bond_order_psi6": 0.9164442378107566
+  },
+  {
+   "state": "IRREGULAR_N32_a1.0_s0",
+   "n": 32,
+   "aspect_requested": 1.0,
+   "seed": 0,
+   "bond_order_psi6": 0.7832521389936636
+  },
+  {
+   "state": "IRREGULAR_N32_a1.0_s1",
+   "n": 32,
+   "aspect_requested": 1.0,
+   "seed": 1,
+   "bond_order_psi6": 0.884047799907851
+  },
+  {
+   "state": "IRREGULAR_N32_a1.0_s2",
+   "n": 32,
+   "aspect_requested": 1.0,
+   "seed": 2,
+   "bond_order_psi6": 0.756247757421761
+  },
+  {
+   "state": "IRREGULAR_N32_a1.2_s0",
+   "n": 32,
+   "aspect_requested": 1.2,
+   "seed": 0,
+   "bond_order_psi6": 0.8370597267324157
+  },
+  {
+   "state": "IRREGULAR_N32_a1.2_s1",
+   "n": 32,
+   "aspect_requested": 1.2,
+   "seed": 1,
+   "bond_order_psi6": 0.8903906573575768
+  },
+  {
+   "state": "IRREGULAR_N32_a1.2_s2",
+   "n": 32,
+   "aspect_requested": 1.2,
+   "seed": 2,
+   "bond_order_psi6": 0.7889194589780769
+  },
+  {
+   "state": "IRREGULAR_N32_a1.4_s0",
+   "n": 32,
+   "aspect_requested": 1.4,
+   "seed": 0,
+   "bond_order_psi6": 0.8510329075439812
+  },
+  {
+   "state": "IRREGULAR_N32_a1.4_s1",
+   "n": 32,
+   "aspect_requested": 1.4,
+   "seed": 1,
+   "bond_order_psi6": 0.870097233632391
+  },
+  {
+   "state": "IRREGULAR_N32_a1.4_s2",
+   "n": 32,
+   "aspect_requested": 1.4,
+   "seed": 2,
+   "bond_order_psi6": 0.7899457521651224
+  },
+  {
+   "state": "IRREGULAR_N64_a1.0_s0",
+   "n": 64,
+   "aspect_requested": 1.0,
+   "seed": 0,
+   "bond_order_psi6": 0.7955300346251264
+  },
+  {
+   "state": "IRREGULAR_N64_a1.0_s1",
+   "n": 64,
+   "aspect_requested": 1.0,
+   "seed": 1,
+   "bond_order_psi6": 0.7760829374227048
+  },
+  {
+   "state": "IRREGULAR_N64_a1.0_s2",
+   "n": 64,
+   "aspect_requested": 1.0,
+   "seed": 2,
+   "bond_order_psi6": 0.743329519328966
+  },
+  {
+   "state": "IRREGULAR_N64_a1.2_s0",
+   "n": 64,
+   "aspect_requested": 1.2,
+   "seed": 0,
+   "bond_order_psi6": 0.7734857980550741
+  },
+  {
+   "state": "IRREGULAR_N64_a1.2_s1",
+   "n": 64,
+   "aspect_requested": 1.2,
+   "seed": 1,
+   "bond_order_psi6": 0.7858020246591815
+  },
+  {
+   "state": "IRREGULAR_N64_a1.2_s2",
+   "n": 64,
+   "aspect_requested": 1.2,
+   "seed": 2,
+   "bond_order_psi6": 0.7362713430269067
+  },
+  {
+   "state": "IRREGULAR_N64_a1.4_s0",
+   "n": 64,
+   "aspect_requested": 1.4,
+   "seed": 0,
+   "bond_order_psi6": 0.7561081699335734
+  },
+  {
+   "state": "IRREGULAR_N64_a1.4_s1",
+   "n": 64,
+   "aspect_requested": 1.4,
+   "seed": 1,
+   "bond_order_psi6": 0.8414027010979283
+  },
+  {
+   "state": "IRREGULAR_N64_a1.4_s2",
+   "n": 64,
+   "aspect_requested": 1.4,
+   "seed": 2,
+   "bond_order_psi6": 0.7128674612648138
+  },
+  {
+   "state": "IRREGULAR_N128_a1.0_s0",
+   "n": 128,
+   "aspect_requested": 1.0,
+   "seed": 0,
+   "bond_order_psi6": 0.7719605510191018
+  },
+  {
+   "state": "IRREGULAR_N128_a1.0_s1",
+   "n": 128,
+   "aspect_requested": 1.0,
+   "seed": 1,
+   "bond_order_psi6": 0.7942470380652048
+  },
+  {
+   "state": "IRREGULAR_N128_a1.0_s2",
+   "n": 128,
+   "aspect_requested": 1.0,
+   "seed": 2,
+   "bond_order_psi6": 0.7107532507204003
+  },
+  {
+   "state": "IRREGULAR_N128_a1.2_s0",
+   "n": 128,
+   "aspect_requested": 1.2,
+   "seed": 0,
+   "bond_order_psi6": 0.7737611794669313
+  },
+  {
+   "state": "IRREGULAR_N128_a1.2_s1",
+   "n": 128,
+   "aspect_requested": 1.2,
+   "seed": 1,
+   "bond_order_psi6": 0.796365834818481
+  },
+  {
+   "state": "IRREGULAR_N128_a1.2_s2",
+   "n": 128,
+   "aspect_requested": 1.2,
+   "seed": 2,
+   "bond_order_psi6": 0.733854661087117
+  },
+  {
+   "state": "IRREGULAR_N128_a1.4_s0",
+   "n": 128,
+   "aspect_requested": 1.4,
+   "seed": 0,
+   "bond_order_psi6": 0.7587832423300813
+  },
+  {
+   "state": "IRREGULAR_N128_a1.4_s1",
+   "n": 128,
+   "aspect_requested": 1.4,
+   "seed": 1,
+   "bond_order_psi6": 0.7776280699710664
+  },
+  {
+   "state": "IRREGULAR_N128_a1.4_s2",
+   "n": 128,
+   "aspect_requested": 1.4,
+   "seed": 2,
+   "bond_order_psi6": 0.7324554438168974
+  }
+ ],
+ "rejected_examples": [
+  {
+   "file": "inputs/pretrain_formed_states.h5",
+   "state": "FORMED_N32_a1.0_s0",
+   "n": 32,
+   "extent_um": 27.7,
+   "bond_order_psi6": 1.0
+  },
+  {
+   "file": "inputs/pretrain_formed_states.h5",
+   "state": "FORMED_N128_a1.4_s0",
+   "n": 128,
+   "extent_um": 55.7,
+   "bond_order_psi6": 1.0
+  },
+  {
+   "file": "inputs/initial_states.h5",
+   "state": "AG32_local",
+   "n": 32,
+   "extent_um": 19.9,
+   "bond_order_psi6": NaN
+  },
+  {
+   "file": "inputs/initial_states.h5",
+   "state": "AG32_random_0",
+   "n": 32,
+   "extent_um": 986.3,
+   "bond_order_psi6": NaN
+  },
+  {
+   "file": "inputs/initial_states.h5",
+   "state": "N64_wide_r0",
+   "n": 64,
+   "extent_um": 956.6,
+   "bond_order_psi6": NaN
+  }
+ ]
+}

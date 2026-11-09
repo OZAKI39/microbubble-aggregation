@@ -1,0 +1,35 @@
+{
+ "frequency_Hz": 9375000.0,
+ "region_um": {
+  "x": [
+   -45,
+   45
+  ],
+  "y": [
+   -45,
+   45
+  ],
+  "z": [
+   -80,
+   80
+  ]
+ },
+ "patterns": {
+  "lines_x": {
+   "z_over_horizontal_gradient": 0.06214609652673975,
+   "p2_change_z0_to_80um_over_max": 0.10301037166833739
+  },
+  "cross": {
+   "z_over_horizontal_gradient": 0.12722065937414215,
+   "p2_change_z0_to_80um_over_max": 0.5213447277774913
+  },
+  "wavy": {
+   "z_over_horizontal_gradient": 0.17138625144726452,
+   "p2_change_z0_to_80um_over_max": 0.3322634879928827
+  },
+  "dots": {
+   "z_over_horizontal_gradient": 0.20422362147496834,
+   "p2_change_z0_to_80um_over_max": 0.3596174365063144
+  }
+ }
+}

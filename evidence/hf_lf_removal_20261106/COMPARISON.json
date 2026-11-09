@@ -1,0 +1,232 @@
+{
+ "font": "Arial",
+ "code_lines": [
+  {
+   "file": "tests/test_admission.py",
+   "before": 34,
+   "after": 0,
+   "removed": 34
+  },
+  {
+   "file": "microbubble/parameters.py",
+   "before": 43,
+   "after": 44,
+   "removed": -1
+  },
+  {
+   "file": "tests/test_capture.py",
+   "before": 65,
+   "after": 0,
+   "removed": 65
+  },
+  {
+   "file": "workflows/visualization.py",
+   "before": 65,
+   "after": 0,
+   "removed": 65
+  },
+  {
+   "file": "microbubble/hydrodynamics.py",
+   "before": 72,
+   "after": 44,
+   "removed": 28
+  },
+  {
+   "file": "microbubble/dynamics.py",
+   "before": 107,
+   "after": 0,
+   "removed": 107
+  },
+  {
+   "file": "main.py",
+   "before": 108,
+   "after": 38,
+   "removed": 70
+  },
+  {
+   "file": "workflows/diagnostics.py",
+   "before": 118,
+   "after": 0,
+   "removed": 118
+  },
+  {
+   "file": "workflows/analysis.py",
+   "before": 141,
+   "after": 0,
+   "removed": 141
+  },
+  {
+   "file": "microbubble/_warp_walls.py",
+   "before": 180,
+   "after": 0,
+   "removed": 180
+  },
+  {
+   "file": "microbubble/_warp_forces.py",
+   "before": 214,
+   "after": 0,
+   "removed": 214
+  },
+  {
+   "file": "tests/test_apecss_response.py",
+   "before": 216,
+   "after": 193,
+   "removed": 23
+  },
+  {
+   "file": "microbubble/gpu.py",
+   "before": 232,
+   "after": 106,
+   "removed": 126
+  },
+  {
+   "file": "microbubble/control.py",
+   "before": 240,
+   "after": 66,
+   "removed": 174
+  },
+  {
+   "file": "microbubble/high_fidelity.py",
+   "before": 243,
+   "after": 0,
+   "removed": 243
+  },
+  {
+   "file": "microbubble/acoustics.py",
+   "before": 249,
+   "after": 101,
+   "removed": 148
+  },
+  {
+   "file": "tests/test_model.py",
+   "before": 284,
+   "after": 0,
+   "removed": 284
+  },
+  {
+   "file": "microbubble/forces.py",
+   "before": 384,
+   "after": 373,
+   "removed": 11
+  },
+  {
+   "file": "microbubble/analysis.py",
+   "before": 411,
+   "after": 297,
+   "removed": 114
+  },
+  {
+   "file": "workflows/f10ag.py",
+   "before": 412,
+   "after": 308,
+   "removed": 104
+  },
+  {
+   "file": "workflows/validation.py",
+   "before": 504,
+   "after": 25,
+   "removed": 479
+  },
+  {
+   "file": "microbubble/integration.py",
+   "before": 517,
+   "after": 312,
+   "removed": 205
+  },
+  {
+   "file": "microbubble/bubble_response.py",
+   "before": 733,
+   "after": 361,
+   "removed": 372
+  },
+  {
+   "file": "microbubble/contact.py",
+   "before": 771,
+   "after": 602,
+   "removed": 169
+  },
+  {
+   "file": "tests/test_pretrain.py",
+   "before": 795,
+   "after": 815,
+   "removed": -20
+  }
+ ],
+ "runs": {
+  "formed32_default": {
+   "status": [
+    "PASS",
+    "PASS"
+   ],
+   "accepted_steps": [
+    1188,
+    1188
+   ],
+   "step_sizes_identical": true,
+   "datasets_identical": {
+    "action_amplitude_Pa_equivalent": true,
+    "action_frequency_Hz": true,
+    "action_phase_rad": true,
+    "action_segment": true,
+    "particle_id": true,
+    "positions_m": true,
+    "time_s": true
+   },
+   "max_position_difference_m": 0.0,
+   "frequency_switches": [
+    0,
+    0
+   ]
+  },
+  "irregular64_switching": {
+   "status": [
+    "PASS",
+    "PASS"
+   ],
+   "accepted_steps": [
+    1185,
+    1185
+   ],
+   "step_sizes_identical": true,
+   "datasets_identical": {
+    "action_amplitude_Pa_equivalent": true,
+    "action_frequency_Hz": true,
+    "action_phase_rad": true,
+    "action_segment": true,
+    "particle_id": true,
+    "positions_m": true,
+    "time_s": true
+   },
+   "max_position_difference_m": 0.0,
+   "frequency_switches": [
+    2,
+    2
+   ]
+  },
+  "formed32_cpu_python": {
+   "status": [
+    "PASS",
+    "PASS"
+   ],
+   "accepted_steps": [
+    358,
+    358
+   ],
+   "step_sizes_identical": true,
+   "datasets_identical": {
+    "action_amplitude_Pa_equivalent": true,
+    "action_frequency_Hz": true,
+    "action_phase_rad": true,
+    "action_segment": true,
+    "particle_id": true,
+    "positions_m": true,
+    "time_s": true
+   },
+   "max_position_difference_m": 0.0,
+   "frequency_switches": [
+    0,
+    0
+   ]
+  }
+ }
+}

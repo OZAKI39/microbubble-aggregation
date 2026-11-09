@@ -1,0 +1,154 @@
+[
+ {
+  "name": "BCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s",
+  "form": "spin",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 416.1346375660505,
+  "change_s": 25.6,
+  "step_max_displacement_max_m": 1.585932470423542e-06,
+  "pieces_max": 1,
+  "share_min": 0.2,
+  "share_mean_during_change": 0.78606640625,
+  "share_end": 1.0,
+  "direction_from_s": 0.65,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 15.242772110770751,
+   "width": 3.675934258481154e-09,
+   "height": 15.731130824467323
+  },
+  "lag_deg_max_with_direction": 5.008654821154465,
+  "lag_deg_mean_during_change_with_direction": 1.2903300100283146,
+  "first_split_s": null,
+  "pieces_end": 1
+ },
+ {
+  "name": "BCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s",
+  "form": "pivot",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 327.2342257159762,
+  "change_s": 25.6,
+  "step_max_displacement_max_m": 1.58006189829379e-06,
+  "pieces_max": 1,
+  "share_min": 0.068,
+  "share_mean_during_change": 0.4553125,
+  "share_end": 0.224,
+  "direction_from_s": 0.675,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 21.38399146637965,
+   "width": 7.445706055297865,
+   "height": 11.18442175967374
+  },
+  "lag_deg_max_with_direction": 46.16743847737348,
+  "lag_deg_mean_during_change_with_direction": 11.103574521414124,
+  "first_split_s": null,
+  "pieces_end": 1
+ },
+ {
+  "name": "BCPX_linecross_N250_9.375MHz_12.8s_each_way",
+  "form": "line_cross",
+  "period_s": 0.0,
+  "status": "PASS",
+  "completed_s": 37.6,
+  "wall_s": 383.3786143781617,
+  "change_s": 31.6,
+  "step_max_displacement_max_m": 1.5924838173492694e-06,
+  "pieces_max": 1,
+  "share_min": 0.204,
+  "share_mean_during_change": 0.6265126582278481,
+  "share_end": 1.0,
+  "direction_from_s": 0.7000000000000001,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 15.166589463945494,
+   "width": 0.22209132241896187,
+   "height": 16.122700574107753
+  },
+  "share_end_of_crossing_hold": 0.74,
+  "at_crossing_um": {
+   "length": 7.036821498098555,
+   "width": 5.545662376049753,
+   "height": 11.67088584637993
+  },
+  "crossing_hold_end_s": 18.8
+ },
+ {
+  "name": "BCPX_flap_N250_9.375MHz_T2s_total32s",
+  "form": "flap",
+  "period_s": 2.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 366.1877411089372,
+  "change_s": 8.0,
+  "step_max_displacement_max_m": 9.052150566342874e-07,
+  "pieces_max": 1,
+  "share_min": 0.204,
+  "share_mean_during_change": 0.44318749999999996,
+  "share_end": 1.0,
+  "direction_from_s": 1.2,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 15.088736435436124,
+   "width": 2.065500776557363e-05,
+   "height": 16.431559679338346
+  },
+  "bend_fit_from_s": 1.2,
+  "bend_fit_frames": 273,
+  "bend_amplitude_ratio": 0.8157920621316671,
+  "bend_line_amplitude_per_mm": 10.563365775939682,
+  "bend_phase_lag_deg": 32.74208974951904,
+  "bend_lag_s": 0.18190049860843913
+ },
+ {
+  "name": "BCPX_flap_N250_9.375MHz_T8s_total32s",
+  "form": "flap",
+  "period_s": 8.0,
+  "status": "PASS",
+  "completed_s": 32.0,
+  "wall_s": 365.45994224003516,
+  "change_s": 16.0,
+  "step_max_displacement_max_m": 9.583260916555723e-07,
+  "pieces_max": 1,
+  "share_min": 0.204,
+  "share_mean_during_change": 0.58504375,
+  "share_end": 1.0,
+  "direction_from_s": 1.25,
+  "start_um": {
+   "length": 6.677472610972758,
+   "width": 6.1422123927986965,
+   "height": 6.60005182358516
+  },
+  "end_um": {
+   "length": 15.740526443148093,
+   "width": 2.000350667566941e-05,
+   "height": 15.582658689617107
+  },
+  "bend_fit_from_s": 1.25,
+  "bend_fit_frames": 591,
+  "bend_amplitude_ratio": 1.2037393521524604,
+  "bend_line_amplitude_per_mm": 10.420401841561622,
+  "bend_phase_lag_deg": 10.322018052977626,
+  "bend_lag_s": 0.22937817895505835
+ }
+]

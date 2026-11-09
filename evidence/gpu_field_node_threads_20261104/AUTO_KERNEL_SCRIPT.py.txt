@@ -1,0 +1,125 @@
+"""GPUWaterDiscs.evaluate with the automatic kernel choice (NODE_THREAD_MAX_POINTS).
+
+usage (repository root, PYTHONPATH=.:visualization:<this folder>):
+  python auto_kernel_check.py measure OUT_DIR    call times: CPU, loop kernel, node kernel, automatic
+  python auto_kernel_check.py figure OUT_DIR     figure from AUTO_KERNEL.json and AUTO_RUNS.json
+Evidence script only; not imported by project code.
+"""
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+import warp as wp
+
+from microbubble import _warp_discs, gpu
+from microbubble.acoustics import WaterDiscs
+from node_threads_test import median_ms
+
+ROOT = Path.cwd()
+POINTS = (16, 32, 64, 128, 256, 384, 512, 640, 768, 1024, 4096, 16384)
+
+
+def measure(out_dir):
+    from workflows.f10ag import context
+
+    c = context(ROOT, device="cpu")
+    rng = np.random.default_rng(6)
+    rows = []
+    for frequency_Hz, order in ((2.5e6, 96), (10e6, 192)):
+        discs = WaterDiscs(c.discs.elements, frequency_Hz)
+        g = gpu.GPUWaterDiscs(discs, order)
+        for n in POINTS:
+            x = rng.uniform([-3e-4, -1e-4, -1e-4], [3e-4, 1e-4, 1e-4], (n, 3))
+            xs = wp.array(x, dtype=wp.vec3d, device=g.device)
+            shape = (4, n)
+
+            def forced(kernel, dim, block_dim):
+                # whole call as evaluate(), with the kernel fixed
+                bufs = [wp.zeros(shape, dtype=t, device=g.device) for t in (wp.vec2d, wp.vec3d, wp.vec3d)]
+                wp.launch(kernel, dim=dim, inputs=[wp.array(x, dtype=wp.vec3d, device=g.device), g.centers,
+                          g.normal_array, g.radii, g.node_cos, g.node_weights, float(g.discs.k), *bufs],
+                          block_dim=block_dim, device=g.device)
+                return [b.numpy() for b in bufs]
+
+            repeats = 200 if n <= 1024 else 30
+            row = dict(
+                order=order,
+                N=n,
+                cpu_ms=median_ms(lambda: discs.evaluate(x, order), repeats),
+                loop_ms=median_ms(lambda: forced(_warp_discs.fnm_discs, shape, None), repeats),
+                node_ms=median_ms(lambda: forced(_warp_discs.fnm_discs_node_threads, (*shape, order), order), repeats),
+                auto_ms=median_ms(lambda: g.evaluate(x, order), repeats),
+                auto_kernel="node" if n <= gpu.NODE_THREAD_MAX_POINTS else "loop",
+            )
+            rows.append(row)
+            del xs
+            print({k: (round(v, 3) if isinstance(v, float) else v) for k, v in row.items()})
+    out = dict(device=f"{g.device.alias} ({g.device.name})", warp=wp.config.version,
+               node_thread_max_points=gpu.NODE_THREAD_MAX_POINTS, rows=rows,
+               note="median wall time of one whole call (copies in, kernel, copies out); CPU = "
+                    "WaterDiscs.evaluate; warm-up 30 calls; machine otherwise idle")
+    (Path(out_dir) / "AUTO_KERNEL.json").write_text(json.dumps(out, indent=1))
+
+
+def figure(out_dir):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from pretrain_stability_figures import INK, setup_style
+
+    out_dir = Path(out_dir)
+    d = json.loads((out_dir / "AUTO_KERNEL.json").read_text())
+    runs = json.loads((out_dir / "AUTO_RUNS.json").read_text())["runs"]
+    blue, orange, green = "#2a78d6", "#eb6834", "#1baf7a"
+    footer = (f"Exploratory · pretraining tier · FNM disc field · {d['device']} · Warp {d['warp']} · "
+              f"node-thread kernel up to {d['node_thread_max_points']} points per call")
+    with tempfile.TemporaryDirectory() as fonts:
+        setup_style(Path(fonts))
+        fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.6))
+        for ax, order, title in ((axes[0], 96, "a  2.5 MHz (96 nodes)"), (axes[1], 192, "b  10 MHz (192 nodes)")):
+            rows = [r for r in d["rows"] if r["order"] == order]
+            n = [r["N"] for r in rows]
+            ax.plot(n, [r["cpu_ms"] for r in rows], "o-", color=INK["muted"], linewidth=1.5, markersize=5, label="CPU field")
+            ax.plot(n, [r["loop_ms"] for r in rows], "o-", color=blue, linewidth=1.5, markersize=5, label="GPU loop kernel")
+            ax.plot(n, [r["node_ms"] for r in rows], "o-", color=orange, linewidth=1.5, markersize=5, label="GPU node-thread kernel")
+            ax.plot(n, [r["auto_ms"] for r in rows], "-", color=green, linewidth=4, alpha=0.45, label="GPUWaterDiscs.evaluate (automatic)")
+            ax.axvline(d["node_thread_max_points"], color=INK["muted"], linestyle="--", linewidth=1)
+            ax.text(d["node_thread_max_points"] * 1.08, 0.04, f"switch at {d['node_thread_max_points']}",
+                    color=INK["secondary"], fontsize=8.5, transform=ax.get_xaxis_transform())
+            ax.set_xscale("log")
+            ax.set_yscale("log")
+            ax.set_xlabel("Points per call")
+            ax.set_ylabel("Wall time per call (ms)")
+            ax.set_title(title)
+        axes[0].legend(frameon=False, loc="upper left", fontsize=8.5)
+        ax = axes[2]
+        labels = {"protocol_formed32": "Protocol, 32 bubbles\n4.5 s", "protocol_formed128": "Protocol, 128 bubbles\n4.5 s",
+                  "random_offset_B_formed32": "Random actions, 32\nbubbles, 2 s"}
+        bars = (("auto_direct_wall_s", "CPU field", INK["muted"]), ("before_direct_gpu_wall_s", "GPU, loop kernel only", blue),
+                ("auto_direct_gpu_wall_s", "GPU, automatic", green))
+        y = np.arange(len(labels))
+        for k, (key, label, color) in enumerate(bars):
+            v = [runs[name][key] for name in labels]
+            ax.barh(y + (k - 1) * 0.26, v, height=0.24, color=color, label=label)
+            for yy, vv in zip(y, v):
+                ax.text(vv, yy + (k - 1) * 0.26, f" {vv:.0f} s", va="center", fontsize=8.5, color=INK["secondary"])
+        ax.set_yticks(y, list(labels.values()))
+        ax.invert_yaxis()
+        ax.set_xlim(0, max(runs[n]["before_direct_gpu_wall_s"] for n in labels) * 1.3)
+        ax.set_xlabel("Wall time of the whole run (s)")
+        ax.set_title("c  Whole runs (CPU and GPU twin side by side)")
+        ax.legend(frameon=False, loc="lower right", fontsize=8.5)
+        fig.suptitle("Automatic kernel choice: the GPU field is no longer slower than the CPU field",
+                     x=0.01, ha="left", fontsize=12.5, fontweight="bold")
+        fig.text(0.5, 0.008, footer, ha="center", va="bottom", fontsize=8, color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.03, 1, 0.95))
+        fig.savefig(out_dir / "auto_kernel.png", dpi=160)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    {"measure": measure, "figure": figure}[sys.argv[1]](sys.argv[2])

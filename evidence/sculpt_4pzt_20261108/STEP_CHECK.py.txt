@@ -1,0 +1,48 @@
+"""Step check of the 20 s runs and the field-off check (2026-11-08).
+
+usage (repository root):  python step_check.py DATA_DIR ANALYSIS_NPZ OUT_JSON
+(1) L_N800_9.375MHz_lines_x_adh0 (5 ms steps) against STEP_N800_9.375MHz_lines_x_adh0_dt2.5ms
+(2.5 ms steps) over the first 5 s, at 1, 2, 3, 4 and 5 s: the spread of the bubble centres along x,
+y, z, the share within R of the zero set, the pieces, the median bubble displacement from the
+start and the largest difference of a bubble's position between the two runs. (2)
+Q2L_N800_9.375MHz_linesx_then_off_adh0: the largest bubble displacement between 10 s (field off)
+and 20 s.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+data, series, out = Path(sys.argv[1]), np.load(sys.argv[2]), Path(sys.argv[3])
+coarse, fine = "L_N800_9.375MHz_lines_x_adh0", "STEP_N800_9.375MHz_lines_x_adh0_dt2.5ms"
+rows = {}
+c = {name: np.load(data / name / "compact.npz") for name in (coarse, fine)}
+for when in (1.0, 2.0, 3.0, 4.0, 5.0):
+    row = {}
+    for name in (coarse, fine):
+        t = series[f"{name}__t_s"]
+        i = int(np.argmin(np.abs(t - when)))
+        x = c[name]["positions_m"][i]
+        row[name] = dict(t_s=float(t[i]), spread_um=[float(series[f"{name}__{a}"][i] * 1e6) for a in ("sx", "sy", "sz")],
+                         within_R_of_zero_set=float(series[f"{name}__zero_within_R"][i]),
+                         pieces=int(series[f"{name}__pieces"][i]),
+                         median_displacement_um=float(np.median(np.linalg.norm(x - c[name]["positions_m"][0], axis=1)) * 1e6))
+    i = int(np.argmin(np.abs(c[coarse]["times_s"] - when)))
+    j = int(np.argmin(np.abs(c[fine]["times_s"] - when)))
+    row["largest_position_difference_um"] = float(np.linalg.norm(c[coarse]["positions_m"][i] - c[fine]["positions_m"][j], axis=1).max() * 1e6)
+    row["median_position_difference_um"] = float(np.median(np.linalg.norm(c[coarse]["positions_m"][i] - c[fine]["positions_m"][j], axis=1)) * 1e6)
+    rows[f"t{when:g}s"] = row
+    a, b = row[coarse], row[fine]
+    print(f"t {when:g} s  5 ms: spread {a['spread_um'][0]:.2f}/{a['spread_um'][1]:.2f}/{a['spread_um'][2]:.2f} um within R {a['within_R_of_zero_set']:.3f} "
+          f"pieces {a['pieces']}  | 2.5 ms: {b['spread_um'][0]:.2f}/{b['spread_um'][1]:.2f}/{b['spread_um'][2]:.2f} um within R "
+          f"{b['within_R_of_zero_set']:.3f} pieces {b['pieces']}  | position difference median {row['median_position_difference_um']:.2f} "
+          f"max {row['largest_position_difference_um']:.2f} um", flush=True)
+off = np.load(data / "Q2L_N800_9.375MHz_linesx_then_off_adh0" / "compact.npz")
+t = off["times_s"]
+i10, i20 = int(np.argmin(np.abs(t - 10.0))), len(t) - 1
+moved = float(np.linalg.norm(off["positions_m"][i20] - off["positions_m"][i10], axis=1).max())
+rows["field_off_largest_displacement_10_to_20_s_m"] = moved
+print(f"field off, 10 s -> {t[i20]:g} s: largest bubble displacement {moved:.3e} m", flush=True)
+out.write_text(json.dumps(rows, indent=1) + "\n")

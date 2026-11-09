@@ -1,0 +1,46 @@
+"""Re-run the first 0.1 s of seed 16 (76 bubbles) saving every 2 ms, NNLS fallback (test patch).
+
+usage (repository root):  python probe_ejection.py RESULTS_DIR dt_s [dt_s ...]
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from scipy import linalg, optimize, sparse
+
+import microbubble.contact as contact
+from workflows.f10ag import run
+
+
+def nnls_qp(A, b, B, gap_over_R, settings):
+    m = len(B)
+    M = np.zeros((m, 3 * B.n))
+    for a in range(3):
+        M[np.arange(m), 3 * B.i + a] = -B.normals[:, a]
+        M[np.arange(m), 3 * B.j + a] = B.normals[:, a]
+    L = linalg.cholesky(sparse.csr_matrix(A).toarray(), lower=True)
+    z0 = linalg.solve_triangular(L, b, lower=True)
+    G = linalg.solve_triangular(L, M.T, lower=True).T
+    h = -gap_over_R - G @ z0
+    E = np.vstack([G.T, h[None, :]])
+    f = np.zeros(len(E))
+    f[-1] = 1.0
+    u, _ = optimize.nnls(E, f, maxiter=50 * m)
+    r = E @ u - f
+    s = linalg.solve_triangular(L.T, z0 - r[:-1] / r[-1], lower=False)
+    return s, u / -r[-1], "osqp_polished"
+
+
+contact.osqp_qp = nnls_qp
+results = Path(sys.argv[1])
+(results / "configs").mkdir(parents=True, exist_ok=True)
+for dt in map(float, sys.argv[2:]):
+    name = f"seed16_dt{round(dt * 1e6)}us"
+    cfg = dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.1, save_interval_s=0.002,
+               state_seed=16, action_seed=16, fixed_step_s=dt)
+    path = results / "configs" / f"{name}.json"
+    path.write_text(json.dumps(cfg, indent=1) + "\n")
+    r = run(Path("."), path, results / name)
+    print(name, r["status"], r["accepted_steps"], round(r["wall_s"], 1), flush=True)

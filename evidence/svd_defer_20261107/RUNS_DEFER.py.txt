@@ -1,0 +1,153 @@
+"""Whole runs for the singular value check: second thread starts at once, wait after the contact
+step (2026-11-07).
+
+usage (repository root):
+  python RUNS_DEFER.py OUT_DIR LABEL [--numpy-solve]
+      the four 3D random starts used before (seeds 23, 21, 16, 7: 20, 50, 76, 122 bubbles; 1 ms,
+      0.5 s, default settings) with the code in the working tree; times every step (from one force
+      evaluation to the next), every force evaluation and every wait for the check;
+      --numpy-solve puts np.linalg.solve back in place of forces.lapack_solve (to see what the
+      immediate start adds); writes OUT_DIR/LABEL/RUNS.json
+  python RUNS_DEFER.py OUT_DIR --guard LABEL
+      runs that the check stops: singular_guard 10 (seed 7, at the first step), 0.4440 (seed 7),
+      0.38 (seed 23) and 0.6 (seed 21), which stop partway (GUARDS);
+      writes OUT_DIR/LABEL/GUARD.json
+  python RUNS_DEFER.py OUT_DIR --compare BEFORE AFTER [ABLATION]
+      label groups (prefixes, two runs each) against the first BEFORE run: trajectories bit for
+      bit, summaries; guard runs of BEFORE and AFTER: same stop; writes OUT_DIR/DEFER_RUNS.json
+"""
+
+import hashlib
+import json
+import sys
+import time
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+SEEDS = [23, 21, 16, 7]
+# smallest singular values (SIGMA_SERIES.py): seed 7 starts at 0.44407 and falls to 0.44308 at step 3;
+# seed 23 0.3853 -> 0.3783 at step 8; seed 21 0.952 -> 0.514 at step 400
+GUARDS = [("guard10_seed7", 7, 10.0), ("guard0.4440_seed7", 7, 0.4440), ("guard0.38_seed23", 23, 0.38),
+          ("guard0.6_seed21", 21, 0.6)]
+out = Path(sys.argv[1])
+
+
+def config(folder, seed):
+    path = folder / f"cfg_seed{seed}.json"
+    path.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.5,
+                                    save_interval_s=0.01, state_seed=seed, action_seed=seed)))
+    return path
+
+
+def positions(folder):
+    return h5py.File(folder / "trajectory.h5")["positions_m"][()]
+
+
+if sys.argv[2] == "--compare":
+    before, after = sys.argv[3], sys.argv[4]
+    groups = [before, after] + sys.argv[5:]
+    runs = {g: [json.loads((out / f"{g}_{n}" / "RUNS.json").read_text()) for n in (1, 2)] for g in groups}
+    result = {"runs": {}, "guard": {}}
+    for seed in map(str, SEEDS):
+        x0 = positions(out / f"{before}_1" / f"seed{seed}")
+        row = {"bubbles": runs[before][0][seed]["bubbles"]}
+        for g in groups:
+            row[g] = []
+            for n in (1, 2):
+                r = runs[g][n - 1][seed]
+                row[g].append(dict(
+                    status=r["status"], wall_s=r["wall_s"], step_ms_median=r["step_ms_median"],
+                    force_ms_mean=r["force_ms_mean"], wait_ms_median=r["wait_ms_median"],
+                    same_trajectory_as_first_before=bool(np.array_equal(positions(out / f"{g}_{n}" / f"seed{seed}"), x0)),
+                    same_summary_as_first_before=all(r[k] == runs[before][0][seed][k] for k in
+                                                     ("min_collective_singular_value", "daqp_iterations",
+                                                      "steps_failing_gates", "trajectory_sha256"))))
+        result["runs"][seed] = row
+    a = json.loads((out / f"guard_{before}" / "GUARD.json").read_text())
+    b = json.loads((out / f"guard_{after}" / "GUARD.json").read_text())
+    for name in a:
+        result["guard"][name] = dict(before=a[name], after=b[name],
+                                     same_stop=all(a[name][k] == b[name][k] for k in
+                                                   ("status", "reason", "completed_s", "accepted_steps",
+                                                    "step_records", "saved_frames", "trajectory_sha256",
+                                                    "positions_sha256", "exception_last_line")))
+    (out / "DEFER_RUNS.json").write_text(json.dumps(result, indent=1) + "\n")
+    print(json.dumps(result, indent=1))
+    sys.exit()
+
+import microbubble.forces as forces
+import workflows.f10ag as f10ag
+
+if sys.argv[2] == "--guard":
+    label = sys.argv[3]
+    folder = out / f"guard_{label}"
+    folder.mkdir(parents=True)
+    real_policy = f10ag.load_pretrain_policy
+    result = {}
+    for name, seed, guard in GUARDS:
+        f10ag.load_pretrain_policy = lambda root, g=guard: dict(real_policy(root), singular_guard=g)
+        (folder / name).mkdir(parents=True)
+        f10ag.run(Path("."), config(folder / name, seed), folder / name / "run")
+        s = json.loads((folder / name / "run" / "SUMMARY.json").read_text())
+        records = json.loads((folder / name / "run" / "STEP_RECORDS.json").read_text())
+        x = positions(folder / name / "run")
+        exception = (folder / name / "run" / "exception.txt")
+        result[name] = dict(singular_guard=guard, seed=seed, status=s["status"], reason=s["reason"],
+                            completed_s=s["completed_s"], accepted_steps=s["accepted_steps"],
+                            step_records=len(records["steps"] if isinstance(records, dict) else records),
+                            saved_frames=len(x), trajectory_sha256=s["trajectory_sha256"],
+                            positions_sha256=hashlib.sha256(x.tobytes()).hexdigest(),
+                            exception_last_line=exception.read_text().strip().splitlines()[-1] if exception.is_file() else None,
+                            exception_raised_in=[l.strip() for l in exception.read_text().splitlines() if l.strip().startswith("File")][-2:]
+                            if exception.is_file() else None)
+        print(name, result[name]["status"], result[name]["reason"], result[name]["completed_s"],
+              result[name]["step_records"], flush=True)
+    (folder / "GUARD.json").write_text(json.dumps(result, indent=1) + "\n")
+    sys.exit()
+
+label = sys.argv[2]
+if "--numpy-solve" in sys.argv:
+    forces.lapack_solve = np.linalg.solve
+starts, seconds, waits = [], [], []
+project_call = forces.CPUForces.__call__
+
+
+def timed_call(self, x):
+    t = time.perf_counter()
+    starts.append(t)
+    r = project_call(self, x)
+    seconds.append(time.perf_counter() - t)
+    return r
+
+
+forces.CPUForces.__call__ = timed_call
+if hasattr(forces.CPUForces, "wait_for_singular_value_check"):
+    project_wait = forces.CPUForces.wait_for_singular_value_check
+
+    def timed_wait(self):
+        t = time.perf_counter()
+        project_wait(self)
+        waits.append(time.perf_counter() - t)
+
+    forces.CPUForces.wait_for_singular_value_check = timed_wait
+
+folder = out / label
+folder.mkdir(parents=True)
+runs = {}
+for seed in SEEDS:
+    starts.clear(), seconds.clear(), waits.clear()
+    f10ag.run(Path("."), config(folder, seed), folder / f"seed{seed}")
+    s = json.loads((folder / f"seed{seed}" / "SUMMARY.json").read_text())
+    runs[seed] = dict(bubbles=s["N"], status=s["status"], wall_s=s["wall_s"],
+                      step_ms_median=1e3 * float(np.median(np.diff(starts))),
+                      step_ms_mean=1e3 * float(np.mean(np.diff(starts))),
+                      force_ms_mean=1e3 * float(np.mean(seconds)),
+                      wait_ms_median=1e3 * float(np.median(waits)) if waits else None,
+                      min_collective_singular_value=s["min_collective_singular_value"],
+                      daqp_iterations=s["daqp_iterations"], steps_failing_gates=s["steps_failing_gates"],
+                      trajectory_sha256=s["trajectory_sha256"])
+    print(label, seed, runs[seed]["bubbles"], runs[seed]["status"], f"{s['wall_s']:.2f} s",
+          f"step {runs[seed]['step_ms_median']:.2f} ms", flush=True)
+(folder / "RUNS.json").write_text(json.dumps(runs, indent=1) + "\n")

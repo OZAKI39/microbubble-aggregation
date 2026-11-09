@@ -1,0 +1,308 @@
+[
+ {
+  "coarse": "BCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s",
+  "fine": "STEP_BCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s_dt2.5ms",
+  "share_max_difference": 0.052000000000000046,
+  "summary": {
+   "share_min": [
+    0.2,
+    0.2
+   ],
+   "share_mean_during_change": [
+    0.78606640625,
+    0.7901210937500001
+   ],
+   "share_end": [
+    1.0,
+    1.0
+   ],
+   "end_um": [
+    {
+     "length": 15.242772110770751,
+     "width": 3.675934258481154e-09,
+     "height": 15.731130824467323
+    },
+    {
+     "length": 15.395346779440994,
+     "width": 7.752818362833139e-09,
+     "height": 15.98390766377431
+    }
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    0.65,
+    0.675
+   ],
+   "lag_deg_max_with_direction": [
+    5.008654821154465,
+    5.074274836927827
+   ],
+   "lag_deg_mean_during_change_with_direction": [
+    1.2903300100283146,
+    1.2727636576396018
+   ]
+  },
+  "end_rms_distance_um": 7.339562572515839,
+  "steps": {
+   "BCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s": {
+    "share_above_0_1R": 0.0046875,
+    "max_over_R": 0.890973297990754
+   },
+   "STEP_BCPX_spin_N250_9.375MHz_180deg_in25.6s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.001875,
+    "max_over_R": 0.4453029492239556
+   }
+  }
+ },
+ {
+  "coarse": "BCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s",
+  "fine": "STEP_BCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s_dt2.5ms",
+  "share_max_difference": 0.06800000000000006,
+  "summary": {
+   "share_min": [
+    0.068,
+    0.068
+   ],
+   "share_mean_during_change": [
+    0.4553125,
+    0.4502109375
+   ],
+   "share_end": [
+    0.224,
+    0.236
+   ],
+   "end_um": [
+    {
+     "length": 21.38399146637965,
+     "width": 7.445706055297865,
+     "height": 11.18442175967374
+    },
+    {
+     "length": 20.805826349571014,
+     "width": 8.758463428824188,
+     "height": 10.863503412457613
+    }
+   ],
+   "pieces_max": [
+    1,
+    2
+   ],
+   "direction_from_s": [
+    0.675,
+    0.675
+   ],
+   "lag_deg_max_with_direction": [
+    46.16743847737348,
+    45.366862814420585
+   ],
+   "lag_deg_mean_during_change_with_direction": [
+    11.103574521414124,
+    11.370973851029152
+   ]
+  },
+  "end_rms_distance_um": 10.659277233059107,
+  "steps": {
+   "BCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s": {
+    "share_above_0_1R": 0.00359375,
+    "max_over_R": 0.8876752237605562
+   },
+   "STEP_BCPX_pivot_N250_9.375MHz_60deg_in25.6s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.001796875,
+    "max_over_R": 0.4438606381990775
+   }
+  }
+ },
+ {
+  "coarse": "BCPX_linecross_N250_9.375MHz_12.8s_each_way",
+  "fine": "STEP_BCPX_linecross_N250_9.375MHz_12.8s_each_way_dt2.5ms",
+  "share_max_difference": 0.07999999999999996,
+  "summary": {
+   "share_min": [
+    0.204,
+    0.204
+   ],
+   "share_mean_during_change": [
+    0.6265126582278481,
+    0.6544620253164557
+   ],
+   "share_end": [
+    1.0,
+    1.0
+   ],
+   "share_end_of_crossing_hold": [
+    0.74,
+    0.752
+   ],
+   "at_crossing_um": [
+    {
+     "length": 7.036821498098555,
+     "width": 5.545662376049753,
+     "height": 11.67088584637993
+    },
+    {
+     "length": 7.625668428623724,
+     "width": 5.748730466702279,
+     "height": 11.6627259681002
+    }
+   ],
+   "end_um": [
+    {
+     "length": 15.166589463945494,
+     "width": 0.22209132241896187,
+     "height": 16.122700574107753
+    },
+    {
+     "length": 15.657666548335698,
+     "width": 5.6154621250064004e-05,
+     "height": 16.078756992780384
+    }
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    0.7000000000000001,
+    0.7000000000000001
+   ]
+  },
+  "end_rms_distance_um": 8.269071504495887,
+  "steps": {
+   "BCPX_linecross_N250_9.375MHz_12.8s_each_way": {
+    "share_above_0_1R": 0.004122340425531915,
+    "max_over_R": 0.8946538299714998
+   },
+   "STEP_BCPX_linecross_N250_9.375MHz_12.8s_each_way_dt2.5ms": {
+    "share_above_0_1R": 0.0018617021276595746,
+    "max_over_R": 0.4471609098243296
+   }
+  }
+ },
+ {
+  "coarse": "BCPX_flap_N250_9.375MHz_T2s_total32s",
+  "fine": "STEP_BCPX_flap_N250_9.375MHz_T2s_total32s_dt2.5ms",
+  "share_max_difference": 0.08000000000000002,
+  "summary": {
+   "share_min": [
+    0.204,
+    0.204
+   ],
+   "share_mean_during_change": [
+    0.44318749999999996,
+    0.425125
+   ],
+   "share_end": [
+    1.0,
+    0.988
+   ],
+   "end_um": [
+    {
+     "length": 15.088736435436124,
+     "width": 2.065500776557363e-05,
+     "height": 16.431559679338346
+    },
+    {
+     "length": 15.111357702527505,
+     "width": 0.2915791132488203,
+     "height": 16.072561274670548
+    }
+   ],
+   "bend_amplitude_ratio": [
+    0.8157920621316671,
+    0.7581146931833125
+   ],
+   "bend_phase_lag_deg": [
+    32.74208974951904,
+    35.63207205568324
+   ],
+   "bend_lag_s": [
+    0.18190049860843913,
+    0.19795595586490689
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    1.2,
+    1.1500000000000001
+   ]
+  },
+  "end_rms_distance_um": 6.554925808178444,
+  "steps": {
+   "BCPX_flap_N250_9.375MHz_T2s_total32s": {
+    "share_above_0_1R": 0.00890625,
+    "max_over_R": 0.5085477846260041
+   },
+   "STEP_BCPX_flap_N250_9.375MHz_T2s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.000546875,
+    "max_over_R": 0.3582366455744925
+   }
+  }
+ },
+ {
+  "coarse": "BCPX_flap_N250_9.375MHz_T8s_total32s",
+  "fine": "STEP_BCPX_flap_N250_9.375MHz_T8s_total32s_dt2.5ms",
+  "share_max_difference": 0.05600000000000005,
+  "summary": {
+   "share_min": [
+    0.204,
+    0.204
+   ],
+   "share_mean_during_change": [
+    0.58504375,
+    0.57081875
+   ],
+   "share_end": [
+    1.0,
+    1.0
+   ],
+   "end_um": [
+    {
+     "length": 15.740526443148093,
+     "width": 2.000350667566941e-05,
+     "height": 15.582658689617107
+    },
+    {
+     "length": 15.441941616851839,
+     "width": 2.0444517615008817e-05,
+     "height": 16.103946743372365
+    }
+   ],
+   "bend_amplitude_ratio": [
+    1.2037393521524604,
+    1.2034824441949528
+   ],
+   "bend_phase_lag_deg": [
+    10.322018052977626,
+    11.04334036857989
+   ],
+   "bend_lag_s": [
+    0.22937817895505835,
+    0.2454075637462198
+   ],
+   "pieces_max": [
+    1,
+    1
+   ],
+   "direction_from_s": [
+    1.25,
+    1.2750000000000001
+   ]
+  },
+  "end_rms_distance_um": 6.78747124515449,
+  "steps": {
+   "BCPX_flap_N250_9.375MHz_T8s_total32s": {
+    "share_above_0_1R": 0.006875,
+    "max_over_R": 0.5383854447503216
+   },
+   "STEP_BCPX_flap_N250_9.375MHz_T8s_total32s_dt2.5ms": {
+    "share_above_0_1R": 0.000546875,
+    "max_over_R": 0.3340182345844074
+   }
+  }
+ }
+]

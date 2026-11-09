@@ -1,0 +1,53 @@
+{
+ "seed": 23,
+ "bubbles": 20,
+ "steps": 500,
+ "dt_s": 0.001,
+ "status": "PASS",
+ "daqp_solves": 500,
+ "mean_active_pairs": 53.944,
+ "mean_daqp_iterations": 1.108,
+ "per_step_ms": {
+  "forces": {
+   "sound field (GPU)": 0.26492671482264996,
+   "bubble response (APECSS, 8 threads)": 0.3265242287889123,
+   "collective coupling solve": 0.10249779792502522,
+   "bubble-bubble force F2": 0.12882827082648873,
+   "adhesion": 0.05199698777869344,
+   "rest of the force evaluation": 0.017181281931698322
+  },
+  "contact": {
+   "resistance matrix A (assembly)": 0.011805899441242218,
+   "sparse Cholesky of A": 0.032545872032642365,
+   "free displacement": 0.00184242008253932,
+   "candidate pairs + initial check": 0.0017595132812857628,
+   "linearize constraints": 0.0009469748474657536,
+   "transform: build B' and permute": 0.0019559087231755257,
+   "transform: triangular solve": 0.0141732944175601,
+   "transform: z0 and d": 0.0011152448132634163,
+   "load table: warm-start guess": 0.00028172973543405533,
+   "load table: copy into DAQP": 0.0006696619093418121,
+   "load table: DAQP activates the warm-start constraints": 0.022550599999999973,
+   "DAQP other set-up (bounds, row scaling)": 0.004794448263669038,
+   "DAQP iterations": 0.00375264510512352,
+   "DAQP free memory": 0.0003182496875524521,
+   "transform back + active pairs": 0.0009153978899121284,
+   "quality checks (gates)": 0.005114327184855938,
+   "quality checks (candidate coverage)": 0.0016945772804319859,
+   "call overhead outside C++ (ctypes, arrays)": 0.02981093805283308
+  },
+  "loop": {
+   "rest of the loop (segments, wall check, records)": 0.054984687361866236
+  }
+ },
+ "per_step_total_ms": 1.0829876721836627,
+ "loop_ms_per_step": 1.0832467037253082,
+ "one_time": {
+  "before_the_loop_s": 0.3403167431242764,
+  "after_the_loop_s": 0.028899211203679442,
+  "run_outside_the_integrator_s": 0.06963916681706905
+ },
+ "run_s": 0.980478473007679,
+ "wall_s": 0.8976958729326725,
+ "minor_page_faults": 47562
+}

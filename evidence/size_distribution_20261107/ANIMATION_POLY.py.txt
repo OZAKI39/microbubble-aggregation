@@ -1,0 +1,138 @@
+"""Animations of the size-distribution runs (2026-11-07): one start, four cases side by side.
+
+usage (repository root):  python ANIMATION_POLY.py POLY_DATA_DIR SOFT3D_DATA_DIR EVIDENCE_DIR SEED [SEED ...]
+POLY_DATA_DIR: <name>/compact.npz of POLY_RUNS.py; SOFT3D_DATA_DIR: <name>/compact.npz of
+evidence/soft3d_20261107/SOFT3D_RUNS.py.txt (every bubble 1.78 um). Writes
+EVIDENCE_DIR/anim_sizes_seed<SEED>_N<n>.mp4: positions every 10 ms seen from above (x right, y up),
+each bubble a disc of its own radius coloured by height, the view following the centre of the
+largest piece (surfaces within 0.5 R belong together), 25 frames/s, so 4x slower than real time.
+Panels: all alike with adhesion (soft3d), radii with geometric SD 1.5 and shells following the
+radius, the same with every shell alike, and radii with shells following the radius without
+adhesion. Each panel: contacts per bubble (gap below 0.01 R), contacts broken since the start,
+number of pieces.
+"""
+
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED = "#1f2328", "#5b6470"
+R = 1.78e-6
+CASES = [("soft3d", "x1", "All 1.78 um, adhesion (before)", "#9aa5b1"),
+         ("poly", "tu_x1", "Sizes SD 1.5, shell by size, adhesion", "#2a6fb0"),
+         ("poly", "same_x1", "Sizes SD 1.5, same shell, adhesion", "#8a5cc2"),
+         ("poly", "tu_x0", "Sizes SD 1.5, shell by size, no adhesion", "#d08a1e")]
+FPS = 25
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED,
+                         "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+
+
+def pairs_with_gap_below(p, radii, gap_m):
+    pairs = np.array(sorted(cKDTree(p).query_pairs(2 * radii.max() + gap_m)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(p[pairs[:, 1]] - p[pairs[:, 0]], axis=1)
+    return pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < gap_m]
+
+
+def pieces(p, radii):
+    pairs = pairs_with_gap_below(p, radii, 0.5 * R)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(p), len(p)))
+    n, labels = connected_components(graph, directed=False)
+    return n, labels == np.bincount(labels).argmax()
+
+
+def contacts(p, radii):
+    return {tuple(q) for q in pairs_with_gap_below(p, radii, 0.01 * R)}
+
+
+def main():
+    poly, soft, folder = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+    seeds = [int(s) for s in sys.argv[4:]]
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        for seed in seeds:
+            frames, radii, t = {}, {}, []
+            for source, case, _, _ in CASES:
+                path = (soft / f"seed{seed}_adhesion_{case}" if source == "soft3d" else poly / f"seed{seed}_{case}")
+                c = np.load(path / "compact.npz")
+                frames[case] = c["positions10_m"]
+                radii[case] = c["radii_m"] if "radii_m" in c else np.full(c["positions10_m"].shape[1], R)
+                t = c["t10"] if len(c["t10"]) > len(t) else t  # the longest run; a run that stopped holds its last frame
+            n = frames["x1"].shape[1]
+            first = frames["tu_x1"][0] - frames["tu_x1"][0].mean(0)
+            half = 1.35 * np.abs(first[:, :2]).max() * 1e6 + 6  # um
+            zlim = 1.1 * np.abs(first[:, 2]).max() * 1e6
+            start_contacts = {case: contacts(frames[case][0], radii[case]) for _, case, _, _ in CASES}
+            ever_broken = {case: set() for _, case, _, _ in CASES}
+
+            fig, axes = plt.subplots(1, 4, figsize=(16, 4.8))
+            fig.subplots_adjust(left=0.03, right=0.92, top=0.84, bottom=0.11, wspace=0.12)
+            collections, notes = {}, {}
+            for ax, (_, case, label, colour) in zip(axes, CASES):
+                size = 2 * radii[case] * 1e6
+                col = EllipseCollection(size, size, 0, units="xy", offsets=np.zeros((n, 2)),
+                                        offset_transform=ax.transData, array=np.zeros(n), cmap="viridis",
+                                        clim=(-zlim, zlim), edgecolor="white", linewidth=0.3)
+                ax.add_collection(col)
+                ax.set_xlim(-half, half)
+                ax.set_ylim(-half, half)
+                ax.set_aspect("equal")
+                ax.set_title(label, fontsize=9.5, color=colour)
+                ax.set_xlabel("x (um, following the largest piece)", fontsize=8, color=MUTED)
+                collections[case] = col
+                notes[case] = ax.text(0.02, 0.02, "", transform=ax.transAxes, fontsize=7.5, color=INK, va="bottom")
+            bar = fig.colorbar(collections["tu_x1"], cax=fig.add_axes([0.935, 0.11, 0.01, 0.73]))
+            bar.set_label("Height relative to the centre (um)", fontsize=8)
+            header = fig.text(0.03, 0.94, "", fontsize=10.5, color=INK)
+
+            def draw(i):
+                for _, case, _, _ in CASES:
+                    k = min(i, len(frames[case]) - 1)
+                    p, r = frames[case][k], radii[case]
+                    count, main = pieces(p, r)
+                    centre = p[main].mean(0)
+                    q = (p - centre) * 1e6
+                    order = np.argsort(q[:, 2])
+                    collections[case].set_offsets(q[order, :2])
+                    collections[case].set_array(q[order, 2])
+                    collections[case].set_widths(2 * r[order] * 1e6)
+                    collections[case].set_heights(2 * r[order] * 1e6)
+                    now = contacts(p, r)
+                    ever_broken[case] |= start_contacts[case] - now
+                    stopped = "" if k == i else f"\nrun stopped at {t[k]:.2f} s (wall guard)"
+                    notes[case].set_text(f"contacts per bubble {len(now) / n:.2f}\n"
+                                         f"start contacts broken so far {len(ever_broken[case])}\n"
+                                         f"pieces {count}{stopped}")
+                header.set_text(f"{n}-bubble 3D start seen from above (each disc at its own radius), channel X- 6000 Pa-eq, "
+                                f"2.5 MHz;  t = {t[i]:.2f} s  (4x slower than real time)")
+                return list(collections.values())
+
+            writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+            out = folder / f"anim_sizes_seed{seed}_N{n}.mp4"
+            animation.FuncAnimation(fig, draw, frames=len(t), blit=False).save(out, writer=writer, dpi=100)  # 1600 x 480 px: libx264 with yuv420p needs even sizes
+            plt.close(fig)
+            print(out, out.stat().st_size // 1024, "KiB")
+
+
+if __name__ == "__main__":
+    main()

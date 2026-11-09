@@ -1,0 +1,114 @@
+"""Compiled contact step (pretraining default) against the Python step on recorded steps.
+
+usage (repository root, PYTHONPATH=.:visualization, OPENBLAS_NUM_THREADS=1):
+  python compiled_contact_check.py CORPUS_DIR OUT_DIR
+CORPUS_DIR: the recorded steps of evidence/contact_speed_20261104 (results/_scratch/...). Each
+step is solved by both, in alternating order; writes CHECK.json and fig_compiled_contact.png.
+Evidence script only.
+"""
+
+import json
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+import h5py
+import matplotlib
+import numpy as np
+
+from microbubble.contact import CompiledContactStep, cached_contact_library, sparse_sequential_step
+from microbubble.hydrodynamics import sparse_resistance
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+from pretrain_stability_figures import INK, setup_style  # noqa: E402
+
+RUNS = {"protocol_formed32": "Protocol, 32 bubbles", "protocol_formed128": "Protocol, 128 bubbles",
+        "random_offset_B_formed32": "Random actions, 32 bubbles"}
+
+
+def main(corpus_dir, out_dir):
+    out_dir = Path(out_dir)
+    build = cached_contact_library(Path.cwd() / "build" / "contact")
+    rows = {}
+    for name in RUNS:
+        with h5py.File(Path(corpus_dir) / f"corpus_{name}.h5") as h:
+            d = {k: h[k][:] for k in h}
+            attrs = dict(h.attrs)
+        policy, R, zeta = json.loads(attrs["policy"]), attrs["radius_m"], attrs["zeta"]
+        step = CompiledContactStep(build["library"], policy)
+        seconds = np.zeros((2, len(d["dt"])))
+        diff = np.zeros(len(d["dt"]))
+        same = 0
+        for k in range(len(d["dt"])):
+            out = {}
+            for m in ((0, 1) if k % 2 else (1, 0)):
+                begin = time.perf_counter()
+                if m == 0:
+                    out[0] = sparse_sequential_step(d["x"][k], d["force"][k], R, zeta, d["dt"][k],
+                                                    sparse_resistance(d["x"][k], R)["A"], policy)
+                else:
+                    out[1] = step(d["x"][k], d["force"][k], R, zeta, d["dt"][k])
+                seconds[m, k] = time.perf_counter() - begin
+            diff[k] = np.abs(out[0]["positions_m"] - out[1]["positions_m"]).max()
+            keys = ("converged", "solver_status", "qp_iterations", "active_count", "candidate_count", "gates")
+            same += all(out[0][key] == out[1][key] for key in keys)
+        rows[name] = dict(steps=len(d["dt"]), python_ms=float(seconds[0].mean() * 1e3),
+                          compiled_ms=float(seconds[1].mean() * 1e3),
+                          speedup=float(seconds[0].mean() / seconds[1].mean()),
+                          max_position_difference_m=float(diff.max()),
+                          steps_with_identical_decisions_and_counts=int(same),
+                          fallback_steps=step.fallback_steps)
+        print(name, rows[name], flush=True)
+    (out_dir / "CHECK.json").write_text(json.dumps(dict(
+        build={k: build[k] for k in ("compiler", "compiler_version", "eigen_version", "cache_key")},
+        runs=rows, note="recorded steps of evidence/contact_speed_20261104, both steps on every step in "
+                        "alternating order, one core, times include the resistance matrix"), indent=1))
+
+    with tempfile.TemporaryDirectory() as fonts:
+        setup_style(Path(fonts))
+        fig, axes = plt.subplots(1, 2, figsize=(12.5, 3.8))
+        y = np.arange(len(RUNS))
+        ax = axes[0]
+        for k, (key, label, color) in enumerate((("python_ms", "Python step (\"python\")", INK["muted"]),
+                                                 ("compiled_ms", "Compiled step (default)", "#1baf7a"))):
+            v = [rows[n][key] for n in RUNS]
+            ax.barh(y + (k - 0.5) * 0.36, v, height=0.34, color=color, label=label)
+            for yy, vv, n in zip(y, v, RUNS):
+                text = f" {vv:.2f} ms" + (f"  ({rows[n]['speedup']:.2f}× faster)" if key == "compiled_ms" else "")
+                ax.text(vv, yy + (k - 0.5) * 0.36, text, va="center", fontsize=8.5, color=INK["secondary"])
+        ax.set_yticks(y, list(RUNS.values()))
+        ax.invert_yaxis()
+        ax.set_xlim(0, max(rows[n]["python_ms"] for n in RUNS) * 1.7)
+        ax.set_xlabel("Time per contact step, one core (ms)")
+        ax.legend(frameon=False, fontsize=8.5, loc="lower right")
+        ax.set_title("a  Speed", loc="left", fontsize=11, fontweight="bold")
+        ax = axes[1]
+        v = [max(rows[n]["max_position_difference_m"], 1e-22) for n in RUNS]
+        ax.scatter(v, y, s=60, color="#1baf7a", zorder=3)
+        for yy, n in zip(y, RUNS):
+            ax.text(v[yy] * 3, yy, f"{rows[n]['steps_with_identical_decisions_and_counts']} / {rows[n]['steps']} "
+                    "steps: same decisions", va="center", fontsize=8.5, color=INK["secondary"])
+        for value, label, yy in ((1e-10, "gate tolerance 0.1 nm ", -0.55), (6e-7, "camera pixel ", 2.35)):
+            ax.axvline(value, color=INK["muted"], linestyle="--", linewidth=1)
+            ax.text(value, yy, label, fontsize=8, color=INK["muted"], ha="right")
+        ax.set_xscale("log")
+        ax.set_xlim(3e-23, 3e-6)
+        ax.set_ylim(len(RUNS) - 0.5, -0.8)
+        ax.set_yticks(y, [])
+        ax.set_xlabel("Largest bubble position difference, any step (m)")
+        ax.set_title("b  Same results", loc="left", fontsize=11, fontweight="bold")
+        for a in axes:
+            a.grid(axis="x", color=INK["grid"], linewidth=0.6)
+            a.set_axisbelow(True)
+        fig.text(0.5, 0.01, "Exploratory · pretraining tier · recorded contact steps of three standard runs "
+                 "(field direct_gpu, response apecss) · i7-13700HX", ha="center", va="bottom", fontsize=7.5,
+                 color=INK["muted"])
+        fig.tight_layout(rect=(0, 0.05, 1, 1))
+        fig.savefig(out_dir / "fig_compiled_contact.png", dpi=160)
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1], sys.argv[2])

@@ -1,0 +1,80 @@
+"""Reproduce a 10 MHz APECSS non-convergence of the high-frequency test with the default ODE
+tolerance and log the failing bubbles (2026-11-08, diagnosis only).
+
+usage (repository root): python repro_fail.py OUT P0_Pa SETTING [seed]
+"""
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+
+import microbubble.bubble_response as br
+import microbubble.control as control
+import workflows.f10ag as f10ag
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from microbubble.initial_conditions import random_start
+
+out, p0, setting = Path(sys.argv[1]), float(sys.argv[2]), sys.argv[3]
+seed = int(sys.argv[4]) if len(sys.argv) > 4 else 7
+frequency = 10e6
+project_policy = f10ag.load_pretrain_policy
+
+
+def wide_policy(path):
+    p = project_policy(path)
+    p["frequency_range_Hz"] = [2e6, 2e7]
+    p["max_source_amplitude_Pa_equivalent"] = 1e7
+    return p
+
+
+f10ag.load_pretrain_policy = wide_policy
+drive = {}
+control.random_actions = lambda duration, *rest: [dict(drive, duration=duration)]
+original = br.CarriedApecssResponse._advance
+LOG = []
+
+
+def logged(self, handles, P):
+    n = len(P)
+    H = np.zeros((n, br.CARRIED_TALLIES)); cycles = np.zeros(n, np.int32); status = np.zeros(n, np.int32)
+    est = np.zeros(n); ext = np.zeros((n, 2)); s = self.settings
+    self.lib.carried_advance(handles, n, np.ascontiguousarray(P.real), np.ascontiguousarray(P.imag), s["tolerance"],
+                             s["min_cycles_warm"], s["min_cycles_cold"], s["max_cycles"], s["q_refresh"], s["threads"],
+                             H, cycles, status, est, ext)
+    fund = np.hypot(H[:, 1], H[:, 2])
+    LOG.append([float(np.abs(P).min()), float(np.abs(P).max()), int(cycles.max()), float(np.mean(cycles))])
+    bad = np.flatnonzero((status != 0) & (status != 4))
+    if len(bad):
+        rows = [dict(bubble=int(i), P_abs=float(abs(P[i])), status=int(status[i]), cycles=int(cycles[i]), est=float(est[i]),
+                     fund=float(fund[i]), fund_median=float(np.median(fund)), P_median=float(np.median(np.abs(P))))
+                for i in bad]
+        (out / "FAILING.json").write_text(json.dumps(dict(calls=len(LOG), failing=rows, last_calls=LOG[-20:]), indent=1))
+        raise ValueError("APECSS_CARRIED_NOT_CONVERGED (logged)")
+    return self.rest_volume_m3[:, None] * (H[:, 1::2] - 1j * H[:, 2::2]), cycles
+
+
+br.CarriedApecssResponse._advance = logged
+root = Path(".")
+policy = wide_policy(root)
+s = policy["random_state"]
+context = f10ag.pretrain_context(root, 2.5e6)
+x0, _, start = random_start(seed, context.cavity.lumen, s["radius"], s["wall_margin_m"], s["bubble_count_range"],
+                            s["aspect_range"], 1.0)
+centroid = x0.mean(0)
+discs = WaterDiscs(context.discs.elements, frequency)
+h = discs.evaluate(centroid[None, :], direct_quadrature_order(frequency))[0][:, 0]
+amplitudes, phases = np.zeros(4), np.zeros(4)
+amplitudes[2], amplitudes[3] = p0 / 2 / abs(h[2]), p0 / 2 / abs(h[3])
+phases[2] = np.mod(-np.angle(h[2]), 2 * np.pi)
+phases[3] = np.mod(-np.angle(h[3]) + (0.0 if setting == "x_antinode" else np.pi), 2 * np.pi)
+drive.update(amplitudes=amplitudes.tolist(), phases=phases.tolist(), frequency=frequency)
+out.mkdir(parents=True)
+cfg = out / "cfg.json"
+cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.3, save_interval_s=0.001,
+                               state_seed=seed, action_seed=0, radius_sigma_g=1.0, apecss_threads=4)))
+f10ag.run(root, cfg, out / "run")
+sm = json.loads((out / "run" / "SUMMARY.json").read_text())
+print(sm["status"], sm["reason"], sm["completed_s"], f"{sm['wall_s']:.1f} s")
+if (out / "FAILING.json").is_file():
+    print((out / "FAILING.json").read_text()[:3000])

@@ -1,0 +1,218 @@
+"""Random three-dimensional starts of the pretraining tier (2026-11-06): statistics, examples, runs.
+
+usage (repository root):  python FIGURE_SCRIPT.py RESULTS_DIR OUT_DIR
+RESULTS_DIR holds start3d_seed<k> runs of configs/start3d_seed<k>.json.
+Writes fig1_start_distribution.png, fig2_example_clusters.png, fig3_example_runs.png,
+start3d_runs.mp4 and STARTS.json.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+from matplotlib.patches import Circle, Rectangle
+
+from microbubble.initial_conditions import random_start
+from workflows.f10ag import load_pretrain_policy, pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+BLUE, ORANGE = "#2a6fb0", "#d0812c"
+INK, MUTED, GRID, WALL = "#1f2328", "#5b6470", "#e6e8eb", "#9aa3ad"
+CMAP = plt.get_cmap("RdBu_r")
+D_UM = 2 * 1.78
+
+
+def setup_style(font_dir):
+    family = "DejaVu Sans"
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+            family = "Arial"
+    plt.rcParams.update({"font.family": family, "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+    return family
+
+
+def starts(c, s, count):
+    args = (c.cavity.lumen, c.physics.radius_m, s["wall_margin_m"], s["bubble_count_range"],
+            s["aspect_range"])
+    return [random_start(seed, *args) for seed in range(count)]
+
+
+def fig_distribution(c, s, out, count=1000):
+    lumen, R = c.cavity.lumen, c.physics.radius_m
+    drawn = starts(c, s, count)
+    n = np.array([r["bubble_count"] for _, _, r in drawn])
+    aspect = np.array([r["aspect"] for _, _, r in drawn])
+    centre = np.array([r["centre_local_m"] for _, _, r in drawn]) * 1e3
+    axis_x = np.array([np.array(r["rotation"])[0, 0] for _, _, r in drawn])  # long axis . x
+    gap = np.array([lumen.gaps(x, R).min() for x, _, _ in drawn]) * 1e6
+    fig = plt.figure(figsize=(12.5, 6.6))
+    grid = fig.add_gridspec(2, 5, height_ratios=[1, 1.1])
+    ax = fig.add_subplot(grid[0, :])
+    half = lumen.length_m / 2 * 1e3
+    ax.add_patch(Rectangle((-half, -lumen.radius_m * 1e3), 2 * half, 2 * lumen.radius_m * 1e3,
+                           fill=False, edgecolor=WALL, linewidth=1.2))
+    sc = ax.scatter(centre[:, 0], centre[:, 1], s=4, c=n, cmap="viridis", vmin=16, vmax=128)
+    fig.colorbar(sc, ax=ax, pad=0.01, fraction=0.02).set_label("Bubbles")
+    ax.set_xlim(-half * 1.02, half * 1.02)
+    ax.set_ylim(-1.0, 1.0)
+    ax.set_xlabel("x along the channel (mm)")
+    ax.set_ylabel("y (mm)")
+    ax.set_title(f"Cluster centres of {count} random starts, top view (grey: channel wall and closed "
+                 "ends)", loc="left", fontsize=10, color=INK)
+    ax = fig.add_subplot(grid[1, 0])
+    ax.add_patch(Circle((0, 0), lumen.radius_m * 1e3, fill=False, edgecolor=WALL, linewidth=1.2))
+    ax.scatter(centre[:, 1], centre[:, 2], s=3, color=BLUE)
+    ax.set_aspect("equal")
+    ax.set_xlim(-0.85, 0.85)
+    ax.set_ylim(-0.85, 0.85)
+    ax.set_xlabel("y (mm)")
+    ax.set_ylabel("z (mm)")
+    ax.set_title("Cross-section", loc="left", fontsize=10, color=INK)
+    panels = [
+        (n, np.arange(16, 130, 8) - 0.5, "Bubbles per cluster"),
+        (aspect, np.linspace(1.0, 1.4, 11), "Aspect"),
+        (axis_x, np.linspace(-1, 1, 11), "Long axis · channel axis"),
+        (gap, 25, "Smallest bubble-wall gap (µm)"),
+    ]
+    for k, (values, bins, label) in enumerate(panels):
+        ax = fig.add_subplot(grid[1, k + 1])
+        ax.hist(values, bins=bins, color=BLUE)
+        ax.set_xlabel(label)
+        ax.grid(axis="y", color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        if k == 0:
+            ax.set_ylabel("Starts")
+    fig.tight_layout()
+    fig.savefig(out / "fig1_start_distribution.png", dpi=170)
+    plt.close(fig)
+    return dict(starts=count, bubble_count_min=int(n.min()), bubble_count_max=int(n.max()),
+                bubble_count_mean=float(n.mean()), distinct_bubble_counts=int(len(set(n))),
+                aspect_range=[float(aspect.min()), float(aspect.max())],
+                long_axis_dot_x_mean=float(axis_x.mean()), min_wall_gap_um=float(gap.min()),
+                centre_x_range_mm=[float(centre[:, 0].min()), float(centre[:, 0].max())])
+
+
+def views(axes, x_um, depth_colour=True):
+    """Top (x-y, the camera view), side (x-z) and end (y-z) views around the cluster centre."""
+    p = x_um - x_um.mean(0)
+    span = np.abs(p).max() + D_UM
+    for ax, (i, j, k) in zip(axes, ((0, 1, 2), (0, 2, 1), (1, 2, 0))):
+        order = np.argsort(p[:, k])  # farther bubbles first, nearer ones drawn on top
+        depth = p[order, k] / span
+        colours = CMAP(0.5 + 0.5 * depth) if depth_colour else "#202020"
+        ax.add_collection(EllipseCollection(D_UM, D_UM, 0, units="xy", offsets=p[order][:, [i, j]],
+                                            offset_transform=ax.transData, facecolors=colours,
+                                            edgecolors="white", linewidths=0.3))
+        ax.set_xlim(-span, span)
+        ax.set_ylim(-span, span)
+        ax.set_aspect("equal")
+        ax.tick_params(labelsize=7)
+
+
+def fig_examples(c, s, out, count=6):
+    drawn = starts(c, s, count)
+    fig, axes = plt.subplots(3, count, figsize=(13, 6.8))
+    for col, (x, _, r) in enumerate(drawn):
+        local = c.cavity.lumen.local(x) * 1e6
+        views(axes[:, col], local)
+        cx, cy, cz = np.array(r["centre_local_m"]) * 1e3
+        axes[0, col].set_title(f"seed {col}: {r['bubble_count']} bubbles, aspect {r['aspect']:.2f}\n"
+                               f"centre ({cx:.1f}, {cy:.2f}, {cz:.2f}) mm", loc="left", fontsize=8,
+                               color=INK)
+    for row, label in enumerate(("top view x-y (µm)", "side view x-z (µm)", "end view y-z (µm)")):
+        axes[row, 0].set_ylabel(label)
+    fig.suptitle("Random three-dimensional starts (colour: depth along the viewing direction, red = "
+                 "nearer); the top view is what a camera above the channel sees", x=0.01, ha="left",
+                 fontsize=10.5, color=INK)
+    fig.tight_layout()
+    fig.savefig(out / "fig2_example_clusters.png", dpi=170)
+    plt.close(fig)
+
+
+def load(results, name):
+    with h5py.File(results / name / "trajectory.h5") as h:
+        x, t = h["positions_m"][()] * 1e6, h["time_s"][()]
+    return x, t, json.loads((results / name / "SUMMARY.json").read_text())
+
+
+def fig_runs(results, out):
+    names = sorted((r.name for r in results.glob("start3d_seed*") if r.is_dir()),
+                   key=lambda v: int(v.removeprefix("start3d_seed")))
+    data = {name: load(results, name) for name in names}
+    times = (0.0, 0.1, 0.3)
+    fig, axes = plt.subplots(len(names), 2 * len(times), figsize=(13, 2.6 * len(names) + 0.6),
+                             squeeze=False)
+    rows = []
+    for r, name in enumerate(names):
+        x, t, s = data[name]
+        for k, ts in enumerate(times):
+            i = int(np.argmin(abs(t - ts)))
+            views([axes[r, 2 * k], axes[r, 2 * k + 1]], x[i])  # top and side views only
+            axes[r, 2 * k].set_title(f"t = {t[i]:.2f} s, top view", loc="left", fontsize=8.5, color=INK)
+            axes[r, 2 * k + 1].set_title("side view", loc="left", fontsize=8.5, color=INK)
+        axes[r, 0].set_ylabel(f"{s['task']['state'].replace('IRREGULAR3D_', '')}\n"
+                              f"{s['accepted_steps']} steps, {s['wall_s']:.0f} s", fontsize=8.5)
+        travel = np.linalg.norm(x[-1].mean(0) - x[0].mean(0))
+        rows.append(dict(run=name, state=s["task"]["state"], status=s["status"],
+                         completed_s=s["completed_s"], accepted_steps=s["accepted_steps"],
+                         wall_s=s["wall_s"], travel_um=float(travel)))
+    fig.suptitle("Runs from random three-dimensional starts (random actions, seed 0)", x=0.01,
+                 ha="left", fontsize=10.5, color=INK)
+    fig.tight_layout()
+    fig.savefig(out / "fig3_example_runs.png", dpi=160)
+    plt.close(fig)
+
+    # Movie: camera-like top-view silhouettes (dark discs) and side views, every saved frame.
+    plt.rcParams["animation.ffmpeg_path"] = imageio_ffmpeg.get_ffmpeg_exe()
+    fig, axes = plt.subplots(2, len(names), figsize=(5.2 * len(names), 7.2), squeeze=False)
+    frames = min(len(data[name][1]) for name in names)
+
+    def draw(i):
+        for col, name in enumerate(names):
+            x, t, s = data[name]
+            top, side = axes[0, col], axes[1, col]
+            top.clear()
+            side.clear()
+            views([top, side], x[i], depth_colour=False)
+            top.set_title(f"{s['task']['state'].replace('IRREGULAR3D_', '')}, t = {t[i]:.3f} s\n"
+                          "top view (camera silhouette)", loc="left", fontsize=9, color=INK)
+            side.set_title("side view", loc="left", fontsize=9, color=INK)
+        return []
+
+    movie = animation.FuncAnimation(fig, draw, frames=frames, blit=False)
+    movie.save(out / "start3d_runs.mp4", writer=animation.FFMpegWriter(
+        fps=20, codec="libx264", extra_args=["-pix_fmt", "yuv420p"]), dpi=110)
+    plt.close(fig)
+    return rows
+
+
+def main():
+    results, out = Path(sys.argv[1]), Path(sys.argv[2])
+    s = load_pretrain_policy(Path("."))["random_state"]
+    c = pretrain_context(Path("."), 2.5e6)
+    with tempfile.TemporaryDirectory() as font_dir:
+        font = setup_style(Path(font_dir))
+        stats = fig_distribution(c, s, out)
+        fig_examples(c, s, out)
+        runs = fig_runs(results, out)
+    (out / "STARTS.json").write_text(json.dumps(dict(font=font, distribution=stats, runs=runs),
+                                                indent=1) + "\n")
+    print(json.dumps(dict(distribution=stats, runs=runs), indent=1))
+
+
+if __name__ == "__main__":
+    main()

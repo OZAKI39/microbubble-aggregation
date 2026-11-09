@@ -1,0 +1,233 @@
+"""Do the 250-bubble sheet and the 3d cluster follow the more complex changes? Analysis of path_runs.py (2026-11-09).
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:MORPH_SCRIPTS:SCRATCH python analyse_complex.py DATA_DIR OUT_DIR TAG NAME [NAME ...]
+DATA_DIR: <name>/ROW.json and <name>/compact.npz of path_runs.py. At every saved frame, against the local form in
+effect (the segment that acted up to the frame; a frame on a boundary belongs to the earlier segment; the start
+frame of a run from the sheet to value 0, lines_x, the field that made the sheet; of a run from the
+three-dimensional cluster to its first segment):
+  all: share of bubble centres within R = 1.78 um of the zero set seen from above (the distance to the vertical
+    zero surface; morph.zero_set, as before); section length / width (spreads along the two principal axes of the
+    top-view positions), height (spread of z); pieces (surfaces within 0.5 R);
+  spin, pivot: sheet direction = main axis of the top-view positions; line direction = main axis of the zero-set
+    points within 32 um (the sheet's half-length) of the bubbles' mean; lag = line - sheet in (-90, 90] deg
+    (positive: the sheet behind the turning line); defined only at frames where the bubbles have one direction:
+    in one piece (a split cluster has none) and section width below half the length (a ball seen from above has
+    none); the figure shows the pieces for pivot, which splits;
+  flap: curvature b of x = x0 + b y^2 fitted to the bubbles and to the zero line through the centre taken at the
+    bubbles' own y (interpolated along its points with |y| <= 32 um and |x| < 20 um, not the next lines 80 um
+    away): both fits then cover the same stretch of y, so a short cluster is not compared with a longer stretch
+    of the line, which bends more near its centre; over the oscillation, at the frames where
+    the bubbles have one direction (as above), both are fitted
+    with c0 + c1 sin(w t) + c2 cos(w t), w = 2 pi / PERIOD_S: the sheet's bend over the line's (amplitude ratio) and
+    how far it is behind (phase lag, in deg and s).
+End of the change: the run's duration minus its last hold. Writes OUT_DIR/COMPLEX_<TAG>.json (per run),
+OUT_DIR/COMPLEX_<TAG>.npz (time series) and OUT_DIR/fig_complex_<TAG>.png.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+from complex_paths import local_form
+from morph import zero_set
+from sculpt import centre_fields
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+BLUE, ORANGE, GREEN = "#2a78d6", "#eb6834", "#1baf7a"
+R = 1.78e-6
+SHEET_HALF_LENGTH_M = 32e-6
+WIDTH_OVER_LENGTH_MAX = 0.5  # below this the top view has a long axis (a direction); a ball has about 1
+FREQUENCY_HZ = 9.375e6
+
+
+def piece_count(x, radii):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + 0.5 * R)), dtype=int).reshape(-1, 2)
+    gap = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1) - radii[pairs[:, 0]] - radii[pairs[:, 1]]
+    pairs = pairs[gap < 0.5 * R]
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    return connected_components(graph, directed=False)[0]
+
+
+def main_axis(points):
+    """Unit vector of the main axis and the spreads along the two axes of 2d points."""
+    centred = points - points.mean(axis=0)
+    eigenvalues, vectors = np.linalg.eigh(centred.T @ centred / len(points))  # ascending
+    return vectors[:, 1], np.sqrt(eigenvalues[::-1])
+
+
+def direction_deg(axis):
+    return np.degrees(np.arctan2(axis[1], axis[0])) % 180.0
+
+
+def parabola(x, y):
+    """b of x = x0 + b y^2 (least squares)."""
+    return np.linalg.lstsq(np.column_stack([np.ones_like(y), y**2]), x, rcond=None)[0][1]
+
+
+def sine_fit(t, values, omega):
+    coefficients = np.linalg.lstsq(np.column_stack([np.ones_like(t), np.sin(omega * t), np.cos(omega * t)]),
+                                   values, rcond=None)[0]
+    return np.hypot(coefficients[1], coefficients[2]), np.arctan2(coefficients[2], coefficients[1])
+
+
+def main():
+    data, out, tag, names = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.argv[4:]
+    elements = pretrain_context(Path("."), FREQUENCY_HZ).discs.elements
+    _, kappa_x, kappa_y = centre_fields(elements, FREQUENCY_HZ)
+    zero_points = {}
+
+    def zero(form, value):
+        if (form, value) not in zero_points:
+            points = zero_set(local_form(form, value, kappa_x, kappa_y))
+            zero_points[form, value] = (points, cKDTree(points))
+        return zero_points[form, value]
+
+    runs = []
+    for name in names:
+        runs.append((json.loads((data / name / "ROW.json").read_text()), np.load(data / name / "compact.npz")))
+    summary, series = [], {}
+    for run, data_run in runs:
+        form, name = run["form"], run["name"]
+        t, positions, radii = data_run["times_s"], data_run["positions_m"], data_run["radii_m"]
+        values = [s["value"] for s in run["segments"]]
+        starts = np.cumsum([0.0] + [s["duration_s"] for s in run["segments"]])[:-1]
+        from_sheet = run["start"]["source_time_s"] > 0  # the cluster start is frame 0 of its run
+        rows = {k: [] for k in ("value", "share_on_zero_set", "length_um", "width_um", "height_um", "pieces",
+                                "lag_deg", "bend_sheet_per_mm", "bend_line_per_mm")}
+        for ti, x in zip(t, positions):
+            k = int(np.searchsorted(starts, ti - 1e-9) - 1)
+            if not from_sheet:
+                k = max(k, 0)  # no drive before the start of a run from the cluster: its first segment
+            value = values[k] if k >= 0 else 0.0  # the start frame from the sheet: lines_x, the field that made it
+            points, tree = zero(form, value)
+            axis, spreads = main_axis(x[:, :2])
+            rows["value"].append(value)
+            rows["share_on_zero_set"].append(np.mean(tree.query(x[:, :2])[0] < R))
+            rows["length_um"].append(spreads[0] * 1e6)
+            rows["width_um"].append(spreads[1] * 1e6)
+            rows["height_um"].append(x[:, 2].std() * 1e6)
+            rows["pieces"].append(piece_count(x, radii))
+            if form in ("spin", "pivot"):
+                near = points[np.linalg.norm(points - x[:, :2].mean(axis=0), axis=1) < SHEET_HALF_LENGTH_M]
+                lag = (direction_deg(main_axis(near)[0]) - direction_deg(axis) + 90.0) % 180.0 - 90.0
+                rows["lag_deg"].append(lag)
+            if form == "flap":
+                central = points[(np.abs(points[:, 1]) <= SHEET_HALF_LENGTH_M) & (np.abs(points[:, 0]) < 20e-6)]
+                central = central[np.argsort(central[:, 1])]
+                line_at_bubbles = np.interp(x[:, 1], central[:, 1], central[:, 0])  # the zero line at the bubbles' y
+                rows["bend_sheet_per_mm"].append(parabola(x[:, 0], x[:, 1]) * 1e-3)
+                rows["bend_line_per_mm"].append(parabola(line_at_bubbles, x[:, 1]) * 1e-3)
+        rows = {k: np.asarray(v, float) for k, v in rows.items() if v}
+        rows["has_direction"] = (rows["pieces"] == 1) & (rows["width_um"] < WIDTH_OVER_LENGTH_MAX * rows["length_um"])
+        direction = rows["has_direction"]
+        for key, v in rows.items():
+            series[f"{name}__{key}"] = v
+        series[f"{name}__t_s"] = t
+        change_s = run["duration_s"] - run["hold_s"]  # the end of the change; then the last hold
+        during = (t > 1e-9) & (t <= change_s + 1e-9)
+        s = dict(name=name, form=form, period_s=run["period_s"], status=run["status"], completed_s=run["completed_s"],
+                 wall_s=run["wall_s"], change_s=change_s, step_max_displacement_max_m=run["step_max_displacement_max_m"],
+                 pieces_max=int(rows["pieces"].max()), share_min=float(rows["share_on_zero_set"].min()),
+                 share_mean_during_change=float(rows["share_on_zero_set"][during].mean()),
+                 share_end=float(rows["share_on_zero_set"][-1]),
+                 direction_from_s=float(t[direction][0]) if direction.any() else None,
+                 start_um={k: float(rows[f"{k}_um"][0]) for k in ("length", "width", "height")},
+                 end_um={k: float(rows[f"{k}_um"][-1]) for k in ("length", "width", "height")})
+        if form in ("spin", "pivot"):
+            whole = rows["pieces"] == 1
+            lag = rows["lag_deg"]
+            s.update(lag_deg_max_with_direction=float(np.abs(lag[direction]).max()),
+                     lag_deg_mean_during_change_with_direction=float(lag[during & direction].mean()),
+                     first_split_s=float(t[~whole][0]) if (~whole).any() else None,
+                     pieces_end=int(rows["pieces"][-1]))
+        if form == "line_cross":
+            half = len(starts) // 2  # the way back starts with segment `half`, after the hold at the crossing
+            crossing = int(np.searchsorted(t, starts[half] + 1e-9) - 1)  # the last frame the crossing field acted up to
+            s.update(share_end_of_crossing_hold=float(rows["share_on_zero_set"][crossing]),
+                     at_crossing_um={k: float(rows[f"{k}_um"][crossing]) for k in ("length", "width", "height")},
+                     crossing_hold_end_s=float(t[crossing]))
+        if form == "flap":
+            omega = 2 * np.pi / run["period_s"]
+            fitted = during & direction
+            sheet = sine_fit(t[fitted], rows["bend_sheet_per_mm"][fitted], omega)
+            line = sine_fit(t[fitted], rows["bend_line_per_mm"][fitted], omega)
+            lag = np.degrees(line[1] - sheet[1]) % 360.0
+            s.update(bend_fit_from_s=float(t[fitted][0]), bend_fit_frames=int(fitted.sum()),
+                     bend_amplitude_ratio=float(sheet[0] / line[0]), bend_line_amplitude_per_mm=float(line[0]),
+                     bend_phase_lag_deg=float(lag), bend_lag_s=float(np.radians(lag) / omega))
+        summary.append(s)
+        print({k: (round(v, 3) if isinstance(v, float) else v) for k, v in s.items()})
+    (out / f"COMPLEX_{tag}.json").write_text(json.dumps(summary, indent=1) + "\n")
+    np.savez_compressed(out / f"COMPLEX_{tag}.npz", **series)
+
+    with tempfile.TemporaryDirectory() as font_dir:
+        for font in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / font).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED, "axes.labelcolor": INK,
+                             "xtick.color": MUTED, "ytick.color": MUTED})
+        titles = dict(spin="Spin 180°", pivot="Turn 60° about one end", line_cross="Line → cross → line",
+                      flap="Flap")
+        fig, axes = plt.subplots(3, len(summary), figsize=(3.3 * len(summary), 8.4), dpi=150, squeeze=False)
+        fig.subplots_adjust(left=0.06, right=0.99, bottom=0.07, top=0.9, wspace=0.32, hspace=0.45)
+        for c, s in enumerate(summary):
+            name, t = s["name"], series[f"{s['name']}__t_s"]
+            title = titles[s["form"]] + (f", period {s['period_s']:g} s" if s["form"] == "flap" else "")
+            axes[0, c].set_title(title, loc="left", fontsize=9.5, color=INK)
+            axes[0, c].plot(t, series[f"{name}__share_on_zero_set"], color=BLUE, lw=1.4)
+            axes[0, c].set_ylim(0, 1.05)
+            for key, label, colour in (("length", "Section length", BLUE), ("width", "Section width", ORANGE),
+                                       ("height", "Height", GREEN)):
+                axes[1, c].plot(t, series[f"{name}__{key}_um"], color=colour, lw=1.4, label=label)
+            third = axes[2, c]
+            if s["form"] == "spin":
+                shown = np.where(series[f"{name}__has_direction"], series[f"{name}__lag_deg"], np.nan)
+                third.plot(t, shown, color=BLUE, lw=1.4)
+                third.set_ylabel("Lag of the long axis (deg)")
+            elif s["form"] == "flap":
+                third.plot(t, series[f"{name}__bend_line_per_mm"], color=MUTED, lw=1.2, ls="--", label="Zero line")
+                shown = np.where(series[f"{name}__has_direction"], series[f"{name}__bend_sheet_per_mm"], np.nan)
+                third.plot(t, shown, color=BLUE, lw=1.4, label="Bubbles")
+                third.set_ylabel("Bend b (1/mm)")
+                third.legend(frameon=False, fontsize=8, loc="upper right")
+            else:
+                third.plot(t, series[f"{name}__pieces"], color=BLUE, lw=1.4, drawstyle="steps-post")
+                third.set_ylabel("Pieces")
+                third.set_ylim(0, max(3, s["pieces_max"] + 1))
+            for r in range(3):
+                ax = axes[r, c]
+                ax.axvline(s["change_s"], color=MUTED, lw=0.8, ls=":")
+                ax.set_xlim(0, t[-1])
+                ax.grid(color=GRID, lw=0.6)
+                ax.set_axisbelow(True)
+                for side in ("top", "right"):
+                    ax.spines[side].set_visible(False)
+            axes[2, c].set_xlabel("Time (s)")
+        top = max(series[f"{s['name']}__{k}_um"].max() for s in summary for k in ("length", "width", "height"))
+        for ax in axes[1]:
+            ax.set_ylim(0, 1.05 * top)
+        axes[0, 0].set_ylabel(f"Share within {R * 1e6:.2f} µm\nof the zero line")
+        axes[1, 0].set_ylabel("Spread (µm)")
+        handles, labels = axes[1, 0].get_legend_handles_labels()
+        handles.append(plt.Line2D([], [], color=MUTED, lw=0.8, ls=":"))
+        labels.append("End of the change")
+        fig.legend(handles, labels, loc="upper right", ncol=4, frameon=False, fontsize=9)
+        fig.savefig(out / f"fig_complex_{tag}.png")
+        plt.close(fig)
+
+
+main()

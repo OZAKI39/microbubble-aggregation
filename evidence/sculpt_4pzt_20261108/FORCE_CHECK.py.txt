@@ -1,0 +1,75 @@
+"""Forces at the start of the sculpting runs (2026-11-08): does a bubble in the cluster feel the
+primary force of a lone bubble, and how large are the forces against the adhesion?
+
+usage (repository root):  APECSS_DIR=... PYTHONPATH=.:SCRATCH python force_check.py OUT_JSON
+Starts of the runs (sculpt.centred_start: 250 bubbles seed 3, 800 bubbles seed 5, sigma_g 1.25).
+Drives of the runs: 2.5 MHz X- alone at 6000 Pa-eq and lines_x; 7.0 and 9.375 MHz every pattern.
+One force evaluation each, collective with the delay (as the runs) and isolated (every bubble
+answers only the incident field, pairwise coupling without delay; only its primary force is used).
+Reports: the share of bubbles whose collective primary force points against the isolated one;
+median |primary| of both; the share pulled towards the pattern's zero set (the collective primary
+force has a positive component along -grad|p|^2 of the incident field, the direction a lone bubble
+above resonance is pulled); the median and 90% spread of F2 (each bubble's F2 minus the mean) and
+the adhesion 5.04e-10 N per contact.
+"""
+
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.acoustics import WaterDiscs
+from microbubble.forces import CPUForces, cached_pair_forces_library
+from microbubble.parameters import Physics
+from sculpt import PATTERNS, centred_start, drive
+from workflows.f10ag import carried_apecss_response, load_pretrain_policy, pretrain_context
+
+root = Path(".")
+policy = load_pretrain_policy(root)
+library = cached_pair_forces_library(root / "build" / "pair_forces")["library"]
+elements = pretrain_context(root, 2.5e6).discs.elements
+cases = [(2.5e6, "x_minus"), (2.5e6, "lines_x")]
+cases += [(f, p) for f in (7.0e6, 9.375e6) for p in PATTERNS if p != "lines_y"]
+rows = {}
+for n, seed in ((250, 3), (800, 5)):
+    x, radii, _ = centred_start(n, 1.25, seed, policy["random_state"]["radius"])
+    for f, pattern in cases:
+        amplitudes, phases = drive(elements, f, pattern, 6000.0)
+        discs = WaterDiscs(elements, f)
+        out = {}
+        for coupling in ("collective", "isolated"):
+            with tempfile.TemporaryDirectory() as d:
+                response, _ = carried_apecss_response(root, {}, policy, f, radii, d)
+                model = CPUForces(response, Physics(frequency_Hz=f), discs,
+                                  "collective" if coupling == "collective" else "pairwise", policy["singular_guard"],
+                                  wavenumber_rad_m=discs.k if coupling == "collective" else 0.0,
+                                  pair_library=library, radii_m=radii)
+                model.control(amplitudes, phases)
+                out[coupling] = model(x)
+                if coupling == "collective":
+                    model.wait_for_singular_value_check()
+                response.close()
+        h, g = discs.evaluate(x, 192)
+        u = amplitudes * np.exp(1j * phases)
+        P, G = u @ h, np.einsum("i,inj->nj", u, g)
+        downhill = -np.real(np.conj(P)[:, None] * G)  # -grad|p|^2 / 2
+        fc, fi = out["collective"]["primary_force_N"], out["isolated"]["primary_force_N"]
+        f2 = out["collective"]["secondary_force_N"]
+        spread = np.linalg.norm(f2 - f2.mean(0), axis=1)
+        key = f"N{n}_{f / 1e6:g}MHz_{pattern}"
+        rows[key] = dict(
+            share_against_isolated=float(np.mean(np.einsum("ij,ij->i", fc, fi) < 0)),
+            share_collective_towards_zero_set=float(np.mean(np.einsum("ij,ij->i", fc, downhill) > 0)),
+            share_isolated_towards_zero_set=float(np.mean(np.einsum("ij,ij->i", fi, downhill) > 0)),
+            primary_collective_median_N=float(np.median(np.linalg.norm(fc, axis=1))),
+            primary_isolated_median_N=float(np.median(np.linalg.norm(fi, axis=1))),
+            F2_spread_median_N=float(np.median(spread)), F2_spread_p90_N=float(np.percentile(spread, 90)),
+            pressure_at_bubbles_max_Pa=float(np.abs(P).max()), adhesion_per_contact_N=policy["adhesion"]["force_N"])
+        r = rows[key]
+        print(f"{key:26s} against lone {r['share_against_isolated']:.2f}  towards zero set coll {r['share_collective_towards_zero_set']:.2f} "
+              f"iso {r['share_isolated_towards_zero_set']:.2f}  |F1| coll {r['primary_collective_median_N']:.1e} iso "
+              f"{r['primary_isolated_median_N']:.1e}  F2 spread {r['F2_spread_median_N']:.1e}/{r['F2_spread_p90_N']:.1e} N  "
+              f"|P|max {r['pressure_at_bubbles_max_Pa']:.0f} Pa", flush=True)
+Path(sys.argv[1]).write_text(json.dumps(rows, indent=1) + "\n")

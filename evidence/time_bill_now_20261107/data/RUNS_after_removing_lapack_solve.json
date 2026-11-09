@@ -1,0 +1,82 @@
+{
+ "23": {
+  "bubbles": 20,
+  "status": "PASS",
+  "wall_s": 0.8646979399491102,
+  "step_ms_median": 0.7774140685796738,
+  "step_ms_mean": 0.9009455249482441,
+  "force_ms_mean": 0.6954471226781607,
+  "wait_ms_median": 0.002054031938314438,
+  "min_collective_singular_value": 0.37826203055398605,
+  "daqp_iterations": 554,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 0,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "b303219cf6b1f60b5d62af340e687dc653f96f5d12c099c51904e10ede4ce882"
+ },
+ "21": {
+  "bubbles": 50,
+  "status": "PASS",
+  "wall_s": 0.759664410026744,
+  "step_ms_median": 1.2767559383064508,
+  "step_ms_mean": 1.4775878556617694,
+  "force_ms_mean": 0.9245499698445201,
+  "wait_ms_median": 0.002133892849087715,
+  "min_collective_singular_value": 0.5144438032016592,
+  "daqp_iterations": 644,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 4,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "65b9f99362e35592e7fc85a1dbdd857d302284fc465533ab1f133a4b7fa55eb6"
+ },
+ "16": {
+  "bubbles": 76,
+  "status": "PASS",
+  "wall_s": 1.3103711130097508,
+  "step_ms_median": 2.4048439227044582,
+  "step_ms_mean": 2.5684301702227286,
+  "force_ms_mean": 1.3455711333081126,
+  "wait_ms_median": 0.0030159717425704002,
+  "min_collective_singular_value": 0.3949176557425341,
+  "daqp_iterations": 741,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 11,
+   "CONTACT_REACTION_BALANCE_PASS": 404,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "048b30cfb7463bd122ba1ae225ad9c4b13364b563b01099425f1d795d438212d"
+ },
+ "7": {
+  "bubbles": 122,
+  "status": "PASS",
+  "wall_s": 3.4744345089420676,
+  "step_ms_median": 6.628017872571945,
+  "step_ms_mean": 6.893600308745055,
+  "force_ms_mean": 2.4894598624669015,
+  "wait_ms_median": 0.002569984644651413,
+  "min_collective_singular_value": 0.44307847560717545,
+  "daqp_iterations": 1034,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 12,
+   "CONTACT_REACTION_BALANCE_PASS": 200,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "f3c9d9fbec3c9d357960f70c1b3b888364260969b4bbe3aab85e318bc575f726"
+ }
+}

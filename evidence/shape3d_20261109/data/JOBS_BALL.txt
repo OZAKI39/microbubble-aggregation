@@ -1,0 +1,8 @@
+rotate_runs.py BROT_N250_9.375MHz_sweep6.4s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 6.4 0.1 25.6 9.375 6000 0.005 0.025
+rotate_runs.py BROT_N250_9.375MHz_sweep25.6s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 25.6 0.4 6.4 9.375 6000 0.005 0.025
+morph_runs.py BMOV_translate_N250_9.375MHz_sweep6.4s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 translate 20 6.4 0.1 25.6 20 9.375 6000 0.005 0.025
+morph_runs.py BMOV_translate_N250_9.375MHz_sweep25.6s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 translate 20 25.6 0.4 6.4 20 9.375 6000 0.005 0.025
+morph_runs.py BMOV_bend_N250_9.375MHz_sweep6.4s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 bend 0.7 6.4 0.1 25.6 0.7 9.375 6000 0.005 0.025
+morph_runs.py BMOV_bend_N250_9.375MHz_sweep25.6s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 bend 0.7 25.6 0.4 6.4 0.7 9.375 6000 0.005 0.025
+morph_runs.py BMOV_linedot_N250_9.375MHz_sweep6.4s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 line_dot 45 6.4 0.1 25.6 45 9.375 6000 0.005 0.025
+morph_runs.py BMOV_linedot_N250_9.375MHz_sweep25.6s_total32s /workspace/scratch/ball3d_20261109/start/BALL_N250_seed3_t0_of_L_N250_9.375MHz_lines_x_adh0 line_dot 45 25.6 0.4 6.4 45 9.375 6000 0.005 0.025

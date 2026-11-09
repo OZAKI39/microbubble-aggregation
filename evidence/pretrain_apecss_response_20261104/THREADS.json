@@ -1,0 +1,77 @@
+{
+ "rows": [
+  {
+   "run": "protocol_formed32",
+   "variant": "table",
+   "duration_s": 0.5,
+   "wall_s": 5.050161471997853,
+   "apecss_s": 0.0,
+   "steps": 1450,
+   "identical_to_1_thread": null
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "apecss_1",
+   "duration_s": 0.5,
+   "wall_s": 10.387212992995046,
+   "apecss_s": 3.4652435655589215,
+   "steps": 1450,
+   "identical_to_1_thread": null
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "apecss_4",
+   "duration_s": 0.5,
+   "wall_s": 9.171464356011711,
+   "apecss_s": 1.0647949849371798,
+   "steps": 1450,
+   "identical_to_1_thread": true
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "apecss_8",
+   "duration_s": 0.5,
+   "wall_s": 7.722272707003867,
+   "apecss_s": 0.8283989360497799,
+   "steps": 1450,
+   "identical_to_1_thread": true
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "table",
+   "duration_s": 0.3,
+   "wall_s": 6.312289492983837,
+   "apecss_s": 0.0,
+   "steps": 278,
+   "identical_to_1_thread": null
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "apecss_1",
+   "duration_s": 0.3,
+   "wall_s": 11.205544422002276,
+   "apecss_s": 2.8903057569405064,
+   "steps": 302,
+   "identical_to_1_thread": null
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "apecss_4",
+   "duration_s": 0.3,
+   "wall_s": 9.569992932025343,
+   "apecss_s": 0.8605120256834198,
+   "steps": 302,
+   "identical_to_1_thread": true
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "apecss_8",
+   "duration_s": 0.3,
+   "wall_s": 8.986533330986276,
+   "apecss_s": 0.53331566095585,
+   "steps": 302,
+   "identical_to_1_thread": true
+  }
+ ],
+ "note": "shortened protocol runs (first segment), field direct_gpu, one run at a time, machine otherwise idle; wall time incl. compiling the APECSS library"
+}

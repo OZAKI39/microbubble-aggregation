@@ -1,0 +1,112 @@
+"""Animation of ordinary pretraining runs with the new ranges (2026-11-08).
+
+usage (repository root):  PYTHONPATH=. python animation_demo.py RUN_ROOT DEMO_JSON DEMO_NPZ OUT_MP4 NAME [NAME ...]
+One panel per run, top view around the cluster's start centre (window: the bubbles over the whole run plus
+10 um, at most 150 um from the start centre), every second saved frame (20 ms) at 25 frames/s: half speed, the
+same time in every panel. Background: |p| of the segment that acted up to the frame, in the plane of the start
+centre (dark = low); bubbles at their radius, colour = height. Text: time, |p| at the bubbles over the local
+largest (analyse_demo.py), top-view aspect, pieces.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import h5py
+import imageio_ffmpeg
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import animation, font_manager
+from matplotlib.collections import EllipseCollection
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED = "#1f2328", "#5b6470"
+FPS = 25
+EVERY = 2
+WINDOW_MAX_M = 150e-6
+
+
+def main():
+    root, demo, series, out, names = Path(sys.argv[1]), json.loads(Path(sys.argv[2]).read_text()), np.load(sys.argv[3]), Path(sys.argv[4]), sys.argv[5:]
+    elements = pretrain_context(Path("."), 3e6).discs.elements
+    with tempfile.TemporaryDirectory() as font_dir:
+        for font in ("arial.ttf", "arialbd.ttf"):
+            if (ARIAL_DIR / font).is_file():
+                font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+        plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                             "xtick.color": MUTED, "ytick.color": MUTED,
+                             "animation.ffmpeg_path": imageio_ffmpeg.get_ffmpeg_exe()})
+        fig, axes = plt.subplots(1, len(names), figsize=(4.0 * len(names), 4.9), dpi=100)
+        fig.subplots_adjust(left=0.04, right=0.99, bottom=0.1, top=0.78, wspace=0.24)
+        fig.suptitle("Ordinary pretraining runs with the new ranges (64-255 bubbles, weak adhesion drawn): pattern actions "
+                     "designed at the channel centre, and one at the cluster (pattern_local); half speed",
+                     x=0.04, ha="left", fontsize=10, color=INK)
+        state = []
+        for ax, n in zip(axes, names):
+            s = demo[n]
+            task = json.loads((root / n / "EXECUTION.json").read_text())["task"]
+            with h5py.File(root / n / "trajectory.h5") as h:
+                t, positions, radii = h["time_s"][()], h["positions_m"][()], h["radii_m"][()]
+                in_effect = h["action_segment"][()]
+            c = positions[0].mean(axis=0)
+            half = min(WINDOW_MAX_M, max(40e-6, float(np.abs(positions[:, :, :2] - c[:2]).max()) + 10e-6))
+            line = np.linspace(-half, half, 141)
+            gx, gy = np.meshgrid(line, line, indexing="xy")
+            f = s["frequency_Hz"]
+            field = WaterDiscs(elements, f).evaluate(np.column_stack([gx.ravel() + c[0], gy.ravel() + c[1], np.full(gx.size, c[2])]),
+                                                      direct_quadrature_order(f))[0]
+            maps = []
+            for g in task["segments"]:
+                p = np.abs((np.array(g["amplitudes"]) * np.exp(1j * np.array(g["phases"]))) @ field).reshape(gx.shape)
+                maps.append(p / p.max())
+            extent = np.array([-half, half, -half, half]) * 1e6
+            background = ax.imshow(maps[0], origin="lower", extent=extent, cmap="Greys_r", vmin=0, vmax=1.6)
+            dots = EllipseCollection(2 * radii * 1e6, 2 * radii * 1e6, 0, units="xy", offsets=(positions[0] - c)[:, :2] * 1e6,
+                                     offset_transform=ax.transData, cmap="viridis", edgecolors="white", linewidths=0.15)
+            dots.set_clim(-20, 20)
+            ax.add_collection(dots)
+            label = ax.text(0.02, 0.98, "", transform=ax.transAxes, fontsize=7.5, color=INK, va="top",
+                            bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1.5))
+            ax.set_title(f"{s['action_kind']}, {s['bubbles']} bubbles, {f / 1e6:.2f} MHz\nadhesion {s['adhesion_force_N']:.1e} N, "
+                         f"start {s['start_distance_from_reference_mm']:.1f} mm from the reference", loc="left", fontsize=8, color=INK)
+            ax.set_xlim(extent[0], extent[1])
+            ax.set_ylim(extent[2], extent[3])
+            ax.set_aspect("equal")
+            ax.set_xlabel("x - start centre (um)")
+            state.append(dict(name=n, t=t, positions=positions, radii=radii, c=c, maps=maps, background=background, dots=dots,
+                              label=label, in_effect=in_effect, segment=None))
+        axes[0].set_ylabel("y - start centre (um)")
+        frames = max(len(st["t"]) for st in state) // EVERY + 1
+
+        def draw(i):
+            for st in state:
+                n = st["name"]
+                j = min(i * EVERY, len(st["t"]) - 1)
+                x = (st["positions"][j] - st["c"]) * 1e6
+                order = np.argsort(x[:, 2])
+                st["dots"].set_offsets(x[order, :2])
+                st["dots"].set_array(x[order, 2])
+                st["dots"].set_widths(2 * st["radii"][order] * 1e6)
+                st["dots"].set_heights(2 * st["radii"][order] * 1e6)
+                k = int(st["in_effect"][j - 1]) if j > 0 else 0
+                if k != st["segment"]:
+                    st["background"].set_data(st["maps"][k])
+                    st["segment"] = k
+                st["label"].set_text(f"t = {st['t'][j]:.2f} s\n|p| at bubbles / local max {series[f'{n}__p_ratio_median'][j]:.2f}\n"
+                                     f"aspect {series[f'{n}__aspect'][j]:.2f}, pieces {int(series[f'{n}__pieces'][j])}")
+            return []
+
+        writer = animation.FFMpegWriter(fps=FPS, codec="libx264", extra_args=["-pix_fmt", "yuv420p"])
+        animation.FuncAnimation(fig, draw, frames=frames, blit=False).save(out, writer=writer)
+        plt.close(fig)
+
+
+main()

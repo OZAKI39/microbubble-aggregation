@@ -1,0 +1,15 @@
+{
+ "bubbles": 122,
+ "calls": 500,
+ "ms_per_force_evaluation": {
+  "field (GPU)": 0.28182612964883447,
+  "APECSS": 1.4251526049338281,
+  "pair distances": 0.01570390071719885,
+  "collective solve (chi, K, M, solve)": 0.4984781355597079,
+  "F2": 0.30046710604801774,
+  "adhesion": 0.11161618586629629,
+  "waiting for the SVD": 0.6776660019531846,
+  "rest (F1, sums, Python)": 0.028630849439650774,
+  "whole force evaluation": 3.3395409141667187
+ }
+}

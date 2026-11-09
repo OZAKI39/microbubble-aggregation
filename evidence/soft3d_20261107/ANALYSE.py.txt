@@ -1,0 +1,74 @@
+"""Shape change, contacts and force balance of the 3D softness runs (2026-11-07).
+
+usage (repository root):  PYTHONPATH=.:visualization python ANALYSE.py DATA_DIR OUT_JSON
+DATA_DIR: RUNS.json and <name>/compact.npz of SOFT3D_RUNS.py. Shape metric as in
+evidence/softness_matched_speed_20261104/ (visualization/ab_protocol_figures.py: camera frames at
+60/s, bubbles drawn as discs of radius R at 0.6 um/px seen from above, 0.1 s windows within 1 s of
+the switch-on, |d ln aspect| of the main region), against each run's own rigid floor (the start
+moved rigidly along the run's centroid path). Contacts: pairs with a gap below 0.01 R in the
+positions every 10 ms; per 0.1 s window, the pairs in contact at the start and not at the end.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from ab_protocol_figures import deformation_stats, frame_shapes, sim_windows, speed_px_s
+from scipy.spatial import cKDTree
+
+from microbubble.parameters import Physics
+
+R = Physics().radius_m
+CONTACT_GAP_M = 0.01 * R
+data, out = Path(sys.argv[1]), Path(sys.argv[2])
+runs = json.loads((data / "RUNS.json").read_text())
+
+
+def shape_stats(t, positions, duration):
+    run = dict(times_s=t, positions_m=positions, segments=[dict(duration=duration, amplitudes=[0, 0, 6000.0, 0])])
+    windows = sim_windows(run, frame_shapes(run, R), R)
+    d = deformation_stats(windows)
+    return dict(dln=d["dln_aspect_first_1s"].get("median"), per_px=d["dln_aspect_per_px_first_1s"].get("median"),
+                aspect=d["aspect"].get("median"), aspect_p90=d["aspect"].get("p90"), split=d["split_share"],
+                speed=float(np.median([speed_px_s(w) for w in windows])), windows=len(windows))
+
+
+def contacts(x):
+    return {tuple(p) for p in cKDTree(x).query_pairs(2 * R + CONTACT_GAP_M)}
+
+
+result = {}
+for name, r in runs.items():
+    c = np.load(data / name / "compact.npz")
+    t, cam = c["camera_t"], c["camera_positions_m"]
+    sim = shape_stats(t, cam, r["completed_s"])
+    x0 = cam[0]
+    rigid = np.array([x0 - x0.mean(0) + p.mean(0) for p in cam])
+    floor = shape_stats(t, rigid, r["completed_s"])
+    sets = [contacts(x) for x in c["positions10_m"]]
+    n = r["bubbles"]
+    broken = [len(sets[i] - sets[i + 10]) / n for i in range(len(sets) - 10)]
+    formed = [len(sets[i + 10] - sets[i]) / n for i in range(len(sets) - 10)]
+    fs = dict(zip(c["force_summary_columns"], c["force_summary"].T))
+    late = c["step_t"] >= 0.5  # after the first 0.5 s
+    result[name] = dict(
+        r, sim=sim, rigid_floor=floor,
+        contacts_per_bubble_start=len(sets[0]) / n, contacts_per_bubble_end=len(sets[-1]) / n,
+        pressed_contacts_per_bubble_median=float(np.median(c["active_count"][late]) / n),
+        broken_per_bubble_per_0p1s_median=float(np.median(broken)),
+        broken_per_bubble_per_0p1s_first_0p1s=float(broken[0]),
+        formed_per_bubble_per_0p1s_median=float(np.median(formed)),
+        drive_per_bubble_N=float(np.median(fs["total_mean"])),
+        total_spread_median_N=float(np.median(fs["total_spread_median"])),
+        F2_spread_median_N=float(np.median(fs["F2_spread_median"])),
+        F2_spread_p90_N=float(np.median(fs["F2_spread_p90"])),
+        F1_spread_median_N=float(np.median(fs["F1_spread_median"])),
+        F2_spread_over_drive=float(np.median(fs["F2_spread_median"] / fs["total_mean"])),
+    )
+    s = result[name]
+    print(f"{name:22s} N{n:4d} speed {sim['speed']:6.1f} px/s  dln {sim['dln']:.4f} (floor {floor['dln']:.4f})  "
+          f"aspect {sim['aspect']:.2f}  split {sim['split']:.2f}  contacts/bubble {s['contacts_per_bubble_start']:.2f}"
+          f"->{s['contacts_per_bubble_end']:.2f}  broken/0.1s {s['broken_per_bubble_per_0p1s_median']:.3f}  "
+          f"F2 spread/drive {s['F2_spread_over_drive']:.0f}  drive {s['drive_per_bubble_N']:.1e} N  adhesion {r['adhesion_force_N']:.1e} N")
+out.write_text(json.dumps(result, indent=1, default=float) + "\n")

@@ -1,0 +1,907 @@
+{
+ "not_blocked_fraction": 0.5,
+ "runs": {
+  "ADH_N128_3.4MHz_adh0N": {
+   "bubbles": 128,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 130.4219904989004,
+   "step_max_displacement_median_m": 8.434088780572684e-09,
+   "step_max_displacement_max_m": 1.9786675267451784e-06,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.265625,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 3.8362847758384597,
+   "pieces_max": 3,
+   "start_contacts_open_end": 0.5411392405063291
+  },
+  "ADH_N128_3.4MHz_adh1e-10N": {
+   "bubbles": 128,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-10,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 132.41146367508918,
+   "step_max_displacement_median_m": 2.9092465496870664e-10,
+   "step_max_displacement_max_m": 2.2683058749844746e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.25,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 4.865149824754084,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.0
+  },
+  "ADH_N128_3.4MHz_adh1e-11N": {
+   "bubbles": 128,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-11,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 133.100833352888,
+   "step_max_displacement_median_m": 2.487328361472273e-10,
+   "step_max_displacement_max_m": 8.535906834122097e-08,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.25,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 4.8556497521718756,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.0
+  },
+  "ADH_N128_3.4MHz_adh1e-12N": {
+   "bubbles": 128,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 134.40474994201213,
+   "step_max_displacement_median_m": 1.3606657117336673e-09,
+   "step_max_displacement_max_m": 5.880324524910972e-08,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.28125,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 4.281360151176099,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.18354430379746836
+  },
+  "ADH_N128_3.4MHz_adh1e-13N": {
+   "bubbles": 128,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-13,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 132.85818588500842,
+   "step_max_displacement_median_m": 5.8701084322107965e-09,
+   "step_max_displacement_max_m": 1.6142804187355633e-06,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.296875,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 3.829388117406963,
+   "pieces_max": 3,
+   "start_contacts_open_end": 0.5
+  },
+  "ADH_N128_3.4MHz_adh1e-14N": {
+   "bubbles": 128,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 133.1968303460162,
+   "step_max_displacement_median_m": 7.735990712041913e-09,
+   "step_max_displacement_max_m": 1.8492690991952924e-06,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.2734375,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 3.894329651816761,
+   "pieces_max": 3,
+   "start_contacts_open_end": 0.47468354430379744
+  },
+  "ADH_N128_6.0MHz_adh0N": {
+   "bubbles": 128,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 169.45862063090317,
+   "step_max_displacement_median_m": 6.879377069328359e-09,
+   "step_max_displacement_max_m": 3.452678124736979e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.625,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 2.057635802124539,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.6424050632911392
+  },
+  "ADH_N128_6.0MHz_adh1e-10N": {
+   "bubbles": 128,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-10,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 124.48020970006473,
+   "step_max_displacement_median_m": 1.3488914814893747e-10,
+   "step_max_displacement_max_m": 3.4375800388348296e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.2578125,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 4.694806718181556,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.0
+  },
+  "ADH_N128_6.0MHz_adh1e-11N": {
+   "bubbles": 128,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-11,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 126.11762300995179,
+   "step_max_displacement_median_m": 1.1636339424465124e-10,
+   "step_max_displacement_max_m": 3.426987845657995e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.28125,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 4.269023779480017,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.09177215189873418
+  },
+  "ADH_N128_6.0MHz_adh1e-12N": {
+   "bubbles": 128,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 145.27152783586644,
+   "step_max_displacement_median_m": 4.135259218515528e-09,
+   "step_max_displacement_max_m": 3.4617428267870024e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.5078125,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 2.22123296531849,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.509493670886076
+  },
+  "ADH_N128_6.0MHz_adh1e-13N": {
+   "bubbles": 128,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-13,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 168.3207022980787,
+   "step_max_displacement_median_m": 8.759853998778221e-09,
+   "step_max_displacement_max_m": 3.453598090798106e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.734375,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 1.463119188475317,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.6930379746835443
+  },
+  "ADH_N128_6.0MHz_adh1e-14N": {
+   "bubbles": 128,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 179.51271491101943,
+   "step_max_displacement_median_m": 9.372400679123655e-09,
+   "step_max_displacement_max_m": 3.452770445503442e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.71875,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 1.7184874489573918,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7151898734177216
+  },
+  "ADH_N128_9.375MHz_adh0N": {
+   "bubbles": 128,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 134.08331837295555,
+   "step_max_displacement_median_m": 8.572637371416445e-09,
+   "step_max_displacement_max_m": 2.2624875620216727e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.8359375,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 1.0952078932817977,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7310126582278481
+  },
+  "ADH_N128_9.375MHz_adh1e-10N": {
+   "bubbles": 128,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-10,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 74.9510755171068,
+   "step_max_displacement_median_m": 2.2455457924245933e-10,
+   "step_max_displacement_max_m": 2.282481849435946e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.28125,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 4.764940607359002,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.0
+  },
+  "ADH_N128_9.375MHz_adh1e-11N": {
+   "bubbles": 128,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-11,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 74.79695191420615,
+   "step_max_displacement_median_m": 5.205473315832382e-11,
+   "step_max_displacement_max_m": 2.243951985645792e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.265625,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 4.446371301596861,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.0379746835443038
+  },
+  "ADH_N128_9.375MHz_adh1e-12N": {
+   "bubbles": 128,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 98.64129308005795,
+   "step_max_displacement_median_m": 3.93921978860138e-09,
+   "step_max_displacement_max_m": 2.2609307206112318e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.4921875,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 2.354355193194926,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.5316455696202531
+  },
+  "ADH_N128_9.375MHz_adh1e-13N": {
+   "bubbles": 128,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-13,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 140.46478057210334,
+   "step_max_displacement_median_m": 8.972634524558618e-09,
+   "step_max_displacement_max_m": 2.2624029350451783e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.8671875,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 1.0810786512381392,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7626582278481012
+  },
+  "ADH_N128_9.375MHz_adh1e-14N": {
+   "bubbles": 128,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 137.62642462691292,
+   "step_max_displacement_median_m": 9.209376670789514e-09,
+   "step_max_displacement_max_m": 2.2624797999325988e-07,
+   "share_on_plane_start": 0.2578125,
+   "share_on_plane_end": 0.828125,
+   "spread_x_um_start": 5.0443893379561615,
+   "spread_x_um_end": 1.0819608128838434,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7373417721518988
+  },
+  "ADH_N255_3.4MHz_adh0N": {
+   "bubbles": 255,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 278.576502247015,
+   "step_max_displacement_median_m": 5.680057026272884e-08,
+   "step_max_displacement_max_m": 1.0220814680341967e-06,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.27450980392156865,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 55.6151762089014,
+   "pieces_max": 8,
+   "start_contacts_open_end": 0.6802507836990596
+  },
+  "ADH_N255_3.4MHz_adh1e-12N": {
+   "bubbles": 255,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 301.33352599688806,
+   "step_max_displacement_median_m": 4.5949736795298e-09,
+   "step_max_displacement_max_m": 1.1491251380121861e-07,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.25098039215686274,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 4.861035129288348,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.322884012539185
+  },
+  "ADH_N255_3.4MHz_adh1e-14N": {
+   "bubbles": 255,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 283.1900795220863,
+   "step_max_displacement_median_m": 3.65504527658213e-08,
+   "step_max_displacement_max_m": 4.6403579318990124e-06,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.25882352941176473,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 4.810270464413696,
+   "pieces_max": 5,
+   "start_contacts_open_end": 0.6551724137931034
+  },
+  "ADH_N255_6.0MHz_adh0N": {
+   "bubbles": 255,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 266.63634026492946,
+   "step_max_displacement_median_m": 9.002347895521105e-09,
+   "step_max_displacement_max_m": 4.1577302312956695e-07,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.5803921568627451,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 2.230531115129125,
+   "pieces_max": 2,
+   "start_contacts_open_end": 0.6896551724137931
+  },
+  "ADH_N255_6.0MHz_adh1e-12N": {
+   "bubbles": 255,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 276.1301192359533,
+   "step_max_displacement_median_m": 5.261675836258036e-09,
+   "step_max_displacement_max_m": 4.157673823437177e-07,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.42745098039215684,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 2.982012825951907,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.5344827586206896
+  },
+  "ADH_N255_6.0MHz_adh1e-14N": {
+   "bubbles": 255,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 272.07607983611524,
+   "step_max_displacement_median_m": 9.082209859113826e-09,
+   "step_max_displacement_max_m": 4.15705801350097e-07,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.5764705882352941,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 2.201340780195406,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7084639498432602
+  },
+  "ADH_N255_9.375MHz_adh0N": {
+   "bubbles": 255,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 365.59679851611145,
+   "step_max_displacement_median_m": 8.507088798454846e-09,
+   "step_max_displacement_max_m": 2.4418969977541407e-07,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.6588235294117647,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 1.8763748565435057,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7272727272727273
+  },
+  "ADH_N255_9.375MHz_adh1e-12N": {
+   "bubbles": 255,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 337.27849008794874,
+   "step_max_displacement_median_m": 4.915902819926333e-09,
+   "step_max_displacement_max_m": 2.4429163593083693e-07,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.4196078431372549,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 2.8497492176339714,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.512539184952978
+  },
+  "ADH_N255_9.375MHz_adh1e-14N": {
+   "bubbles": 255,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 330.18426257395186,
+   "step_max_displacement_median_m": 8.19370362329503e-09,
+   "step_max_displacement_max_m": 2.4419087754860796e-07,
+   "share_on_plane_start": 0.2,
+   "share_on_plane_end": 0.6313725490196078,
+   "spread_x_um_start": 6.393749643547675,
+   "spread_x_um_end": 1.9321790843428224,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7084639498432602
+  },
+  "ADH_N64_3.4MHz_adh0N": {
+   "bubbles": 64,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 75.05356775713153,
+   "step_max_displacement_median_m": 3.7011686237424453e-08,
+   "step_max_displacement_max_m": 3.7092662500026605e-06,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 0.390625,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 7.517839999007096,
+   "pieces_max": 7,
+   "start_contacts_open_end": 0.8734177215189873
+  },
+  "ADH_N64_3.4MHz_adh1e-12N": {
+   "bubbles": 64,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 60.459421884967014,
+   "step_max_displacement_median_m": 3.680257313973479e-09,
+   "step_max_displacement_max_m": 1.0731624193409917e-07,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 0.3125,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 2.7280735005059844,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.31645569620253167
+  },
+  "ADH_N64_3.4MHz_adh1e-14N": {
+   "bubbles": 64,
+   "frequency_Hz": 3400000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 76.88954864791594,
+   "step_max_displacement_median_m": 4.278185975628047e-08,
+   "step_max_displacement_max_m": 4.319343942976643e-06,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 0.265625,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 43.91545164292005,
+   "pieces_max": 6,
+   "start_contacts_open_end": 0.8544303797468354
+  },
+  "ADH_N64_6.0MHz_adh0N": {
+   "bubbles": 64,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 108.30899583199061,
+   "step_max_displacement_median_m": 9.608249935835983e-09,
+   "step_max_displacement_max_m": 1.6433141801308793e-07,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 1.0,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 0.3884690880543629,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7658227848101266
+  },
+  "ADH_N64_6.0MHz_adh1e-12N": {
+   "bubbles": 64,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 70.4465184409637,
+   "step_max_displacement_median_m": 3.681829024450174e-09,
+   "step_max_displacement_max_m": 1.6497246078640572e-07,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 0.65625,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 1.7672375138205816,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.5253164556962026
+  },
+  "ADH_N64_6.0MHz_adh1e-14N": {
+   "bubbles": 64,
+   "frequency_Hz": 6000000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 105.03875277098268,
+   "step_max_displacement_median_m": 9.086441193435817e-09,
+   "step_max_displacement_max_m": 1.6433952290427217e-07,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 0.9375,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 0.731968287398901,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7531645569620253
+  },
+  "ADH_N64_9.375MHz_adh0N": {
+   "bubbles": 64,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 0.0,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 118.03719723690301,
+   "step_max_displacement_median_m": 7.118808046435343e-09,
+   "step_max_displacement_max_m": 1.1387618706788967e-07,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 1.0,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 2.3912332608675214e-07,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7848101265822784
+  },
+  "ADH_N64_9.375MHz_adh1e-12N": {
+   "bubbles": 64,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-12,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 67.05622444022447,
+   "step_max_displacement_median_m": 2.0003310476333397e-09,
+   "step_max_displacement_max_m": 1.1480310160736341e-07,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 0.515625,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 1.8903788598068205,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.4177215189873418
+  },
+  "ADH_N64_9.375MHz_adh1e-14N": {
+   "bubbles": 64,
+   "frequency_Hz": 9375000.0,
+   "adhesion_force_N": 1e-14,
+   "status": "PASS",
+   "completed_s": 6.4,
+   "wall_s": 128.12117793411016,
+   "step_max_displacement_median_m": 8.526765157523689e-09,
+   "step_max_displacement_max_m": 1.1388738807106206e-07,
+   "share_on_plane_start": 0.3125,
+   "share_on_plane_end": 1.0,
+   "spread_x_um_start": 3.9001210634512296,
+   "spread_x_um_end": 1.1881735576415921e-06,
+   "pieces_max": 1,
+   "start_contacts_open_end": 0.7215189873417721
+  }
+ },
+ "groups": {
+  "64_3.4e+06": {
+   "bubbles": 64,
+   "frequency_Hz": 3400000.0,
+   "free_share_gain": 0.078125,
+   "free_spread_drop_um": -3.6177189355558665,
+   "rows": [
+    {
+     "name": "ADH_N64_3.4MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N64_3.4MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": -0.6,
+     "spread_drop_vs_free": 11.060928527694044,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N64_3.4MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.0,
+     "spread_drop_vs_free": -0.32397419031812064,
+     "not_blocked": false
+    }
+   ]
+  },
+  "64_6e+06": {
+   "bubbles": 64,
+   "frequency_Hz": 6000000.0,
+   "free_share_gain": 0.6875,
+   "free_spread_drop_um": 3.5116519753968665,
+   "rows": [
+    {
+     "name": "ADH_N64_6.0MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N64_6.0MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 0.9090909090909091,
+     "spread_drop_vs_free": 0.9021830176363882,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N64_6.0MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.5,
+     "spread_drop_vs_free": 0.6073732717746331,
+     "not_blocked": true
+    }
+   ]
+  },
+  "64_9.375e+06": {
+   "bubbles": 64,
+   "frequency_Hz": 9375000.0,
+   "free_share_gain": 0.6875,
+   "free_spread_drop_um": 3.9001208243279035,
+   "rows": [
+    {
+     "name": "ADH_N64_9.375MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N64_9.375MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 0.9999997566613256,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N64_9.375MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.29545454545454547,
+     "spread_drop_vs_free": 0.5153025493744138,
+     "not_blocked": true
+    }
+   ]
+  },
+  "128_3.4e+06": {
+   "bubbles": 128,
+   "frequency_Hz": 3400000.0,
+   "free_share_gain": 0.0078125,
+   "free_spread_drop_um": 1.2081045621177018,
+   "rows": [
+    {
+     "name": "ADH_N128_3.4MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_3.4MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 2.0,
+     "spread_drop_vs_free": 0.9519537647663927,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_3.4MHz_adh1e-13N",
+     "adhesion_force_N": 1e-13,
+     "share_gain_vs_free": 5.0,
+     "spread_drop_vs_free": 1.0057086602002459,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_3.4MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 3.0,
+     "spread_drop_vs_free": 0.6315920084289223,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_3.4MHz_adh1e-11N",
+     "adhesion_force_N": 1e-11,
+     "share_gain_vs_free": -1.0,
+     "spread_drop_vs_free": 0.156227856182781,
+     "not_blocked": false
+    },
+    {
+     "name": "ADH_N128_3.4MHz_adh1e-10N",
+     "adhesion_force_N": 1e-10,
+     "share_gain_vs_free": -1.0,
+     "spread_drop_vs_free": 0.1483642383469573,
+     "not_blocked": false
+    }
+   ]
+  },
+  "128_6e+06": {
+   "bubbles": 128,
+   "frequency_Hz": 6000000.0,
+   "free_share_gain": 0.3671875,
+   "free_spread_drop_um": 2.9867535358316224,
+   "rows": [
+    {
+     "name": "ADH_N128_6.0MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_6.0MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 1.2553191489361701,
+     "spread_drop_vs_free": 1.113550833404376,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_6.0MHz_adh1e-13N",
+     "adhesion_force_N": 1e-13,
+     "share_gain_vs_free": 1.297872340425532,
+     "spread_drop_vs_free": 1.19905111235892,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_6.0MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.6808510638297872,
+     "spread_drop_vs_free": 0.9452257572540549,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_6.0MHz_adh1e-11N",
+     "adhesion_force_N": 1e-11,
+     "share_gain_vs_free": 0.06382978723404255,
+     "spread_drop_vs_free": 0.25960145327500345,
+     "not_blocked": false
+    },
+    {
+     "name": "ADH_N128_6.0MHz_adh1e-10N",
+     "adhesion_force_N": 1e-10,
+     "share_gain_vs_free": 0.0,
+     "spread_drop_vs_free": 0.11704434784481438,
+     "not_blocked": false
+    }
+   ]
+  },
+  "128_9.375e+06": {
+   "bubbles": 128,
+   "frequency_Hz": 9375000.0,
+   "free_share_gain": 0.578125,
+   "free_spread_drop_um": 3.949181444674364,
+   "rows": [
+    {
+     "name": "ADH_N128_9.375MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_9.375MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 0.9864864864864865,
+     "spread_drop_vs_free": 1.0033543863667795,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_9.375MHz_adh1e-13N",
+     "adhesion_force_N": 1e-13,
+     "share_gain_vs_free": 1.054054054054054,
+     "spread_drop_vs_free": 1.0035777647194997,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_9.375MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.40540540540540543,
+     "spread_drop_vs_free": 0.6811624592202161,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N128_9.375MHz_adh1e-11N",
+     "adhesion_force_N": 1e-11,
+     "share_gain_vs_free": 0.013513513513513514,
+     "spread_drop_vs_free": 0.1514283516058125,
+     "not_blocked": false
+    },
+    {
+     "name": "ADH_N128_9.375MHz_adh1e-10N",
+     "adhesion_force_N": 1e-10,
+     "share_gain_vs_free": 0.04054054054054054,
+     "spread_drop_vs_free": 0.07076117785725126,
+     "not_blocked": false
+    }
+   ]
+  },
+  "255_3.4e+06": {
+   "bubbles": 255,
+   "frequency_Hz": 3400000.0,
+   "free_share_gain": 0.07450980392156864,
+   "free_spread_drop_um": -49.221426565353724,
+   "rows": [
+    {
+     "name": "ADH_N255_3.4MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N255_3.4MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 0.7894736842105263,
+     "spread_drop_vs_free": -0.03217052591987588,
+     "not_blocked": false
+    },
+    {
+     "name": "ADH_N255_3.4MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.6842105263157892,
+     "spread_drop_vs_free": -0.03113917294177295,
+     "not_blocked": false
+    }
+   ]
+  },
+  "255_6e+06": {
+   "bubbles": 255,
+   "frequency_Hz": 6000000.0,
+   "free_share_gain": 0.38039215686274513,
+   "free_spread_drop_um": 4.16321852841855,
+   "rows": [
+    {
+     "name": "ADH_N255_6.0MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N255_6.0MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 0.9896907216494842,
+     "spread_drop_vs_free": 1.007011482758943,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N255_6.0MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.5979381443298968,
+     "spread_drop_vs_free": 0.8194950119257272,
+     "not_blocked": true
+    }
+   ]
+  },
+  "255_9.375e+06": {
+   "bubbles": 255,
+   "frequency_Hz": 9375000.0,
+   "free_share_gain": 0.4588235294117647,
+   "free_spread_drop_um": 4.51737478700417,
+   "rows": [
+    {
+     "name": "ADH_N255_9.375MHz_adh0N",
+     "adhesion_force_N": 0.0,
+     "share_gain_vs_free": 1.0,
+     "spread_drop_vs_free": 1.0,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N255_9.375MHz_adh1e-14N",
+     "adhesion_force_N": 1e-14,
+     "share_gain_vs_free": 0.9401709401709402,
+     "spread_drop_vs_free": 0.9876467571475679,
+     "not_blocked": true
+    },
+    {
+     "name": "ADH_N255_9.375MHz_adh1e-12N",
+     "adhesion_force_N": 1e-12,
+     "share_gain_vs_free": 0.47863247863247865,
+     "spread_drop_vs_free": 0.7845265431837265,
+     "not_blocked": true
+    }
+   ]
+  }
+ }
+}

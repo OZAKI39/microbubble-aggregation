@@ -1,0 +1,52 @@
+"""Delete the approved groups of DELETE_LIST.json (2026-11-09, user approval: G1, G2, G3, G6).
+
+usage: python execute_cleanup.py PROJECT_ROOT DELETE_LIST.json OUT_JSON
+Before deleting, records every file (path, size, SHA-256) of the approved paths into OUT_JSON;
+then removes exactly those paths. G4, G5, G7 are kept (user decision).
+"""
+
+import hashlib
+import json
+import shutil
+import sys
+from pathlib import Path
+
+ROOT = Path(sys.argv[1]).resolve()
+LISTS = json.loads(Path(sys.argv[2]).read_text())
+OUT = Path(sys.argv[3])
+APPROVED = ("G1_user_named", "G2_regenerable_and_strays", "G3_superseded_unadopted_incomplete_evidence",
+            "G6_outdated_docs")
+
+
+def sha256(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for block in iter(lambda: f.read(1 << 20), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+record = {}
+for group in APPROVED:
+    record[group] = []
+    for row in LISTS[group]:
+        p = ROOT / row["path"]
+        if not p.exists():
+            raise FileNotFoundError(row["path"])
+        files = [p] if p.is_file() else sorted(f for f in p.rglob("*") if f.is_file())
+        record[group].append(dict(path=row["path"], bytes=row["bytes"], git_tracked_files=row["git_tracked_files"],
+                                  files=[dict(path=str(f.relative_to(ROOT)), bytes=f.stat().st_size, sha256=sha256(f))
+                                         for f in files]))
+OUT.write_text(json.dumps(record, indent=1) + "\n")
+
+for group in APPROVED:
+    for row in LISTS[group]:
+        p = ROOT / row["path"]
+        if p.is_dir():
+            shutil.rmtree(p)
+        else:
+            p.unlink()
+for group in APPROVED:
+    left = [row["path"] for row in LISTS[group] if (ROOT / row["path"]).exists()]
+    n = sum(len(r["files"]) for r in record[group])
+    print(group, "paths", len(LISTS[group]), "files", n, "bytes", sum(r["bytes"] for r in record[group]), "left", left)

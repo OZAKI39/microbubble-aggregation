@@ -1,0 +1,76 @@
+"""How far each fixed-step run got with each fallback solver (2026-11-06).
+
+usage (repository root):  python outcome.py OUT_DIR LABEL=RESULTS_DIR [LABEL=RESULTS_DIR ...]
+Writes fig0_completion_by_solver.png and COMPLETION.json.
+"""
+
+import json
+import re
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED = "#1f2328", "#5b6470"
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED})
+
+
+out = Path(sys.argv[1])
+sets = [arg.split("=", 1) for arg in sys.argv[2:]]
+table = {}
+for label, folder in sets:
+    for path in sorted(Path(folder).glob("seed*_dt*us")):
+        if not (path / "SUMMARY.json").is_file():
+            continue
+        seed, us = map(int, re.match(r"seed(\d+)_dt(\d+)us", path.name).groups())
+        s = json.loads((path / "SUMMARY.json").read_text())
+        table.setdefault(label, {})[(seed, us)] = dict(
+            status=s["status"], completed_s=s["completed_s"], reason=s["reason"],
+            bubbles=s["task"]["start"]["bubble_count"])
+seeds = sorted({k[0] for v in table.values() for k in v}, key=lambda k: table[sets[0][0]][(k, 1000)]["bubbles"])
+dts = sorted({k[1] for v in table.values() for k in v}, reverse=True)
+with tempfile.TemporaryDirectory() as font_dir:
+    setup_style(Path(font_dir))
+    fig, axes = plt.subplots(1, len(sets), figsize=(4.3 * len(sets), 3.2), squeeze=False)
+    for ax, (label, _) in zip(axes[0], sets):
+        grid = np.full((len(seeds), len(dts)), np.nan)
+        for a, seed in enumerate(seeds):
+            for b, us in enumerate(dts):
+                r = table[label].get((seed, us))
+                if r:
+                    grid[a, b] = r["completed_s"] / 0.5
+                    ax.text(b, a, "PASS" if r["status"] == "PASS" else f"{r['completed_s']:.3f} s",
+                            ha="center", va="center", fontsize=7.5,
+                            color="white" if grid[a, b] > 0.55 else INK)
+        ax.imshow(grid, cmap="Blues", vmin=0, vmax=1.15, aspect="auto")
+        ax.set_xticks(range(len(dts)), [f"{us / 1e3:g}" for us in dts])
+        ax.set_yticks(range(len(seeds)),
+                      [f"{table[label][(s, 1000)]['bubbles']} bubbles" for s in seeds])
+        ax.set_xlabel("Fixed step dt (ms)")
+        ax.set_title(label, loc="left", fontsize=9.5, color=INK)
+        for side in ax.spines.values():
+            side.set_visible(False)
+        ax.tick_params(length=0)
+    fig.suptitle("How far each 0.5 s run got before the contact problem was not solved "
+                 "(PASS = whole run)", x=0.01, ha="left", fontsize=10.5, color=INK)
+    fig.tight_layout()
+    fig.savefig(out / "fig0_completion_by_solver.png", dpi=170)
+    plt.close(fig)
+(out / "COMPLETION.json").write_text(json.dumps(
+    {label: {f"seed{k[0]}_dt{k[1]}us": v for k, v in rows.items()} for label, rows in table.items()},
+    indent=1) + "\n")

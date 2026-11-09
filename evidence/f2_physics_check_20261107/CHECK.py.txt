@@ -1,0 +1,172 @@
+"""F2 physics check (2026-11-07): near-field force against exact two-sphere potential flow, and
+the share of repulsive pairs for size distributions with radius-dependent SonoVue shells.
+
+usage:  python CHECK.py OUT_DIR   (two_spheres.py and linear_shell.py next to this file)
+Writes OUT_DIR/data/CHECK.json and OUT_DIR/fig1_f2_physics_check.png (English, Arial).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+
+from linear_shell import FIG4A, FIG4B, chi, tu_shell
+from two_spheres import mean_force, monopole_force
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+BLUE, ORANGE, GREEN, RED = "#2a6fb0", "#d08a1e", "#6a9f58", "#b8403a"
+CASE = (0.29325198219707016, 4.619149127111346e-09)  # the APECSS case at 1.78 um, every radius alike
+MEDIAN_M = 1.78e-6
+RANGE_M = (0.8e-6, 3.0e-6)  # radius range of Tu et al. 2009 Fig. 4
+
+
+def soft_core_factor(d, a):
+    q = np.minimum(d / (2.0 * 2 * a), 1)
+    core = 1.0 * 2 * a * (1 - q) ** 2
+    return d ** 3 / (d * d + core * core) ** 1.5
+
+
+def near_field():
+    a = 1.0
+    gaps = np.geomspace(1e-3, 3.0, 40)
+    rows = []
+    for h in gaps:
+        d = 2 * a + h
+        m = monopole_force(a, a, d, 1, 1)
+        row = dict(gap_over_R=float(h), soft_core=float(soft_core_factor(d, a)))
+        for name, r2 in (("in_phase", 1), ("anti_phase", -1), ("one_pulsating", 0)):
+            for key, free in (("fixed", False), ("free", True)):
+                f, _ = mean_force(a, a, d, 1, r2, free)
+                row[f"{name}_{key}"] = float(f / (m if r2 == 1 else -m if r2 == -1 else abs(m)))
+        rows.append(row)
+    return rows
+
+
+def pair_shares(rng):
+    out = []
+    for f in (2.0e6, 2.5e6, 3.0e6):
+        for sigma_g in (1.15, 1.3, 1.5):
+            r = np.exp(np.log(MEDIAN_M) + np.log(sigma_g) * rng.standard_normal(400000))
+            r = r[(r >= RANGE_M[0]) & (r <= RANGE_M[1])]
+            n = len(r) // 2
+            row = dict(frequency_Hz=f, sigma_g=sigma_g, pairs=n)
+            for shell in ("same_shell", "tu_shell"):
+                c = chi(r, f, *(CASE if shell == "same_shell" else tu_shell(r)))
+                p = np.real(c[:n] * np.conj(c[n:2 * n]))
+                row[f"{shell}_repulsive_share"] = float(np.mean(p < 0))
+                row[f"{shell}_repulsive_weight"] = float(np.sum(-p[p < 0]) / np.sum(np.abs(p)))
+            out.append(row)
+    return out
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def main():
+    out = Path(sys.argv[1])
+    (out / "data").mkdir(parents=True, exist_ok=True)
+    nf = near_field()
+    shares = pair_shares(np.random.default_rng(1))
+    R = np.linspace(*RANGE_M, 441)
+    response = {}
+    for f in (2.0e6, 2.5e6, 3.0e6):
+        for shell in ("same_shell", "tu_shell"):
+            c = chi(R, f, *(CASE if shell == "same_shell" else tu_shell(R)))
+            c0 = chi(MEDIAN_M, f, *(CASE if shell == "same_shell" else tu_shell(MEDIAN_M)))
+            response[f"{f / 1e6:.1f}MHz_{shell}"] = dict(amplitude_rel_1p78um=np.abs(c / c0).tolist(),
+                                                        phase_deg=np.degrees(np.angle(c)).tolist())
+    e, k = tu_shell(R)
+    (out / "data" / "CHECK.json").write_text(json.dumps(dict(
+        near_field=nf, pair_shares=shares, radius_m=R.tolist(), response=response,
+        tu_elasticity_N_m=e.tolist(), tu_shell_viscosity_kg_s=k.tolist(),
+        tu_fig4a_points=FIG4A.tolist(), tu_fig4b_points=FIG4B.tolist()), indent=1) + "\n")
+
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(1, 4, figsize=(18.5, 4.6), gridspec_kw=dict(wspace=0.42))
+        g = np.array([r["gap_over_R"] for r in nf])
+
+        ax = axes[0]
+        ax.plot(g, [r["in_phase_fixed"] for r in nf], color=RED, lw=2, label="Exact, centres held (no translation)")
+        ax.plot(g, [r["in_phase_free"] for r in nf], color=BLUE, lw=2, label="Exact, free to translate (massless)")
+        ax.plot(g, [r["soft_core"] for r in nf], color=INK, lw=2, ls="--", label="Code now: soft core")
+        ax.axhline(1, color=MUTED, lw=1, ls=":")
+        ax.axvline(0.2, color=GREEN, lw=1)
+        ax.text(0.21, 3.6, "viscous layer\n0.36 um = 0.2 R\n(2.5 MHz)", fontsize=7.5, color=GREEN, va="top")
+        ax.set_xscale("log")
+        ax.set_ylim(0, 4.2)
+        ax.set_xlabel("Surface gap / R (equal bubbles)")
+        ax.set_ylabel("Attraction / point-monopole formula")
+        ax.legend(loc="upper right", fontsize=7.2, frameon=False)
+        ax.grid(color=GRID, lw=0.8)
+        ax.set_title("(a) In-phase pair: near-field force", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[1]
+        ax.plot(g, [r["one_pulsating_fixed"] for r in nf], color=RED, lw=2, label="Centres held")
+        ax.plot(g, [r["one_pulsating_free"] for r in nf], color=BLUE, lw=2, label="Free to translate")
+        ax.axhline(0, color=MUTED, lw=1, ls=":")
+        ax.text(0.0013, 0.05, "code now: 0 (no term)", fontsize=7.5, color=INK)
+        ax.set_xscale("log")
+        ax.set_xlabel("Surface gap / R (equal bubbles)")
+        ax.set_ylabel("Force / in-phase monopole force\n(+ repulsion, - attraction)")
+        ax.legend(loc="lower right", fontsize=7.2, frameon=False)
+        ax.grid(color=GRID, lw=0.8)
+        ax.set_title("(b) Only one bubble pulsates", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[2]
+        for shell, colour, label in (("same_shell", ORANGE, "Same shell at every size"),
+                                     ("tu_shell", BLUE, "Shell vs radius (Tu et al. 2009)")):
+            ax.plot(R * 1e6, response[f"2.5MHz_{shell}"]["phase_deg"], color=colour, lw=2, label=label)
+        ax.axhline(90, color=MUTED, lw=1, ls=":")
+        ax.axvline(1.78, color=MUTED, lw=1, ls=":")
+        ax.set_xlabel("Bubble radius (um)")
+        ax.set_ylabel("Phase of volume oscillation vs pressure (deg)")
+        ax.set_ylim(0, 180)
+        ax.legend(loc="upper right", fontsize=7.2, frameon=False)
+        ax.text(1.82, 8, "1.78 um (code now)", fontsize=7.5, color=MUTED)
+        ax.grid(color=GRID, lw=0.8)
+        ax.set_title("(c) Single-bubble response, 2.5 MHz", loc="left", fontsize=9.5, color=INK)
+
+        ax = axes[3]
+        x = np.arange(3)
+        width = 0.13
+        for k_, f in enumerate((2.0e6, 2.5e6, 3.0e6)):
+            rows = [r for r in shares if r["frequency_Hz"] == f]
+            for s, r in enumerate(rows):
+                pos = k_ + (s - 1) * 0.3
+                ax.bar(pos - width / 2, r["same_shell_repulsive_share"] * 100, width, color=ORANGE,
+                       label="Same shell" if k_ == 0 and s == 0 else None)
+                ax.bar(pos + width / 2, r["tu_shell_repulsive_share"] * 100, width, color=BLUE,
+                       label="Shell vs radius (Tu 2009)" if k_ == 0 and s == 0 else None)
+                ax.text(pos, max(r["same_shell_repulsive_share"], r["tu_shell_repulsive_share"]) * 100 + 1,
+                        f"{r['sigma_g']}", ha="center", fontsize=6.5, color=MUTED)
+        ax.set_xticks(x, ["2.0 MHz", "2.5 MHz", "3.0 MHz"])
+        ax.set_ylabel("Pairs pushing apart (%)\n(random pairs, single-bubble responses)")
+        ax.set_ylim(0, 50)
+        ax.text(0.02, 0.97, "numbers above bars: geometric SD of radius\n(log-normal, median 1.78 um, 0.8-3.0 um)",
+                transform=ax.transAxes, fontsize=7, color=MUTED, va="top")
+        ax.legend(loc="upper left", fontsize=7.2, frameon=False, bbox_to_anchor=(0.0, 0.88))
+        ax.grid(axis="y", color=GRID, lw=0.8)
+        ax.set_axisbelow(True)
+        ax.set_title("(d) Size spread: pairs that repel", loc="left", fontsize=9.5, color=INK)
+        fig.savefig(out / "fig1_f2_physics_check.png", dpi=170, bbox_inches="tight")
+        plt.close(fig)
+
+
+if __name__ == "__main__":
+    main()

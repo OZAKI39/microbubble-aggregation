@@ -1,0 +1,90 @@
+"""How weak must adhesion be not to block a cluster from taking a shape? Analysis of the weak-adhesion runs (2026-11-08),
+grouped by bubble count and frequency (the range ends 64 and 255 bubbles; evidence/morph_sheet_20261108/ had 128).
+
+usage (repository root):  PYTHONPATH=.:SCRATCH python analyse_adhesion.py DATA_DIR OUT_JSON OUT_NPZ
+DATA_DIR: <name>/ROW.json and <name>/compact.npz of adhesion_runs.py (names starting with ADH): a centred
+cluster under lines_x (node plane x = 0) for 6.4 s at one frequency and one adhesion.
+At every saved frame (50 ms): the share of bubbles whose centre is within R (1.78 um) of the node plane, the
+spread of the centres along x (across the plane), pieces (surfaces within 0.5 R), and the share of the start
+contacts (gap below 0.01 R) open by more than the adhesion range (0.2 um).
+Summary per bubble count, frequency and adhesion: the drop of the x spread over the run (the cluster flattening onto the
+plane) and the gain of the share on the plane, each relative to the run without adhesion with the same
+bubble count and frequency; "not blocked" when the drop is at least half of it. The share is reported, not used: at 3.4 MHz
+the run without adhesion splits into pieces instead of gathering on the plane, its share hardly changes
+(0.26 -> 0.27) and ratios to it mean nothing.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
+from scipy.spatial import cKDTree
+
+R = 1.78e-6
+NOT_BLOCKED = 0.5
+data, out_json, out_npz = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+
+
+def pairs_with_gap_below(x, radii, gap_m):
+    pairs = np.array(sorted(cKDTree(x).query_pairs(2 * radii.max() + gap_m)), dtype=int).reshape(-1, 2)
+    d = np.linalg.norm(x[pairs[:, 1]] - x[pairs[:, 0]], axis=1)
+    return pairs[d - radii[pairs[:, 0]] - radii[pairs[:, 1]] < gap_m]
+
+
+def piece_count(x, radii):
+    pairs = pairs_with_gap_below(x, radii, 0.5 * R)
+    graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(x), len(x)))
+    return connected_components(graph, directed=False)[0]
+
+
+runs, series = {}, {}
+for folder in sorted(p for p in data.iterdir() if (p / "ROW.json").is_file() and p.name.startswith("ADH")):
+    r = json.loads((folder / "ROW.json").read_text())
+    c = np.load(folder / "compact.npz")
+    t, positions, radii = c["times_s"], c["positions_m"], c["radii_m"]
+    contacts = pairs_with_gap_below(positions[0], radii, 0.01 * R)
+    rows = {k: [] for k in ("share_on_plane", "spread_x_m", "pieces", "start_contacts_open")}
+    for x in positions:
+        rows["share_on_plane"].append(np.mean(np.abs(x[:, 0]) < R))
+        rows["spread_x_m"].append(x[:, 0].std())
+        rows["pieces"].append(piece_count(x, radii))
+        gap = (np.linalg.norm(x[contacts[:, 1]] - x[contacts[:, 0]], axis=1)
+               - radii[contacts[:, 0]] - radii[contacts[:, 1]])
+        rows["start_contacts_open"].append(np.mean(gap > 0.2e-6))
+    rows = {k: np.asarray(v, float) for k, v in rows.items()}
+    runs[r["name"]] = dict(bubbles=r["bubbles"], frequency_Hz=r["frequency_Hz"], adhesion_force_N=r["adhesion_force_N"], status=r["status"],
+                           completed_s=r["completed_s"], wall_s=r["wall_s"],
+                           step_max_displacement_median_m=r["step_max_displacement_median_m"],
+                           step_max_displacement_max_m=r["step_max_displacement_max_m"],
+                           share_on_plane_start=float(rows["share_on_plane"][0]),
+                           share_on_plane_end=float(rows["share_on_plane"][-1]),
+                           spread_x_um_start=float(rows["spread_x_m"][0] * 1e6),
+                           spread_x_um_end=float(rows["spread_x_m"][-1] * 1e6),
+                           pieces_max=int(rows["pieces"].max()),
+                           start_contacts_open_end=float(rows["start_contacts_open"][-1]))
+    for key, values in rows.items():
+        series[f"{r['name']}__{key}"] = values
+    series[f"{r['name']}__t_s"] = t
+
+result = dict(not_blocked_fraction=NOT_BLOCKED, runs=runs, groups={})
+for bubbles, frequency in sorted({(v["bubbles"], v["frequency_Hz"]) for v in runs.values()}):
+    same = {n: v for n, v in runs.items() if v["frequency_Hz"] == frequency and v["bubbles"] == bubbles}
+    free = next(v for v in same.values() if v["adhesion_force_N"] == 0)
+    gain0 = free["share_on_plane_end"] - free["share_on_plane_start"]
+    drop0 = free["spread_x_um_start"] - free["spread_x_um_end"]
+    rows = []
+    for n, v in sorted(same.items(), key=lambda item: item[1]["adhesion_force_N"]):
+        gain = (v["share_on_plane_end"] - v["share_on_plane_start"]) / gain0
+        drop = (v["spread_x_um_start"] - v["spread_x_um_end"]) / drop0
+        rows.append(dict(name=n, adhesion_force_N=v["adhesion_force_N"], share_gain_vs_free=float(gain),
+                         spread_drop_vs_free=float(drop), not_blocked=bool(drop >= NOT_BLOCKED)))
+        print(f"{bubbles:4d} bubbles {frequency / 1e6:6.3f} MHz adhesion {v['adhesion_force_N']:.0e} N: on plane {v['share_on_plane_start']:.2f} -> "
+              f"{v['share_on_plane_end']:.2f} (gain {gain:.2f} of free), x spread {v['spread_x_um_start']:.2f} -> "
+              f"{v['spread_x_um_end']:.2f} um (drop {drop:.2f} of free), start contacts open {v['start_contacts_open_end']:.3f}, "
+              f"pieces max {v['pieces_max']}, step disp max {v['step_max_displacement_max_m']:.2e} m, {v['status']}", flush=True)
+    result["groups"][f"{bubbles}_{frequency:g}"] = dict(bubbles=bubbles, frequency_Hz=frequency, free_share_gain=float(gain0), free_spread_drop_um=float(drop0), rows=rows)
+out_json.write_text(json.dumps(result, indent=1) + "\n")
+np.savez_compressed(out_npz, **series)

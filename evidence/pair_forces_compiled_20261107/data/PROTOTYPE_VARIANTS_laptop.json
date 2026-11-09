@@ -1,0 +1,7 @@
+{
+ "note": "Laptop (i7-13700HX), synthetic harmonics on IRREGULAR_N128_a1.0_s0 (PROTO.py.txt), compiled F2 in ms (median of 300) and largest difference from the NumPy F2 over the largest force. v0: first version (std::pow, complex products); v1: t sqrt(t) in place of pow(t, 1.5); v2 (adopted): v1 with the harmonic sums in real arithmetic; v3: v2 without the per-pair cosine and sine (wrong results, only to see what they cost). NumPy: 3.84 ms (collective), 5.08 ms (pairwise).",
+ "v0": {"collective_ms": 0.442, "collective_difference": 9.0e-16, "pairwise_feedback_ms": 0.599, "pairwise_feedback_difference": 6.5e-16},
+ "v1": {"collective_ms": 0.352, "collective_difference": 7.2e-16, "pairwise_feedback_ms": 0.503, "pairwise_feedback_difference": 7.5e-16},
+ "v2": {"collective_ms": 0.295, "collective_difference": 7.2e-16, "pairwise_feedback_ms": 0.437, "pairwise_feedback_difference": 7.5e-16},
+ "v3_no_sincos": {"collective_ms": 0.172, "pairwise_feedback_ms": 0.36}
+}

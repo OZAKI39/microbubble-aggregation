@@ -1,0 +1,33 @@
+"""Noise floor of the cycle-to-cycle change (2026-11-08, diagnosis): one bubble from rest, exactly
+N cycles, per-cycle |W_1|/V0 and the largest tally change d1 (relative to |W_1|). The plateau of
+d1 x fund after the ringing has decayed is the absolute noise of the tallies."""
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import apecss_options, shell_parameters
+from workflows.f10ag import load_pretrain_policy
+
+exe = sys.argv[1]
+s = load_pretrain_policy(Path("."))["apecss_response"]
+with tempfile.TemporaryDirectory() as tmp:
+    for ode in (1e-8, 1e-10):
+        path = Path(tmp) / f"b{ode:g}.apecss"
+        path.write_text(apecss_options(shell_parameters(s["bubble"], 1.78e-6, s["shell_vs_radius"]), ode))
+        for f in (2.5e6, 9.375e6, 10e6):
+            for p in (1e-3, 1.0, 1e3, 2.5e4):
+                r = subprocess.run([exe, "-options", str(path), "-freq", repr(f), "-amp", repr(p), "-cycles", "300", "-history"],
+                                   capture_output=True, text=True)
+                line = [l for l in r.stdout.splitlines() if l.startswith("APECSS_HARMONICS_JSON ")][0]
+                d = json.loads(line.split(" ", 1)[1])
+                h = np.array(d["history"])  # cycle, fund*V0, d1, d2, est
+                V0 = d["rest_volume_m3"]
+                fund = h[:, 1] / V0
+                absd = h[:, 2] * fund
+                tail = absd[150:]
+                print(f"ode {ode:g} f {f/1e6:6.3f} MHz |P| {p:8.3g} Pa: fund {fund[-1]:.3g}, abs change (cycles 150-300) median {np.median(tail):.2g} max {tail.max():.2g}, "
+                      f"relative median {np.median(h[150:, 2]):.2g}", flush=True)

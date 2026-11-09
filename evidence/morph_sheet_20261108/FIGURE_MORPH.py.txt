@@ -1,0 +1,300 @@
+"""Figures of the other continuous changes and of the weak-adhesion test (2026-11-08).
+
+usage (repository root):  PYTHONPATH=.:SCULPT_SCRIPTS:SCRATCH python figure_morph.py MOV_DIR MORPH_JSON MORPH_NPZ ADHESION_JSON ADHESION_NPZ OUT_DIR
+Writes OUT_DIR/fig1_translate.png (node plane and sheet position, lag, share within R of the plane, spreads;
+one column per speed), fig2_bend.png (bending of the sheet and of the zero line, share within R of the
+line, median distance, spreads), fig3_line_dot.png (gamma, spreads along x, y, z, share within R of the
+plane x = 0; the last column: up to 22.5 deg in 3.2 s, then lines_x), fig4_views.png (top views with |p|
+of the field in effect, dashed: its zero set; side views y-z of the line-to-dot runs; colour = height or
+x) and fig5_weak_adhesion.png (spread of a 128-bubble start across the node plane against time for each
+adhesion and frequency; how far it flattens relative to no adhesion, against adhesion).
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import font_manager
+from matplotlib.collections import EllipseCollection
+
+from microbubble.acoustics import WaterDiscs, direct_quadrature_order
+from morph import local_pressure, morph_drive
+from sculpt import centre_fields
+from workflows.f10ag import pretrain_context
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, BLUE, ORANGE, GREEN, GREY = "#1f2328", "#5b6470", "#1f5a96", "#c2611f", "#2f7d4f", "#9aa5b1"
+RAMP = ["#c6dbef", "#9ecae1", "#6baed6", "#3182bd", "#08519c"]  # one hue, light to dark: weak to strong adhesion
+FREQUENCY_HZ = 9.375e6
+HALF_UM = 45
+SIDE_UM = 70  # side views: the column of the line-to-dot runs grows to about +-60 um in height
+mov, out_dir = Path(sys.argv[1]), Path(sys.argv[6])
+morph, series = json.loads(Path(sys.argv[2]).read_text()), np.load(sys.argv[3])
+adhesion, adhesion_series = json.loads(Path(sys.argv[4]).read_text()), np.load(sys.argv[5])
+elements = pretrain_context(Path("."), FREQUENCY_HZ).discs.elements
+_, kappa_x, kappa_y = centre_fields(elements, FREQUENCY_HZ)
+line_um = np.linspace(-HALF_UM, HALF_UM, 181)
+gx, gy = np.meshgrid(line_um, line_um, indexing="xy")
+disc_field = WaterDiscs(elements, FREQUENCY_HZ).evaluate(np.column_stack([gx.ravel(), gy.ravel(), np.zeros(gx.size)]) * 1e-6,
+                                                         direct_quadrature_order(FREQUENCY_HZ))[0]
+
+
+def runs_of(kind):
+    names = [n for n, s in morph.items() if s["kind"] == kind]
+    return sorted(names, key=lambda n: (morph[n]["hold_value"] != morph[n]["target"], morph[n]["sweep_s"]))
+
+
+def title(n):
+    s = morph[n]
+    if s["hold_value"] != s["target"]:
+        return f"to {s['target']:g} deg in {s['sweep_s']:g} s ({s['segments'] - 1} steps), then lines x for {s['hold_s']:g} s"
+    return f"in {s['sweep_s']:g} s ({s['segments']} steps), then {s['hold_s']:g} s held"
+
+
+def get(n, key):
+    return series[f"{n}__{key}"]
+
+
+def mark_end(axes_column, n):
+    for ax in axes_column:
+        ax.axvline(morph[n]["sweep_s"], color=MUTED, lw=0.8, ls=":")
+
+
+def pieces_text(ax, n):
+    k = int(get(n, "pieces").max())
+    ax.text(0.98, 0.05, f"pieces: {'1 throughout' if k == 1 else f'up to {k}'}", transform=ax.transAxes, ha="right",
+            fontsize=7.5, color=INK)
+
+
+def field_map(segment):
+    u = np.array(segment["amplitudes_Pa_eq"]) * np.exp(1j * np.array(segment["phases_rad"]))
+    p = np.abs(u @ disc_field).reshape(gx.shape)
+    return p / p.max()
+
+
+def dots(ax, offsets, radii, colour, clim):
+    order = np.argsort(colour)
+    d = EllipseCollection(2 * radii[order], 2 * radii[order], 0, units="xy", offsets=offsets[order],
+                          offset_transform=ax.transData, cmap="viridis", edgecolors="white", linewidths=0.15)
+    d.set_array(colour[order])
+    d.set_clim(*clim)
+    ax.add_collection(d)
+    return d
+
+
+with tempfile.TemporaryDirectory() as font_dir:
+    for font in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / font).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / font, Path(font_dir) / font)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 8.5, "axes.edgecolor": MUTED,
+                         "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK})
+
+    # ---- figure 1: translation ----
+    names = runs_of("translate")
+    fig, axes = plt.subplots(4, len(names), figsize=(13.5, 10.0), dpi=120, sharex="col")
+    fig.subplots_adjust(left=0.07, right=0.99, top=0.91, bottom=0.06, hspace=0.18, wspace=0.22)
+    for col, n in enumerate(names):
+        t = get(n, "t_s")
+        d = get(n, "value")
+        axes[0, col].plot(t, d, color=ORANGE, lw=1.2, drawstyle="steps-pre", label="node plane in effect")
+        axes[0, col].plot(t, d - get(n, "lag_m") * 1e6, color=BLUE, lw=1.2, label="sheet (mean x of the bubbles)")
+        axes[0, col].set_ylim(-2, 24)
+        axes[0, col].set_title(f"node plane moves 20 um {title(n)}\n({morph[n]['speed_um_s']:.2g} um/s)", loc="left",
+                               fontsize=8.5, color=INK)
+        axes[1, col].plot(t, get(n, "lag_m") * 1e6, color=BLUE, lw=1.2)
+        axes[1, col].axhline(1.78, color=MUTED, lw=0.8, ls="--")
+        axes[1, col].set_ylim(-0.3, 7)
+        axes[2, col].plot(t, get(n, "share_on_zero_set"), color=GREEN, lw=1.2)
+        axes[2, col].axhline(0.8, color=MUTED, lw=0.8, ls="--")
+        axes[2, col].set_ylim(-0.03, 1.05)
+        pieces_text(axes[2, col], n)
+        for key, colour, label in (("spread_x_m", ORANGE, "x (across)"), ("spread_y_m", BLUE, "y (along)"),
+                                   ("spread_z_m", GREY, "z (height)")):
+            axes[3, col].plot(t, get(n, key) * 1e6, color=colour, lw=1.2, label=label)
+        axes[3, col].set_ylim(0, 20)
+        axes[3, col].set_xlabel("time (s)")
+        mark_end(axes[:, col], n)
+    axes[0, 0].set_ylabel("x position (um)")
+    axes[1, 0].set_ylabel("lag: node minus sheet (um)")
+    axes[2, 0].set_ylabel("share within R of the plane")
+    axes[3, 0].set_ylabel("spread of the centres (um)")
+    axes[0, 0].legend(frameon=False, fontsize=7, loc="lower right")
+    axes[3, 0].legend(frameon=False, fontsize=7, loc="center right")
+    axes[1, 0].text(0.98, 0.9, "dashed: R = 1.78 um", transform=axes[1, 0].transAxes, ha="right", fontsize=7, color=MUTED)
+    axes[2, 0].text(0.98, 0.14, "dashed: 0.8", transform=axes[2, 0].transAxes, ha="right", fontsize=7, color=MUTED)
+    fig.suptitle("Translation: the X pair's node plane moves by 20 um (only the pair's inner phase changes); "
+                 "250-bubble sheet, 9.375 MHz, no adhesion (dotted: end of the move)", x=0.07, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig1_translate.png")
+    plt.close(fig)
+
+    # ---- figure 2: bend ----
+    names = runs_of("bend")
+    fig, axes = plt.subplots(4, len(names), figsize=(13.5, 10.0), dpi=120, sharex="col")
+    fig.subplots_adjust(left=0.07, right=0.99, top=0.91, bottom=0.06, hspace=0.18, wspace=0.22)
+    for col, n in enumerate(names):
+        t = get(n, "t_s")
+        axes[0, col].plot(t, -get(n, "bend_line_per_m") * 1e-3, color=ORANGE, lw=1.2, drawstyle="steps-pre",
+                          label="zero line in effect")
+        axes[0, col].plot(t, -get(n, "bend_sheet_per_m") * 1e-3, color=BLUE, lw=1.2, label="sheet")
+        axes[0, col].set_ylim(-1, 14)
+        axes[0, col].set_title(f"a_y 0 -> 0.7 {title(n)}", loc="left", fontsize=8.5, color=INK)
+        axes[1, col].plot(t, get(n, "share_on_zero_set"), color=GREEN, lw=1.2)
+        axes[1, col].axhline(0.8, color=MUTED, lw=0.8, ls="--")
+        axes[1, col].set_ylim(-0.03, 1.05)
+        pieces_text(axes[1, col], n)
+        axes[2, col].plot(t, get(n, "distance_median_m") * 1e6, color=BLUE, lw=1.2)
+        axes[2, col].axhline(1.78, color=MUTED, lw=0.8, ls="--")
+        axes[2, col].set_ylim(0, 2.5)
+        for key, colour, label in (("spread_x_m", ORANGE, "x"), ("spread_y_m", BLUE, "y (along)"),
+                                   ("spread_z_m", GREY, "z (height)")):
+            axes[3, col].plot(t, get(n, key) * 1e6, color=colour, lw=1.2, label=label)
+        axes[3, col].set_ylim(0, 20)
+        axes[3, col].set_xlabel("time (s)")
+        mark_end(axes[:, col], n)
+    axes[0, 0].set_ylabel("bending b of x = x0 - b y^2 (1/mm)")
+    axes[1, 0].set_ylabel("share within R of the zero line")
+    axes[2, 0].set_ylabel("median distance to the line (um)")
+    axes[3, 0].set_ylabel("spread of the centres (um)")
+    axes[0, 0].legend(frameon=False, fontsize=7, loc="lower right")
+    axes[3, 0].legend(frameon=False, fontsize=7, loc="center right")
+    axes[2, 0].text(0.98, 0.9, "dashed: R", transform=axes[2, 0].transAxes, ha="right", fontsize=7, color=MUTED)
+    fig.suptitle("Straight to wavy: the Y pair joins in phase (a_y 0 -> 0.7), the X pair's phase keeps the crest at the "
+                 "sheet's centre; 250-bubble sheet, 9.375 MHz, no adhesion", x=0.07, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig2_bend.png")
+    plt.close(fig)
+
+    # ---- figure 3: line to dot ----
+    names = runs_of("line_dot")
+    fig, axes = plt.subplots(3, len(names), figsize=(15.5, 8.2), dpi=120, sharex="col")
+    fig.subplots_adjust(left=0.06, right=0.99, top=0.89, bottom=0.07, hspace=0.2, wspace=0.22)
+    for col, n in enumerate(names):
+        t = get(n, "t_s")
+        axes[0, col].plot(t, get(n, "value"), color=ORANGE, lw=1.2, drawstyle="steps-pre")
+        axes[0, col].set_ylim(-2, 48)
+        axes[0, col].set_title(title(n), loc="left", fontsize=8.5, color=INK)
+        for key, colour, label in (("spread_y_m", BLUE, "y (along the sheet)"), ("spread_z_m", GREY, "z (height)"),
+                                   ("spread_x_m", ORANGE, "x (across)")):
+            axes[1, col].plot(t, get(n, key) * 1e6, color=colour, lw=1.2, label=label)
+        axes[1, col].set_ylim(0, 33)
+        axes[2, col].plot(t, get(n, "share_on_zero_set"), color=GREEN, lw=1.2)
+        axes[2, col].set_ylim(-0.03, 1.05)
+        pieces_text(axes[2, col], n)
+        axes[2, col].set_xlabel("time (s)")
+        mark_end(axes[:, col], n)
+    axes[0, 0].set_ylabel("gamma in effect (deg)")
+    axes[1, 0].set_ylabel("spread of the centres (um)")
+    axes[2, 0].set_ylabel("share within R of the plane x = 0")
+    axes[1, 0].legend(frameon=False, fontsize=7, loc="upper left")
+    fig.suptitle("Line to dot: the Y pair joins at 90 deg (gamma 0 -> 45 deg); the only zero becomes the vertical line "
+                 "x = y = 0. 250-bubble sheet, 9.375 MHz, no adhesion (dotted: end of the change)", x=0.06, ha="left",
+                 fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig3_line_dot.png")
+    plt.close(fig)
+
+    # ---- figure 4: views ----
+    rows = [(runs_of("translate")[1], "top"), (runs_of("bend")[1], "top"), (runs_of("line_dot")[1], "top"),
+            (runs_of("line_dot")[1], "side"), (runs_of("line_dot")[-1], "top"), (runs_of("line_dot")[-1], "side")]
+    fig, axes = plt.subplots(len(rows), 5, figsize=(13.2, 16.0), dpi=110)
+    fig.subplots_adjust(left=0.07, right=0.92, top=0.95, bottom=0.04, hspace=0.36, wspace=0.12)
+    for row, (n, view) in enumerate(rows):
+        s = morph[n]
+        r = json.loads((mov / n / "ROW.json").read_text())
+        c = np.load(mov / n / "compact.npz")
+        t = get(n, "t_s")
+        sweep = s["sweep_s"]
+        for col, when in enumerate((0.0, sweep / 3, 2 * sweep / 3, sweep, sweep + s["hold_s"])):
+            ax = axes[row, col]
+            j = int(np.argmin(np.abs(t - when)))
+            value = float(get(n, "value")[j])
+            x = c["positions_m"][j] * 1e6
+            radii = c["radii_m"] * 1e6
+            if view == "top":
+                k = int(np.searchsorted(np.cumsum([0.0] + [g["duration_s"] for g in r["segments"]])[:-1], t[j] - 1e-9) - 1)
+                segment = r["segments"][max(k, 0)]
+                if k < 0:  # the start frame: lines_x made the sheet (the translation at 0)
+                    a, ph = morph_drive(elements, FREQUENCY_HZ, "translate", 0.0, 20.0, 6000.0)
+                    segment = dict(amplitudes_Pa_eq=a.tolist(), phases_rad=ph.tolist())
+                ax.imshow(field_map(segment), origin="lower", extent=[-HALF_UM, HALF_UM, -HALF_UM, HALF_UM],
+                          cmap="Greys_r", vmin=0, vmax=1.6)
+                form = local_pressure(s["kind"], value, kappa_x, kappa_y)(gx * 1e-6, gy * 1e-6)
+                if s["kind"] == "line_dot" and value > 0:
+                    ax.plot(0, 0, marker="+", ms=10, color=ORANGE, mew=1.5)
+                else:
+                    ax.contour(gx, gy, np.real(form), levels=[0], colors=ORANGE, linewidths=0.9, linestyles="--")
+                handle = dots(ax, x[:, :2], radii, x[:, 2], (-35, 35))
+                ax.set_xlabel("x (um)", fontsize=7)
+            else:
+                handle_side = dots(ax, x[:, 1:], radii, x[:, 0], (-6, 6))
+                ax.axhline(0, color=GREY, lw=0.5)
+                ax.set_xlabel("y (um)", fontsize=7)
+            top = HALF_UM if view == "top" else SIDE_UM
+            ax.text(-HALF_UM + 2, top - 2, f"t = {t[j]:.2f} s, value {value:.3g}\non {'plane' if s['kind'] != 'bend' else 'line'} "
+                    f"{get(n, 'share_on_zero_set')[j]:.2f}, pieces {int(get(n, 'pieces')[j])}", fontsize=6.5, color=INK,
+                    va="top", bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1.2))
+            ax.set_xlim(-HALF_UM, HALF_UM)
+            ax.set_ylim(-top, top)
+            ax.set_aspect("equal")
+            ax.tick_params(labelsize=6.5)
+        label = {"translate": "translate 6.4 s", "bend": "straight -> wavy 6.4 s", "line_dot": "line -> dot"}[s["kind"]]
+        if s["kind"] == "line_dot":
+            label += " 6.4 s" if s["hold_value"] == s["target"] else ", stopped"
+        axes[row, 0].set_ylabel(f"{label}\n{'top view: y' if view == 'top' else 'side view: z'} (um)", fontsize=7.5)
+    bar = fig.colorbar(handle, cax=fig.add_axes([0.94, 0.62, 0.01, 0.25]))
+    bar.set_label("height z (um), top views")
+    bar = fig.colorbar(handle_side, cax=fig.add_axes([0.94, 0.12, 0.01, 0.25]))
+    bar.set_label("x (um), side views")
+    fig.suptitle("Top views (background |p| of the field in effect, dark = low; dashed or +: its zero set) and side views "
+                 "(y-z); columns: start, 1/3, 2/3 and end of the change, end of the hold", x=0.07, ha="left", fontsize=9.5,
+                 color=INK)
+    fig.savefig(out_dir / "fig4_views.png")
+    plt.close(fig)
+
+    # ---- figure 5: weak adhesion ----
+    freqs = sorted(adhesion["frequencies"], key=float)
+    fig, axes = plt.subplots(1, len(freqs) + 1, figsize=(15.0, 4.2), dpi=120,
+                             gridspec_kw=dict(width_ratios=[1] * len(freqs) + [1.3]))
+    fig.subplots_adjust(left=0.05, right=0.99, top=0.83, bottom=0.14, wspace=0.28)
+    for ax, f in zip(axes, freqs):
+        rows_f = adhesion["frequencies"][f]["rows"]
+        strong = [row for row in rows_f if row["adhesion_force_N"] > 0]
+        for row in rows_f:
+            name = row["name"]
+            if row["adhesion_force_N"] == 0:
+                colour, style, label = INK, "--", "no adhesion"
+            else:
+                colour = RAMP[strong.index(row)]
+                style, label = "-", f"{row['adhesion_force_N']:.0e} N"
+            ax.plot(adhesion_series[f"{name}__t_s"], adhesion_series[f"{name}__spread_x_m"] * 1e6, color=colour, ls=style,
+                    lw=1.3, label=label)
+        ax.set_ylim(0, 7)
+        ax.set_xlabel("time (s)")
+        ax.set_title(f"{float(f) / 1e6:g} MHz, X pair alone at 6000 Pa-eq", loc="left", fontsize=9, color=INK)
+    axes[0].set_ylabel("spread across the node plane, x (um)")
+    axes[0].legend(frameon=False, fontsize=7, loc="lower left", ncol=2)
+    ax = axes[-1]
+    ax.axvspan(1e-14, 1e-12, color=GREEN, alpha=0.12, lw=0)
+    ax.text(1.2e-14, 0.05, "pattern runs:\nweak adhesion\n1e-14 - 1e-12 N", fontsize=7, color=GREEN)
+    ax.axhline(0.5, color=MUTED, lw=0.8, ls="--")
+    ax.axvline(5.04e-10, color=MUTED, lw=0.8, ls=":")
+    ax.text(4.5e-10, 0.95, "default\n5.04e-10 N", fontsize=7, color=MUTED, ha="right")
+    for f, colour in zip(freqs, (ORANGE, BLUE, GREEN)):
+        rows_f = [row for row in adhesion["frequencies"][f]["rows"] if row["adhesion_force_N"] > 0]
+        ax.plot([row["adhesion_force_N"] for row in rows_f], [row["spread_drop_vs_free"] for row in rows_f], marker="o",
+                color=colour, lw=1.2, label=f"{float(f) / 1e6:g} MHz")
+    ax.set_xscale("log")
+    ax.set_ylim(0, 1.3)
+    ax.set_xlabel("adhesion per contact (N)")
+    ax.set_ylabel("flattening onto the plane / without adhesion")
+    ax.set_title("how far it flattens in 6.4 s (dashed: half)", loc="left", fontsize=9, color=INK)
+    ax.legend(frameon=False, fontsize=7, loc="center right", bbox_to_anchor=(0.97, 0.45))
+    fig.suptitle("Weak adhesion: a centred 128-bubble start (sigma_g 1.25) under one standing-wave pair, 6.4 s, 1 ms steps; "
+                 "which adhesion still lets it take the shape?", x=0.05, ha="left", fontsize=10, color=INK)
+    fig.savefig(out_dir / "fig5_weak_adhesion.png")
+    plt.close(fig)

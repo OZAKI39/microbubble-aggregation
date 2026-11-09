@@ -1,0 +1,40 @@
+{
+ "2.81674e+06": {
+  "frequency_Hz": 2816742.1386329415,
+  "instantaneous_vs_model_F2_max_difference": 0.002609322743826127,
+  "F2_touching": {
+   "uneven_N_median": 2.5828897073950237e-11,
+   "uneven_speed_mm_s_median": 0.7256464134502867,
+   "outward_N_median": -9.003377762880819e-12
+  },
+  "F2_others": {
+   "uneven_N_median": 2.0726896938748317e-11,
+   "uneven_speed_mm_s_median": 0.5696656928493741,
+   "outward_N_median": -6.165229387126419e-12
+  },
+  "F1": {
+   "uneven_N_median": 4.43492446893818e-12,
+   "uneven_speed_mm_s_median": 0.1270108308232309,
+   "outward_N_median": -6.409387591991875e-14
+  }
+ },
+ "9.4e+06": {
+  "frequency_Hz": 9400000.0,
+  "instantaneous_vs_model_F2_max_difference": 0.08233081070710874,
+  "F2_touching": {
+   "uneven_N_median": 8.978826882348556e-13,
+   "uneven_speed_mm_s_median": 0.028412753057688256,
+   "outward_N_median": -1.4303013840734183e-14
+  },
+  "F2_others": {
+   "uneven_N_median": 1.1520651225115317e-12,
+   "uneven_speed_mm_s_median": 0.037644526344470026,
+   "outward_N_median": -8.40377844502651e-13
+  },
+  "F1": {
+   "uneven_N_median": 4.726717018672724e-13,
+   "uneven_speed_mm_s_median": 0.01400271557939438,
+   "outward_N_median": -1.246016874849173e-13
+  }
+ }
+}

@@ -1,0 +1,82 @@
+{
+ "23": {
+  "bubbles": 20,
+  "status": "PASS",
+  "wall_s": 0.8622984439134598,
+  "step_ms_median": 0.7245771121233702,
+  "step_ms_mean": 0.8814056233161378,
+  "force_ms_mean": 0.6906572575680912,
+  "wait_ms_median": null,
+  "min_collective_singular_value": 0.37826203055398605,
+  "daqp_iterations": 554,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 0,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 14,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "b303219cf6b1f60b5d62af340e687dc653f96f5d12c099c51904e10ede4ce882"
+ },
+ "21": {
+  "bubbles": 50,
+  "status": "PASS",
+  "wall_s": 0.8446193200070411,
+  "step_ms_median": 1.4264010824263096,
+  "step_ms_mean": 1.6451453629560127,
+  "force_ms_mean": 1.1018308433704078,
+  "wait_ms_median": null,
+  "min_collective_singular_value": 0.5144438032016592,
+  "daqp_iterations": 644,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 4,
+   "CONTACT_REACTION_BALANCE_PASS": 500,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 30,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "65b9f99362e35592e7fc85a1dbdd857d302284fc465533ab1f133a4b7fa55eb6"
+ },
+ "16": {
+  "bubbles": 76,
+  "status": "PASS",
+  "wall_s": 1.4624702278524637,
+  "step_ms_median": 2.8200908564031124,
+  "step_ms_mean": 2.875942801720722,
+  "force_ms_mean": 1.566952295601368,
+  "wait_ms_median": null,
+  "min_collective_singular_value": 0.3949176557425341,
+  "daqp_iterations": 741,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 11,
+   "CONTACT_REACTION_BALANCE_PASS": 404,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 18,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "048b30cfb7463bd122ba1ae225ad9c4b13364b563b01099425f1d795d438212d"
+ },
+ "7": {
+  "bubbles": 122,
+  "status": "PASS",
+  "wall_s": 3.9077833381015807,
+  "step_ms_median": 7.575495168566704,
+  "step_ms_mean": 7.761145733345397,
+  "force_ms_mean": 3.2971305130049586,
+  "wait_ms_median": null,
+  "min_collective_singular_value": 0.44307847560717545,
+  "daqp_iterations": 1034,
+  "steps_failing_gates": {
+   "CANDIDATE_COVERAGE": 0,
+   "CONTACT_CORRECTION": 12,
+   "CONTACT_REACTION_BALANCE_PASS": 200,
+   "LOCAL_QP_PASS": 0,
+   "TRUE_GAP_COMPLEMENTARITY_PASS": 41,
+   "TRUE_GEOMETRY_PASS": 0
+  },
+  "trajectory_sha256": "f3c9d9fbec3c9d357960f70c1b3b888364260969b4bbe3aab85e318bc575f726"
+ }
+}

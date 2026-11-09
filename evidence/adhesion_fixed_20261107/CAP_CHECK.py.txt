@@ -1,0 +1,45 @@
+"""Fixed adhesion (2026-11-07): runs whose largest single-channel amplitude is the source cap are unchanged.
+
+usage (repository root):  python CAP_CHECK.py NODE_OUT_DIR OUT_DIR
+Re-runs two standing-wave runs of evidence/node_test_20261107/ (seed 23 and 7, node at the
+cluster, default adhesion; stronger channel at the 6000 Pa-eq cap) with the current code and the
+default adhesion, the drive replaced as in NODE_RUNS.py.txt, and compares the trajectories with
+the stored ones. Writes OUT_DIR/<name>/run and OUT_DIR/CAP_CHECK.json.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import h5py
+import numpy as np
+
+import microbubble.control as control
+from workflows.f10ag import run
+
+stored, out = Path(sys.argv[1]), Path(sys.argv[2])
+out.mkdir(parents=True)
+runs = json.loads((stored / "RUNS.json").read_text())
+drive = {}
+control.random_actions = lambda duration, *rest: [dict(drive, duration=duration)]
+rows = {}
+for name in ("seed23_node_adhesion_x1", "seed7_node_adhesion_x1"):
+    r = runs[name]
+    drive.clear()
+    drive.update(amplitudes=r["amplitudes_Pa_eq"], phases=r["phases_rad"], frequency=2.5e6)
+    folder = out / name
+    folder.mkdir()
+    cfg = folder / "cfg.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=1.5,
+                                   save_interval_s=0.001, state_seed=r["seed"], action_seed=0)))
+    run(Path("."), cfg, folder / "run")
+    new = json.loads((folder / "run" / "SUMMARY.json").read_text())
+    with h5py.File(folder / "run" / "trajectory.h5") as a, h5py.File(stored / name / "run" / "trajectory.h5") as b:
+        pa, pb = a["positions_m"][()], b["positions_m"][()]
+    rows[name] = dict(status=new["status"], completed_s=new["completed_s"],
+                      adhesion_force_N_now=new["task"]["adhesion_force_N"],
+                      adhesion_force_N_before=r["adhesion_force_N"],
+                      same_shape=pa.shape == pb.shape, identical=bool(pa.shape == pb.shape and np.array_equal(pa, pb)),
+                      max_abs_difference_m=float(np.abs(pa - pb).max()) if pa.shape == pb.shape else None)
+    print(name, rows[name], flush=True)
+(out / "CAP_CHECK.json").write_text(json.dumps(rows, indent=1) + "\n")

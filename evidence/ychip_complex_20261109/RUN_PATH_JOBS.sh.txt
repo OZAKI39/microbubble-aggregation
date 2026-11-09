@@ -1,0 +1,12 @@
+#!/bin/bash
+# usage: run_path_jobs.sh JOBS_FILE   (absolute path; one run per line: NAME START_DIR FORM SEGMENT_S N HOLD_S PERIOD_S
+# FREQ_MHZ CAP FIXED_STEP_S SAVE_INTERVAL_S, as path_runs.py after OUT_DIR); every line starts at once, each in its own process
+cd /workspace/new_microbubble_aggregation
+export OPENBLAS_NUM_THREADS=1 APECSS_DIR=/workspace/third_party/apecss DAQP_DIR=/workspace/third_party/daqp
+BASE=/workspace/scratch/ychip_complex_20261109
+export PYTHONPATH=.:$BASE/scripts
+while read -r name rest; do
+    setsid nohup /workspace/envs/microbubble/bin/python "$BASE/scripts/path_runs.py" "$BASE/out" "$name" $rest \
+        > "$BASE/logs/$name.log" 2>&1 < /dev/null &
+    echo "$name $!"
+done < "$1"

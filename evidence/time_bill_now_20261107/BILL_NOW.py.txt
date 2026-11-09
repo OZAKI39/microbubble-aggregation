@@ -1,0 +1,143 @@
+"""Time bill of one pretraining run with the code of 2026-11-07 evening: where each 1 ms step goes.
+
+usage (repository root):  python BILL_NOW.py SEED DURATION_S TIMED_LIBRARY OUT_JSON
+As evidence/daqp_block_warm_start_20261107/BILL.py.txt, with the force parts of the code now in
+place: pair distances and F2 compiled (CompiledPairForces), the singular value check on a second
+thread and waited for after the contact step (CPUForces.wait_for_singular_value_check), APECSS 16
+threads. The project code is not changed: the compiled contact step is loaded from TIMED_LIBRARY (a
+copy of native/contact_step.cpp, native/daqp_qp.cpp and the DAQP sources with timers, slots below),
+and the force parts, the contact call, the wait and the integrator are wrapped with timers in this
+process only. The check itself runs on the second thread, beside the contact step; its time is
+listed separately and not counted in the step.
+"""
+
+import ctypes
+import json
+import sys
+import tempfile
+import time
+from collections import defaultdict
+from pathlib import Path
+
+import numpy as np
+
+import microbubble.bubble_response as bubble_response
+import microbubble.contact as contact
+import microbubble.forces as forces
+import microbubble.gpu as gpu
+import microbubble.integration as integration
+from workflows.f10ag import run
+
+seed, duration, lib_path, out_json = int(sys.argv[1]), float(sys.argv[2]), sys.argv[3], Path(sys.argv[4])
+spent = defaultdict(float)
+marks = {}
+
+
+def timed(name, f, first=None, last=None):
+    def g(*a, **k):
+        t = time.perf_counter()
+        if first and first not in marks:
+            marks[first] = t
+        try:
+            return f(*a, **k)
+        finally:
+            e = time.perf_counter()
+            spent[name] += e - t
+            if last:
+                marks[last] = e
+    return g
+
+
+real_library = contact.cached_contact_library
+contact.cached_contact_library = lambda *a, **k: dict(real_library(*a, **k), library=lib_path)
+forces.CPUForces.__call__ = timed("forces", forces.CPUForces.__call__, first="loop_start")
+gpu.GPUWaterDiscs.evaluate = timed("field", gpu.GPUWaterDiscs.evaluate)
+bubble_response.CarriedApecssResponse.query = timed("apecss", bubble_response.CarriedApecssResponse.query)
+forces.CompiledPairForces.distances = timed("distances", forces.CompiledPairForces.distances)
+forces.collective_fundamental = timed("collective", forces.collective_fundamental)
+forces.CompiledPairForces.delayed_pair_forces = timed("f2", forces.CompiledPairForces.delayed_pair_forces)
+forces.adhesion_forces = timed("adhesion", forces.adhesion_forces)
+forces.smallest_singular_value = timed("check_second_thread", forces.smallest_singular_value)
+contact.CompiledContactStep.__call__ = timed("contact_call", contact.CompiledContactStep.__call__)
+forces.CPUForces.wait_for_singular_value_check = timed("wait", forces.CPUForces.wait_for_singular_value_check,
+                                                       last="loop_end")
+integration.integrate_pretrain = timed("integrate", integration.integrate_pretrain, first="integrate_start",
+                                       last="integrate_end")
+lib = ctypes.CDLL(lib_path)
+lib.contact_bill_reset()
+with tempfile.TemporaryDirectory() as tmp:
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=duration,
+                                   save_interval_s=0.01, state_seed=seed, action_seed=seed)))
+    t0 = time.perf_counter()
+    r = run(Path("."), cfg, Path(tmp) / "out")
+    run_s = time.perf_counter() - t0
+c = np.zeros(32)
+lib.contact_bill_get(c.ctypes.data_as(ctypes.POINTER(ctypes.c_double)))
+steps = r["accepted_steps"]
+assert int(c[21]) == steps, (c[21], steps)
+loop_s = marks["loop_end"] - marks["loop_start"]
+ms = lambda seconds: 1e3 * seconds / steps  # per step
+
+field, apecss, dist, coll, f2, adh = (spent[k] for k in ("field", "apecss", "distances", "collective", "f2",
+                                                         "adhesion"))
+bill = {
+    "forces": {
+        "sound field (GPU)": ms(field),
+        "bubble response (APECSS, 16 threads)": ms(apecss),
+        "pair distances (compiled)": ms(dist),
+        "collective coupling solve (chi, K, M, hand-over, solve)": ms(coll),
+        "bubble-bubble force F2 (compiled)": ms(f2),
+        "adhesion": ms(adh),
+        "rest of the force evaluation": ms(spent["forces"] - field - apecss - dist - coll - f2 - adh),
+    },
+    "contact": {
+        "resistance matrix A (assembly)": ms(c[0]),
+        "sparse Cholesky of A": ms(c[1]),
+        "free displacement": ms(c[2]),
+        "candidate pairs + initial check": ms(c[3] + c[4]),
+        "linearize constraints": ms(c[5]),
+        "transform: build B' and permute": ms(c[6]),
+        "transform: triangular solve": ms(c[7]),
+        "transform: z0 and d": ms(c[8]),
+        "load table: warm-start guess": ms(c[9]),
+        "load table: copy into DAQP": ms(c[11]),
+        "load table: DAQP activates the warm-start constraints": ms(c[13]),
+        "load table: one matrix product G = Ma Ma'": ms(c[25]),
+        "load table: block factorization of G": ms(c[26]),
+        "load table: write the factor into DAQP": ms(c[27]),
+        "DAQP other set-up (bounds, row scaling)": ms(c[12] - c[13]),
+        "DAQP iterations": ms(c[14]),
+        "DAQP free memory": ms(c[15]),
+        "transform back + active pairs": ms(c[16] + c[17]),
+        "quality checks (gates)": ms(c[18]),
+        "quality checks (candidate coverage)": ms(c[19]),
+        "call overhead outside C++ (ctypes, arrays)": ms(spent["contact_call"] - c[20]),
+    },
+    "loop": {
+        "waiting for the singular value check (after the contact step)": ms(spent["wait"]),
+        "rest of the loop (segments, wall check, records)": ms(loop_s - spent["forces"] - spent["contact_call"]
+                                                               - spent["wait"]),
+    },
+}
+per_step = sum(v for part in bill.values() for v in part.values())
+once = dict(
+        before_the_loop_s=marks["loop_start"] - marks["integrate_start"],
+        after_the_loop_s=marks["integrate_end"] - marks["loop_end"],
+        run_outside_the_integrator_s=run_s - spent["integrate"],
+)
+result = dict(seed=seed, bubbles=r["N"], steps=steps, dt_s=0.001, status=r["status"],
+              daqp_solves=int(c[22]), mean_active_pairs=c[23] / max(c[22], 1),
+              mean_daqp_iterations=c[24] / max(c[22], 1), per_step_ms=bill, per_step_total_ms=per_step,
+              block_fast_path=int(c[29]), block_pivoted_path=int(c[28]), dropped_dependent=int(c[30]),
+              loop_ms_per_step=ms(loop_s), one_time=once, run_s=run_s, wall_s=r["wall_s"],
+              check_on_second_thread_ms_per_step=ms(spent["check_second_thread"]),
+              trajectory_sha256=r["trajectory_sha256"])
+out_json.write_text(json.dumps(result, indent=1) + "\n")
+print(f"seed {seed}: {r['N']} bubbles, {steps} steps of 1 ms, {int(c[22])} DAQP solves "
+      f"(active pairs {result['mean_active_pairs']:.0f}, iterations {result['mean_daqp_iterations']:.1f})")
+for part, items in bill.items():
+    for name, v in items.items():
+        print(f"   {part:8s} {name:56s} {v:8.3f} ms")
+print(f"   total per step {per_step:.3f} ms (loop measured {ms(loop_s):.3f} ms) -> {per_step:.1f}x real time")
+print(f"   one-time: {json.dumps({k: round(v, 3) for k, v in once.items()})}")

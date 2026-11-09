@@ -1,0 +1,19 @@
+import ctypes, json, sys, tempfile
+from pathlib import Path
+import numpy as np
+import microbubble.contact as contact
+from workflows.f10ag import run
+seed, lib_path, out_json = int(sys.argv[1]), sys.argv[2], sys.argv[3]
+real = contact.cached_contact_library
+contact.cached_contact_library = lambda *a, **k: dict(real(*a, **k), library=lib_path)
+lib = ctypes.CDLL(lib_path); lib.contact_timing_reset()
+with tempfile.TemporaryDirectory() as tmp:
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text(json.dumps(dict(fidelity="PRETRAIN", coupling="collective", duration_s=0.1, save_interval_s=0.01, state_seed=seed, action_seed=seed)))
+    r = run(Path("."), cfg, Path(tmp) / "out")
+t = np.zeros(16); lib.contact_timing_get(t.ctypes.data_as(ctypes.POINTER(ctypes.c_double)))
+steps, qps = int(t[15]), max(int(t[14]), 1)
+print(f"seed {seed}: {r['N']} bubbles ({3 * r['N']} unknowns), {steps} steps, {qps} DAQP solves; contact step {t[13] / steps * 1e3:.2f} ms/step; nnz(L) mean {t[9] / qps:.0f}")
+for k, name in ((0, "build B' and permute"), (1, "triangular solve L^-1 (P B')"), (2, "z0 and d"), (5, "DAQP setup (no Hessian)"), (6, "DAQP solve (warm start + iterations)"), (4, "back-transform s")):
+    print(f"   {name:38s} {t[k] / qps * 1e3:8.3f} ms/solve")
+Path(out_json).write_text(json.dumps(dict(seed=seed, bubbles=r['N'], timing_s=t.tolist())) + "\n")

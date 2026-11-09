@@ -1,0 +1,222 @@
+{
+ "N250_2.5MHz_x_minus": {
+  "share_against_isolated": 0.436,
+  "share_collective_towards_zero_set": 0.436,
+  "share_isolated_towards_zero_set": 0.0,
+  "primary_collective_median_N": 3.988903645262109e-12,
+  "primary_isolated_median_N": 5.270943322111144e-11,
+  "F2_spread_median_N": 1.942365756489819e-11,
+  "F2_spread_p90_N": 4.69349484975603e-11,
+  "pressure_at_bubbles_max_Pa": 11149.440344002876,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_2.5MHz_lines_x": {
+  "share_against_isolated": 0.676,
+  "share_collective_towards_zero_set": 0.732,
+  "share_isolated_towards_zero_set": 0.088,
+  "primary_collective_median_N": 2.6509518568613913e-12,
+  "primary_isolated_median_N": 1.0032593822696414e-11,
+  "F2_spread_median_N": 3.446080868256107e-12,
+  "F2_spread_p90_N": 1.3605180075130628e-11,
+  "pressure_at_bubbles_max_Pa": 3267.123782014437,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_7MHz_lines_x": {
+  "share_against_isolated": 0.396,
+  "share_collective_towards_zero_set": 0.604,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 7.440324533525292e-13,
+  "primary_isolated_median_N": 7.973453484642441e-12,
+  "F2_spread_median_N": 7.790190481493533e-13,
+  "F2_spread_p90_N": 3.3141847692358047e-12,
+  "pressure_at_bubbles_max_Pa": 7025.254773620978,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_7MHz_cross": {
+  "share_against_isolated": 0.428,
+  "share_collective_towards_zero_set": 0.572,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 3.5702763834506925e-14,
+  "primary_isolated_median_N": 1.7428782876610927e-13,
+  "F2_spread_median_N": 3.333446601974842e-14,
+  "F2_spread_p90_N": 2.7383452212803956e-13,
+  "pressure_at_bubbles_max_Pa": 1265.1582311066963,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_7MHz_wavy": {
+  "share_against_isolated": 0.408,
+  "share_collective_towards_zero_set": 0.592,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 4.056074064759073e-13,
+  "primary_isolated_median_N": 3.959723099440842e-12,
+  "F2_spread_median_N": 3.806379182154403e-13,
+  "F2_spread_p90_N": 1.7614687999360699e-12,
+  "pressure_at_bubbles_max_Pa": 5886.009980645966,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_7MHz_dots": {
+  "share_against_isolated": 0.4,
+  "share_collective_towards_zero_set": 0.588,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 1.5942055232368873e-12,
+  "primary_isolated_median_N": 1.2661726255997968e-11,
+  "F2_spread_median_N": 1.5027889205773166e-12,
+  "F2_spread_p90_N": 4.067681593906597e-12,
+  "pressure_at_bubbles_max_Pa": 7167.791861663762,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_9.375MHz_lines_x": {
+  "share_against_isolated": 0.388,
+  "share_collective_towards_zero_set": 0.612,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 8.692779318101018e-13,
+  "primary_isolated_median_N": 9.906163998638988e-12,
+  "F2_spread_median_N": 8.539899837708898e-13,
+  "F2_spread_p90_N": 3.696787935958182e-12,
+  "pressure_at_bubbles_max_Pa": 10808.10204767223,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_9.375MHz_cross": {
+  "share_against_isolated": 0.408,
+  "share_collective_towards_zero_set": 0.592,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 6.925439563500562e-14,
+  "primary_isolated_median_N": 3.9179886087816504e-13,
+  "F2_spread_median_N": 6.636747380220086e-14,
+  "F2_spread_p90_N": 5.700003810184005e-13,
+  "pressure_at_bubbles_max_Pa": 2629.446110673861,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_9.375MHz_wavy": {
+  "share_against_isolated": 0.384,
+  "share_collective_towards_zero_set": 0.616,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 4.64314442377977e-13,
+  "primary_isolated_median_N": 4.9036720040740824e-12,
+  "F2_spread_median_N": 3.7288651789952373e-13,
+  "F2_spread_p90_N": 2.0863662879238303e-12,
+  "pressure_at_bubbles_max_Pa": 9525.782483058092,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N250_9.375MHz_dots": {
+  "share_against_isolated": 0.384,
+  "share_collective_towards_zero_set": 0.62,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 1.2946988399395928e-12,
+  "primary_isolated_median_N": 1.5443122434970657e-11,
+  "F2_spread_median_N": 1.2265826581117327e-12,
+  "F2_spread_p90_N": 4.00498887014576e-12,
+  "pressure_at_bubbles_max_Pa": 11096.468329214787,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_2.5MHz_x_minus": {
+  "share_against_isolated": 0.46125,
+  "share_collective_towards_zero_set": 0.46125,
+  "share_isolated_towards_zero_set": 0.0,
+  "primary_collective_median_N": 2.1233410759037816e-12,
+  "primary_isolated_median_N": 5.6207096626387524e-11,
+  "F2_spread_median_N": 1.2927897595513707e-11,
+  "F2_spread_p90_N": 2.1548922406127183e-11,
+  "pressure_at_bubbles_max_Pa": 11153.256547093373,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_2.5MHz_lines_x": {
+  "share_against_isolated": 0.6225,
+  "share_collective_towards_zero_set": 0.66,
+  "share_isolated_towards_zero_set": 0.0875,
+  "primary_collective_median_N": 2.0305838819675558e-12,
+  "primary_isolated_median_N": 1.649829322660619e-11,
+  "F2_spread_median_N": 2.7409937251514235e-12,
+  "F2_spread_p90_N": 8.468363037866685e-12,
+  "pressure_at_bubbles_max_Pa": 4858.689259272945,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_7MHz_lines_x": {
+  "share_against_isolated": 0.435,
+  "share_collective_towards_zero_set": 0.565,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 2.986491320274561e-13,
+  "primary_isolated_median_N": 1.2464778787493611e-11,
+  "F2_spread_median_N": 2.9081817268199125e-13,
+  "F2_spread_p90_N": 2.387602310731361e-12,
+  "pressure_at_bubbles_max_Pa": 10128.879616608916,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_7MHz_cross": {
+  "share_against_isolated": 0.44625,
+  "share_collective_towards_zero_set": 0.55375,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 4.162660760227711e-14,
+  "primary_isolated_median_N": 5.680171439765829e-13,
+  "F2_spread_median_N": 4.17314523394015e-14,
+  "F2_spread_p90_N": 5.224586254072636e-13,
+  "pressure_at_bubbles_max_Pa": 2900.966503347279,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_7MHz_wavy": {
+  "share_against_isolated": 0.44125,
+  "share_collective_towards_zero_set": 0.55875,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 1.5809991101634161e-13,
+  "primary_isolated_median_N": 5.594948839388947e-12,
+  "F2_spread_median_N": 1.5668937402055656e-13,
+  "F2_spread_p90_N": 1.4070279426308878e-12,
+  "pressure_at_bubbles_max_Pa": 8904.111774495,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_7MHz_dots": {
+  "share_against_isolated": 0.4325,
+  "share_collective_towards_zero_set": 0.5725,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 7.974910837271328e-13,
+  "primary_isolated_median_N": 1.97469984217999e-11,
+  "F2_spread_median_N": 7.501830233096886e-13,
+  "F2_spread_p90_N": 3.0893235080878796e-12,
+  "pressure_at_bubbles_max_Pa": 10416.637359399183,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_9.375MHz_lines_x": {
+  "share_against_isolated": 0.43625,
+  "share_collective_towards_zero_set": 0.56375,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 2.7881572034778727e-13,
+  "primary_isolated_median_N": 1.5230134294927045e-11,
+  "F2_spread_median_N": 2.733737604867761e-13,
+  "F2_spread_p90_N": 2.4754702791115157e-12,
+  "pressure_at_bubbles_max_Pa": 15136.385318452412,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_9.375MHz_cross": {
+  "share_against_isolated": 0.44125,
+  "share_collective_towards_zero_set": 0.55875,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 7.015350019710732e-14,
+  "primary_isolated_median_N": 1.2636452567556845e-12,
+  "F2_spread_median_N": 6.77801722172227e-14,
+  "F2_spread_p90_N": 1.0161368649716132e-12,
+  "pressure_at_bubbles_max_Pa": 5938.935730753283,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_9.375MHz_wavy": {
+  "share_against_isolated": 0.4425,
+  "share_collective_towards_zero_set": 0.5575,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 1.548713205541275e-13,
+  "primary_isolated_median_N": 6.15831380450322e-12,
+  "F2_spread_median_N": 1.5114188683234708e-13,
+  "F2_spread_p90_N": 1.6512413296122005e-12,
+  "pressure_at_bubbles_max_Pa": 14395.03320325589,
+  "adhesion_per_contact_N": 5.04e-10
+ },
+ "N800_9.375MHz_dots": {
+  "share_against_isolated": 0.43375,
+  "share_collective_towards_zero_set": 0.56125,
+  "share_isolated_towards_zero_set": 1.0,
+  "primary_collective_median_N": 4.602798295690928e-13,
+  "primary_isolated_median_N": 2.286838521690095e-11,
+  "F2_spread_median_N": 4.558774764411617e-13,
+  "F2_spread_p90_N": 3.0614718091422882e-12,
+  "pressure_at_bubbles_max_Pa": 15677.849892295919,
+  "adhesion_per_contact_N": 5.04e-10
+ }
+}

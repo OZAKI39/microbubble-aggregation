@@ -1,0 +1,147 @@
+"""Time bill with the code of 2026-11-07 evening: where each 1 ms step goes.
+
+usage (repository root):  python FIGURE_SCRIPT.py.txt EVIDENCE_DIR
+Reads EVIDENCE_DIR/data/bill_seed{23,21,16,7}.json and, for the history at 122 bubbles, the bills of
+evidence/time_bill_20261107/ and evidence/daqp_block_warm_start_20261107/; writes
+fig1_time_bill_now.png and prints the category sums.
+"""
+
+import json
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+ARIAL_DIR = Path("/mnt/c/Windows/Fonts")
+INK, MUTED, GRID = "#1f2328", "#5b6470", "#e6e8eb"
+SEEDS = ["23", "21", "16", "7"]
+CATEGORIES = {  # name: (colour, items of the bill)
+    "Forces": ("#2a6fb0", ["sound field (GPU)", "bubble response (APECSS, 16 threads)", "pair distances (compiled)",
+                           "collective coupling solve (chi, K, M, hand-over, solve)",
+                           "bubble-bubble force F2 (compiled)", "adhesion", "rest of the force evaluation"]),
+    "Contact: matrix A, Cholesky": ("#8fb3d9", ["resistance matrix A (assembly)", "sparse Cholesky of A", "free displacement"]),
+    "Contact: transform": ("#d08a1e", ["transform: build B' and permute", "transform: triangular solve",
+                                       "transform: z0 and d", "transform back + active pairs"]),
+    "Contact: load warm-start table": ("#e8c07d", ["load table: warm-start guess", "load table: copy into DAQP",
+                                                   "load table: DAQP activates the warm-start constraints",
+                                                   "load table: one matrix product G = Ma Ma'",
+                                                   "load table: block factorization of G",
+                                                   "load table: write the factor into DAQP"]),
+    "Contact: DAQP set-up, iterations": ("#6a9f58", ["DAQP other set-up (bounds, row scaling)", "DAQP iterations",
+                                                     "DAQP free memory"]),
+    "Contact: candidates, gates, call": ("#9aa5b1", ["candidate pairs + initial check", "linearize constraints",
+                                                     "quality checks (gates)", "quality checks (candidate coverage)",
+                                                     "call overhead outside C++ (ctypes, arrays)"]),
+    "Loop: wait for the check, rest": ("#5b6470", ["waiting for the singular value check (after the contact step)",
+                                                   "rest of the loop (segments, wall check, records)"]),
+}
+HISTORY = [  # 122 bubbles, server, same bill method
+    ("Morning\n(time bill)", Path("evidence/time_bill_20261107/data/bill_seed7.json")),
+    ("Warm start\nas one block", Path("evidence/daqp_block_warm_start_20261107/data/bill_block_seed7.json")),
+    ("Contact library\nAVX2/FMA", Path("evidence/daqp_block_warm_start_20261107/data/bill_block_avx2_seed7.json")),
+    ("Now", None),
+]
+
+
+def setup_style(font_dir):
+    for name in ("arial.ttf", "arialbd.ttf"):
+        if (ARIAL_DIR / name).is_file():
+            font_manager.fontManager.addfont(str(shutil.copy(ARIAL_DIR / name, font_dir / name)))
+    plt.rcParams.update({"font.family": "Arial", "font.size": 9, "axes.edgecolor": MUTED,
+                         "axes.labelcolor": INK, "xtick.color": MUTED, "ytick.color": MUTED,
+                         "axes.spines.top": False, "axes.spines.right": False})
+
+
+def title(ax, text):
+    ax.set_title(text, loc="left", fontsize=9.5, color=INK)
+
+
+def grid(ax, axis):
+    ax.grid(axis=axis, color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+
+
+def flat(bill):
+    return {k: v for part in bill["per_step_ms"].values() for k, v in part.items()}
+
+
+def main():
+    folder = Path(sys.argv[1])
+    bills = {s: json.loads((folder / "data" / f"bill_seed{s}.json").read_text()) for s in SEEDS}
+    sums = {s: {c: sum(flat(bills[s])[k] for k in items) for c, (_, items) in CATEGORIES.items()} for s in SEEDS}
+    with tempfile.TemporaryDirectory() as font_dir:
+        setup_style(Path(font_dir))
+        fig, axes = plt.subplots(1, 3, figsize=(17.5, 5.6), gridspec_kw=dict(wspace=0.8, width_ratios=[1, 1.35, 0.9]))
+
+        # (a) per step by category
+        ax = axes[0]
+        for i, s in enumerate(SEEDS):
+            bottom = 0.0
+            for c, (colour, _) in CATEGORIES.items():
+                ax.bar(i, sums[s][c], bottom=bottom, width=0.6, color=colour, edgecolor="white", linewidth=1,
+                       label=c if i == 0 else None)
+                bottom += sums[s][c]
+            ax.text(i, max(bottom, 1.0) + 0.1, f"{bottom:.2f} ms\n{bottom:.1f}x real time", ha="center", va="bottom",
+                    fontsize=7.5, color=INK)
+        ax.axhline(1.0, color=INK, linewidth=1, linestyle="--", label="Real time: 1 ms per 1 ms step")
+        ax.set_xticks(range(len(SEEDS)), [str(bills[s]["bubbles"]) for s in SEEDS])
+        ax.set_xlabel("Bubbles")
+        ax.set_ylabel("Wall time per 1 ms step (ms, mean of 500 steps)")
+        ax.set_ylim(0, 9.5)
+        grid(ax, "y")
+        ax.legend(loc="upper left", fontsize=7, frameon=False)
+        title(ax, "(a) Server, now: per step by category")
+
+        # (b) 122 bubbles in detail
+        ax = axes[1]
+        f = flat(bills["7"])
+        colour_of = {k: colour for c, (colour, items) in CATEGORIES.items() for k in items}
+        items = sorted((k for k in f if f[k] >= 0.02), key=lambda k: f[k], reverse=True)
+        for i, k in enumerate(items):
+            ax.barh(i, f[k], height=0.65, color=colour_of[k])
+            ax.text(f[k] + 0.02, i, f"{f[k]:.2f}", va="center", fontsize=7, color=INK)
+        ax.set_yticks(range(len(items)), items, fontsize=7.5)
+        ax.invert_yaxis()
+        ax.set_xlim(0, 1.95)
+        ax.set_xlabel(f"ms per step (122 bubbles; items of 0.02 ms or more; total {bills['7']['per_step_total_ms']:.2f} ms)")
+        grid(ax, "x")
+        ax.text(0.98, 0.03, f"Not in the step: the singular value check on the second\nthread, "
+                f"{bills['7']['check_on_second_thread_ms_per_step']:.2f} ms per step beside the contact step",
+                transform=ax.transAxes, ha="right", fontsize=7, color=MUTED)
+        title(ax, "(b) 122 bubbles: every item")
+
+        # (c) history at 122 bubbles
+        ax = axes[2]
+        parts = [("forces", "#2a6fb0", "Forces"), ("contact", "#d08a1e", "Contact step"), ("loop", "#5b6470", "Loop")]
+        for i, (name, path) in enumerate(HISTORY):
+            b = bills["7"] if path is None else json.loads(path.read_text())
+            bottom = 0.0
+            for key, colour, label in parts:
+                v = sum(b["per_step_ms"][key].values())
+                ax.bar(i, v, bottom=bottom, width=0.6, color=colour, edgecolor="white", linewidth=1,
+                       label=label if i == 0 else None)
+                bottom += v
+            ax.text(i, bottom + 0.2, f"{b['per_step_total_ms']:.2f}", ha="center", va="bottom", fontsize=8, color=INK)
+        ax.set_xticks(range(len(HISTORY)), [h[0] for h in HISTORY], fontsize=7.5)
+        ax.set_ylabel("ms per step, 122 bubbles (time bills)")
+        ax.set_ylim(0, 22)
+        grid(ax, "y")
+        ax.legend(loc="upper right", fontsize=7, frameon=False)
+        ax.text(0.98, 0.83, "AVX2/FMA -> now: singular value check on a\nsecond thread, F2 and distances compiled,\n"
+                "APECSS 16 threads, wait after the contact step", transform=ax.transAxes, ha="right", fontsize=6.8,
+                color=MUTED)
+        title(ax, "(c) 122 bubbles through 2026-11-07")
+        fig.savefig(folder / "fig1_time_bill_now.png", dpi=170, bbox_inches="tight")
+        plt.close(fig)
+    for s in SEEDS:
+        print(bills[s]["bubbles"], {c: round(v, 3) for c, v in sums[s].items()})
+
+
+if __name__ == "__main__":
+    main()

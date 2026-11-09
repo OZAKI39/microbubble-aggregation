@@ -1,0 +1,45 @@
+{
+ "rows": [
+  {
+   "run": "protocol_formed32",
+   "variant": "table",
+   "duration_s": 0.5,
+   "wall_s": 5.144661642000017,
+   "apecss_s": 0.0,
+   "threads": null,
+   "library_cached": null,
+   "steps": 1450
+  },
+  {
+   "run": "protocol_formed32",
+   "variant": "apecss_default",
+   "duration_s": 0.5,
+   "wall_s": 5.7808803510000075,
+   "apecss_s": 0.7826825069997199,
+   "threads": 8,
+   "library_cached": true,
+   "steps": 1450
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "table",
+   "duration_s": 0.3,
+   "wall_s": 6.004288548000034,
+   "apecss_s": 0.0,
+   "threads": null,
+   "library_cached": null,
+   "steps": 278
+  },
+  {
+   "run": "protocol_formed128",
+   "variant": "apecss_default",
+   "duration_s": 0.3,
+   "wall_s": 7.447861767000006,
+   "apecss_s": 0.5231399120002038,
+   "threads": 8,
+   "library_cached": true,
+   "steps": 302
+  }
+ ],
+ "note": "same shortened runs as THREADS.json, with the defaults since the change (8 APECSS threads, library from build/apecss/); one run at a time"
+}

@@ -1,0 +1,42 @@
+"""Probe 3: one carried bubble whose drive drifts as a bubble moving through a standing wave does
+(|P| = P0 |cos phi|, phi advancing 0.02 rad per call, 400 calls) at several P0 and frequencies;
+counts non-converged calls and reports the largest cycle count (2026-11-08, diagnosis)."""
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from microbubble.bubble_response import CarriedApecssResponse, apecss_options, cached_apecss_library, shell_parameters
+from workflows.f10ag import load_pretrain_policy
+
+root = Path(".")
+s = load_pretrain_policy(root)["apecss_response"]
+build = cached_apecss_library(os.environ["APECSS_DIR"], root / "build" / "apecss")
+ode_tol = float(sys.argv[1])
+freqs = [float(v) * 1e6 for v in sys.argv[2].split(",")]
+p0s = [float(v) * 1e3 for v in sys.argv[3].split(",")]
+with tempfile.TemporaryDirectory() as tmp:
+    path = Path(tmp) / "b.apecss"
+    path.write_text(apecss_options(shell_parameters(s["bubble"], 1.78e-6, s["shell_vs_radius"]), ode_tol))
+    for f in freqs:
+        for p0 in p0s:
+            r = CarriedApecssResponse(build["library"], [path], f, threads=1,
+                                      **{k: s[k] for k in ("tolerance", "min_cycles_warm", "min_cycles_cold", "max_cycles", "q_refresh")})
+            fails, cmax, cyc_sum, first = 0, 0, 0, None
+            for k in range(400):
+                phi = 0.3 + 0.02 * k
+                P = np.array([p0 * np.cos(phi) * np.exp(1j * (0.4 + 0.5 * np.sin(0.05 * k)))])
+                H = np.zeros((1, 17)); cyc = np.zeros(1, np.int32); st = np.zeros(1, np.int32)
+                est = np.zeros(1); ext = np.zeros((1, 2))
+                r.lib.carried_advance(r.handles, 1, np.ascontiguousarray(P.real), np.ascontiguousarray(P.imag),
+                                      s["tolerance"], s["min_cycles_warm"], s["min_cycles_cold"], s["max_cycles"],
+                                      s["q_refresh"], 1, H, cyc, st, est, ext)
+                if st[0] not in (0, 4):
+                    fails += 1
+                    first = first or (k, abs(P[0]), int(st[0]), float(est[0]))
+                cmax = max(cmax, int(cyc[0])); cyc_sum += int(cyc[0])
+            r.close()
+            print(f"ode {ode_tol:g} f {f/1e6:6.3f} MHz P0 {p0/1e3:5.0f} kPa: failures {fails:3d}/400, cycles max {cmax:3d} mean {cyc_sum/400:5.1f}"
+                  + (f", first failure call {first[0]} |P| {first[1]:.3g} status {first[2]} est {first[3]:.3g}" if first else ""), flush=True)
